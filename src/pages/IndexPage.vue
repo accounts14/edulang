@@ -306,7 +306,7 @@
             </p>
 
             <div>
-              <q-img src="~assets/Logo-affiliate.png" style="max-width: 100%; height: auto" />
+              <q-img src="~assets/logo-affiliate.png" style="max-width: 100%; height: auto" />
             </div>
           </div>
         </div>
