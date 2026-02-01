@@ -1,1 +1,16 @@
 // app global css in SCSS form
+// src/css/app.scss
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6, .text-subtitle1, .text-subtitle2 {
+  font-family: 'Poppins', sans-serif;
+}
+
+// Tambahan utility agar garis bawah pada menu aktif terlihat seperti di gambar
+.active-link {
+  border-bottom: 3px solid #003366; // Warna biru tua sesuai header
+  border-radius: 0;
+}
