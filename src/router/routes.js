@@ -4,7 +4,103 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
+      { path: '', component: () => import('pages/IndexPage.vue') },
+    ]
+  },
+
+  // === HALAMAN DASHBOARD BERDASARKAN ROLE ===
+  // User Dashboard (untuk role 'user')
+  {
+  path: '/dashboard',
+  component: () => import('layouts/MainLayout.vue'),
+  children: [
+    {
+      path: '',
+      name: 'UserDashboard',
+      component: () => import('pages/user/UserDashboard.vue'),
+      meta: { requiresAuth: true, allowedRoles: ['user'] }
+    }
+  ]
+},
+
+  // Admin (dashboard + halaman lainnya)
+  {
+    path: '/admin/dashboard',
+    component: () => import('layouts/AdminLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'AdminDashboard',
+        component: () => import('pages/admin/DashboardPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/admin',
+    component: () => import('layouts/AdminLayout.vue'),
+    children: [
+      {
+        path: 'kategori',
+        name: 'AdminKategori',
+        component: () => import('pages/admin/LanguageCategoryPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'kategori/add',
+        name: 'AdminKategoriAdd',
+        component: () => import('pages/admin/AddLanguageCategoryPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'kategori/:id/edit',
+        name: 'AdminKategoriEdit',
+        component: () => import('pages/admin/EditLanguageCategoryPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      }
+    ]
+  },
+
+  {
+    path: '/mentor',
+    component: () => import('layouts/MentorLayout.vue'),
+    children: [
+      {
+        path: 'dashboard',
+        name: 'MentorDashboard',
+        component: () => import('pages/mentor/DashboardPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] }
+      },
+      {
+        path: 'packages/add',
+        name: 'MentorAddPackage',
+        component: () => import('pages/mentor/AddPackagePage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] }
+      },
+      {
+        path: 'packages/:id/edit',
+        name: 'MentorEditPackage',
+        component: () => import('pages/mentor/EditPackagePage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] }
+      },
+      {
+        path: 'packages/:id',
+        name: 'MentorPackageDetail',
+        component: () => import('pages/mentor/PackageDetailPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] }
+      },
+      {
+        path: 'packages/:id/lessons/add',
+        name: 'MentorPackageAddLesson',
+        component: () => import('pages/mentor/AddLessonPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] }
+      },
+      {
+        path: 'packages/:id/lessons/:order/edit',
+        name: 'MentorPackageEditLesson',
+        component: () => import('pages/mentor/EditLessonPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] }
+      }
     ]
   },
 
@@ -12,7 +108,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('pages/LoginPage.vue') // Langsung panggil Page-nya
+    component: () => import('pages/LoginPage.vue')
   },
   {
     path: '/register',

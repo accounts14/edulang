@@ -1,22 +1,16 @@
 <!-- src/pages/LandingPage.vue -->
 <template>
-  <q-page class="bg-white ">
-    <HeroSection />
-    <LearningMethodSection />
-    <LearningPathSection />
-    <CertificationSection />
+  <q-page class="bg-white">
     <FastTrackSection />
-    <AlumniNetworkSection />
+    <CertificationSection />
     <SolutionsSection />
-    <TestimonialSection />
+    <AlumniNetworkSection />
     <MentorSection />
+    <TestimonialSection />  
   </q-page>
 </template>
 
 <script setup>
-import HeroSection from 'components/Landing/HeroSection.vue'
-import LearningMethodSection from 'components/Landing/LearningMethodSection.vue'
-import LearningPathSection from 'components/Landing/LearningPathSection.vue'
 import CertificationSection from 'components/Landing/CertificationSection.vue'
 import FastTrackSection from 'components/Landing/FastTrackSection.vue'
 import AlumniNetworkSection from 'components/Landing/AlumniNetworkSection.vue'

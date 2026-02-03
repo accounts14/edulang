@@ -1,15 +1,7 @@
+// src/router/index.js
 import { defineRouter } from '#q-app/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
-
-/*
- * If not building with SSR mode, you can
- * directly export the Router instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Router instance.
- */
 
 export default defineRouter(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
@@ -19,11 +11,47 @@ export default defineRouter(function (/* { store, ssrContext } */) {
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
-
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE)
+  })
+
+  Router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('token')
+    const role = localStorage.getItem('userRole')
+
+    // Jika user sudah login dan mencoba akses halaman auth, redirect ke dashboard
+    if (token && (to.path === '/login' || to.path === '/register')) {
+      if (role === 'admin') {
+        next('/admin/dashboard')
+      } else if (role === 'mentor') {
+        next('/mentor/dashboard')
+      } else {
+        next('/dashboard')
+      }
+      return
+    }
+
+    // Proteksi route yang butuh autentikasi
+    if (to.meta.requiresAuth) {
+      if (!token) {
+        next('/login')
+        return
+      }
+
+      // Cek izin role
+      if (to.meta.allowedRoles && !to.meta.allowedRoles.includes(role)) {
+        // Jika role tidak diizinkan, kembalikan ke halaman sesuai rolenya
+        if (role === 'admin') {
+          next('/admin/dashboard')
+        } else if (role === 'mentor') {
+          next('/mentor/dashboard')
+        } else {
+          next('/dashboard')
+        }
+        return
+      }
+    }
+
+    next()
   })
 
   return Router
