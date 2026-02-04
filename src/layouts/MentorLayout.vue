@@ -50,17 +50,34 @@
 </div>
 
       <q-list padding>
-        <q-item clickable v-ripple to="/mentor/dashboard" active-class="bg-primary text-white rounded-borders">
+        <q-item
+          clickable
+          v-ripple
+          to="/mentor/dashboard"
+          active-class="bg-primary text-white rounded-borders"
+        >
           <q-item-section avatar><q-icon name="dashboard" /></q-item-section>
           <q-item-section class="text-weight-bold">Dashboard</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple class="text-grey-7">
+        <q-item
+          clickable
+          v-ripple
+          to="/mentor/kelasku"
+          active-class="bg-primary text-white rounded-borders"
+          class="text-grey-7"
+        >
           <q-item-section avatar><q-icon name="menu_book" /></q-item-section>
           <q-item-section class="text-weight-medium">Kelasku</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple class="text-grey-7">
+        <q-item
+          clickable
+          v-ripple
+          to="/mentor/rating"
+          active-class="bg-primary text-white rounded-borders"
+          class="text-grey-7"
+        >
           <q-item-section avatar><q-icon name="star_outline" /></q-item-section>
           <q-item-section class="text-weight-medium">Rating dan Review</q-item-section>
         </q-item>

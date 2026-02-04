@@ -6,7 +6,13 @@
       <div class="col-12 col-sm-6 col-md-4">
         <q-card flat class="rounded-borders-lg shadow-1 q-pa-lg bg-white">
           <div class="row items-center">
-            <q-avatar color="blue-6" text-color="white" icon="description" size="48px" class="q-mr-md" />
+            <q-avatar
+              color="blue-6"
+              text-color="white"
+              icon="description"
+              size="48px"
+              class="q-mr-md"
+            />
             <div>
               <div class="text-h4 text-weight-bolder text-grey-9">{{ summary.totalTransaksi }}</div>
               <div class="text-caption text-grey-7">Total Transaksi ({{ monthLabel }})</div>
@@ -17,9 +23,17 @@
       <div class="col-12 col-sm-6 col-md-4">
         <q-card flat class="rounded-borders-lg shadow-1 q-pa-lg bg-white">
           <div class="row items-center">
-            <q-avatar color="amber-7" text-color="white" icon="payments" size="48px" class="q-mr-md" />
+            <q-avatar
+              color="amber-7"
+              text-color="white"
+              icon="payments"
+              size="48px"
+              class="q-mr-md"
+            />
             <div>
-              <div class="text-h6 text-weight-bolder text-grey-9">{{ summary.pendapatanFormatted }}</div>
+              <div class="text-h6 text-weight-bolder text-grey-9">
+                {{ summary.pendapatanFormatted }}
+              </div>
               <div class="text-caption text-grey-7">Pendapatan Masuk</div>
             </div>
           </div>
@@ -59,7 +73,9 @@
       </div>
 
       <div v-else-if="filteredRows.length === 0" class="text-center q-pa-xl text-grey-7">
-        {{ searchQuery ? 'Tidak ada data yang cocok dengan pencarian.' : 'Belum ada data transaksi.' }}
+        {{
+          searchQuery ? 'Tidak ada data yang cocok dengan pencarian.' : 'Belum ada data transaksi.'
+        }}
       </div>
 
       <q-table
@@ -75,7 +91,9 @@
         <template #body-cell-packageName="props">
           <q-td>
             <div class="text-weight-bold">{{ props.row.packageName }}</div>
-            <div class="text-caption text-grey-7" style="font-size: 10px;">ID: {{ props.row._id }}</div>
+            <div class="text-caption text-grey-7" style="font-size: 10px">
+              ID: {{ props.row._id }}
+            </div>
           </q-td>
         </template>
 
@@ -121,13 +139,26 @@ const mentors = ref([])
 // Filter Waktu (Bulan ini)
 const monthFilter = ref(new Date().getMonth() + 1)
 const yearFilter = ref(new Date().getFullYear())
-const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+const monthNames = [
+  'Januari',
+  'Februari',
+  'Maret',
+  'April',
+  'Mei',
+  'Juni',
+  'Juli',
+  'Agustus',
+  'September',
+  'Oktober',
+  'November',
+  'Desember',
+]
 const monthLabel = computed(() => `${monthNames[monthFilter.value - 1] || ''} ${yearFilter.value}`)
 
 // Summary Cards Logic
 const summary = computed(() => {
   const list = transactions.value.filter((tx) => tx.status === 'success')
-  
+
   const inMonth = list.filter((tx) => {
     const d = tx.createdAt ? new Date(tx.createdAt) : null
     if (!d) return false
@@ -136,35 +167,45 @@ const summary = computed(() => {
 
   const totalTransaksi = inMonth.length
   const pendapatan = inMonth.reduce((sum, tx) => sum + (Number(tx.amount) || 0), 0)
-  
+
   return {
     totalTransaksi,
     pendapatan,
-    pendapatanFormatted: formatRupiah(pendapatan)
+    pendapatanFormatted: formatRupiah(pendapatan),
   }
 })
 
 // Utilities
-function formatRupiah (val) {
+function formatRupiah(val) {
   const n = Number(val) || 0
-  return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n)
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(n)
 }
 
-function formatDate (d) {
+function formatDate(d) {
   if (!d) return '—'
   try {
-    return new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    return new Date(d).toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
   } catch {
     return '—'
   }
 }
 
-function statusLabel (s) {
+function statusLabel(s) {
   const map = { success: 'Berhasil', pending: 'Menunggu', failed: 'Gagal', canceled: 'Dibatalkan' }
   return map[s] || s || 'Unknown'
 }
 
-function statusColor (s) {
+function statusColor(s) {
   const map = { success: 'positive', pending: 'warning', failed: 'negative', canceled: 'grey' }
   return map[s] || 'grey'
 }
@@ -175,7 +216,7 @@ const columns = [
   { name: 'emailMentor', label: 'Mentor', field: 'emailMentor', align: 'left', sortable: true },
   { name: 'amount', label: 'Nilai Transaksi', field: 'amount', align: 'left', sortable: true },
   { name: 'status', label: 'Status', field: 'status', align: 'center', sortable: true },
-  { name: 'createdAt', label: 'Tanggal', field: 'createdAt', align: 'left', sortable: true }
+  { name: 'createdAt', label: 'Tanggal', field: 'createdAt', align: 'left', sortable: true },
 ]
 
 // Data Mapping (Relasi Transactions -> Packages -> Mentors)
@@ -200,7 +241,8 @@ const distributionRows = computed(() => {
   return txList.map((tx) => {
     // 1. Cari Paket
     // Backend mungkin mengirim object (populated) atau string ID
-    const pkgId = (typeof tx.package === 'object' && tx.package) ? (tx.package._id || tx.package.id) : tx.package
+    const pkgId =
+      typeof tx.package === 'object' && tx.package ? tx.package._id || tx.package.id : tx.package
     const pkg = pkgById[pkgId] || (typeof tx.package === 'object' ? tx.package : null)
 
     // 2. Cari Mentor
@@ -223,7 +265,7 @@ const distributionRows = computed(() => {
       emailMentor: mentorEmail,
       amount: tx.amount || 0,
       status: tx.status || 'pending',
-      createdAt: tx.createdAt || tx.updatedAt || new Date().toISOString()
+      createdAt: tx.createdAt || tx.updatedAt || new Date().toISOString(),
     }
   })
 })
@@ -232,27 +274,29 @@ const distributionRows = computed(() => {
 const filteredRows = computed(() => {
   const q = (searchApplied.value || '').toLowerCase().trim()
   if (!q) return distributionRows.value
-  
+
   return distributionRows.value.filter((r) => {
-    return (r.packageName || '').toLowerCase().includes(q) || 
-           (r.emailMentor || '').toLowerCase().includes(q)
+    return (
+      (r.packageName || '').toLowerCase().includes(q) ||
+      (r.emailMentor || '').toLowerCase().includes(q)
+    )
   })
 })
 
-function applySearch () {
+function applySearch() {
   searchApplied.value = searchQuery.value
 }
 
 // Fetch Data
-async function fetchData () {
+async function fetchData() {
   loading.value = true
   try {
-    // Menggunakan allSettled agar jika endpoint /mentors error (CORS), 
+    // Menggunakan allSettled agar jika endpoint /mentors error (CORS),
     // transaksi tetap bisa tampil (partial success).
     const results = await Promise.allSettled([
       api.get('/transactions'),
       api.get('/packages'),
-      api.get('/mentors') 
+      api.get('/mentors'),
     ])
 
     // Handle Transactions
@@ -281,7 +325,6 @@ async function fetchData () {
       console.warn('Gagal ambil mentors (Cek CORS/Permission):', results[2].reason)
       mentors.value = []
     }
-
   } catch (e) {
     console.error('Critical Error:', e)
   } finally {
@@ -293,6 +336,10 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-.rounded-borders-lg { border-radius: 24px; }
-.text-indigo-10 { color: #0d2a5c; }
+.rounded-borders-lg {
+  border-radius: 24px;
+}
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

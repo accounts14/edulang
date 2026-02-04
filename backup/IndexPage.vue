@@ -343,10 +343,12 @@
       </div>
     </section>
 
-<section class="bg-primary text-white q-py-xl overflow-hidden" style="min-height: 600px; display: flex; align-items: center;">
+    <section
+      class="bg-primary text-white q-py-xl overflow-hidden"
+      style="min-height: 600px; display: flex; align-items: center"
+    >
       <div class="container">
         <div class="row items-center q-col-gutter-xl">
-          
           <div class="col-12 col-md-5">
             <div class="text-warning text-weight-bold q-mb-sm">
               500k Orang Sudah Melaju. Kamu Kapan?
@@ -355,36 +357,67 @@
               Temukan Standar Baru dalam Berkarier
             </h2>
             <p class="text-white opacity-80 q-mb-xl text-body1">
-              Bergabunglah dengan ekosistem belajar yang menjembatani ambisi Anda menuju karier di kancah global.
+              Bergabunglah dengan ekosistem belajar yang menjembatani ambisi Anda menuju karier di
+              kancah global.
             </p>
             <div class="q-gutter-md">
-              <q-btn unelevated rounded color="warning" text-color="dark" label="Alur Belajar" class="q-px-xl q-py-md text-weight-bold" />
-              <q-btn outline rounded color="white" label="Update Student" class="q-px-xl q-py-md text-weight-bold" />
+              <q-btn
+                unelevated
+                rounded
+                color="warning"
+                text-color="dark"
+                label="Alur Belajar"
+                class="q-px-xl q-py-md text-weight-bold"
+              />
+              <q-btn
+                outline
+                rounded
+                color="white"
+                label="Update Student"
+                class="q-px-xl q-py-md text-weight-bold"
+              />
             </div>
           </div>
 
           <div class="col-12 col-md-7">
             <div class="testimonial-grid-wrapper">
-              
               <div class="marquee-column">
                 <div class="marquee-vertical down">
-                  <div v-for="n in 2" :key="'group1-'+n" class="marquee-content">
-                    <q-card v-for="(testi, i) in testimonials.slice(0, 3)" :key="i" class="q-mb-lg testimonial-card">
+                  <div v-for="n in 2" :key="'group1-' + n" class="marquee-content">
+                    <q-card
+                      v-for="(testi, i) in testimonials.slice(0, 3)"
+                      :key="i"
+                      class="q-mb-lg testimonial-card"
+                    >
                       <q-card-section class="q-pa-lg">
                         <div class="row items-center no-wrap q-mb-md">
                           <q-avatar size="45px" class="q-mr-md">
-                            <img :src="testi.avatar">
+                            <img :src="testi.avatar" />
                           </q-avatar>
                           <div class="column">
-                            <span class="text-weight-bold text-dark text-subtitle1">{{ testi.name }}</span>
-                            <q-badge color="blue-1" text-color="primary" class="q-py-xs q-px-sm text-weight-bold">
+                            <span class="text-weight-bold text-dark text-subtitle1">{{
+                              testi.name
+                            }}</span>
+                            <q-badge
+                              color="blue-1"
+                              text-color="primary"
+                              class="q-py-xs q-px-sm text-weight-bold"
+                            >
                               {{ testi.course }}
                             </q-badge>
                           </div>
                         </div>
                         <div class="text-weight-bold text-dark q-mb-xs">{{ testi.title }}</div>
-                        <div class="text-body2 text-grey-8 line-height-1-5">{{ testi.comment }}</div>
-                        <q-rating :model-value="5" readonly size="16px" color="orange" class="q-mt-md" />
+                        <div class="text-body2 text-grey-8 line-height-1-5">
+                          {{ testi.comment }}
+                        </div>
+                        <q-rating
+                          :model-value="5"
+                          readonly
+                          size="16px"
+                          color="orange"
+                          class="q-mt-md"
+                        />
                       </q-card-section>
                     </q-card>
                   </div>
@@ -393,81 +426,113 @@
 
               <div class="marquee-column">
                 <div class="marquee-vertical up">
-                  <div v-for="n in 2" :key="'group2-'+n" class="marquee-content">
-                    <q-card v-for="(testi, i) in testimonials.slice(3, 6)" :key="i" class="q-mb-lg testimonial-card">
+                  <div v-for="n in 2" :key="'group2-' + n" class="marquee-content">
+                    <q-card
+                      v-for="(testi, i) in testimonials.slice(3, 6)"
+                      :key="i"
+                      class="q-mb-lg testimonial-card"
+                    >
                       <q-card-section class="q-pa-lg">
                         <div class="row items-center no-wrap q-mb-md">
                           <q-avatar size="45px" class="q-mr-md">
-                            <img :src="testi.avatar">
+                            <img :src="testi.avatar" />
                           </q-avatar>
                           <div class="column">
-                            <span class="text-weight-bold text-dark text-subtitle1">{{ testi.name }}</span>
-                            <q-badge color="blue-1" text-color="primary" class="q-py-xs q-px-sm text-weight-bold">
+                            <span class="text-weight-bold text-dark text-subtitle1">{{
+                              testi.name
+                            }}</span>
+                            <q-badge
+                              color="blue-1"
+                              text-color="primary"
+                              class="q-py-xs q-px-sm text-weight-bold"
+                            >
                               {{ testi.course }}
                             </q-badge>
                           </div>
                         </div>
                         <div class="text-weight-bold text-dark q-mb-xs">{{ testi.title }}</div>
-                        <div class="text-body2 text-grey-8 line-height-1-5">{{ testi.comment }}</div>
-                        <q-rating :model-value="5" readonly size="16px" color="orange" class="q-mt-md" />
+                        <div class="text-body2 text-grey-8 line-height-1-5">
+                          {{ testi.comment }}
+                        </div>
+                        <q-rating
+                          :model-value="5"
+                          readonly
+                          size="16px"
+                          color="orange"
+                          class="q-mt-md"
+                        />
                       </q-card-section>
                     </q-card>
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
-          
         </div>
       </div>
     </section>
 
+    <section class="bg-light-blue-1 q-py-xl overflow-hidden">
+      <div class="container q-py-lg">
+        <div class="row items-center q-col-gutter-xl">
+          <div class="col-12 col-md-6">
+            <div class="text-warning text-weight-bold q-mb-sm">
+              Berbagi Skill, Bangun Dampak Untukmu
+            </div>
+            <h2 class="text-h4 text-weight-bold text-dark q-mb-md">
+              Jadilah Mentor di Edulang <br />
+              Bantu Peserta Melangkah ke <br />
+              Masa Depan Nyata
+            </h2>
+            <p class="text-grey-8 q-mb-lg">
+              Berkontribusi dalam sistem pembelajaran bahasa berbasis tujuan, sambil membangun peran
+              profesional yang berkelanjutan.
+            </p>
 
-<section class="bg-light-blue-1 q-py-xl overflow-hidden">
-  <div class="container q-py-lg">
-    <div class="row items-center q-col-gutter-xl">
-      
-      <div class="col-12 col-md-6">
-        <div class="text-warning text-weight-bold q-mb-sm">Berbagi Skill, Bangun Dampak Untukmu</div>
-        <h2 class="text-h4 text-weight-bold text-dark q-mb-md">
-          Jadilah Mentor di Edulang <br>
-          Bantu Peserta Melangkah ke <br>
-          Masa Depan Nyata
-        </h2>
-        <p class="text-grey-8 q-mb-lg">
-          Berkontribusi dalam sistem pembelajaran bahasa berbasis tujuan, sambil membangun peran profesional yang berkelanjutan.
-        </p>
+            <q-list class="q-mb-xl">
+              <q-item
+                v-for="(item, index) in mentorBenefits"
+                :key="index"
+                dense
+                class="q-px-none q-mb-sm"
+              >
+                <q-item-section avatar size="24px">
+                  <q-icon name="check_circle" color="primary" />
+                </q-item-section>
+                <q-item-section class="text-dark text-weight-medium">
+                  {{ item }}
+                </q-item-section>
+              </q-item>
+            </q-list>
 
-        <q-list class="q-mb-xl">
-          <q-item v-for="(item, index) in mentorBenefits" :key="index" dense class="q-px-none q-mb-sm">
-            <q-item-section avatar size="24px">
-              <q-icon name="check_circle" color="primary" />
-            </q-item-section>
-            <q-item-section class="text-dark text-weight-medium">
-              {{ item }}
-            </q-item-section>
-          </q-item>
-        </q-list>
+            <div class="q-gutter-md">
+              <q-btn
+                unelevated
+                rounded
+                color="primary"
+                label="Daftar sebagai mentor"
+                class="q-px-xl"
+              />
+              <q-btn
+                outline
+                rounded
+                color="primary"
+                label="Pelajari peran mentor"
+                class="q-px-xl"
+              />
+            </div>
+          </div>
 
-        <div class="q-gutter-md">
-          <q-btn unelevated rounded color="primary" label="Daftar sebagai mentor" class="q-px-xl" />
-          <q-btn outline rounded color="primary" label="Pelajari peran mentor" class="q-px-xl" />
+          <div class="col-12 col-md-6 flex flex-center relative-position">
+            <q-img
+              src="~assets/MENTOR.png"
+              style="max-width: 550px; width: 100%"
+              class="drop-shadow"
+            />
+          </div>
         </div>
       </div>
-
-      <div class="col-12 col-md-6 flex flex-center relative-position">
-        <q-img 
-          src="~assets/MENTOR.png" 
-          style="max-width: 550px; width: 100%"
-          class="drop-shadow"
-        />
-      </div>
-
-    </div>
-  </div>
-</section>
-
+    </section>
   </q-page>
 </template>
 
@@ -480,33 +545,33 @@ onMounted(() => {
   fetchPackages()
 
   // 1. Matikan Klik Kanan
-  document.addEventListener('contextmenu', (e) => e.preventDefault());
+  document.addEventListener('contextmenu', (e) => e.preventDefault())
 
   // 2. Matikan Shortcut Keyboard (Ctrl+C, Ctrl+U, Ctrl+S, F12)
   document.addEventListener('keydown', (e) => {
     if (
-      e.ctrlKey && 
+      e.ctrlKey &&
       (e.keyCode === 67 || // C
-       e.keyCode === 85 || // U
-       e.keyCode === 83 || // S
-       e.keyCode === 123)  // F12
+        e.keyCode === 85 || // U
+        e.keyCode === 83 || // S
+        e.keyCode === 123) // F12
     ) {
-      e.preventDefault();
-      return false;
+      e.preventDefault()
+      return false
     }
-    
+
     // Matikan F12 secara langsung
     if (e.keyCode === 123) {
-      e.preventDefault();
-      return false;
+      e.preventDefault()
+      return false
     }
-  });
+  })
 })
 
 // Bersihkan listener saat user pindah halaman agar tidak mempengaruhi page lain
 onUnmounted(() => {
-  document.removeEventListener('contextmenu', (e) => e.preventDefault());
-  document.removeEventListener('keydown', (e) => e.preventDefault());
+  document.removeEventListener('contextmenu', (e) => e.preventDefault())
+  document.removeEventListener('keydown', (e) => e.preventDefault())
 })
 
 const $q = useQuasar()
@@ -560,12 +625,49 @@ const solutions = [
 ]
 
 const testimonials = [
-  { name: 'Satrial lip', course: 'Japan Course', title: 'Comprehensive Materials', comment: 'Active Mandarin Indonesia provides a premium learning experience with advanced audio-visual support.', avatar: 'https://cdn.quasar.dev/img/avatar1.jpg' },
-  { name: 'Susanty', course: 'Chinese Course', title: 'Easy to understand', comment: 'Great learning experience with patient teachers, starting from the basics!', avatar: 'https://cdn.quasar.dev/img/avatar2.jpg' },
-  { name: 'Asyrofuddin', course: 'English Course', title: 'High Quality Tutors', comment: 'I am very satisfied learning here because the tutors are friendly and communicative.', avatar: 'https://cdn.quasar.dev/img/avatar3.jpg' },
-  { name: 'Rina Wijaya', course: 'Germany Course', title: 'Best Experience', comment: 'Kurikulumnya sangat dinamis dan selalu update dengan kebutuhan industri.', avatar: 'https://cdn.quasar.dev/img/avatar4.jpg' },
-  { name: 'Budi Santoso', course: 'TOEFL Prep', title: 'Highly Recommended', comment: 'Materi pembelajarannya terstruktur dan sangat membantu persiapan tes saya.', avatar: 'https://cdn.quasar.dev/img/avatar5.jpg' },
-  { name: 'Lia Amina', course: 'IELTS Prep', title: 'Excellent Support', comment: 'Dukungan mentor sangat luar biasa dalam membimbing setiap progres saya.', avatar: 'https://cdn.quasar.dev/img/avatar6.jpg' }
+  {
+    name: 'Satrial lip',
+    course: 'Japan Course',
+    title: 'Comprehensive Materials',
+    comment:
+      'Active Mandarin Indonesia provides a premium learning experience with advanced audio-visual support.',
+    avatar: 'https://cdn.quasar.dev/img/avatar1.jpg',
+  },
+  {
+    name: 'Susanty',
+    course: 'Chinese Course',
+    title: 'Easy to understand',
+    comment: 'Great learning experience with patient teachers, starting from the basics!',
+    avatar: 'https://cdn.quasar.dev/img/avatar2.jpg',
+  },
+  {
+    name: 'Asyrofuddin',
+    course: 'English Course',
+    title: 'High Quality Tutors',
+    comment: 'I am very satisfied learning here because the tutors are friendly and communicative.',
+    avatar: 'https://cdn.quasar.dev/img/avatar3.jpg',
+  },
+  {
+    name: 'Rina Wijaya',
+    course: 'Germany Course',
+    title: 'Best Experience',
+    comment: 'Kurikulumnya sangat dinamis dan selalu update dengan kebutuhan industri.',
+    avatar: 'https://cdn.quasar.dev/img/avatar4.jpg',
+  },
+  {
+    name: 'Budi Santoso',
+    course: 'TOEFL Prep',
+    title: 'Highly Recommended',
+    comment: 'Materi pembelajarannya terstruktur dan sangat membantu persiapan tes saya.',
+    avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+  },
+  {
+    name: 'Lia Amina',
+    course: 'IELTS Prep',
+    title: 'Excellent Support',
+    comment: 'Dukungan mentor sangat luar biasa dalam membimbing setiap progres saya.',
+    avatar: 'https://cdn.quasar.dev/img/avatar6.jpg',
+  },
 ]
 
 const mentorBenefits = [
@@ -573,7 +675,7 @@ const mentorBenefits = [
   'Mendapatkan penghasilan dari sistem pembelajaran terstruktur',
   'Terhubung dengan ekosistem edukasi dan jalur global',
   'Berpeluang terlibat dalam kolaborasi edukasi jangka panjang',
-  'Akses ke sistem, data progres peserta, dan peluang lanjutan'
+  'Akses ke sistem, data progres peserta, dan peluang lanjutan',
 ]
 
 // Format Mata Uang Rupiah (Tanpa Desimal)
@@ -612,13 +714,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 /* Mencegah seleksi teks di seluruh halaman */
 .q-page {
   -webkit-user-select: none; /* Safari */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* IE10+/Edge */
-  user-select: none;         /* Standard */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 /* Jika ada bagian tertentu yang BOLEH di-copy (misal: kode promo atau alamat) */
@@ -792,13 +893,21 @@ onMounted(() => {
 }
 
 @keyframes scrollDown {
-  0% { transform: translateY(-50%); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes scrollUp {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
 }
 
 /* Memastikan Card rapi */
@@ -806,7 +915,7 @@ onMounted(() => {
   border-radius: 16px;
   background: white;
   border: none;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
 .line-height-1-5 {
@@ -830,7 +939,7 @@ onMounted(() => {
 }
 
 .drop-shadow {
-  filter: drop-shadow(0px 10px 30px rgba(0,0,0,0.1));
+  filter: drop-shadow(0px 10px 30px rgba(0, 0, 0, 0.1));
 }
 
 /* Penyesuaian teks untuk heading agar tidak terlalu rapat */

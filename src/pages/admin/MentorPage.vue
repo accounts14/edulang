@@ -36,7 +36,9 @@
       </div>
 
       <div v-else-if="filteredMentors.length === 0" class="text-center q-pa-xl text-grey-7">
-        {{ searchMentor ? 'Tidak ada mentor yang cocok dengan pencarian.' : 'Belum ada data mentor.' }}
+        {{
+          searchMentor ? 'Tidak ada mentor yang cocok dengan pencarian.' : 'Belum ada data mentor.'
+        }}
       </div>
 
       <q-table
@@ -62,13 +64,7 @@
         </template>
         <template #body-cell-status="props">
           <q-td>
-            <q-chip
-              v-if="isVerified(props.row)"
-              dense
-              color="green-6"
-              text-color="white"
-              size="sm"
-            >
+            <q-chip v-if="isVerified(props.row)" dense color="green-6" text-color="white" size="sm">
               Terverifikasi
             </q-chip>
             <q-chip v-else dense color="grey-5" text-color="white" size="sm">
@@ -128,7 +124,7 @@ const filteredMentors = computed(() => {
   })
 })
 
-function applySearch () {
+function applySearch() {
   // Filter is reactive via filteredMentors; button can trigger refocus or future API call
 }
 
@@ -137,14 +133,14 @@ const columns = [
   { name: 'email', label: 'Email', field: 'email', align: 'left' },
   { name: 'password', label: 'Password', align: 'left' },
   { name: 'status', label: 'Status', align: 'center' },
-  { name: 'aksi', label: 'Aksi', align: 'center' }
+  { name: 'aksi', label: 'Aksi', align: 'center' },
 ]
 
-function isVerified (row) {
+function isVerified(row) {
   return row.isVerified === true || (row.verifiedAt != null && row.verifiedAt !== '')
 }
 
-async function fetchMentors () {
+async function fetchMentors() {
   try {
     loading.value = true
     const res = await api.get('/mentors')
@@ -155,14 +151,14 @@ async function fetchMentors () {
     console.error('[Admin Mentor]', err)
     $q.notify({
       type: 'negative',
-      message: err.response?.data?.message || 'Gagal memuat data mentor.'
+      message: err.response?.data?.message || 'Gagal memuat data mentor.',
     })
   } finally {
     loading.value = false
   }
 }
 
-function confirmMentor (row) {
+function confirmMentor(row) {
   if (isVerified(row)) return
   const id = row._id || row.id
   if (!id) return
@@ -171,7 +167,7 @@ function confirmMentor (row) {
     title: 'Konfirmasi Mentor',
     message: `Yakin ingin mengonfirmasi akun mentor "${row.name || row.email}"?`,
     ok: { label: 'Konfirmasi', color: 'primary', unelevated: true },
-    cancel: { label: 'Batal', flat: true }
+    cancel: { label: 'Batal', flat: true },
   }).onOk(async () => {
     try {
       confirmingId.value = id
@@ -181,7 +177,7 @@ function confirmMentor (row) {
     } catch (err) {
       $q.notify({
         type: 'negative',
-        message: err.response?.data?.message || 'Gagal mengonfirmasi mentor.'
+        message: err.response?.data?.message || 'Gagal mengonfirmasi mentor.',
       })
     } finally {
       confirmingId.value = null
@@ -189,7 +185,7 @@ function confirmMentor (row) {
   })
 }
 
-function confirmDelete (row) {
+function confirmDelete(row) {
   const id = row._id || row.id
   if (!id) return
 
@@ -197,7 +193,7 @@ function confirmDelete (row) {
     title: 'Hapus Akun Mentor',
     message: `Yakin ingin menghapus akun mentor "${row.name || row.email}"?`,
     ok: { label: 'Hapus', color: 'negative', unelevated: true },
-    cancel: { label: 'Batal', flat: true }
+    cancel: { label: 'Batal', flat: true },
   }).onOk(async () => {
     try {
       deletingId.value = id
@@ -207,7 +203,7 @@ function confirmDelete (row) {
     } catch (err) {
       $q.notify({
         type: 'negative',
-        message: err.response?.data?.message || 'Gagal menghapus mentor.'
+        message: err.response?.data?.message || 'Gagal menghapus mentor.',
       })
     } finally {
       deletingId.value = null
@@ -219,6 +215,10 @@ onMounted(fetchMentors)
 </script>
 
 <style scoped>
-.rounded-borders-lg { border-radius: 24px; }
-.text-indigo-10 { color: #0d2a5c; }
+.rounded-borders-lg {
+  border-radius: 24px;
+}
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

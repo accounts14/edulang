@@ -5,12 +5,12 @@ import axios from 'axios'
 const api = axios.create({
   baseURL: 'https://edulang-be.vercel.app/api',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 })
 
 // Optional: intercept request untuk debug
-api.interceptors.request.use(config => {
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
     config.headers = config.headers || {}
@@ -21,14 +21,14 @@ api.interceptors.request.use(config => {
 })
 
 api.interceptors.response.use(
-  response => {
+  (response) => {
     console.log('[RES]', response.status, response.config.url)
     return response
   },
-  error => {
+  (error) => {
     console.error('[ERR]', error.response?.status, error.config.url, error.response?.data)
     return Promise.reject(error)
-  }
+  },
 )
 
 export default boot(({ app }) => {

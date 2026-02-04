@@ -52,8 +52,8 @@ const mentorBenefits = [
 <style scoped>
 .mentor-section {
   background: var(--edulang-white, #F5F7FA);
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .mentor-tag {

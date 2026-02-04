@@ -2,12 +2,8 @@
   <q-page class="q-pa-lg bg-blue-1">
     <div class="row items-start q-col-gutter-xl">
       <div class="col-12 col-md-10 col-lg-9">
-        <div class="text-h5 text-weight-bolder text-indigo-10">
-          Edit Package Bahasamu
-        </div>
-        <div class="text-grey-7 q-mt-xs">
-          Perbarui detail program belajar Bahasamu.
-        </div>
+        <div class="text-h5 text-weight-bolder text-indigo-10">Edit Package Bahasamu</div>
+        <div class="text-grey-7 q-mt-xs">Perbarui detail program belajar Bahasamu.</div>
 
         <q-form class="q-mt-lg" @submit.prevent="handleSubmit">
           <div class="row q-col-gutter-lg">
@@ -19,7 +15,7 @@
                 outlined
                 placeholder="https://youtube.com/..."
                 bg-color="white"
-                :rules="[val => !!val || 'Intro Video Url wajib diisi']"
+                :rules="[(val) => !!val || 'Intro Video Url wajib diisi']"
               />
             </div>
 
@@ -31,7 +27,7 @@
                 outlined
                 placeholder="Title"
                 bg-color="white"
-                :rules="[val => !!val || 'Title wajib diisi']"
+                :rules="[(val) => !!val || 'Title wajib diisi']"
               />
             </div>
 
@@ -45,8 +41,8 @@
                 placeholder="Harga mulai dari 0 - 300k"
                 bg-color="white"
                 :rules="[
-                  val => val !== null && val !== '' || 'Price wajib diisi',
-                  val => Number(val) >= 0 || 'Price minimal 0'
+                  (val) => (val !== null && val !== '') || 'Price wajib diisi',
+                  (val) => Number(val) >= 0 || 'Price minimal 0',
                 ]"
               />
             </div>
@@ -61,7 +57,7 @@
                 placeholder="Description"
                 bg-color="white"
                 autogrow
-                :rules="[val => !!val || 'Description wajib diisi']"
+                :rules="[(val) => !!val || 'Description wajib diisi']"
               />
             </div>
 
@@ -77,7 +73,7 @@
                 emit-value
                 map-options
                 :loading="loadingLanguageTypes"
-                :rules="[val => !!val || 'Type Language wajib dipilih']"
+                :rules="[(val) => !!val || 'Type Language wajib dipilih']"
               />
             </div>
 
@@ -92,7 +88,7 @@
                 :options="levelOptions"
                 emit-value
                 map-options
-                :rules="[val => !!val || 'Level wajib dipilih']"
+                :rules="[(val) => !!val || 'Level wajib dipilih']"
               />
             </div>
           </div>
@@ -144,7 +140,7 @@ const levelOptions = [
   { label: 'Limited', value: 'limited' },
   { label: 'Moderated', value: 'moderated' },
   { label: 'Good', value: 'good' },
-  { label: 'Fluent', value: 'fluent' }
+  { label: 'Fluent', value: 'fluent' },
 ]
 
 const form = reactive({
@@ -153,33 +149,33 @@ const form = reactive({
   price: null,
   description: '',
   languageType: null,
-  level: null
+  level: null,
 })
 
-function handleCancel () {
+function handleCancel() {
   router.push('/mentor/dashboard')
 }
 
-async function fetchLanguageTypes () {
+async function fetchLanguageTypes() {
   try {
     loadingLanguageTypes.value = true
     const res = await api.get('/language-types')
     const list = res.data?.languagetypes || res.data?.data || []
     languageTypeOptions.value = (Array.isArray(list) ? list : []).map((it) => ({
       label: it.name,
-      value: it._id
+      value: it._id,
     }))
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memuat data language type.'
+      message: error.response?.data?.message || 'Gagal memuat data language type.',
     })
   } finally {
     loadingLanguageTypes.value = false
   }
 }
 
-async function fetchPackageDetail () {
+async function fetchPackageDetail() {
   try {
     const res = await api.get(`/packages/${route.params.id}`)
     const p = res.data?.package || res.data?.data || res.data
@@ -193,7 +189,7 @@ async function fetchPackageDetail () {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memuat detail package.'
+      message: error.response?.data?.message || 'Gagal memuat detail package.',
     })
     handleCancel()
   }
@@ -203,10 +199,14 @@ onMounted(async () => {
   await Promise.all([fetchLanguageTypes(), fetchPackageDetail()])
 })
 
-async function handleSubmit () {
+async function handleSubmit() {
   const token = localStorage.getItem('token')
   if (!token) {
-    $q.notify({ type: 'negative', message: 'Sesi tidak valid. Silakan login ulang.', timeout: 2500 })
+    $q.notify({
+      type: 'negative',
+      message: 'Sesi tidak valid. Silakan login ulang.',
+      timeout: 2500,
+    })
     router.push('/login')
     return
   }
@@ -220,7 +220,7 @@ async function handleSubmit () {
       price: Number(form.price || 0),
       description: form.description,
       languageType: form.languageType,
-      level: form.level
+      level: form.level,
     }
 
     await api.put(`/packages/${route.params.id}`, payload)
@@ -230,7 +230,7 @@ async function handleSubmit () {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memperbarui program.'
+      message: error.response?.data?.message || 'Gagal memperbarui program.',
     })
   } finally {
     submitting.value = false
@@ -239,6 +239,7 @@ async function handleSubmit () {
 </script>
 
 <style scoped>
-.text-indigo-10 { color: #0d2a5c; }
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>
-

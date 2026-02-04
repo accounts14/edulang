@@ -14,11 +14,7 @@
       <!-- Left: package info -->
       <div class="col-12 col-md-5 col-lg-4">
         <q-card class="no-shadow rounded-borders-16">
-          <q-img
-            :src="heroImage"
-            :ratio="16/9"
-            class="rounded-borders-16"
-          />
+          <q-img :src="heroImage" :ratio="16 / 9" class="rounded-borders-16" />
 
           <q-card-section>
             <div class="text-caption text-grey-7 q-mb-xs">Title</div>
@@ -28,13 +24,26 @@
             <q-input v-model.number="pkgForm.price" dense outlined type="number" bg-color="white" />
 
             <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Description</div>
-            <q-input v-model="pkgForm.description" dense outlined type="textarea" autogrow bg-color="white" />
+            <q-input
+              v-model="pkgForm.description"
+              dense
+              outlined
+              type="textarea"
+              autogrow
+              bg-color="white"
+            />
 
             <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Level</div>
             <q-input :model-value="pkg.level" dense outlined readonly bg-color="white" />
 
             <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Type Language</div>
-            <q-input :model-value="pkg.languageType?.name" dense outlined readonly bg-color="white" />
+            <q-input
+              :model-value="pkg.languageType?.name"
+              dense
+              outlined
+              readonly
+              bg-color="white"
+            />
 
             <q-btn
               class="q-mt-lg"
@@ -52,9 +61,7 @@
       <div class="col-12 col-md-7 col-lg-8">
         <q-card class="no-shadow rounded-borders-16 q-pa-md">
           <div class="row items-center justify-between q-mb-md">
-            <div class="text-subtitle1 text-weight-bold text-indigo-10">
-              Lessons
-            </div>
+            <div class="text-subtitle1 text-weight-bold text-indigo-10">Lessons</div>
             <q-btn
               color="positive"
               unelevated
@@ -136,7 +143,7 @@ const lessons = ref([])
 const pkgForm = reactive({
   title: '',
   price: 0,
-  description: ''
+  description: '',
 })
 
 const heroImage = computed(() => {
@@ -144,26 +151,26 @@ const heroImage = computed(() => {
   return 'https://cdn.quasar.dev/img/parallax2.jpg'
 })
 
-function goBack () {
+function goBack() {
   router.push('/mentor/dashboard')
 }
 
-function goAddLesson () {
+function goAddLesson() {
   router.push(`/mentor/packages/${route.params.id}/lessons/add`)
 }
 
-function goEditLesson (lesson) {
+function goEditLesson(lesson) {
   router.push(`/mentor/packages/${route.params.id}/lessons/${lesson.order}/edit`)
 }
 
-async function confirmDeleteLesson (lesson) {
+async function confirmDeleteLesson(lesson) {
   const id = route.params.id
   const order = lesson.order
   $q.dialog({
     title: 'Hapus Materi',
     message: `Yakin ingin menghapus pertemuan ${order}?`,
     ok: { label: 'Hapus', color: 'negative', flat: false },
-    cancel: { label: 'Batal', flat: true }
+    cancel: { label: 'Batal', flat: true },
   }).onOk(async () => {
     try {
       await api.delete(`/packages/${id}/lessons/${order}`)
@@ -172,26 +179,26 @@ async function confirmDeleteLesson (lesson) {
     } catch (error) {
       $q.notify({
         type: 'negative',
-        message: error.response?.data?.message || 'Gagal menghapus materi.'
+        message: error.response?.data?.message || 'Gagal menghapus materi.',
       })
     }
   })
 }
 
-function normalizeLessons (arr) {
+function normalizeLessons(arr) {
   if (!Array.isArray(arr)) return []
   return [...arr]
     .map((l) => ({
       order: Number(l.order ?? l.lessonOrder ?? 0),
       videoUrl: l.videoUrl || l.urlVideo || '',
       // beberapa backend menyimpan judul dalam assignment / title
-      title: l.title || l.judulMateri || l.assignment?.title || ''
+      title: l.title || l.judulMateri || l.assignment?.title || '',
     }))
     .filter((l) => l.order > 0)
     .sort((a, b) => a.order - b.order)
 }
 
-async function fetchDetail () {
+async function fetchDetail() {
   try {
     loading.value = true
     const res = await api.get(`/packages/${route.params.id}`)
@@ -205,7 +212,7 @@ async function fetchDetail () {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memuat detail package.'
+      message: error.response?.data?.message || 'Gagal memuat detail package.',
     })
   } finally {
     loading.value = false
@@ -218,7 +225,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.rounded-borders-16 { border-radius: 16px; overflow: hidden; }
-.text-indigo-10 { color: #0d2a5c; }
+.rounded-borders-16 {
+  border-radius: 16px;
+  overflow: hidden;
+}
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>
-

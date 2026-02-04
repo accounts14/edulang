@@ -2,12 +2,8 @@
   <q-page class="q-pa-lg bg-blue-1">
     <div class="row items-start q-col-gutter-xl">
       <div class="col-12 col-md-10 col-lg-9">
-        <div class="text-h5 text-weight-bolder text-indigo-10">
-          Tambah Artikel
-        </div>
-        <div class="text-grey-7 q-mt-xs">
-          Buat artikel baru untuk ruang informasi Edulang.
-        </div>
+        <div class="text-h5 text-weight-bolder text-indigo-10">Tambah Artikel</div>
+        <div class="text-grey-7 q-mt-xs">Buat artikel baru untuk ruang informasi Edulang.</div>
 
         <q-form class="q-mt-lg" @submit.prevent="handleSubmit">
           <div class="row q-col-gutter-lg">
@@ -19,7 +15,7 @@
                 outlined
                 placeholder="Judul artikel"
                 bg-color="white"
-                :rules="[val => !!val || 'Title wajib diisi']"
+                :rules="[(val) => !!val || 'Title wajib diisi']"
               />
             </div>
 
@@ -45,7 +41,7 @@
                 bg-color="white"
                 autogrow
                 maxlength="150"
-                :rules="[val => !val || val.length <= 150 || 'Maksimal 150 karakter']"
+                :rules="[(val) => !val || val.length <= 150 || 'Maksimal 150 karakter']"
               />
             </div>
 
@@ -59,7 +55,7 @@
                 placeholder="Isi artikel"
                 bg-color="white"
                 autogrow
-                :rules="[val => !!val || 'Content wajib diisi']"
+                :rules="[(val) => !!val || 'Content wajib diisi']"
               />
             </div>
 
@@ -119,7 +115,7 @@ const statusOptions = [
   { label: 'Draft', value: 'draft' },
   { label: 'Review', value: 'review' },
   { label: 'Published', value: 'published' },
-  { label: 'Archived', value: 'archived' }
+  { label: 'Archived', value: 'archived' },
 ]
 
 const form = reactive({
@@ -127,14 +123,14 @@ const form = reactive({
   content: '',
   excerpt: '',
   imageUrl: '',
-  status: 'draft'
+  status: 'draft',
 })
 
-function handleCancel () {
+function handleCancel() {
   router.push('/admin/artikel')
 }
 
-async function handleSubmit () {
+async function handleSubmit() {
   try {
     submitting.value = true
     const payload = {
@@ -142,7 +138,7 @@ async function handleSubmit () {
       content: form.content,
       excerpt: form.excerpt || undefined,
       imageUrl: form.imageUrl || undefined,
-      status: form.status
+      status: form.status,
     }
     await api.post('/articles', payload)
     $q.notify({ type: 'positive', message: 'Artikel berhasil ditambahkan.', timeout: 1800 })
@@ -150,7 +146,7 @@ async function handleSubmit () {
   } catch (err) {
     $q.notify({
       type: 'negative',
-      message: err.response?.data?.message || 'Gagal menambahkan artikel.'
+      message: err.response?.data?.message || 'Gagal menambahkan artikel.',
     })
   } finally {
     submitting.value = false
@@ -159,5 +155,7 @@ async function handleSubmit () {
 </script>
 
 <style scoped>
-.text-indigo-10 { color: #0d2a5c; }
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

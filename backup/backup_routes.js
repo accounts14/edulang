@@ -3,9 +3,7 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-    ]
+    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
   },
 
   // === HALAMAN DASHBOARD BERDASARKAN ROLE ===
@@ -18,9 +16,9 @@ const routes = [
         path: '',
         name: 'UserDashboard',
         component: () => import('pages/user/UserDashboard.vue'),
-        meta: { requiresAuth: true, allowedRoles: ['user'] }
-      }
-    ]
+        meta: { requiresAuth: true, allowedRoles: ['user'] },
+      },
+    ],
   },
 
   // Mentor Dashboard (opsional, jika ada)
@@ -32,9 +30,9 @@ const routes = [
         path: '',
         name: 'MentorDashboard',
         component: () => import('pages/mentor/DashboardPage.vue'),
-        meta: { requiresAuth: true, allowedRoles: ['mentor', 'admin'] }
-      }
-    ]
+        meta: { requiresAuth: true, allowedRoles: ['mentor', 'admin'] },
+      },
+    ],
   },
 
   // Admin Dashboard (opsional)
@@ -46,28 +44,28 @@ const routes = [
         path: '',
         name: 'AdminDashboard',
         component: () => import('pages/admin/DashboardPage.vue'),
-        meta: { requiresAuth: true, allowedRoles: ['admin'] }
-      }
-    ]
+        meta: { requiresAuth: true, allowedRoles: ['admin'] },
+      },
+    ],
   },
 
   // Halaman Auth (Tanpa Header & Footer)
   {
     path: '/login',
     name: 'login',
-    component: () => import('pages/LoginPage.vue')
+    component: () => import('pages/LoginPage.vue'),
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import('pages/RegisterPage.vue')
+    component: () => import('pages/RegisterPage.vue'),
   },
 
   // Error 404
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue')
-  }
+    component: () => import('pages/ErrorNotFound.vue'),
+  },
 ]
 
 export default routes

@@ -1,6 +1,6 @@
 <!-- src/components/landing/TestimonialSection.vue -->
 <template>
-  <section class="bg-primary text-white q-py-xl overflow-hidden" style="min-height: 600px; display: flex; align-items: center;">
+  <section class="bg-primary text-white q-py-xl overflow-hidden" style="min-height: 520px; display: flex; align-items: center;">
     <div class="container">
       <div class="row items-center q-col-gutter-xl">
         <div class="col-12 col-md-5">
@@ -104,7 +104,7 @@ const testimonials = [
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  height: 600px;
+  height: 520px;
   overflow: hidden;
 }
 

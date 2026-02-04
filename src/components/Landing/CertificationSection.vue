@@ -124,8 +124,8 @@ const certifications = [
 
 .cert-section {
   background: var(--edulang-navy, #003387);
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .cert-chip {

@@ -36,10 +36,15 @@
 
       <div v-else-if="filteredUsers.length === 0" class="text-center q-pa-xl">
         <p class="text-grey-7">
-          {{ searchUser ? 'Tidak ada user yang cocok dengan pencarian.' : 'Belum ada data pengguna terdaftar.' }}
+          {{
+            searchUser
+              ? 'Tidak ada user yang cocok dengan pencarian.'
+              : 'Belum ada data pengguna terdaftar.'
+          }}
         </p>
         <p v-if="endpointUnavailable" class="text-amber-9 text-caption q-mt-sm">
-          Endpoint GET /api/users belum tersedia di backend. Tambahkan endpoint tersebut agar data user dapat dimuat.
+          Endpoint GET /api/users belum tersedia di backend. Tambahkan endpoint tersebut agar data
+          user dapat dimuat.
         </p>
       </div>
 
@@ -111,7 +116,7 @@ const columns = [
   { name: 'nama', label: 'Nama', field: 'name', align: 'left' },
   { name: 'email', label: 'Email', field: 'email', align: 'left' },
   { name: 'password', label: 'Password', align: 'left' },
-  { name: 'aksi', label: 'Aksi', align: 'center' }
+  { name: 'aksi', label: 'Aksi', align: 'center' },
 ]
 
 const filteredUsers = computed(() => {
@@ -124,14 +129,14 @@ const filteredUsers = computed(() => {
   })
 })
 
-function applySearch () {}
+function applySearch() {}
 
-function goEdit (row) {
+function goEdit(row) {
   const id = row._id || row.id
   if (id) router.push(`/admin/pendaftar/${id}/edit`)
 }
 
-function confirmDelete (row) {
+function confirmDelete(row) {
   const id = row._id || row.id
   if (!id) return
 
@@ -139,7 +144,7 @@ function confirmDelete (row) {
     title: 'Hapus Akun Pengguna',
     message: `Yakin ingin menghapus akun "${row.name || row.email}"?`,
     ok: { label: 'Hapus', color: 'negative', unelevated: true },
-    cancel: { label: 'Batal', flat: true }
+    cancel: { label: 'Batal', flat: true },
   }).onOk(async () => {
     try {
       deletingId.value = id
@@ -149,7 +154,7 @@ function confirmDelete (row) {
     } catch (err) {
       $q.notify({
         type: 'negative',
-        message: err.response?.data?.message || 'Gagal menghapus akun pengguna.'
+        message: err.response?.data?.message || 'Gagal menghapus akun pengguna.',
       })
     } finally {
       deletingId.value = null
@@ -157,7 +162,7 @@ function confirmDelete (row) {
   })
 }
 
-async function fetchUsers () {
+async function fetchUsers() {
   endpointUnavailable.value = false
   try {
     loading.value = true
@@ -172,7 +177,7 @@ async function fetchUsers () {
     } else {
       $q.notify({
         type: 'negative',
-        message: err.response?.data?.message || 'Gagal memuat data pengguna.'
+        message: err.response?.data?.message || 'Gagal memuat data pengguna.',
       })
     }
   } finally {
@@ -184,6 +189,10 @@ onMounted(fetchUsers)
 </script>
 
 <style scoped>
-.rounded-borders-lg { border-radius: 24px; }
-.text-indigo-10 { color: #0d2a5c; }
+.rounded-borders-lg {
+  border-radius: 24px;
+}
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

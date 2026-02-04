@@ -77,21 +77,21 @@ onMounted(() => {
 
 /* Jarak antar section konsisten */
 .landing-section {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .landing-section:first-child {
-  padding-top: 1.5rem;
+  padding-top: 1rem;
 }
 
 @media (min-width: 1024px) {
   .landing-section {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
   .landing-section:first-child {
-    padding-top: 2rem;
+    padding-top: 1.5rem;
   }
 }
 
@@ -109,7 +109,7 @@ onMounted(() => {
 
 /* Shared untuk child components */
 .container {
-  max-width: 1200px;
+  max-width: 1140px;
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;

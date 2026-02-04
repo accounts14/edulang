@@ -18,10 +18,12 @@
 
 <style scoped>
 .coming-soon-img {
-  max-width: 600px; 
-  width: 100%; 
-  height: auto; 
+  max-width: 600px;
+  width: 100%;
+  height: auto;
 }
 
-.text-indigo-10 { color: #0d2a5c; }
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

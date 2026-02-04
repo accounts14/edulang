@@ -1,11 +1,7 @@
 <template>
   <q-page class="q-pa-lg bg-blue-1">
-    <div class="text-h5 text-weight-bolder text-indigo-10">
-      Edit Akun Pengguna
-    </div>
-    <div class="text-grey-7 q-mt-xs">
-      Kelola data pengguna terdaftar
-    </div>
+    <div class="text-h5 text-weight-bolder text-indigo-10">Edit Akun Pengguna</div>
+    <div class="text-grey-7 q-mt-xs">Kelola data pengguna terdaftar</div>
 
     <div v-if="loading" class="text-center q-pa-xl">
       <q-spinner-dots color="primary" size="40px" />
@@ -22,7 +18,7 @@
               outlined
               bg-color="white"
               placeholder="Nama lengkap"
-              :rules="[v => !!v || 'Nama wajib diisi']"
+              :rules="[(v) => !!v || 'Nama wajib diisi']"
             />
           </div>
 
@@ -35,12 +31,14 @@
               type="email"
               bg-color="white"
               placeholder="email@contoh.com"
-              :rules="[v => !!v || 'Email wajib diisi']"
+              :rules="[(v) => !!v || 'Email wajib diisi']"
             />
           </div>
 
           <div class="col-12 col-md-6">
-            <div class="text-grey-8 text-caption q-mb-xs">Password (kosongkan jika tidak diubah)</div>
+            <div class="text-grey-8 text-caption q-mb-xs">
+              Password (kosongkan jika tidak diubah)
+            </div>
             <q-input
               v-model="form.password"
               dense
@@ -70,7 +68,7 @@
               emit-value
               map-options
               placeholder="Pilih role"
-              :rules="[v => !!v || 'Role wajib dipilih']"
+              :rules="[(v) => !!v || 'Role wajib dipilih']"
             />
           </div>
         </div>
@@ -118,21 +116,21 @@ const showPassword = ref(false)
 const roleOptions = [
   { label: 'User', value: 'user' },
   { label: 'Mentor', value: 'mentor' },
-  { label: 'Admin', value: 'admin' }
+  { label: 'Admin', value: 'admin' },
 ]
 
 const form = reactive({
   name: '',
   email: '',
   password: '',
-  role: 'user'
+  role: 'user',
 })
 
-function handleCancel () {
+function handleCancel() {
   router.push('/admin/pendaftar')
 }
 
-async function loadUser () {
+async function loadUser() {
   try {
     loading.value = true
     const res = await api.get(`/users/${route.params.id}`)
@@ -149,7 +147,7 @@ async function loadUser () {
   } catch (err) {
     $q.notify({
       type: 'negative',
-      message: err.response?.data?.message || 'Gagal memuat data user.'
+      message: err.response?.data?.message || 'Gagal memuat data user.',
     })
     handleCancel()
   } finally {
@@ -157,13 +155,13 @@ async function loadUser () {
   }
 }
 
-async function handleSubmit () {
+async function handleSubmit() {
   try {
     submitting.value = true
     const payload = {
       name: form.name,
       email: form.email,
-      role: form.role
+      role: form.role,
     }
     if (form.password && form.password.trim()) {
       payload.password = form.password.trim()
@@ -174,7 +172,7 @@ async function handleSubmit () {
   } catch (err) {
     $q.notify({
       type: 'negative',
-      message: err.response?.data?.message || 'Gagal memperbarui akun pengguna.'
+      message: err.response?.data?.message || 'Gagal memperbarui akun pengguna.',
     })
   } finally {
     submitting.value = false
@@ -185,5 +183,7 @@ onMounted(loadUser)
 </script>
 
 <style scoped>
-.text-indigo-10 { color: #0d2a5c; }
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

@@ -2,7 +2,9 @@
   <q-page class="q-pa-xl bg-blue-1">
     <div class="q-mb-xl">
       <div class="text-h4 text-weight-bolder text-indigo-10">Kelola Akun Pengguna Terdaftar</div>
-      <div class="text-subtitle1 text-grey-7">Tempat Pengelolaan Akun Pengguna yang terdaftar Course</div>
+      <div class="text-subtitle1 text-grey-7">
+        Tempat Pengelolaan Akun Pengguna yang terdaftar Course
+      </div>
     </div>
 
     <div class="row items-center q-mb-md">
@@ -79,7 +81,7 @@ const columns = [
   { name: 'nama', label: 'Nama', field: 'name', align: 'left' },
   { name: 'email', label: 'Email', field: 'email', align: 'left' },
   { name: 'terdaftarKelas', label: 'Terdaftar Kelas', align: 'left' },
-  { name: 'mentor', label: 'Mentor', align: 'left' }
+  { name: 'mentor', label: 'Mentor', align: 'left' },
 ]
 
 const filteredUsers = computed(() => {
@@ -92,7 +94,7 @@ const filteredUsers = computed(() => {
   })
 })
 
-function getRegisteredCourseLabel (row) {
+function getRegisteredCourseLabel(row) {
   const id = row._id || row.id
   const info = userCourseMap.value[id]
   if (!info || info.count === 0) return '—'
@@ -102,17 +104,17 @@ function getRegisteredCourseLabel (row) {
   return `${info.count} course`
 }
 
-function getMentorLabel (row) {
+function getMentorLabel(row) {
   const id = row._id || row.id
   const info = userCourseMap.value[id]
-  return (info && info.mentorName) ? info.mentorName : '—'
+  return info && info.mentorName ? info.mentorName : '—'
 }
 
-function applySearch () {
+function applySearch() {
   // Filter is reactive via filteredUsers
 }
 
-async function fetchUsers () {
+async function fetchUsers() {
   try {
     loading.value = true
     const res = await api.get('/users')
@@ -129,12 +131,12 @@ async function fetchUsers () {
   await buildUserCourseMap()
 }
 
-async function buildUserCourseMap () {
+async function buildUserCourseMap() {
   const map = {}
   try {
     const [txRes, pkgRes] = await Promise.all([
       api.get('/transactions').catch(() => ({ data: {} })),
-      api.get('/packages').catch(() => ({ data: {} }))
+      api.get('/packages').catch(() => ({ data: {} })),
     ])
     const txList = txRes.data?.transactions || txRes.data?.data || []
     const packages = pkgRes.data?.packages || pkgRes.data?.data || []
@@ -170,6 +172,10 @@ onMounted(fetchUsers)
 </script>
 
 <style scoped>
-.rounded-borders-lg { border-radius: 24px; }
-.text-indigo-10 { color: #0d2a5c; }
+.rounded-borders-lg {
+  border-radius: 24px;
+}
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

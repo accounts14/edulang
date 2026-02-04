@@ -6,7 +6,7 @@
     <SolutionsSection />
     <AlumniNetworkSection />
     <MentorSection />
-    <TestimonialSection />  
+    <TestimonialSection />
   </q-page>
 </template>
 

@@ -1,13 +1,14 @@
 <template>
   <q-page class="q-pa-lg">
     <div class="row justify-between items-center q-mb-xl">
-      <div class="col-12 col-md-8">       
+      <div class="col-12 col-md-8">
         <div class="text-orange-9 text-weight-bold">#Kelas</div>
         <div class="text-h4 text-weight-bolder text-indigo-10 q-mt-sm">
           Ruang Berkarya para Mentor Edulang
         </div>
         <div class="text-grey-7 q-mt-xs">
-          Kelola jalur pembelajaran yang kamu dampingi, pantau progress peserta, dan pastikan setiap langkah terarah.
+          Kelola jalur pembelajaran yang kamu dampingi, pantau progress peserta, dan pastikan setiap
+          langkah terarah.
         </div>
       </div>
       <div class="col-12 col-md-auto q-mt-md">
@@ -36,15 +37,20 @@
 
     <div v-else class="row q-col-gutter-lg">
       <div v-for="pkg in packages" :key="pkg._id || pkg.id" class="col-12 col-sm-6 col-md-4">
-        <q-card class="my-card no-shadow border-light rounded-borders-16 cursor-pointer" @click="goToPackage(pkg)">
-          <q-img :src="pkg.imageUrl || 'https://cdn.quasar.dev/img/parallax2.jpg'" :ratio="16/9">
+        <q-card
+          class="my-card no-shadow border-light rounded-borders-16 cursor-pointer"
+          @click="goToPackage(pkg)"
+        >
+          <q-img :src="pkg.imageUrl || 'https://cdn.quasar.dev/img/parallax2.jpg'" :ratio="16 / 9">
             <div class="absolute-bottom-right bg-transparent q-pa-xs">
               <q-icon name="flag" color="negative" size="sm" />
             </div>
           </q-img>
 
           <q-card-section>
-            <div class="text-indigo-10 text-weight-bold text-subtitle1">{{ pkg.title || pkg.name || 'Kelas Tanpa Judul' }}</div>
+            <div class="text-indigo-10 text-weight-bold text-subtitle1">
+              {{ pkg.title || pkg.name || 'Kelas Tanpa Judul' }}
+            </div>
             <div class="text-grey-6 text-caption">Trainer : {{ mentorData.name }}</div>
             <div class="text-weight-bolder text-h6 q-mt-sm text-dark">
               Rp {{ (pkg.price || 0).toLocaleString('id-ID') }}
@@ -106,17 +112,17 @@ const confirmDeletePackage = (pkg) => {
     title: 'Hapus Program',
     message: `Yakin ingin menghapus program "${pkg.title}"?`,
     ok: { label: 'Hapus', color: 'negative', unelevated: true },
-    cancel: { label: 'Batal', flat: true }
+    cancel: { label: 'Batal', flat: true },
   }).onOk(async () => {
     try {
       await api.delete(`/packages/${id}`)
       $q.notify({ type: 'positive', message: 'Program berhasil dihapus.' })
       // hapus dari list lokal supaya UI langsung ter-update
-      packages.value = packages.value.filter(p => (p._id || p.id) !== id)
+      packages.value = packages.value.filter((p) => (p._id || p.id) !== id)
     } catch (error) {
       $q.notify({
         type: 'negative',
-        message: error.response?.data?.message || 'Gagal menghapus program.'
+        message: error.response?.data?.message || 'Gagal menghapus program.',
       })
     }
   })
@@ -156,7 +162,7 @@ const fetchMentorPackages = async () => {
     $q.notify({
       type: 'negative',
       message: 'Sesi tidak valid. Silakan login ulang.',
-      timeout: 3000
+      timeout: 3000,
     })
     setTimeout(() => {
       window.location.href = '/login'
@@ -172,14 +178,13 @@ const fetchMentorPackages = async () => {
 
     const rawData = response.data
     const pkgArray = extractPackagesArray(rawData)
-    
+
     packages.value = pkgArray
     mentorData.value.name = localStorage.getItem('userName') || 'Mentor'
 
     if (pkgArray.length === 0) {
       console.warn('Tidak ada paket ditemukan dalam respons')
     }
-
   } catch (error) {
     console.error('[FETCH ERROR]', error.response?.data || error.message)
 
@@ -187,7 +192,7 @@ const fetchMentorPackages = async () => {
       $q.notify({
         type: 'negative',
         message: 'Sesi kedaluwarsa. Silakan login ulang.',
-        timeout: 3000
+        timeout: 3000,
       })
       setTimeout(() => {
         localStorage.clear()
@@ -196,7 +201,7 @@ const fetchMentorPackages = async () => {
     } else {
       $q.notify({
         type: 'negative',
-        message: error.response?.data?.message || 'Gagal memuat data kelas.'
+        message: error.response?.data?.message || 'Gagal memuat data kelas.',
       })
     }
   } finally {
@@ -210,9 +215,20 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.rounded-borders-16 { border-radius: 16px; overflow: hidden; }
-.border-light { border: 1px solid #edf2f7; }
-.my-card { transition: transform 0.2s; }
-.my-card:hover { transform: translateY(-5px); }
-.text-indigo-10 { color: #0d2a5c; }
+.rounded-borders-16 {
+  border-radius: 16px;
+  overflow: hidden;
+}
+.border-light {
+  border: 1px solid #edf2f7;
+}
+.my-card {
+  transition: transform 0.2s;
+}
+.my-card:hover {
+  transform: translateY(-5px);
+}
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

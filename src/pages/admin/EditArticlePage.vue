@@ -2,12 +2,8 @@
   <q-page class="q-pa-lg bg-blue-1">
     <div class="row items-start q-col-gutter-xl">
       <div class="col-12 col-md-10 col-lg-9">
-        <div class="text-h5 text-weight-bolder text-indigo-10">
-          Edit Artikel
-        </div>
-        <div class="text-grey-7 q-mt-xs">
-          Perbarui artikel untuk ruang informasi Edulang.
-        </div>
+        <div class="text-h5 text-weight-bolder text-indigo-10">Edit Artikel</div>
+        <div class="text-grey-7 q-mt-xs">Perbarui artikel untuk ruang informasi Edulang.</div>
 
         <div v-if="loading" class="text-center q-pa-xl">
           <q-spinner-dots color="primary" size="40px" />
@@ -23,7 +19,7 @@
                 outlined
                 placeholder="Judul artikel"
                 bg-color="white"
-                :rules="[val => !!val || 'Title wajib diisi']"
+                :rules="[(val) => !!val || 'Title wajib diisi']"
               />
             </div>
 
@@ -60,7 +56,7 @@
                 bg-color="white"
                 autogrow
                 maxlength="150"
-                :rules="[val => !val || val.length <= 150 || 'Maksimal 150 karakter']"
+                :rules="[(val) => !val || val.length <= 150 || 'Maksimal 150 karakter']"
               />
             </div>
 
@@ -74,7 +70,7 @@
                 placeholder="Isi artikel"
                 bg-color="white"
                 autogrow
-                :rules="[val => !!val || 'Content wajib diisi']"
+                :rules="[(val) => !!val || 'Content wajib diisi']"
               />
             </div>
 
@@ -137,7 +133,7 @@ const statusOptions = [
   { label: 'Draft', value: 'draft' },
   { label: 'Review', value: 'review' },
   { label: 'Published', value: 'published' },
-  { label: 'Archived', value: 'archived' }
+  { label: 'Archived', value: 'archived' },
 ]
 
 const form = reactive({
@@ -146,14 +142,14 @@ const form = reactive({
   content: '',
   excerpt: '',
   imageUrl: '',
-  status: 'draft'
+  status: 'draft',
 })
 
-function handleCancel () {
+function handleCancel() {
   router.push('/admin/artikel')
 }
 
-async function loadArticle () {
+async function loadArticle() {
   try {
     loading.value = true
     const slug = route.params.slug
@@ -178,7 +174,7 @@ async function loadArticle () {
   } catch (err) {
     $q.notify({
       type: 'negative',
-      message: err.response?.data?.message || 'Gagal memuat artikel.'
+      message: err.response?.data?.message || 'Gagal memuat artikel.',
     })
     handleCancel()
   } finally {
@@ -186,7 +182,7 @@ async function loadArticle () {
   }
 }
 
-async function handleSubmit () {
+async function handleSubmit() {
   try {
     submitting.value = true
     const payload = {
@@ -195,7 +191,7 @@ async function handleSubmit () {
       excerpt: form.excerpt || undefined,
       imageUrl: form.imageUrl || undefined,
       status: form.status,
-      slug: form.slug || undefined
+      slug: form.slug || undefined,
     }
     const id = articleId.value
     if (!id) {
@@ -208,7 +204,7 @@ async function handleSubmit () {
   } catch (err) {
     $q.notify({
       type: 'negative',
-      message: err.response?.data?.message || 'Gagal memperbarui artikel.'
+      message: err.response?.data?.message || 'Gagal memperbarui artikel.',
     })
   } finally {
     submitting.value = false
@@ -219,5 +215,7 @@ onMounted(loadArticle)
 </script>
 
 <style scoped>
-.text-indigo-10 { color: #0d2a5c; }
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>

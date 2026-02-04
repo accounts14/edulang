@@ -1,11 +1,7 @@
 <template>
   <q-page class="q-pa-lg bg-blue-1">
-    <div class="text-h5 text-weight-bolder text-indigo-10">
-      Edit Course Bahasamu
-    </div>
-    <div class="text-grey-7 q-mt-xs">
-      Atur Kelasmu dengan mudah Bersama Edulang
-    </div>
+    <div class="text-h5 text-weight-bolder text-indigo-10">Edit Course Bahasamu</div>
+    <div class="text-grey-7 q-mt-xs">Atur Kelasmu dengan mudah Bersama Edulang</div>
 
     <div v-if="loading" class="text-center q-pa-xl">
       <q-spinner-dots color="primary" size="40px" />
@@ -22,7 +18,7 @@
               outlined
               bg-color="white"
               placeholder="Url video : https://youtube"
-              :rules="[v => !!v || 'Url video wajib diisi']"
+              :rules="[(v) => !!v || 'Url video wajib diisi']"
             />
           </div>
 
@@ -36,8 +32,8 @@
               bg-color="white"
               placeholder="lessons"
               :rules="[
-                v => v !== null && v !== '' || 'Order wajib diisi',
-                v => Number(v) >= 1 || 'Minimal 1'
+                (v) => (v !== null && v !== '') || 'Order wajib diisi',
+                (v) => Number(v) >= 1 || 'Minimal 1',
               ]"
             />
           </div>
@@ -52,7 +48,7 @@
               autogrow
               bg-color="white"
               placeholder="Pertanyaan essay untuk siswa"
-              :rules="[v => !!v || 'Pertanyaan wajib diisi']"
+              :rules="[(v) => !!v || 'Pertanyaan wajib diisi']"
             />
           </div>
 
@@ -64,7 +60,7 @@
               outlined
               bg-color="white"
               placeholder="Title"
-              :rules="[v => !!v || 'Title wajib diisi']"
+              :rules="[(v) => !!v || 'Title wajib diisi']"
             />
           </div>
         </div>
@@ -112,21 +108,21 @@ const form = reactive({
   videoUrl: '',
   order: null,
   title: '',
-  essayQuestion: ''
+  essayQuestion: '',
 })
 
-function handleCancel () {
+function handleCancel() {
   router.push(`/mentor/packages/${route.params.id}`)
 }
 
-async function loadLesson () {
+async function loadLesson() {
   try {
     loading.value = true
     const res = await api.get(`/packages/${route.params.id}`)
     const p = res.data?.package || res.data?.data || res.data
     const lessons = Array.isArray(p?.lessons) ? p.lessons : []
     const order = Number(route.params.order)
-    const lesson = lessons.find(l => Number(l.order ?? l.lessonOrder ?? 0) === order)
+    const lesson = lessons.find((l) => Number(l.order ?? l.lessonOrder ?? 0) === order)
 
     if (!lesson) {
       $q.notify({ type: 'negative', message: 'Lesson tidak ditemukan.' })
@@ -141,7 +137,7 @@ async function loadLesson () {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memuat data lesson.'
+      message: error.response?.data?.message || 'Gagal memuat data lesson.',
     })
     handleCancel()
   } finally {
@@ -149,7 +145,7 @@ async function loadLesson () {
   }
 }
 
-async function handleSubmit () {
+async function handleSubmit() {
   try {
     submitting.value = true
     const payload = {
@@ -160,11 +156,11 @@ async function handleSubmit () {
         essays: [
           {
             question: form.essayQuestion,
-            wordLimit: 100
-          }
+            wordLimit: 100,
+          },
         ],
-        multipleChoice: []
-      }
+        multipleChoice: [],
+      },
     }
 
     // Sesuai endpoint: PUT /api/packages/:packageId/lessons/:lessonOrder
@@ -175,7 +171,7 @@ async function handleSubmit () {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memperbarui materi.'
+      message: error.response?.data?.message || 'Gagal memperbarui materi.',
     })
   } finally {
     submitting.value = false
@@ -188,6 +184,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.text-indigo-10 { color: #0d2a5c; }
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>
-

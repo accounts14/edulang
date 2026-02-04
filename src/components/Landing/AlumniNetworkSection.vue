@@ -39,12 +39,12 @@
 }
 
 .alumni-content {
-  padding: 3rem 2rem;
+  padding: 2.5rem 2rem;
 }
 
 @media (min-width: 1024px) {
   .alumni-content {
-    padding: 4rem 3rem;
+    padding: 3rem 2.5rem;
   }
 }
 

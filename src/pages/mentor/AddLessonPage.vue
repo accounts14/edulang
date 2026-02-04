@@ -1,11 +1,7 @@
 <template>
   <q-page class="q-pa-lg bg-blue-1">
-    <div class="text-h5 text-weight-bolder text-indigo-10">
-      Tambah Course Bahasamu
-    </div>
-    <div class="text-grey-7 q-mt-xs">
-      Atur Kelasmu dengan mudah Bersama Edulang
-    </div>
+    <div class="text-h5 text-weight-bolder text-indigo-10">Tambah Course Bahasamu</div>
+    <div class="text-grey-7 q-mt-xs">Atur Kelasmu dengan mudah Bersama Edulang</div>
 
     <q-form class="q-mt-lg" @submit.prevent="handleSubmit">
       <div class="row q-col-gutter-lg">
@@ -17,7 +13,7 @@
             outlined
             bg-color="white"
             placeholder="Url video : https://youtube"
-            :rules="[v => !!v || 'Url video wajib diisi']"
+            :rules="[(v) => !!v || 'Url video wajib diisi']"
           />
         </div>
 
@@ -31,8 +27,8 @@
             bg-color="white"
             placeholder="lessons"
             :rules="[
-              v => v !== null && v !== '' || 'Order wajib diisi',
-              v => Number(v) >= 1 || 'Minimal 1'
+              (v) => (v !== null && v !== '') || 'Order wajib diisi',
+              (v) => Number(v) >= 1 || 'Minimal 1',
             ]"
           />
         </div>
@@ -47,7 +43,7 @@
             autogrow
             bg-color="white"
             placeholder="Pertanyaan essay untuk siswa"
-            :rules="[v => !!v || 'Pertanyaan wajib diisi']"
+            :rules="[(v) => !!v || 'Pertanyaan wajib diisi']"
           />
         </div>
 
@@ -59,7 +55,7 @@
             outlined
             bg-color="white"
             placeholder="Judul Materi"
-            :rules="[v => !!v || 'Judul materi wajib diisi']"
+            :rules="[(v) => !!v || 'Judul materi wajib diisi']"
           />
         </div>
       </div>
@@ -104,14 +100,14 @@ const form = reactive({
   videoUrl: '',
   order: null,
   title: '',
-  essayQuestion: ''
+  essayQuestion: '',
 })
 
-function handleCancel () {
+function handleCancel() {
   router.push(`/mentor/packages/${route.params.id}`)
 }
 
-async function handleSubmit () {
+async function handleSubmit() {
   try {
     submitting.value = true
 
@@ -126,11 +122,11 @@ async function handleSubmit () {
         essays: [
           {
             question: form.essayQuestion,
-            wordLimit: 100
-          }
+            wordLimit: 100,
+          },
         ],
-        multipleChoice: []
-      }
+        multipleChoice: [],
+      },
     }
 
     // Endpoint paling masuk akal: POST /packages/:id/lessons
@@ -141,7 +137,7 @@ async function handleSubmit () {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal menambahkan materi.'
+      message: error.response?.data?.message || 'Gagal menambahkan materi.',
     })
   } finally {
     submitting.value = false
@@ -150,6 +146,7 @@ async function handleSubmit () {
 </script>
 
 <style scoped>
-.text-indigo-10 { color: #0d2a5c; }
+.text-indigo-10 {
+  color: #0d2a5c;
+}
 </style>
-
