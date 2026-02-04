@@ -90,7 +90,7 @@ const testimonials = [
 
 <style scoped>
 .bg-primary {
-  background-color: #003366 !important;
+  background-color: var(--edulang-navy, #003387) !important;
 }
 
 .container {
@@ -106,8 +106,6 @@ const testimonials = [
   gap: 24px;
   height: 600px;
   overflow: hidden;
-  mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
 }
 
 .marquee-column {
@@ -146,15 +144,36 @@ const testimonials = [
   border-radius: 16px;
   background: white;
   border: none;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
 }
 
 .line-height-1-5 {
   line-height: 1.5;
 }
 
-.opacity-80 {
-  opacity: 0.8;
+.testi-tag {
+  color: var(--edulang-yellow);
+  font-size: 0.9375rem;
+}
+
+.testi-title {
+  font-size: clamp(1.5rem, 3.5vw, 1.75rem);
+  line-height: 1.2;
+}
+
+.testi-desc {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.testi-btn-yellow {
+  background: var(--edulang-yellow) !important;
+  color: var(--edulang-black) !important;
+}
+
+.testi-btn-outline {
+  border-color: white !important;
+  color: white !important;
 }
 
 @media (max-width: 600px) {

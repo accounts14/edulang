@@ -15,6 +15,17 @@
                 :rules="[v => !!v || 'Nama bahasa wajib diisi']"
               />
             </div>
+            <div class="q-mb-md">
+              <div class="text-caption text-grey-7 q-mb-xs">URL Icon Bahasa (Bendera)</div>
+              <q-input
+                v-model="form.iconUrl"
+                dense
+                outlined
+                placeholder="https://..."
+                type="url"
+              />
+              <div class="text-caption text-grey-6 q-mt-xs">Contoh: https://flagcdn.com/id.svg</div>
+            </div>
             <div class="q-mb-lg">
               <div class="text-caption text-grey-7 q-mb-xs">Deskripsi</div>
               <q-input
@@ -72,6 +83,7 @@ const submitting = ref(false)
 
 const form = reactive({
   name: '',
+  iconUrl: '',
   description: ''
 })
 
@@ -84,6 +96,7 @@ const fetchDetail = async () => {
     const res = await api.get(`/language-types/${route.params.id}`)
     const data = res.data?.languagetype || res.data?.data || res.data
     form.name = data?.name || ''
+    form.iconUrl = data?.iconUrl || data?.icon_url || ''
     form.description = data?.description || ''
   } catch (error) {
     $q.notify({
@@ -103,6 +116,7 @@ const handleSubmit = async () => {
       name: form.name,
       description: form.description
     }
+    if (form.iconUrl?.trim()) payload.iconUrl = form.iconUrl.trim()
 
     await api.put(`/language-types/${route.params.id}`, payload)
 

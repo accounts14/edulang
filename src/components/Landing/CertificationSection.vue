@@ -1,15 +1,13 @@
 <!-- src/components/landing/CertificationSection.vue -->
 <template>
-  <section class="bg-primary text-white q-py-xl overflow-hidden">
+  <section class="cert-section text-white overflow-hidden">
     <div class="container">
       <div class="text-center q-mb-xl">
         <q-chip
-          color="warning"
-          text-color="dark"
+          class="cert-chip text-weight-bold"
           label="Earn Your Language Certificate"
-          class="text-weight-bold"
         />
-        <h2 class="text-h4 text-weight-bold q-mt-md">Sertifikasi Resmi Berstandar Global</h2>
+        <h2 class="cert-title text-weight-bold q-mt-md">Sertifikasi Resmi Berstandar Global</h2>
       </div>
     </div>
 
@@ -124,10 +122,26 @@ const certifications = [
   flex: 0 0 auto;
 }
 
+.cert-section {
+  background: var(--edulang-navy, #003387);
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.cert-chip {
+  background: var(--edulang-yellow, #FFC42C) !important;
+  color: var(--edulang-black, #2D2D2D) !important;
+}
+
+.cert-title {
+  font-size: clamp(1.35rem, 3vw, 1.5rem);
+}
+
 .cert-card {
-  width: 350px;
+  width: 320px;
+  min-width: 320px;
   border-radius: 16px;
-  color: #333;
+  color: var(--edulang-black);
   background: white;
 }
 

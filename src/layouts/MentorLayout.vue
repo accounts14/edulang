@@ -1,6 +1,32 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="bg-blue-1 font-poppins">
-    <q-drawer show-if-above v-model="leftDrawerOpen" :width="260" bordered class="bg-white q-pa-md">
+    <q-header elevated class="bg-white text-dark">
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          class="q-mr-sm"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+        />
+        <q-toolbar-title class="text-weight-bold">
+          {{ pageTitle }}
+        </q-toolbar-title>
+        <q-space />
+        <div class="text-caption text-grey-7 gt-sm">{{ mentorData.name || 'Mentor' }}</div>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="leftDrawerOpen"
+      :width="260"
+      bordered
+      behavior="mobile"
+      :breakpoint="768"
+      class="bg-white q-pa-md"
+    >
       <div class="flex flex-center q-mb-xl q-mt-md">
         <img src="~assets/Edulang.png" style="width: 140px" />
       </div>
@@ -63,11 +89,26 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
 
+const $q = useQuasar()
 const leftDrawerOpen = ref(true)
 const router = useRouter()
+const route = useRoute()
+
+const pageTitle = computed(() => {
+  const t = route.meta?.title || route.name || ''
+  if (t) return String(t)
+  const path = route.path
+  if (path === '/mentor/dashboard') return 'Dashboard'
+  if (path.startsWith('/mentor/kelasku')) return 'Kelasku'
+  if (path.startsWith('/mentor/rating')) return 'Rating dan Review'
+  if (path.startsWith('/mentor/revenue')) return 'Revenue'
+  if (path.startsWith('/mentor/setting')) return 'Setting'
+  return 'Edulang Mentor'
+})
 const mentorData = ref({ name: '', role: '' })
 
 // Ambil dari localStorage saat mount
@@ -88,6 +129,9 @@ watch(
     mentorData.value.role = newRole || 'user'
   }
 )
+watch(() => route.path, () => {
+  if ($q.screen.lt.md) leftDrawerOpen.value = false
+})
 
 function updateMentorData() {
   mentorData.value.name = localStorage.getItem('userName') || ''

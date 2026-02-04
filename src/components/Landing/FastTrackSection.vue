@@ -1,12 +1,12 @@
 <!-- src/components/landing/FastTrackSection.vue -->
 <template>
-  <section class="container q-py-xl">
-    <div class="row items-center justify-between q-mb-lg">
+  <section class="fasttrack-section container">
+    <div class="row items-center justify-between section-header q-mb-lg">
       <div>
-        <div class="text-warning text-weight-bold">Kelas Fast-Track</div>
-        <h2 class="text-h4 text-weight-bold text-dark">Course Belajar Unggulan Edulang</h2>
+        <div class="fasttrack-tag text-weight-bold">Kelas Fast-Track</div>
+        <h2 class="fasttrack-title text-weight-bold">Course Belajar Unggulan Edulang</h2>
       </div>
-      <q-btn unelevated color="warning" text-color="dark" label="Lihat Semua Program" rounded />
+      <q-btn unelevated rounded class="btn-yellow" label="Lihat Semua Program" />
     </div>
 
     <div v-if="loading" class="row q-col-gutter-md">
@@ -60,12 +60,12 @@
             </div>
 
             <div class="row items-center justify-between">
-              <div class="text-h6 text-primary text-weight-bolder">
+              <div class="price-text text-weight-bold">
                 Rp {{ formatCurrency(pkg.price) }}
               </div>
-              <div class="row items-center text-warning">
+              <div class="row items-center rating-text">
                 <q-icon name="star" size="18px" />
-                <span class="text-grey-8 q-ml-xs text-weight-bold">(4.8)</span>
+                <span class="q-ml-xs text-weight-medium">(4.8)</span>
               </div>
             </div>
           </q-card-section>
@@ -76,9 +76,8 @@
             <q-btn
               unelevated
               outline
-              color="primary"
+              class="btn-outline full-width text-weight-bold"
               label="LIHAT DETAIL"
-              class="full-width text-weight-bold"
               style="border-radius: 8px"
             />
           </q-card-actions>
@@ -126,3 +125,44 @@ onMounted(() => {
   fetchPackages()
 })
 </script>
+
+<style scoped>
+.fasttrack-section {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.fasttrack-tag {
+  color: var(--edulang-yellow);
+  font-size: 0.9375rem;
+}
+
+.fasttrack-title {
+  color: var(--edulang-black);
+  font-size: clamp(1.35rem, 3vw, 1.5rem);
+}
+
+.btn-yellow {
+  background: var(--edulang-yellow) !important;
+  color: var(--edulang-black) !important;
+}
+
+.price-text {
+  color: var(--edulang-blue);
+  font-size: 1.1rem;
+}
+
+.rating-text {
+  color: var(--edulang-yellow);
+}
+
+.rating-text span {
+  color: var(--edulang-black);
+  opacity: 0.8;
+}
+
+.btn-outline {
+  border-color: var(--edulang-navy) !important;
+  color: var(--edulang-navy) !important;
+}
+</style>

@@ -1,55 +1,5 @@
 <template>
   <q-layout view="lHh Lpr lff" class="font-poppins">
-    
-    <q-header class="bg-white text-dark q-py-sm shadow-1">
-      <q-toolbar class="container">
-        <q-toolbar-title class="flex items-center cursor-pointer" @click="$router.push('/')">
-          <img src="~assets/Edulang.png" style="height: 40px; width: auto;" alt="Edulang Logo" />
-        </q-toolbar-title>
-
-        <div class="gt-md row q-gutter-sm text-weight-medium">
-          <q-btn flat no-caps label="Kelas Bahasa" class="nav-btn text-primary text-weight-bold" />
-          <q-btn flat no-caps label="Berlangganan" class="nav-btn" />
-          <q-btn flat no-caps label="Metode Belajar" class="nav-btn" />
-          <q-btn flat no-caps label="Alur Belajar" class="nav-btn" />
-          <q-btn flat no-caps label="Produk" class="nav-btn" />
-        </div>
-
-        <q-space />
-
-        <div class="gt-sm row items-center q-gutter-md">
-          <div class="row items-center cursor-pointer text-grey-9">
-            <q-icon name="language" size="sm" class="q-mr-xs" />
-            <span class="text-weight-bolder">IND</span>
-          </div>
-
-          <template v-if="!isLoggedIn">
-            <q-btn flat no-caps label="Masuk" class="text-weight-bold text-dark" @click="$router.push('/login')"/>
-            <q-btn unelevated no-caps label="Daftar Sekarang" color="warning" text-color="dark" class="text-weight-bold q-px-md rounded-borders" @click="$router.push('/register')" />
-          </template>
-
-          <template v-else>
-            <div class="row items-center q-gutter-sm">
-              <span class="text-weight-bold text-grey-9">Halo, {{ userName }}</span>
-              <q-btn round flat>
-                <q-avatar size="40px" color="warning" text-color="white" icon="person" class="shadow-1" />
-                <q-menu transition-show="jump-down" transition-hide="jump-up">
-                  <q-list style="min-width: 150px">
-                    <q-item clickable v-close-popup @click="handleLogout">
-                      <q-item-section avatar><q-icon name="logout" color="negative" size="xs" /></q-item-section>
-                      <q-item-section class="text-negative text-weight-bold">Logout</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-btn>
-            </div>
-          </template>
-        </div>
-
-        <q-btn flat dense round icon="menu" aria-label="Menu" class="lt-lg" @click="toggleLeftDrawer" />
-      </q-toolbar>
-    </q-header>
-
     <q-drawer 
   v-model="leftDrawerOpen" 
   side="right" 
@@ -129,6 +79,56 @@
 </q-drawer>
 
     <q-page-container>
+      <!-- Header floating: ikut scroll (bukan fixed) -->
+      <header class="main-layout-header bg-white text-dark q-py-sm shadow-1">
+        <q-toolbar class="container">
+          <q-toolbar-title class="flex items-center cursor-pointer" @click="$router.push('/')">
+            <img src="~assets/Edulang.png" style="height: 40px; width: auto;" alt="Edulang Logo" />
+          </q-toolbar-title>
+
+          <div class="gt-md row q-gutter-sm text-weight-medium">
+            <q-btn flat no-caps label="Kelas Bahasa" class="nav-btn text-primary text-weight-bold" />
+            <q-btn flat no-caps label="Berlangganan" class="nav-btn" />
+            <q-btn flat no-caps label="Metode Belajar" class="nav-btn" />
+            <q-btn flat no-caps label="Alur Belajar" class="nav-btn" />
+            <q-btn flat no-caps label="Produk" class="nav-btn" />
+          </div>
+
+          <q-space />
+
+          <div class="gt-sm row items-center q-gutter-md">
+            <div class="row items-center cursor-pointer text-grey-9">
+              <q-icon name="language" size="sm" class="q-mr-xs" />
+              <span class="text-weight-bolder">IND</span>
+            </div>
+
+            <template v-if="!isLoggedIn">
+              <q-btn flat no-caps label="Masuk" class="text-weight-bold text-dark" @click="$router.push('/login')"/>
+              <q-btn unelevated no-caps label="Daftar Sekarang" color="warning" text-color="dark" class="text-weight-bold q-px-md rounded-borders" @click="$router.push('/register')" />
+            </template>
+
+            <template v-else>
+              <div class="row items-center q-gutter-sm">
+                <span class="text-weight-bold text-grey-9">Halo, {{ userName }}</span>
+                <q-btn round flat>
+                  <q-avatar size="40px" color="warning" text-color="white" icon="person" class="shadow-1" />
+                  <q-menu transition-show="jump-down" transition-hide="jump-up">
+                    <q-list style="min-width: 150px">
+                      <q-item clickable v-close-popup @click="handleLogout">
+                        <q-item-section avatar><q-icon name="logout" color="negative" size="xs" /></q-item-section>
+                        <q-item-section class="text-negative text-weight-bold">Logout</q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
+              </div>
+            </template>
+          </div>
+
+          <q-btn flat dense round icon="menu" aria-label="Menu" class="lt-lg" @click="toggleLeftDrawer" />
+        </q-toolbar>
+      </header>
+
       <router-view />
       
       <footer class="bg-white text-dark q-mt-xl q-pt-xl border-top">
@@ -246,7 +246,8 @@ const handleLogout = () => {
 <style scoped>
 .font-poppins { font-family: 'Poppins', sans-serif; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; width: 100%; }
-.nav-btn { font-weight: 500; color: #333; }
+.nav-btn { font-weight: 500; color: var(--edulang-black, #2D2D2D); }
+.nav-btn.text-primary { color: var(--edulang-blue, #0089FF) !important; }
 .rounded-borders { border-radius: 8px; }
 
 /* Menghilangkan garis bawah default pada link */
@@ -262,7 +263,12 @@ a { text-decoration: none; }
 
 /* Warna biru gelap untuk bar bawah sesuai desain */
 .bg-indigo-10 {
-  background-color: #0d2a5c !important;
+  background-color: #003387 !important;
+}
+
+.main-layout-header {
+  position: relative;
+  z-index: 1;
 }
 
 /* Menghilangkan padding default Quasar list agar sejajar kiri */

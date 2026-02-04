@@ -27,7 +27,7 @@
             >
               <q-card flat class="bg-grey-2 q-pa-md rounded-borders relative-position">
                 <div class="row items-center no-wrap q-mb-sm">
-                  <q-img :src="getFlag(lang.name)" style="width: 28px; border-radius: 4px" class="q-mr-sm" />
+                  <q-img :src="lang.iconUrl || getFlag(lang.name)" style="width: 28px; border-radius: 4px" class="q-mr-sm" />
                   <div class="text-caption text-weight-bold">{{ lang.name }}</div>
                   <q-badge floating color="blue" size="xs">PRO</q-badge>
                 </div>
@@ -161,6 +161,7 @@ const fetchData = async () => {
         _id: langId,
         name: lang.name,
         description: lang.description,
+        iconUrl: lang.iconUrl || lang.icon_url || '',
         courseCount
       }
     })

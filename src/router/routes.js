@@ -57,6 +57,60 @@ const routes = [
         name: 'AdminKategoriEdit',
         component: () => import('pages/admin/EditLanguageCategoryPage.vue'),
         meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'mentor',
+        name: 'AdminMentor',
+        component: () => import('pages/admin/MentorPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'revenue',
+        name: 'AdminRevenue',
+        component: () => import('pages/admin/RevenuePage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'user',
+        name: 'AdminUser',
+        component: () => import('pages/admin/UserPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'pendaftar',
+        name: 'AdminTerdaftar',
+        component: () => import('pages/admin/TerdaftarPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'pendaftar/:id/edit',
+        name: 'AdminTerdaftarEdit',
+        component: () => import('pages/admin/EditRegisteredUserPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'produk',
+        name: 'AdminProduk',
+        component: () => import('pages/admin/ProdukPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'artikel',
+        name: 'AdminArtikel',
+        component: () => import('pages/admin/ArtikelPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'artikel/add',
+        name: 'AdminArtikelAdd',
+        component: () => import('pages/admin/AddArticlePage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
+      },
+      {
+        path: 'artikel/:slug/edit',
+        name: 'AdminArtikelEdit',
+        component: () => import('pages/admin/EditArticlePage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] }
       }
     ]
   },

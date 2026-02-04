@@ -1,11 +1,31 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="bg-blue-1 font-poppins">
+    <q-header elevated class="bg-white text-dark">
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          class="q-mr-sm"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+        />
+        <q-toolbar-title class="text-weight-bold">
+          {{ pageTitle }}
+        </q-toolbar-title>
+        <q-space />
+        <div class="text-caption text-grey-7 gt-sm">{{ adminData.name || 'Admin' }}</div>
+      </q-toolbar>
+    </q-header>
+
     <q-drawer
-      show-if-above
       v-model="leftDrawerOpen"
       :width="260"
       bordered
+      behavior="mobile"
       class="bg-white q-pa-md"
+      :breakpoint="768"
     >
       <div class="flex flex-center q-mb-xl q-mt-md">
         <img src="~assets/Edulang.png" style="width: 140px" alt="Edulang Logo" />
@@ -75,12 +95,30 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
 
+const $q = useQuasar()
 const leftDrawerOpen = ref(true)
 const router = useRouter()
 const route = useRoute()
+
+const pageTitle = computed(() => {
+  const t = route.meta?.title || route.name || ''
+  if (t) return String(t)
+  const path = route.path
+  if (path === '/admin/dashboard') return 'Dashboard'
+  if (path.startsWith('/admin/kategori')) return 'Kategori Bahasa'
+  if (path.startsWith('/admin/mentor')) return 'Mentor'
+  if (path.startsWith('/admin/revenue')) return 'Revenue'
+  if (path.startsWith('/admin/user')) return 'User'
+  if (path.startsWith('/admin/pendaftar')) return 'Mendaftar'
+  if (path.startsWith('/admin/produk')) return 'Produk'
+  if (path.startsWith('/admin/artikel')) return 'Artikel'
+  if (path.startsWith('/admin/setting')) return 'Setting'
+  return 'Edulang Admin'
+})
 
 // State untuk menyimpan data admin
 const adminData = ref({
@@ -110,6 +148,7 @@ onMounted(() => {
 // Memantau perubahan rute agar data selalu sinkron
 watch(() => route.path, () => {
   checkAdminStatus()
+  if ($q.screen.lt.md) leftDrawerOpen.value = false
 })
 
 const menuList = [
