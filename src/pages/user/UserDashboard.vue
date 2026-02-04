@@ -7,6 +7,8 @@
     <AlumniNetworkSection />
     <MentorSection />
     <TestimonialSection />
+
+    <WhatsappConsultWidget />
   </q-page>
 </template>
 
@@ -17,6 +19,7 @@ import AlumniNetworkSection from 'components/Landing/AlumniNetworkSection.vue'
 import SolutionsSection from 'components/Landing/SolutionsSection.vue'
 import TestimonialSection from 'components/Landing/TestimonialSection.vue'
 import MentorSection from 'components/Landing/MentorSection.vue'
+import WhatsappConsultWidget from 'components/Common/WhatsappConsultWidget.vue'
 </script>
 
 <style scoped>

@@ -82,12 +82,24 @@
           <q-item-section class="text-weight-medium">Rating dan Review</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple class="text-grey-7">
+        <q-item
+          clickable
+          v-ripple
+          to="/mentor/revenue"
+          active-class="bg-primary text-white rounded-borders"
+          class="text-grey-7"
+        >
           <q-item-section avatar><q-icon name="payments" /></q-item-section>
           <q-item-section class="text-weight-medium">Revenue</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple class="text-grey-7">
+        <q-item
+          clickable
+          v-ripple
+          to="/mentor/setting"
+          active-class="bg-primary text-white rounded-borders"
+          class="text-grey-7"
+        >
           <q-item-section avatar><q-icon name="settings" /></q-item-section>
           <q-item-section class="text-weight-medium">Setting</q-item-section>
         </q-item>

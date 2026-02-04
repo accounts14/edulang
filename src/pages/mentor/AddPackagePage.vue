@@ -135,11 +135,10 @@ const languageTypeOptions = ref([])
 const loadingLanguageTypes = ref(false)
 
 const levelOptions = [
-  // Sesuai ERD: enum('fluent','good','moderated','limited')
-  { label: 'Limited', value: 'limited' },
-  { label: 'Moderated', value: 'moderated' },
-  { label: 'Good', value: 'good' },
-  { label: 'Fluent', value: 'fluent' },
+  // Sesuai ERD: enum('Pemula','Menengah','Lanjutan')
+  { label: 'Pemula', value: 'Pemula' },
+  { label: 'Menengah', value: 'Menengah' },
+  { label: 'Lanjutan', value: 'Lanjutan' },
 ]
 
 const form = reactive({

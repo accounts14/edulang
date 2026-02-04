@@ -30,6 +30,8 @@
         <MentorSection />
       </section>
     </div>
+
+    <WhatsappConsultWidget />
   </q-page>
 </template>
 
@@ -44,6 +46,7 @@ import AlumniNetworkSection from 'components/Landing/AlumniNetworkSection.vue'
 import SolutionsSection from 'components/Landing/SolutionsSection.vue'
 import TestimonialSection from 'components/Landing/TestimonialSection.vue'
 import MentorSection from 'components/Landing/MentorSection.vue'
+import WhatsappConsultWidget from 'components/Common/WhatsappConsultWidget.vue'
 
 const sectionsWrapper = ref(null)
 
@@ -59,7 +62,7 @@ onMounted(() => {
         }
       })
     },
-    { rootMargin: '-40px 0px -60px 0px', threshold: 0.1 }
+    { rootMargin: '-40px 0px -60px 0px', threshold: 0.1 },
   )
 
   sections.forEach((el) => observer.observe(el))
@@ -99,7 +102,9 @@ onMounted(() => {
 .reveal-section {
   opacity: 0;
   transform: translateY(28px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
 }
 
 .reveal-section.revealed {

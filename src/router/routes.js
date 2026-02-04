@@ -3,7 +3,14 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [
+      { path: '', component: () => import('pages/IndexPage.vue') },
+      {
+        path: 'contact',
+        name: 'ContactPage',
+        component: () => import('pages/ContactPage.vue'),
+      },
+    ],
   },
 
   // === HALAMAN DASHBOARD BERDASARKAN ROLE ===
@@ -133,6 +140,18 @@ const routes = [
         path: 'rating',
         name: 'MentorRatingReview',
         component: () => import('pages/mentor/RatingReviewPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
+      },
+      {
+        path: 'revenue',
+        name: 'MentorRevenue',
+        component: () => import('pages/mentor/RevenuePage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
+      },
+      {
+        path: 'setting',
+        name: 'MentorSetting',
+        component: () => import('pages/mentor/SettingPage.vue'),
         meta: { requiresAuth: true, allowedRoles: ['mentor'] },
       },
       {
