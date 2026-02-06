@@ -337,15 +337,70 @@ function barHeight(value) {
   return `${ratio * 100}%`
 }
 
+// Utility untuk memastikan hanya paket milik mentor yang login yang ikut dihitung.
+function filterPackagesForCurrentMentor(list, { userId, userEmail }) {
+  if (!Array.isArray(list)) return []
+
+  return list.filter((pkg) => {
+    const mentor = pkg.mentor || pkg.trainer || pkg.owner || pkg.createdBy || null
+    if (!mentor) return false
+
+    const mentorUserId =
+      mentor.userId ||
+      mentor.user_id ||
+      (mentor.user && (mentor.user._id || mentor.user.id)) ||
+      mentor._id ||
+      mentor.id
+
+    if (userId && mentorUserId && String(mentorUserId) === String(userId)) {
+      return true
+    }
+
+    const mentorEmail = mentor.email || (mentor.user && mentor.user.email) || ''
+    if (
+      userEmail &&
+      mentorEmail &&
+      String(mentorEmail).toLowerCase() === String(userEmail).toLowerCase()
+    ) {
+      return true
+    }
+
+    return false
+  })
+}
+
 async function fetchData() {
+  const token = localStorage.getItem('token')
+  const userId = localStorage.getItem('userId')
+  const userEmail = localStorage.getItem('userEmail')
+
+  if (!token) {
+    $q.notify({
+      type: 'negative',
+      message: 'Sesi tidak valid. Silakan login ulang.',
+    })
+    setTimeout(() => {
+      window.location.href = '/login'
+    }, 2000)
+    return
+  }
+
   loading.value = true
   try {
-    const results = await Promise.allSettled([api.get('/packages'), api.get('/transactions')])
+    const results = await Promise.allSettled([
+      api.get('/packages', {
+        params: {
+          mentorId: userId,
+        },
+      }),
+      api.get('/transactions'),
+    ])
 
     if (results[0].status === 'fulfilled') {
       const res = results[0].value
       const data = res.data || {}
-      packages.value = data.packages || data.data || (Array.isArray(data) ? data : [])
+      const allPkgs = data.packages || data.data || (Array.isArray(data) ? data : [])
+      packages.value = filterPackagesForCurrentMentor(allPkgs, { userId, userEmail })
     } else {
       console.error('[Kelasku] Gagal memuat packages:', results[0].reason)
       packages.value = []

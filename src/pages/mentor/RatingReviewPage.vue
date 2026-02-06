@@ -35,14 +35,7 @@
     <!-- Empty State -->
     <div v-else-if="filteredReviews.length === 0" class="q-pa-xl flex flex-center">
       <q-card flat class="empty-card bg-blue-1 text-center">
-        <div class="q-mb-lg">
-          <q-img
-            src="https://cdn.quasar.dev/img/avatar.png"
-            style="width: 180px; max-width: 60vw"
-            ratio="1"
-            class="q-mx-auto"
-          />
-        </div>
+        <div class="q-mb-lg"></div>
         <div class="text-h5 text-weight-bolder text-indigo-10 q-mb-sm">
           Oops! Belum ada Review dan Rating dari Student.
         </div>
@@ -55,11 +48,7 @@
     <!-- List Reviews -->
     <div v-else>
       <div class="row q-col-gutter-lg q-mb-lg">
-        <div
-          v-for="review in filteredReviews"
-          :key="review.id"
-          class="col-12 col-sm-6 col-md-4"
-        >
+        <div v-for="review in filteredReviews" :key="review.id" class="col-12 col-sm-6 col-md-4">
           <q-card flat class="review-card bg-white rounded-borders-16 shadow-1 q-pa-md">
             <div class="row items-center q-mb-sm">
               <q-avatar size="42px" class="q-mr-sm">
@@ -78,16 +67,8 @@
             </div>
 
             <div class="q-mt-md row items-center justify-between">
-              <q-rating
-                :model-value="review.rating"
-                readonly
-                max="5"
-                size="20px"
-                color="amber"
-              />
-              <div class="text-caption text-grey-6">
-                {{ review.rating.toFixed(1) }}/5
-              </div>
+              <q-rating :model-value="review.rating" readonly max="5" size="20px" color="amber" />
+              <div class="text-caption text-grey-6">{{ review.rating.toFixed(1) }}/5</div>
             </div>
           </q-card>
         </div>
@@ -118,9 +99,48 @@ const loading = ref(true)
 const search = ref('')
 const rawReviews = ref([])
 
+// Utility: filter review yang benar‑benar milik mentor yang login
+function filterReviewsForCurrentMentor(list, { userId, userEmail }) {
+  if (!Array.isArray(list)) return []
+
+  return list.filter((r) => {
+    const mentorFromReview = r.mentor || r.teacher || null
+    const pkg = r.package || r.course || {}
+    const mentorFromPackage = pkg.mentor || pkg.trainer || pkg.owner || null
+    const mentor = mentorFromReview || mentorFromPackage
+    if (!mentor) return false
+
+    const mentorUserId =
+      mentor.userId ||
+      mentor.user_id ||
+      (mentor.user && (mentor.user._id || mentor.user.id)) ||
+      mentor._id ||
+      mentor.id
+
+    if (userId && mentorUserId && String(mentorUserId) === String(userId)) {
+      return true
+    }
+
+    const mentorEmail = mentor.email || (mentor.user && mentor.user.email) || ''
+    if (
+      userEmail &&
+      mentorEmail &&
+      String(mentorEmail).toLowerCase() === String(userEmail).toLowerCase()
+    ) {
+      return true
+    }
+
+    return false
+  })
+}
+
 const normalizedReviews = computed(() => {
+  const userId = localStorage.getItem('userId')
+  const userEmail = localStorage.getItem('userEmail')
   const list = Array.isArray(rawReviews.value) ? rawReviews.value : []
-  return list.map((r) => {
+  const filtered = filterReviewsForCurrentMentor(list, { userId, userEmail })
+
+  return filtered.map((r) => {
     const pkg = r.package || r.course || {}
     return {
       id: r._id || r.id,
@@ -141,17 +161,34 @@ const filteredReviews = computed(() => {
   if (!q) return normalizedReviews.value
   return normalizedReviews.value.filter((item) => {
     return (
-      (item.title || '').toLowerCase().includes(q) ||
-      (item.badge || '').toLowerCase().includes(q)
+      (item.title || '').toLowerCase().includes(q) || (item.badge || '').toLowerCase().includes(q)
     )
   })
 })
 
 async function fetchReviews() {
+  const token = localStorage.getItem('token')
+  const userId = localStorage.getItem('userId')
+
+  if (!token) {
+    $q.notify({
+      type: 'negative',
+      message: 'Sesi tidak valid. Silakan login ulang.',
+    })
+    setTimeout(() => {
+      window.location.href = '/login'
+    }, 2000)
+    return
+  }
+
   loading.value = true
   try {
-    // Asumsi endpoint: /reviews yang mengembalikan list review mentor
-    const res = await api.get('/reviews')
+    // Ambil review yang terkait dengan mentor yang sedang login
+    const res = await api.get('/reviews', {
+      params: {
+        mentorId: userId,
+      },
+    })
     const data = res.data || {}
     rawReviews.value = data.reviews || data.data || (Array.isArray(data) ? data : [])
   } catch (err) {
@@ -198,16 +235,13 @@ onMounted(fetchReviews)
 
 .ellipsis-2-lines {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .ellipsis-3-lines {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 </style>
-

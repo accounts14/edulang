@@ -112,10 +112,11 @@
 import { ref } from 'vue'
 import { api } from 'boot/axios'
 import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const $q = useQuasar()
 const router = useRouter()
+const route = useRoute()
 const isPwd = ref(true)
 const loading = ref(false)
 const form = ref({ email: '', password: '' })
@@ -147,15 +148,27 @@ const handleLogin = async () => {
     localStorage.setItem('token', token)
     localStorage.setItem('userRole', user?.role || 'user')
     localStorage.setItem('userName', user?.name || 'Pengguna')
+    // Simpan juga id & email untuk kebutuhan filter data per-mentor
+    const userId = user?._id || user?.id || user?.userId
+    if (userId) {
+      localStorage.setItem('userId', String(userId))
+    }
+    if (user?.email) {
+      localStorage.setItem('userEmail', user.email)
+    }
 
     $q.notify({
       type: 'positive',
       message: `Selamat datang, ${user?.name || 'Pengguna'}!`,
     })
 
-    // Redirect berdasarkan role
+    // Redirect berdasarkan role atau redirect URL jika disediakan
     const role = user?.role || 'user'
-    if (role === 'admin') {
+    const redirect = route.query.redirect
+
+    if (redirect) {
+      router.push(String(redirect))
+    } else if (role === 'admin') {
       router.push('/admin/dashboard')
     } else if (role === 'mentor') {
       router.push('/mentor/dashboard')

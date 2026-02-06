@@ -4,12 +4,12 @@
     <section class="q-mb-xl">
       <div class="row items-center justify-between q-mb-md">
         <div class="col-12 col-md-8">
-          <div class="text-orange-9 text-weight-bold">Fast-Track Unggulan</div>
+          <div class="text-orange-9 text-weight-bold">{{ $t('subscription.fastTrackTag') }}</div>
           <div class="text-h4 text-weight-bolder text-indigo-10 q-mt-xs">
-            Course Belajar Unggulan Edulang
+            {{ $t('subscription.fastTrackTitle') }}
           </div>
           <div class="text-grey-8 q-mt-xs">
-            Pilih program Fast-Track untuk percepatan karier dan studi kamu.
+            {{ $t('subscription.fastTrackDesc') }}
           </div>
         </div>
         <div class="col-12 col-md-auto q-mt-md">
@@ -20,7 +20,7 @@
             text-color="black"
             no-caps
             class="rounded-borders q-px-lg text-weight-bold"
-            label="Lihat Semua Fast-Track"
+            :label="$t('subscription.lihatSemuaFastTrack')"
             @click="scrollToFastTrack"
           />
         </div>
@@ -32,7 +32,7 @@
         </div>
 
         <div v-else-if="!fastTrackCourses.length" class="text-grey-7 text-caption q-mt-md">
-          Belum ada course Fast-Track yang tersedia.
+          {{ $t('subscription.kosongFastTrack') }}
         </div>
 
         <div v-else class="row q-col-gutter-lg">
@@ -52,9 +52,11 @@
     >
       <div class="row items-center justify-between q-mb-md">
         <div>
-          <div class="text-orange-9 text-weight-bold">Course {{ group.languageName }} Unggulan</div>
+          <div class="text-orange-9 text-weight-bold">
+            {{ $t('subscription.courseBahasaTag', { language: group.languageName }) }}
+          </div>
           <div class="text-h4 text-weight-bolder text-indigo-10 q-mt-xs">
-            Course {{ group.languageName }} Unggulan Edulang
+            {{ $t('subscription.courseBahasaTitle', { language: group.languageName }) }}
           </div>
         </div>
         <div v-if="group.courses.length" class="q-mt-sm">
@@ -64,13 +66,13 @@
             text-color="white"
             no-caps
             class="rounded-borders q-px-lg text-weight-bold"
-            label="Lihat Semua Kelas"
+            :label="$t('subscription.lihatSemuaKelas')"
           />
         </div>
       </div>
 
       <div v-if="group.courses.length === 0" class="text-grey-7 text-caption">
-        Belum ada course untuk bahasa ini.
+        {{ $t('subscription.kosongBahasa') }}
       </div>
 
       <div v-else class="row q-col-gutter-lg">

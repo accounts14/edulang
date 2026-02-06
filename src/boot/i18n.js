@@ -3,8 +3,12 @@ import { createI18n } from 'vue-i18n'
 import messages from 'src/i18n'
 
 export default defineBoot(({ app }) => {
+  const storedLocale = localStorage.getItem('locale')
+  const initialLocale = storedLocale || 'id-ID'
+
   const i18n = createI18n({
-    locale: 'en-US',
+    locale: initialLocale,
+    fallbackLocale: 'id-ID',
     globalInjection: true,
     messages,
   })

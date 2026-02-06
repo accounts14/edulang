@@ -5,7 +5,7 @@
       side="right"
       bordered
       behavior="mobile"
-      class="bg-white"
+      :class="isDark ? 'bg-dark text-white' : 'bg-white'"
       :width="280"
     >
       <q-list class="q-pa-md">
@@ -18,42 +18,66 @@
 
         <!-- Navigasi Utama -->
         <q-item clickable v-ripple @click="$router.push('/')" class="text-weight-bold text-primary">
-          <q-item-section>Home</q-item-section>
+          <q-item-section>{{ $t('nav.home') }}</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="$router.push('/berlangganan')">
-          <q-item-section>Kelas Bahasa</q-item-section>
+          <q-item-section>{{ $t('nav.kelasBahasa') }}</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="$router.push('/berlangganan')">
-          <q-item-section>Berlangganan</q-item-section>
+          <q-item-section>{{ $t('nav.berlangganan') }}</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="$router.push('/metode-belajar')">
-          <q-item-section>Metode Belajar</q-item-section>
+          <q-item-section>{{ $t('nav.metodeBelajar') }}</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="$router.push('/alur-belajar')">
-          <q-item-section>Alur Belajar</q-item-section>
+          <q-item-section>{{ $t('nav.alurBelajar') }}</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="$router.push('/produk')">
-          <q-item-section>Produk</q-item-section>
+          <q-item-section>{{ $t('nav.produk') }}</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="$router.push('/tips')">
-          <q-item-section>Tips</q-item-section>
+          <q-item-section>{{ $t('nav.tipsInfo') }}</q-item-section>
         </q-item>
 
         <!-- Pemisah -->
         <q-separator class="q-my-md" />
 
-        <!-- Bahasa -->
+        <!-- Bahasa + Theme -->
         <q-item clickable v-ripple>
           <q-item-section avatar>
             <q-icon name="language" size="sm" />
           </q-item-section>
-          <q-item-section>IND</q-item-section>
+          <q-item-section>{{ $t('lang.pilihBahasa') }}</q-item-section>
+          <q-item-section side>
+            <q-btn flat dense no-caps :label="currentLangLabel">
+              <q-menu>
+                <q-list style="min-width: 140px">
+                  <q-item clickable v-close-popup @click="setLocale('id-ID')">
+                    <q-item-section>{{ $t('lang.ind') }}</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup @click="setLocale('en-US')">
+                    <q-item-section>{{ $t('lang.eng') }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </q-item-section>
+        </q-item>
+
+        <q-item>
+          <q-item-section avatar>
+            <q-icon :name="isDark ? 'dark_mode' : 'light_mode'" size="sm" />
+          </q-item-section>
+          <q-item-section>{{ $t('theme.darkMode') }}</q-item-section>
+          <q-item-section side>
+            <q-toggle dense v-model="isDark" @update:model-value="toggleDark" />
+          </q-item-section>
         </q-item>
 
         <!-- Auth -->
@@ -61,22 +85,22 @@
 
         <template v-if="!isLoggedIn">
           <q-item clickable v-ripple @click="$router.push('/login')">
-            <q-item-section>Masuk</q-item-section>
+            <q-item-section>{{ $t('auth.masuk') }}</q-item-section>
           </q-item>
           <q-item clickable v-ripple @click="$router.push('/register')">
-            <q-item-section class="text-warning text-weight-bold">Daftar Sekarang</q-item-section>
+            <q-item-section class="text-warning text-weight-bold">{{ $t('auth.daftar') }}</q-item-section>
           </q-item>
         </template>
 
         <template v-else>
           <q-item class="q-py-sm">
-            <q-item-section class="text-weight-bold">Halo, {{ userName }}</q-item-section>
+            <q-item-section class="text-weight-bold">{{ $t('auth.halo', { name: userName }) }}</q-item-section>
           </q-item>
           <q-item clickable v-ripple @click="handleLogout">
             <q-item-section avatar>
               <q-icon name="logout" color="negative" />
             </q-item-section>
-            <q-item-section class="text-negative text-weight-bold">Logout</q-item-section>
+            <q-item-section class="text-negative text-weight-bold">{{ $t('auth.logout') }}</q-item-section>
           </q-item>
         </template>
       </q-list>
@@ -84,7 +108,12 @@
 
     <q-page-container>
       <!-- Header floating: ikut scroll (bukan fixed) -->
-      <header class="main-layout-header bg-white text-dark shadow-1">
+      <header
+        :class="[
+          'main-layout-header shadow-1',
+          isDark ? 'bg-dark text-white' : 'bg-white text-dark'
+        ]"
+      >
         <q-toolbar class="q-px-xl q-py-xs">
           <q-toolbar-title
             shrink
@@ -98,7 +127,7 @@
 
           <div class="gt-md row items-center q-gutter-x-lg text-weight-medium">
             <!-- Kelas Bahasa dengan dropdown -->
-            <q-btn flat no-caps label="Kelas Bahasa" class="nav-btn text-primary">
+            <q-btn flat no-caps :label="$t('nav.kelasBahasa')" class="nav-btn text-primary">
               <q-menu anchor="bottom middle" self="top middle">
                 <q-list style="min-width: 220px">
                   <q-item
@@ -122,17 +151,17 @@
             <q-btn
               flat
               no-caps
-              label="Berlangganan"
+              :label="$t('nav.berlangganan')"
               class="nav-btn"
               @click="$router.push('/berlangganan')"
             />
-            <q-btn flat no-caps label="Metode Belajar" class="nav-btn" />
-            <q-btn flat no-caps label="Alur Belajar" class="nav-btn" />
-            <q-btn flat no-caps label="Produk" class="nav-btn" />
+            <q-btn flat no-caps :label="$t('nav.metodeBelajar')" class="nav-btn" />
+            <q-btn flat no-caps :label="$t('nav.alurBelajar')" class="nav-btn" />
+            <q-btn flat no-caps :label="$t('nav.produk')" class="nav-btn" />
             <q-btn
               flat
               no-caps
-              label="Tips & Informasi"
+              :label="$t('nav.tipsInfo')"
               class="nav-btn"
               @click="$router.push('/tips')"
             />
@@ -142,24 +171,42 @@
 
           <div class="gt-sm row items-center q-gutter-md">
             <!-- Language Selector -->
-            <div class="row items-center cursor-pointer text-grey-9">
+            <q-btn flat dense no-caps class="lang-btn">
               <q-icon name="language" size="sm" class="q-mr-xs" />
-              <span class="text-weight-medium">IND</span>
-            </div>
+              <span class="text-weight-medium">{{ currentLangLabel }}</span>
+              <q-menu anchor="bottom right" self="top right">
+                <q-list style="min-width: 140px">
+                  <q-item clickable v-close-popup @click="setLocale('id-ID')">
+                    <q-item-section>{{ $t('lang.ind') }}</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup @click="setLocale('en-US')">
+                    <q-item-section>{{ $t('lang.eng') }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+
+            <q-toggle
+              dense
+              v-model="isDark"
+              @update:model-value="toggleDark"
+              :label="$t('theme.darkMode')"
+              class="theme-toggle"
+            />
 
             <!-- Auth Buttons / User Info -->
             <template v-if="!isLoggedIn">
               <q-btn
                 flat
                 no-caps
-                label="Masuk"
-                class="text-weight-medium text-dark"
+                :label="$t('auth.masuk')"
+                class="text-weight-medium"
                 @click="$router.push('/login')"
               />
               <q-btn
                 unelevated
                 no-caps
-                label="Daftar Sekarang"
+                :label="$t('auth.daftar')"
                 color="warning"
                 text-color="dark"
                 class="text-weight-medium q-px-md rounded-borders"
@@ -174,7 +221,7 @@
                   <q-avatar size="32px" color="primary" text-color="white">
                     <span class="text-weight-medium">{{ getUserInitial() }}</span>
                   </q-avatar>
-                  <span class="text-weight-medium text-dark">Halo, {{ userName }}</span>
+                  <span class="text-weight-medium">{{ $t('auth.halo', { name: userName }) }}</span>
                 </div>
                 <q-menu anchor="bottom right" self="top right">
                   <q-list style="min-width: 180px">
@@ -189,7 +236,7 @@
                       <q-item-section avatar>
                         <q-icon name="logout" color="negative" />
                       </q-item-section>
-                      <q-item-section class="text-negative">Logout</q-item-section>
+                      <q-item-section class="text-negative">{{ $t('auth.logout') }}</q-item-section>
                     </q-item>
                   </q-list>
                 </q-menu>
@@ -211,7 +258,7 @@
 
       <router-view />
 
-      <footer class="bg-white text-dark q-mt-xl q-pt-xl border-top">
+      <footer :class="[isDark ? 'bg-dark text-white' : 'bg-white text-dark', 'q-mt-xl q-pt-xl border-top']">
         <div class="container q-pb-xl">
           <div class="row q-col-gutter-xl">
             <div class="col-12 col-md-6">
@@ -297,6 +344,8 @@
 import { ref, onMounted, watch, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { api } from 'src/boot/axios'
+import { Dark } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const route = useRoute()
@@ -305,6 +354,9 @@ const leftDrawerOpen = ref(false)
 const isLoggedIn = ref(false)
 const userName = ref('')
 const userRole = ref('')
+
+// i18n
+const { locale, t } = useI18n({ useScope: 'global' })
 
 // Bahasa untuk dropdown Kelas Bahasa di header
 const languages = ref([])
@@ -316,6 +368,28 @@ const headerLanguages = computed(() =>
     iconUrl: lang.iconUrl || lang.icon_url || '',
   })),
 )
+
+// Theme (Dark mode)
+const isDark = ref(Dark.isActive)
+const applyStoredTheme = () => {
+  const stored = localStorage.getItem('theme')
+  if (stored === 'dark') Dark.set(true)
+  if (stored === 'light') Dark.set(false)
+  isDark.value = Dark.isActive
+}
+
+const toggleDark = (val) => {
+  Dark.set(!!val)
+  isDark.value = Dark.isActive
+  localStorage.setItem('theme', Dark.isActive ? 'dark' : 'light')
+}
+
+// Language switch
+const currentLangLabel = computed(() => (locale.value === 'en-US' ? t('lang.eng') : t('lang.ind')))
+const setLocale = (l) => {
+  locale.value = l
+  localStorage.setItem('locale', l)
+}
 
 const checkLoginStatus = () => {
   const token = localStorage.getItem('token')
@@ -362,6 +436,7 @@ const goToBerlanggananByLanguage = (lang) => {
 onMounted(() => {
   checkLoginStatus()
   fetchLanguages()
+  applyStoredTheme()
 })
 
 watch(
