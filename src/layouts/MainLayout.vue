@@ -265,6 +265,12 @@
                 </div>
                 <q-menu anchor="bottom right" self="top right">
                   <q-list style="min-width: 180px">
+                    <q-item clickable v-close-popup @click="$router.push('/dashboard')">
+                      <q-item-section avatar>
+                        <q-icon name="home" />
+                      </q-item-section>
+                      <q-item-section>Home</q-item-section>
+                    </q-item>
                     <q-item clickable v-close-popup @click="$router.push('/profile')">
                       <q-item-section avatar>
                         <q-icon name="person" />
@@ -298,13 +304,8 @@
 
       <router-view />
 
-      <footer
-        :class="[
-          isDark ? 'bg-dark text-white' : 'bg-white text-dark',
-          'q-mt-xl q-pt-xl border-top',
-        ]"
-      >
-        <div class="container q-pb-xl">
+      <footer :class="[isDark ? 'bg-dark text-white' : 'bg-white text-dark', 'border-top']">
+        <div class="container q-py-lg">
           <div class="row q-col-gutter-xl">
             <div class="col-12 col-md-6">
               <img
@@ -535,6 +536,30 @@ const handleLogout = () => {
 .nav-btn.text-primary {
   color: var(--edulang-blue, #0089ff) !important;
 }
+
+/* Dark mode: nav & kontrol di header/footer/drawer pakai --edulang-white */
+.bg-dark .nav-btn {
+  color: var(--edulang-white) !important;
+}
+.bg-dark .nav-btn:hover {
+  color: var(--edulang-yellow) !important;
+  background: rgba(255, 255, 255, 0.08);
+}
+.bg-dark .nav-btn.text-primary {
+  color: var(--edulang-yellow) !important;
+}
+.bg-dark .q-item__section--side {
+  color: var(--edulang-white) !important;
+}
+.bg-dark .lang-btn,
+.bg-dark .lang-btn .text-weight-medium,
+.bg-dark .user-menu-btn,
+.bg-dark .user-menu-btn span {
+  color: var(--edulang-white) !important;
+}
+.bg-dark .theme-toggle {
+  color: var(--edulang-white) !important;
+}
 .rounded-borders {
   border-radius: 8px;
 }
@@ -588,6 +613,12 @@ a {
   background: rgba(0, 137, 255, 0.05);
 }
 
+/* Light mode only (override dark rules above) */
+.bg-white .nav-btn:hover {
+  color: #0089ff !important;
+  background: rgba(0, 137, 255, 0.05);
+}
+
 .language-flag,
 .language-flag-drawer {
   width: 24px;
@@ -622,14 +653,5 @@ a {
 /* No wrap untuk user menu agar tidak break */
 .no-wrap {
   white-space: nowrap;
-}
-
-/* Hilangkan gap di atas footer */
-.q-page-container {
-  padding-bottom: 0 !important;
-}
-
-footer {
-  margin-top: 0 !important;
 }
 </style>
