@@ -20,6 +20,7 @@ export default {
     programDesc: 'Panduan mentor expert untuk belajar jadi lebih terarah',
     programCta: 'All Roadmap',
     tipsInfo: 'Tips & Informasi',
+    learningCenter: 'Learning Center',
   },
   auth: {
     masuk: 'Masuk',

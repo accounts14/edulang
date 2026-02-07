@@ -101,11 +101,8 @@
 
         <template v-if="!isLoggedIn">
           <q-item clickable v-ripple @click="$router.push('/login')">
-            <q-item-section>{{ $t('auth.masuk') }}</q-item-section>
-          </q-item>
-          <q-item clickable v-ripple @click="$router.push('/register')">
-            <q-item-section class="text-warning text-weight-bold">{{
-              $t('auth.daftar')
+            <q-item-section class="text-weight-medium">{{
+              $t('nav.learningCenter')
             }}</q-item-section>
           </q-item>
         </template>
@@ -130,13 +127,8 @@
 
     <q-page-container>
       <!-- Header floating: ikut scroll (bukan fixed) -->
-      <header
-        :class="[
-          'main-layout-header shadow-1',
-          isDark ? 'bg-dark text-white' : 'bg-white text-dark',
-        ]"
-      >
-        <q-toolbar class="q-px-xl q-py-xs">
+      <header :class="['main-layout-header', isDark ? 'bg-dark text-white' : 'bg-white text-dark']">
+        <q-toolbar class="q-px-xl main-layout-toolbar">
           <q-toolbar-title
             shrink
             class="flex items-center cursor-pointer"
@@ -147,13 +139,13 @@
 
           <q-space />
 
-          <div class="gt-md row items-center q-gutter-x-lg text-weight-medium">
+          <div class="gt-md row items-center nav-links-wrap text-weight-medium">
             <!-- Learning path → Alur Belajar -->
             <q-btn
               flat
               no-caps
               :label="$t('nav.learningPath')"
-              class="nav-btn"
+              :class="['nav-btn', { 'nav-btn-active': isNavActive('/alur-belajar') }]"
               @click="$router.push('/alur-belajar')"
             />
             <!-- Langganan → Berlangganan -->
@@ -161,7 +153,7 @@
               flat
               no-caps
               :label="$t('nav.langganan')"
-              class="nav-btn"
+              :class="['nav-btn', { 'nav-btn-active': isNavActive('/berlangganan') }]"
               @click="$router.push('/berlangganan')"
             />
             <!-- PROGRAM: hover → Video courses (sub: All courses + Semua bahasa) + Study abroad -->
@@ -170,7 +162,12 @@
               @mouseenter="onProgramMouseEnter"
               @mouseleave="onProgramMouseLeave"
             >
-              <q-btn flat no-caps :label="$t('nav.program')" class="nav-btn" />
+              <q-btn
+                flat
+                no-caps
+                :label="$t('nav.program')"
+                :class="['nav-btn', { 'nav-btn-active': isProgramNavActive }]"
+              />
               <transition name="dropdown-fade">
                 <div
                   v-show="programOpen"
@@ -241,7 +238,7 @@
               flat
               no-caps
               :label="$t('nav.tipsInfo')"
-              class="nav-btn"
+              :class="['nav-btn', { 'nav-btn-active': isNavActive('/tips') }]"
               @click="$router.push('/tips')"
             />
           </div>
@@ -273,23 +270,16 @@
               class="theme-toggle"
             />
 
-            <!-- Auth Buttons / User Info -->
+            <!-- Learning Center (→ login) / User Info -->
             <template v-if="!isLoggedIn">
               <q-btn
-                flat
                 no-caps
-                :label="$t('auth.masuk')"
-                class="text-weight-medium"
+                :label="$t('nav.learningCenter')"
+                :class="[
+                  'learning-center-btn',
+                  { 'learning-center-btn-active': isNavActive('/login') },
+                ]"
                 @click="$router.push('/login')"
-              />
-              <q-btn
-                unelevated
-                no-caps
-                :label="$t('auth.daftar')"
-                color="warning"
-                text-color="dark"
-                class="text-weight-medium q-px-md rounded-borders"
-                @click="$router.push('/register')"
               />
             </template>
 
@@ -343,7 +333,7 @@
 
       <router-view />
 
-      <footer :class="[isDark ? 'bg-dark text-white' : 'bg-white text-dark', 'border-top']">
+      <footer :class="[isDark ? 'bg-dark text-white' : 'bg-white text-dark', 'footer-main']">
         <div class="container footer-content">
           <div class="row q-col-gutter-xl">
             <!-- Brand + tagline -->
@@ -543,6 +533,12 @@ const toggleDark = (val) => {
   isDark.value = Dark.isActive
   localStorage.setItem('theme', Dark.isActive ? 'dark' : 'light')
 }
+
+// Active nav (route) – warna biru untuk item yang aktif ($info / --edulang-blue)
+const isNavActive = (path) => route.path === path
+const isProgramNavActive = computed(
+  () => route.path === '/berlangganan' || route.path === '/contact',
+)
 
 // Language switch
 const currentLangLabel = computed(() => (locale.value === 'en-US' ? t('lang.eng') : t('lang.ind')))
@@ -751,13 +747,10 @@ a {
   text-decoration: none;
 }
 
-.border-top {
-  border-top: 1px solid #e0e0e0;
-}
-
-/* Footer baru */
+/* Footer – tanpa border garis */
 .footer-main {
   margin-top: 2rem;
+  border: none;
 }
 .footer-content {
   padding-top: 2.5rem;
@@ -836,6 +829,16 @@ a {
 .main-layout-header {
   position: relative;
   z-index: 1;
+  border: none;
+  box-shadow: none;
+}
+.main-layout-toolbar {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  min-height: 56px;
+}
+.nav-links-wrap {
+  gap: 28px;
 }
 
 .q-item__section--side {
@@ -862,13 +865,52 @@ a {
 }
 
 .nav-btn:hover {
-  color: #0089ff !important;
+  color: var(--edulang-blue, #0089ff) !important;
   background: rgba(0, 137, 255, 0.05);
+}
+
+/* Nav item aktif (route saat ini) – biru dari $info / --edulang-blue */
+.nav-btn-active,
+.nav-btn.nav-btn-active {
+  color: var(--edulang-blue, #0089ff) !important;
+  font-weight: 600;
+}
+.bg-dark .nav-btn-active,
+.bg-dark .nav-btn.nav-btn-active {
+  color: var(--edulang-yellow, #ffc42c) !important;
+}
+
+/* Learning Center: outline biru (seperti gambar), aktif = isi biru */
+.learning-center-btn {
+  background: transparent !important;
+  border: 2px solid var(--edulang-blue, #0089ff);
+  color: var(--edulang-blue, #0089ff) !important;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 9999px;
+}
+.learning-center-btn:hover {
+  background: rgba(0, 137, 255, 0.08) !important;
+  color: var(--edulang-blue, #0089ff) !important;
+}
+.learning-center-btn-active {
+  background: var(--edulang-blue, #0089ff) !important;
+  border-color: var(--edulang-blue, #0089ff) !important;
+  color: var(--edulang-white, #f5f7fa) !important;
+}
+.bg-dark .learning-center-btn {
+  border-color: var(--edulang-yellow, #ffc42c);
+  color: var(--edulang-yellow, #ffc42c) !important;
+}
+.bg-dark .learning-center-btn-active {
+  background: var(--edulang-yellow, #ffc42c) !important;
+  border-color: var(--edulang-yellow, #ffc42c) !important;
+  color: var(--edulang-black, #2d2d2d) !important;
 }
 
 /* Light mode only (override dark rules above) */
 .bg-white .nav-btn:hover {
-  color: #0089ff !important;
+  color: var(--edulang-blue, #0089ff) !important;
   background: rgba(0, 137, 255, 0.05);
 }
 
