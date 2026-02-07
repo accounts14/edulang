@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <div class="q-mb-xl">
       <div class="text-h4 text-weight-bolder text-indigo-10">Selamat Datang di, Edulang</div>
       <div class="text-subtitle1 text-grey-7">Tempat Course Bahasa Terbaik</div>
@@ -8,7 +8,11 @@
     <!-- Stats Cards -->
     <div class="row q-col-gutter-lg q-mb-xl">
       <div class="col-12 col-md-3" v-for="(stat, index) in summaryStats" :key="index">
-        <q-card flat class="stat-card q-pa-md text-white shadow-3" :style="{ background: stat.gradient }">
+        <q-card
+          flat
+          class="stat-card q-pa-md text-white shadow-3"
+          :style="{ background: stat.gradient }"
+        >
           <q-item>
             <q-item-section avatar>
               <q-avatar color="white-fade" text-color="white" :icon="stat.icon" />
@@ -38,7 +42,11 @@
             <div class="col-6" v-for="lang in languageDetails" :key="lang._id">
               <q-card flat class="bg-grey-2 q-pa-md rounded-borders relative-position">
                 <div class="row items-center no-wrap q-mb-sm">
-                  <q-img :src="lang.iconUrl || getFlag(lang.name)" style="width: 28px; border-radius: 4px" class="q-mr-sm" />
+                  <q-img
+                    :src="lang.iconUrl || getFlag(lang.name)"
+                    style="width: 28px; border-radius: 4px"
+                    class="q-mr-sm"
+                  />
                   <div class="text-caption text-weight-bold">{{ lang.name }}</div>
                   <q-badge floating color="blue" size="xs">PRO</q-badge>
                 </div>
@@ -55,7 +63,9 @@
               <circle
                 v-for="(segment, i) in chartSegments"
                 :key="i"
-                cx="21" cy="21" r="15.915"
+                cx="21"
+                cy="21"
+                r="15.915"
                 fill="transparent"
                 :stroke="segment.color"
                 stroke-width="6"
@@ -81,10 +91,34 @@ import { api } from 'src/boot/axios'
 
 // State
 const summaryStats = ref([
-  { label: 'Pengguna', value: 0, subLabel: 'Pengguna', icon: 'person', gradient: 'linear-gradient(to right, #2196F3, #64B5F6)' },
-  { label: 'Language', value: 0, subLabel: 'Bahasa', icon: 'translate', gradient: 'linear-gradient(to right, #1A237E, #3F51B5)' },
-  { label: 'Total Course', value: 0, subLabel: 'Course', icon: 'book', gradient: 'linear-gradient(to right, #42A5F5, #90CAF9)' },
-  { label: 'Total Mentor', value: 0, subLabel: 'Mentor', icon: 'groups', gradient: 'linear-gradient(to right, #0D47A1, #1976D2)' }
+  {
+    label: 'Pengguna',
+    value: 0,
+    subLabel: 'Pengguna',
+    icon: 'person',
+    gradient: 'linear-gradient(to right, #2196F3, #64B5F6)',
+  },
+  {
+    label: 'Language',
+    value: 0,
+    subLabel: 'Bahasa',
+    icon: 'translate',
+    gradient: 'linear-gradient(to right, #1A237E, #3F51B5)',
+  },
+  {
+    label: 'Total Course',
+    value: 0,
+    subLabel: 'Course',
+    icon: 'book',
+    gradient: 'linear-gradient(to right, #42A5F5, #90CAF9)',
+  },
+  {
+    label: 'Total Mentor',
+    value: 0,
+    subLabel: 'Mentor',
+    icon: 'groups',
+    gradient: 'linear-gradient(to right, #0D47A1, #1976D2)',
+  },
 ])
 
 const languageDetails = ref([])
@@ -101,24 +135,29 @@ const fetchData = async () => {
       const usersArray = usersData.users || usersData.data || []
       totalUsers = usersData.count ?? (Array.isArray(usersArray) ? usersArray.length : 0)
     } catch (userErr) {
-      console.warn('[ADMIN DASHBOARD] Endpoint /users tidak tersedia, total pengguna diset 0', userErr?.response?.status)
+      console.warn(
+        '[ADMIN DASHBOARD] Endpoint /users tidak tersedia, total pengguna diset 0',
+        userErr?.response?.status,
+      )
     }
 
     // 2. Get language types → GET /api/language-types
     const langRes = await api.get('/language-types')
     const langData = langRes.data || {}
-    const languages = Array.isArray(langData.languagetypes) ? langData.languagetypes : (langData.data || [])
+    const languages = Array.isArray(langData.languagetypes)
+      ? langData.languagetypes
+      : langData.data || []
 
     // 3. Get all packages → GET /api/packages
     const pkgRes = await api.get('/packages')
     const pkgData = pkgRes.data || {}
-    const packages = Array.isArray(pkgData.packages) ? pkgData.packages : (pkgData.data || [])
+    const packages = Array.isArray(pkgData.packages) ? pkgData.packages : pkgData.data || []
     totalCourse.value = packages.length
 
     // 4. Get mentors → GET /api/mentors (admin only)
     const mentorRes = await api.get('/mentors')
     const mentorData = mentorRes.data || {}
-    const mentors = Array.isArray(mentorData.mentors) ? mentorData.mentors : (mentorData.data || [])
+    const mentors = Array.isArray(mentorData.mentors) ? mentorData.mentors : mentorData.data || []
 
     // Update stats cards
     summaryStats.value[0].value = totalUsers
@@ -131,7 +170,7 @@ const fetchData = async () => {
       const langId = lang._id
       const count = packages.filter((p) => {
         const pLang = p.languageType
-        const pLangId = typeof pLang === 'object' && pLang !== null ? (pLang._id || pLang.id) : pLang
+        const pLangId = typeof pLang === 'object' && pLang !== null ? pLang._id || pLang.id : pLang
         return String(pLangId) === String(langId)
       }).length
 
@@ -139,7 +178,7 @@ const fetchData = async () => {
         _id: langId,
         name: lang.name,
         iconUrl: lang.iconUrl || lang.icon_url || '',
-        count
+        count,
       }
     })
   } catch (err) {
@@ -149,12 +188,12 @@ const fetchData = async () => {
 
 const getFlag = (name) => {
   const flags = {
-    'English': 'https://flagcdn.com/us.svg',
-    'Chinese': 'https://flagcdn.com/cn.svg',
-    'Japan': 'https://flagcdn.com/jp.svg',
-    'Germany': 'https://flagcdn.com/de.svg',
-    'Arab': 'https://flagcdn.com/sa.svg',
-    'Indonesian': 'https://flagcdn.com/id.svg'
+    English: 'https://flagcdn.com/us.svg',
+    Chinese: 'https://flagcdn.com/cn.svg',
+    Japan: 'https://flagcdn.com/jp.svg',
+    Germany: 'https://flagcdn.com/de.svg',
+    Arab: 'https://flagcdn.com/sa.svg',
+    Indonesian: 'https://flagcdn.com/id.svg',
   }
   return flags[name] || 'https://flagcdn.com/un.svg'
 }
@@ -172,7 +211,7 @@ const chartSegments = computed(() => {
     segments.push({
       percent: parseFloat(percent.toFixed(1)),
       offset: currentOffset,
-      color: colors[i % colors.length]
+      color: colors[i % colors.length],
     })
     currentOffset -= percent
   })
@@ -188,8 +227,17 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-.stat-card { border-radius: 16px; overflow: hidden; }
-.rounded-borders-lg { border-radius: 24px; }
-.white-fade { background: rgba(255, 255, 255, 0.25); }
-.donut { transform: rotate(-90deg); }
+.stat-card {
+  border-radius: 16px;
+  overflow: hidden;
+}
+.rounded-borders-lg {
+  border-radius: 24px;
+}
+.white-fade {
+  background: rgba(255, 255, 255, 0.25);
+}
+.donut {
+  transform: rotate(-90deg);
+}
 </style>

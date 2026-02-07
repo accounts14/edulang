@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="bg-blue-1 font-poppins">
+  <q-layout view="lHh Lpr lFf" class="bg-accent font-poppins">
     <q-header elevated class="bg-white text-dark">
       <q-toolbar>
         <q-btn
@@ -35,11 +35,11 @@
         <q-avatar size="100px" class="q-mb-md shadow-2">
           <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
         </q-avatar>
-        
+
         <div class="text-weight-bolder text-subtitle1 text-grey-9">
           {{ adminData.name || 'Admin Edulang' }}
         </div>
-        
+
         <q-chip
           dense
           color="blue-6"
@@ -123,7 +123,7 @@ const pageTitle = computed(() => {
 // State untuk menyimpan data admin
 const adminData = ref({
   name: '',
-  role: ''
+  role: '',
 })
 
 // Fungsi pengambil data (disamakan dengan MainLayout Anda)
@@ -131,7 +131,7 @@ const checkAdminStatus = () => {
   const token = localStorage.getItem('token')
   const storedName = localStorage.getItem('userName') // Mengambil userName dari storage
   const storedRole = localStorage.getItem('userRole') // Mengambil userRole dari storage
-  
+
   if (token && storedName) {
     adminData.value.name = storedName
     adminData.value.role = storedRole || 'Admin'
@@ -146,10 +146,13 @@ onMounted(() => {
 })
 
 // Memantau perubahan rute agar data selalu sinkron
-watch(() => route.path, () => {
-  checkAdminStatus()
-  if ($q.screen.lt.md) leftDrawerOpen.value = false
-})
+watch(
+  () => route.path,
+  () => {
+    checkAdminStatus()
+    if ($q.screen.lt.md) leftDrawerOpen.value = false
+  },
+)
 
 const menuList = [
   { label: 'Kategori', icon: 'assignment', to: '/admin/kategori' },
@@ -159,7 +162,7 @@ const menuList = [
   { label: 'Mendaftar', icon: 'person_add', to: '/admin/pendaftar' },
   { label: 'Produk', icon: 'inventory_2', to: '/admin/produk' },
   { label: 'Artikel', icon: 'article', to: '/admin/artikel' },
-  { label: 'Setting', icon: 'settings', to: '/admin/setting' }
+  { label: 'Setting', icon: 'settings', to: '/admin/setting' },
 ]
 
 // Fungsi logout sinkron dengan MainLayout
@@ -170,9 +173,11 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
-.font-poppins { font-family: 'Poppins', sans-serif; }
-.rounded-borders { 
-  border-radius: 10px; 
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+.rounded-borders {
+  border-radius: 10px;
   margin-bottom: 4px;
 }
 </style>

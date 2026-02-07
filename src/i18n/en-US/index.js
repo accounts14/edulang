@@ -22,6 +22,22 @@ export default {
   theme: {
     darkMode: 'Dark mode',
   },
+  produk: {
+    title: 'Products',
+    comingSoon: 'The Products page is under development. Coming soon!',
+    backHome: 'Back to Home',
+  },
+  alurBelajar: {
+    headline: 'Learning Path Language',
+    subheadline: 'Learn languages more reliably with the Language Path',
+    searchPlaceholder: 'Search Roadmap',
+    searchButton: 'Search',
+    profesionalTitle: 'Professional',
+    profesionalDesc: 'Suitable for you who are just starting',
+    pendidikanTitle: 'Education',
+    pendidikanDesc:
+      'Learning outcomes are directly aimed at preparing for work or study in China, Japan, Germany, etc.',
+  },
   subscription: {
     fastTrackTag: 'Fast-Track',
     fastTrackTitle: 'Top Courses by Edulang',

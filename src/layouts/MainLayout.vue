@@ -21,9 +21,31 @@
           <q-item-section>{{ $t('nav.home') }}</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple @click="$router.push('/berlangganan')">
-          <q-item-section>{{ $t('nav.kelasBahasa') }}</q-item-section>
-        </q-item>
+        <!-- Kelas Bahasa: dropdown bahasa (sama seperti desktop) -->
+        <q-expansion-item :label="$t('nav.kelasBahasa')" icon="menu_book" class="text-primary">
+          <q-item
+            v-for="lang in headerLanguages"
+            :key="lang.id"
+            clickable
+            v-ripple
+            dense
+            @click="onDrawerKelasBahasa(lang)"
+          >
+            <q-item-section v-if="lang.iconUrl" avatar>
+              <q-img :src="lang.iconUrl" ratio="1" class="language-flag-drawer" />
+            </q-item-section>
+            <q-item-section>{{ lang.name }}</q-item-section>
+          </q-item>
+          <q-item
+            v-if="!headerLanguages.length"
+            clickable
+            v-ripple
+            dense
+            @click="onDrawerBerlangganan()"
+          >
+            <q-item-section>{{ $t('nav.berlangganan') }}</q-item-section>
+          </q-item>
+        </q-expansion-item>
 
         <q-item clickable v-ripple @click="$router.push('/berlangganan')">
           <q-item-section>{{ $t('nav.berlangganan') }}</q-item-section>
@@ -88,19 +110,25 @@
             <q-item-section>{{ $t('auth.masuk') }}</q-item-section>
           </q-item>
           <q-item clickable v-ripple @click="$router.push('/register')">
-            <q-item-section class="text-warning text-weight-bold">{{ $t('auth.daftar') }}</q-item-section>
+            <q-item-section class="text-warning text-weight-bold">{{
+              $t('auth.daftar')
+            }}</q-item-section>
           </q-item>
         </template>
 
         <template v-else>
           <q-item class="q-py-sm">
-            <q-item-section class="text-weight-bold">{{ $t('auth.halo', { name: userName }) }}</q-item-section>
+            <q-item-section class="text-weight-bold">{{
+              $t('auth.halo', { name: userName })
+            }}</q-item-section>
           </q-item>
           <q-item clickable v-ripple @click="handleLogout">
             <q-item-section avatar>
               <q-icon name="logout" color="negative" />
             </q-item-section>
-            <q-item-section class="text-negative text-weight-bold">{{ $t('auth.logout') }}</q-item-section>
+            <q-item-section class="text-negative text-weight-bold">{{
+              $t('auth.logout')
+            }}</q-item-section>
           </q-item>
         </template>
       </q-list>
@@ -111,7 +139,7 @@
       <header
         :class="[
           'main-layout-header shadow-1',
-          isDark ? 'bg-dark text-white' : 'bg-white text-dark'
+          isDark ? 'bg-dark text-white' : 'bg-white text-dark',
         ]"
       >
         <q-toolbar class="q-px-xl q-py-xs">
@@ -156,8 +184,20 @@
               @click="$router.push('/berlangganan')"
             />
             <q-btn flat no-caps :label="$t('nav.metodeBelajar')" class="nav-btn" />
-            <q-btn flat no-caps :label="$t('nav.alurBelajar')" class="nav-btn" />
-            <q-btn flat no-caps :label="$t('nav.produk')" class="nav-btn" />
+            <q-btn
+              flat
+              no-caps
+              :label="$t('nav.alurBelajar')"
+              class="nav-btn"
+              @click="$router.push('/alur-belajar')"
+            />
+            <q-btn
+              flat
+              no-caps
+              :label="$t('nav.produk')"
+              class="nav-btn"
+              @click="$router.push('/produk')"
+            />
             <q-btn
               flat
               no-caps
@@ -258,7 +298,12 @@
 
       <router-view />
 
-      <footer :class="[isDark ? 'bg-dark text-white' : 'bg-white text-dark', 'q-mt-xl q-pt-xl border-top']">
+      <footer
+        :class="[
+          isDark ? 'bg-dark text-white' : 'bg-white text-dark',
+          'q-mt-xl q-pt-xl border-top',
+        ]"
+      >
         <div class="container q-pb-xl">
           <div class="row q-col-gutter-xl">
             <div class="col-12 col-md-6">
@@ -433,6 +478,16 @@ const goToBerlanggananByLanguage = (lang) => {
   })
 }
 
+const onDrawerKelasBahasa = (lang) => {
+  goToBerlanggananByLanguage(lang)
+  leftDrawerOpen.value = false
+}
+
+const onDrawerBerlangganan = () => {
+  router.push('/berlangganan')
+  leftDrawerOpen.value = false
+}
+
 onMounted(() => {
   checkLoginStatus()
   fetchLanguages()
@@ -533,7 +588,8 @@ a {
   background: rgba(0, 137, 255, 0.05);
 }
 
-.language-flag {
+.language-flag,
+.language-flag-drawer {
   width: 24px;
   height: 16px;
   border-radius: 4px;

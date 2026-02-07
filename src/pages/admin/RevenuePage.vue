@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <div class="text-h4 text-weight-bolder text-indigo-10 q-mb-xl">Revenue & Transaksi</div>
 
     <div class="row q-col-gutter-lg q-mb-xl">

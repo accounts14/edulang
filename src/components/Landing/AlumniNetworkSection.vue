@@ -3,17 +3,11 @@
   <section class="alumni-section text-white">
     <div class="row">
       <div class="col-12 col-md-5 relative-position">
-        <q-img
-          src="~assets/lulus.png"
-          class="full-height fit alumni-img"
-        />
+        <q-img src="~assets/lulus.png" class="full-height fit alumni-img" />
       </div>
       <div class="col-12 col-md-7 alumni-content flex flex-center">
         <div>
-          <q-chip
-            class="alumni-chip text-weight-bold q-mb-md"
-            label="Testimoni Alumni"
-          />
+          <q-chip class="alumni-chip text-weight-bold q-mb-md" label="Testimoni Alumni" />
           <h2 class="alumni-title text-weight-bold q-mb-md">
             Melangkah Lebih Jauh Bersama Jaringan Alumni Kami
           </h2>
@@ -49,8 +43,8 @@
 }
 
 .alumni-chip {
-  background: var(--edulang-yellow, #FFC42C) !important;
-  color: var(--edulang-black, #2D2D2D) !important;
+  background: var(--edulang-yellow, #ffc42c) !important;
+  color: var(--edulang-black, #2d2d2d) !important;
 }
 
 .alumni-title {

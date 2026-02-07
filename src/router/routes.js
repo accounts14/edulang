@@ -26,6 +26,16 @@ const routes = [
         component: () => import('pages/TipsPage.vue'),
       },
       {
+        path: 'alur-belajar',
+        name: 'AlurBelajarPage',
+        component: () => import('pages/AlurBelajarPage.vue'),
+      },
+      {
+        path: 'produk',
+        name: 'ProdukPage',
+        component: () => import('pages/ProdukPage.vue'),
+      },
+      {
         path: 'contact',
         name: 'ContactPage',
         component: () => import('pages/ContactPage.vue'),

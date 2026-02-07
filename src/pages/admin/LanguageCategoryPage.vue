@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <q-card flat class="rounded-borders-lg shadow-1 q-pa-xl bg-white">
       <div class="row items-center justify-between q-mb-lg">
         <div class="row items-center">
@@ -20,14 +20,14 @@
         <!-- Kartu bahasa -->
         <div class="col-12 col-md-6">
           <div class="row q-col-gutter-md">
-            <div
-              class="col-6"
-              v-for="lang in languageDetails"
-              :key="lang._id"
-            >
+            <div class="col-6" v-for="lang in languageDetails" :key="lang._id">
               <q-card flat class="bg-grey-2 q-pa-md rounded-borders relative-position">
                 <div class="row items-center no-wrap q-mb-sm">
-                  <q-img :src="lang.iconUrl || getFlag(lang.name)" style="width: 28px; border-radius: 4px" class="q-mr-sm" />
+                  <q-img
+                    :src="lang.iconUrl || getFlag(lang.name)"
+                    style="width: 28px; border-radius: 4px"
+                    class="q-mr-sm"
+                  />
                   <div class="text-caption text-weight-bold">{{ lang.name }}</div>
                   <q-badge floating color="blue" size="xs">PRO</q-badge>
                 </div>
@@ -64,7 +64,9 @@
               <circle
                 v-for="(segment, i) in chartSegments"
                 :key="i"
-                cx="21" cy="21" r="15.915"
+                cx="21"
+                cy="21"
+                r="15.915"
                 fill="transparent"
                 :stroke="segment.color"
                 stroke-width="6"
@@ -109,7 +111,7 @@ const confirmDelete = (lang) => {
     title: 'Hapus Kategori',
     message: `Yakin ingin menghapus bahasa "${lang.name}"?`,
     ok: { label: 'Hapus', color: 'negative', unelevated: true },
-    cancel: { label: 'Batal', flat: true }
+    cancel: { label: 'Batal', flat: true },
   }).onOk(async () => {
     try {
       await api.delete(`/language-types/${lang._id}`)
@@ -118,7 +120,7 @@ const confirmDelete = (lang) => {
     } catch (error) {
       $q.notify({
         type: 'negative',
-        message: error.response?.data?.message || 'Gagal menghapus kategori bahasa.'
+        message: error.response?.data?.message || 'Gagal menghapus kategori bahasa.',
       })
     }
   })
@@ -131,7 +133,7 @@ const getFlag = (name) => {
     Japan: 'https://flagcdn.com/jp.svg',
     Germany: 'https://flagcdn.com/de.svg',
     Arab: 'https://flagcdn.com/sa.svg',
-    Indonesian: 'https://flagcdn.com/id.svg'
+    Indonesian: 'https://flagcdn.com/id.svg',
   }
   return flags[name] || 'https://flagcdn.com/un.svg'
 }
@@ -141,19 +143,21 @@ const fetchData = async () => {
     // Bahasa
     const langRes = await api.get('/language-types')
     const langData = langRes.data || {}
-    const langs = Array.isArray(langData.languagetypes) ? langData.languagetypes : (langData.data || [])
+    const langs = Array.isArray(langData.languagetypes)
+      ? langData.languagetypes
+      : langData.data || []
 
     // Packages untuk hitung course per bahasa
     const pkgRes = await api.get('/packages')
     const pkgData = pkgRes.data || {}
-    const packages = Array.isArray(pkgData.packages) ? pkgData.packages : (pkgData.data || [])
+    const packages = Array.isArray(pkgData.packages) ? pkgData.packages : pkgData.data || []
     totalCourses.value = packages.length
 
     languageDetails.value = langs.map((lang) => {
       const langId = lang._id
       const courseCount = packages.filter((p) => {
         const pLang = p.languageType
-        const pLangId = typeof pLang === 'object' && pLang !== null ? (pLang._id || pLang.id) : pLang
+        const pLangId = typeof pLang === 'object' && pLang !== null ? pLang._id || pLang.id : pLang
         return String(pLangId) === String(langId)
       }).length
 
@@ -162,14 +166,14 @@ const fetchData = async () => {
         name: lang.name,
         description: lang.description,
         iconUrl: lang.iconUrl || lang.icon_url || '',
-        courseCount
+        courseCount,
       }
     })
   } catch (error) {
     console.error('[ADMIN KATEGORI] Gagal memuat data', error)
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memuat data kategori bahasa.'
+      message: error.response?.data?.message || 'Gagal memuat data kategori bahasa.',
     })
   }
 }
@@ -179,7 +183,8 @@ const chartSegments = computed(() => {
     return [{ percent: 100, offset: 25, color: '#e0e0e0' }]
   }
 
-  const total = totalCourses.value || languageDetails.value.reduce((acc, l) => acc + l.courseCount, 0) || 1
+  const total =
+    totalCourses.value || languageDetails.value.reduce((acc, l) => acc + l.courseCount, 0) || 1
   const colors = ['#2196F3', '#81C784', '#FFB74D', '#F48FB1', '#FFCC80']
   let currentOffset = 25
   const segments = []
@@ -189,7 +194,7 @@ const chartSegments = computed(() => {
     segments.push({
       percent: parseFloat(percent.toFixed(1)),
       offset: currentOffset,
-      color: colors[i % colors.length]
+      color: colors[i % colors.length],
     })
     currentOffset -= percent
   })
@@ -205,7 +210,10 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-.rounded-borders-lg { border-radius: 24px; }
-.donut { transform: rotate(-90deg); }
+.rounded-borders-lg {
+  border-radius: 24px;
+}
+.donut {
+  transform: rotate(-90deg);
+}
 </style>
-

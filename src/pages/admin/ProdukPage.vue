@@ -1,12 +1,18 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
-    <div class="text-h4 text-weight-bolder text-indigo-10 q-mb-md">Produk</div>
-    <div class="flex flex-center column q-pa-xl">
-      <q-img
-        src="~assets/coming-soon.png"
-        alt="Coming Soon"
-        class="coming-soon-img"
-        fit="contain"
+  <q-page class="q-pa-xl bg-accent flex flex-center">
+    <div class="text-center" style="max-width: 480px">
+      <div class="text-h4 text-weight-bolder text-indigo-10 q-mb-md">Produk</div>
+      <p class="text-body1 text-grey-8 q-mb-xl">
+        Halaman Produk sedang dalam pengembangan. Akan segera hadir!
+      </p>
+      <q-btn
+        unelevated
+        color="primary"
+        text-color="white"
+        no-caps
+        label="Kembali ke Dashboard"
+        class="rounded-borders q-px-xl text-weight-bold"
+        to="/admin/dashboard"
       />
     </div>
   </q-page>
@@ -17,13 +23,11 @@
 </script>
 
 <style scoped>
-.coming-soon-img {
-  max-width: 600px;
-  width: 100%;
-  height: auto;
-}
-
 .text-indigo-10 {
   color: #0d2a5c;
+}
+
+.rounded-borders {
+  border-radius: 8px;
 }
 </style>

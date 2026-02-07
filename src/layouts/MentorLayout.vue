@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="bg-blue-1 font-poppins">
+  <q-layout view="lHh Lpr lFf" class="bg-accent font-poppins">
     <q-header elevated class="bg-white text-dark">
       <q-toolbar>
         <q-btn
@@ -32,22 +32,22 @@
       </div>
 
       <div class="text-center q-mb-xl">
-            <q-avatar size="100px" class="q-mb-md shadow-2">
-    <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
-  </q-avatar>
-  <div class="text-weight-bolder text-subtitle1 text-grey-9">
-    {{ mentorData.name || 'Mentor Edulang' }}
-  </div>
-  <q-chip 
-    dense 
-    color="blue-6" 
-    text-color="white" 
-    class="q-px-md text-weight-bold" 
-    style="text-transform: capitalize"
-  >
-    {{ mentorData.role || 'Mentor' }}
-  </q-chip>
-</div>
+        <q-avatar size="100px" class="q-mb-md shadow-2">
+          <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+        </q-avatar>
+        <div class="text-weight-bolder text-subtitle1 text-grey-9">
+          {{ mentorData.name || 'Mentor Edulang' }}
+        </div>
+        <q-chip
+          dense
+          color="blue-6"
+          text-color="white"
+          class="q-px-md text-weight-bold"
+          style="text-transform: capitalize"
+        >
+          {{ mentorData.role || 'Mentor' }}
+        </q-chip>
+      </div>
 
       <q-list padding>
         <q-item
@@ -150,17 +150,20 @@ watch(
   () => localStorage.getItem('userName'),
   (newName) => {
     mentorData.value.name = newName || ''
-  }
+  },
 )
 watch(
   () => localStorage.getItem('userRole'),
   (newRole) => {
     mentorData.value.role = newRole || 'user'
-  }
+  },
 )
-watch(() => route.path, () => {
-  if ($q.screen.lt.md) leftDrawerOpen.value = false
-})
+watch(
+  () => route.path,
+  () => {
+    if ($q.screen.lt.md) leftDrawerOpen.value = false
+  },
+)
 
 function updateMentorData() {
   mentorData.value.name = localStorage.getItem('userName') || ''
@@ -174,6 +177,11 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
-.font-poppins { font-family: 'Poppins', sans-serif; }
-.rounded-borders { border-radius: 10px; margin-bottom: 4px; }
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+.rounded-borders {
+  border-radius: 10px;
+  margin-bottom: 4px;
+}
 </style>

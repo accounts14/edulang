@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <div class="row justify-between items-center q-mb-xl">
       <div class="col-12 col-md-8">
         <div class="text-orange-9 text-weight-bold">#Artikel</div>

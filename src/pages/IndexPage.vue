@@ -1,6 +1,6 @@
 <!-- src/pages/IndexPage.vue - Landing Page -->
 <template>
-  <q-page class="landing-page bg-white">
+  <q-page class="landing-page bg-accent">
     <div ref="sectionsWrapper" class="landing-sections">
       <section class="landing-section reveal-section" data-reveal>
         <HeroSection />

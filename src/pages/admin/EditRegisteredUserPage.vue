@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-lg bg-blue-1">
+  <q-page class="q-pa-lg bg-accent">
     <div class="text-h5 text-weight-bolder text-indigo-10">Edit Akun Pengguna</div>
     <div class="text-grey-7 q-mt-xs">Kelola data pengguna terdaftar</div>
 

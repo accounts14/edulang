@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <!-- Header Fast Track -->
     <section class="q-mb-xl">
       <div class="row items-center justify-between q-mb-md">

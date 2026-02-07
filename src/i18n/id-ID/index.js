@@ -22,6 +22,22 @@ export default {
   theme: {
     darkMode: 'Dark mode',
   },
+  produk: {
+    title: 'Produk',
+    comingSoon: 'Halaman Produk sedang dalam pengembangan. Akan segera hadir!',
+    backHome: 'Kembali ke Beranda',
+  },
+  alurBelajar: {
+    headline: 'Alur Belajar Bahasa',
+    subheadline: 'Pelajari Bahasa lebih Terpercaya dengan Alur Bahasa',
+    searchPlaceholder: 'Cari Roadmap',
+    searchButton: 'Search',
+    profesionalTitle: 'Profesional',
+    profesionalDesc: 'Cocok Untuk Kamu yang sedang Memulai',
+    pendidikanTitle: 'Pendidikan',
+    pendidikanDesc:
+      'Output pembelajaran diarahkan langsung untuk persiapan kerja atau kuliah ke China, Jepang, Jerman, dll.',
+  },
   subscription: {
     fastTrackTag: 'Kelas Fast-Track',
     fastTrackTitle: 'Course Belajar Unggulan Edulang',
@@ -34,4 +50,3 @@ export default {
     kosongBahasa: 'Belum ada course untuk bahasa ini.',
   },
 }
-

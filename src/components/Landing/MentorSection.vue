@@ -4,18 +4,26 @@
     <div class="container">
       <div class="row items-center q-col-gutter-xl">
         <div class="col-12 col-md-6">
-          <div class="mentor-tag text-weight-bold q-mb-sm">Berbagi Skill, Bangun Dampak Untukmu</div>
+          <div class="mentor-tag text-weight-bold q-mb-sm">
+            Berbagi Skill, Bangun Dampak Untukmu
+          </div>
           <h2 class="mentor-title text-weight-bold q-mb-md">
-            Jadilah Mentor di Edulang <br>
-            Bantu Peserta Melangkah ke <br>
+            Jadilah Mentor di Edulang <br />
+            Bantu Peserta Melangkah ke <br />
             Masa Depan Nyata
           </h2>
           <p class="mentor-desc q-mb-lg">
-            Berkontribusi dalam sistem pembelajaran bahasa berbasis tujuan, sambil membangun peran profesional yang berkelanjutan.
+            Berkontribusi dalam sistem pembelajaran bahasa berbasis tujuan, sambil membangun peran
+            profesional yang berkelanjutan.
           </p>
 
           <q-list class="q-mb-xl">
-            <q-item v-for="(item, index) in mentorBenefits" :key="index" dense class="q-px-none q-mb-sm">
+            <q-item
+              v-for="(item, index) in mentorBenefits"
+              :key="index"
+              dense
+              class="q-px-none q-mb-sm"
+            >
               <q-item-section avatar size="24px">
                 <q-icon name="check_circle" class="mentor-check" />
               </q-item-section>
@@ -45,13 +53,12 @@ const mentorBenefits = [
   'Mendapatkan penghasilan dari sistem pembelajaran terstruktur',
   'Terhubung dengan ekosistem edukasi dan jalur global',
   'Berpeluang terlibat dalam kolaborasi edukasi jangka panjang',
-  'Akses ke sistem, data progres peserta, dan peluang lanjutan'
+  'Akses ke sistem, data progres peserta, dan peluang lanjutan',
 ]
 </script>
 
 <style scoped>
 .mentor-section {
-  background: var(--edulang-white, #F5F7FA);
   padding-top: 2rem;
   padding-bottom: 2rem;
 }

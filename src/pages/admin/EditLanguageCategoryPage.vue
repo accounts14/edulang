@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <div class="row justify-center">
       <div class="col-12 col-md-6">
         <q-card flat class="q-pa-xl bg-white rounded-borders-lg shadow-2">
@@ -12,18 +12,12 @@
                 dense
                 outlined
                 placeholder="Tambahkan Bahasa"
-                :rules="[v => !!v || 'Nama bahasa wajib diisi']"
+                :rules="[(v) => !!v || 'Nama bahasa wajib diisi']"
               />
             </div>
             <div class="q-mb-md">
               <div class="text-caption text-grey-7 q-mb-xs">URL Icon Bahasa (Bendera)</div>
-              <q-input
-                v-model="form.iconUrl"
-                dense
-                outlined
-                placeholder="https://..."
-                type="url"
-              />
+              <q-input v-model="form.iconUrl" dense outlined placeholder="https://..." type="url" />
               <div class="text-caption text-grey-6 q-mt-xs">Contoh: https://flagcdn.com/id.svg</div>
             </div>
             <div class="q-mb-lg">
@@ -84,7 +78,7 @@ const submitting = ref(false)
 const form = reactive({
   name: '',
   iconUrl: '',
-  description: ''
+  description: '',
 })
 
 const handleCancel = () => {
@@ -101,7 +95,7 @@ const fetchDetail = async () => {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memuat detail kategori bahasa.'
+      message: error.response?.data?.message || 'Gagal memuat detail kategori bahasa.',
     })
     handleCancel()
   }
@@ -114,7 +108,7 @@ const handleSubmit = async () => {
     submitting.value = true
     const payload = {
       name: form.name,
-      description: form.description
+      description: form.description,
     }
     if (form.iconUrl?.trim()) payload.iconUrl = form.iconUrl.trim()
 
@@ -125,7 +119,7 @@ const handleSubmit = async () => {
   } catch (error) {
     $q.notify({
       type: 'negative',
-      message: error.response?.data?.message || 'Gagal memperbarui kategori bahasa.'
+      message: error.response?.data?.message || 'Gagal memperbarui kategori bahasa.',
     })
   } finally {
     submitting.value = false
@@ -134,6 +128,7 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-.rounded-borders-lg { border-radius: 24px; }
+.rounded-borders-lg {
+  border-radius: 24px;
+}
 </style>
-

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <div class="q-mb-xl">
       <div class="text-h4 text-weight-bolder text-indigo-10">Kelola Akun Pengguna Terdaftar</div>
       <div class="text-subtitle1 text-grey-7">

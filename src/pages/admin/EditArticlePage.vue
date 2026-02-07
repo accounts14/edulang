@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-lg bg-blue-1">
+  <q-page class="q-pa-lg bg-accent">
     <div class="row items-start q-col-gutter-xl">
       <div class="col-12 col-md-10 col-lg-9">
         <div class="text-h5 text-weight-bolder text-indigo-10">Edit Artikel</div>
