@@ -1,7 +1,7 @@
 <!-- src/components/landing/TestimonialSection.vue -->
 <template>
-  <section class="bg-primary text-white q-py-xl overflow-hidden" style="min-height: 520px; display: flex; align-items: center;">
-    <div class="container">
+  <section class="testimonial-section-full bg-primary text-white">
+    <div class="container testimonial-section-inner">
       <div class="row items-center q-col-gutter-xl">
         <div class="col-12 col-md-5">
           <div class="text-warning text-weight-bold q-mb-sm">
@@ -11,11 +11,25 @@
             Temukan Standar Baru dalam Berkarier
           </h2>
           <p class="text-white opacity-80 q-mb-xl text-body1">
-            Bergabunglah dengan ekosistem belajar yang menjembatani ambisi Anda menuju karier di kancah global.
+            Bergabunglah dengan ekosistem belajar yang menjembatani ambisi Anda menuju karier di
+            kancah global.
           </p>
           <div class="q-gutter-md">
-            <q-btn unelevated rounded color="warning" text-color="dark" label="Alur Belajar" class="q-px-xl q-py-md text-weight-bold" />
-            <q-btn outline rounded color="white" label="Update Student" class="q-px-xl q-py-md text-weight-bold" />
+            <q-btn
+              unelevated
+              rounded
+              color="warning"
+              text-color="dark"
+              label="Alur Belajar"
+              class="q-px-xl q-py-md text-weight-bold"
+            />
+            <q-btn
+              outline
+              rounded
+              color="white"
+              label="Update Student"
+              class="q-px-xl q-py-md text-weight-bold"
+            />
           </div>
         </div>
 
@@ -23,23 +37,39 @@
           <div class="testimonial-grid-wrapper">
             <div class="marquee-column">
               <div class="marquee-vertical down">
-                <div v-for="n in 2" :key="'group1-'+n" class="marquee-content">
-                  <q-card v-for="(testi, i) in testimonials.slice(0, 3)" :key="i" class="q-mb-lg testimonial-card">
+                <div v-for="n in 2" :key="'group1-' + n" class="marquee-content">
+                  <q-card
+                    v-for="(testi, i) in testimonials.slice(0, 3)"
+                    :key="i"
+                    class="q-mb-lg testimonial-card"
+                  >
                     <q-card-section class="q-pa-lg">
                       <div class="row items-center no-wrap q-mb-md">
                         <q-avatar size="45px" class="q-mr-md">
                           <img :src="testi.avatar" />
                         </q-avatar>
                         <div class="column">
-                          <span class="text-weight-bold text-dark text-subtitle1">{{ testi.name }}</span>
-                          <q-badge color="blue-1" text-color="primary" class="q-py-xs q-px-sm text-weight-bold">
+                          <span class="text-weight-bold text-dark text-subtitle1">{{
+                            testi.name
+                          }}</span>
+                          <q-badge
+                            color="blue-1"
+                            text-color="primary"
+                            class="q-py-xs q-px-sm text-weight-bold"
+                          >
                             {{ testi.course }}
                           </q-badge>
                         </div>
                       </div>
                       <div class="text-weight-bold text-dark q-mb-xs">{{ testi.title }}</div>
                       <div class="text-body2 text-grey-8 line-height-1-5">{{ testi.comment }}</div>
-                      <q-rating :model-value="5" readonly size="16px" color="orange" class="q-mt-md" />
+                      <q-rating
+                        :model-value="5"
+                        readonly
+                        size="16px"
+                        color="orange"
+                        class="q-mt-md"
+                      />
                     </q-card-section>
                   </q-card>
                 </div>
@@ -48,23 +78,39 @@
 
             <div class="marquee-column">
               <div class="marquee-vertical up">
-                <div v-for="n in 2" :key="'group2-'+n" class="marquee-content">
-                  <q-card v-for="(testi, i) in testimonials.slice(3, 6)" :key="i" class="q-mb-lg testimonial-card">
+                <div v-for="n in 2" :key="'group2-' + n" class="marquee-content">
+                  <q-card
+                    v-for="(testi, i) in testimonials.slice(3, 6)"
+                    :key="i"
+                    class="q-mb-lg testimonial-card"
+                  >
                     <q-card-section class="q-pa-lg">
                       <div class="row items-center no-wrap q-mb-md">
                         <q-avatar size="45px" class="q-mr-md">
                           <img :src="testi.avatar" />
                         </q-avatar>
                         <div class="column">
-                          <span class="text-weight-bold text-dark text-subtitle1">{{ testi.name }}</span>
-                          <q-badge color="blue-1" text-color="primary" class="q-py-xs q-px-sm text-weight-bold">
+                          <span class="text-weight-bold text-dark text-subtitle1">{{
+                            testi.name
+                          }}</span>
+                          <q-badge
+                            color="blue-1"
+                            text-color="primary"
+                            class="q-py-xs q-px-sm text-weight-bold"
+                          >
                             {{ testi.course }}
                           </q-badge>
                         </div>
                       </div>
                       <div class="text-weight-bold text-dark q-mb-xs">{{ testi.title }}</div>
                       <div class="text-body2 text-grey-8 line-height-1-5">{{ testi.comment }}</div>
-                      <q-rating :model-value="5" readonly size="16px" color="orange" class="q-mt-md" />
+                      <q-rating
+                        :model-value="5"
+                        readonly
+                        size="16px"
+                        color="orange"
+                        class="q-mt-md"
+                      />
                     </q-card-section>
                   </q-card>
                 </div>
@@ -79,12 +125,49 @@
 
 <script setup>
 const testimonials = [
-  { name: 'Satrial lip', course: 'Japan Course', title: 'Comprehensive Materials', comment: 'Active Mandarin Indonesia provides a premium learning experience with advanced audio-visual support.', avatar: 'https://cdn.quasar.dev/img/avatar1.jpg' },
-  { name: 'Susanty', course: 'Chinese Course', title: 'Easy to understand', comment: 'Great learning experience with patient teachers, starting from the basics!', avatar: 'https://cdn.quasar.dev/img/avatar2.jpg' },
-  { name: 'Asyrofuddin', course: 'English Course', title: 'High Quality Tutors', comment: 'I am very satisfied learning here because the tutors are friendly and communicative.', avatar: 'https://cdn.quasar.dev/img/avatar3.jpg' },
-  { name: 'Rina Wijaya', course: 'Germany Course', title: 'Best Experience', comment: 'Kurikulumnya sangat dinamis dan selalu update dengan kebutuhan industri.', avatar: 'https://cdn.quasar.dev/img/avatar4.jpg' },
-  { name: 'Budi Santoso', course: 'TOEFL Prep', title: 'Highly Recommended', comment: 'Materi pembelajarannya terstruktur dan sangat membantu persiapan tes saya.', avatar: 'https://cdn.quasar.dev/img/avatar5.jpg' },
-  { name: 'Lia Amina', course: 'IELTS Prep', title: 'Excellent Support', comment: 'Dukungan mentor sangat luar biasa dalam membimbing setiap progres saya.', avatar: 'https://cdn.quasar.dev/img/avatar6.jpg' }
+  {
+    name: 'Satrial lip',
+    course: 'Japan Course',
+    title: 'Comprehensive Materials',
+    comment:
+      'Active Mandarin Indonesia provides a premium learning experience with advanced audio-visual support.',
+    avatar: 'https://cdn.quasar.dev/img/avatar1.jpg',
+  },
+  {
+    name: 'Susanty',
+    course: 'Chinese Course',
+    title: 'Easy to understand',
+    comment: 'Great learning experience with patient teachers, starting from the basics!',
+    avatar: 'https://cdn.quasar.dev/img/avatar2.jpg',
+  },
+  {
+    name: 'Asyrofuddin',
+    course: 'English Course',
+    title: 'High Quality Tutors',
+    comment: 'I am very satisfied learning here because the tutors are friendly and communicative.',
+    avatar: 'https://cdn.quasar.dev/img/avatar3.jpg',
+  },
+  {
+    name: 'Rina Wijaya',
+    course: 'Germany Course',
+    title: 'Best Experience',
+    comment: 'Kurikulumnya sangat dinamis dan selalu update dengan kebutuhan industri.',
+    avatar: 'https://cdn.quasar.dev/img/avatar4.jpg',
+  },
+  {
+    name: 'Budi Santoso',
+    course: 'TOEFL Prep',
+    title: 'Highly Recommended',
+    comment: 'Materi pembelajarannya terstruktur dan sangat membantu persiapan tes saya.',
+    avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+  },
+  {
+    name: 'Lia Amina',
+    course: 'IELTS Prep',
+    title: 'Excellent Support',
+    comment: 'Dukungan mentor sangat luar biasa dalam membimbing setiap progres saya.',
+    avatar: 'https://cdn.quasar.dev/img/avatar6.jpg',
+  },
 ]
 </script>
 
@@ -100,11 +183,24 @@ const testimonials = [
   padding-right: 16px;
 }
 
+.testimonial-section-full {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  overflow: hidden;
+}
+
+.testimonial-section-inner {
+  width: 100%;
+}
+
 .testimonial-grid-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  height: 520px;
+  height: 560px;
   overflow: hidden;
 }
 
@@ -131,13 +227,21 @@ const testimonials = [
 }
 
 @keyframes scrollDown {
-  0% { transform: translateY(-50%); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes scrollUp {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
 }
 
 .testimonial-card {
@@ -177,6 +281,11 @@ const testimonials = [
 }
 
 @media (max-width: 600px) {
+  .testimonial-section-full {
+    min-height: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
   .testimonial-grid-wrapper {
     grid-template-columns: 1fr;
     height: 400px;

@@ -35,22 +35,6 @@
             <q-item clickable v-ripple dense @click="onDrawerAllCourses">
               <q-item-section>{{ $t('nav.allCourses') }}</q-item-section>
             </q-item>
-            <q-item class="text-caption text-weight-bold q-px-md q-pt-sm">
-              <q-item-section>{{ $t('nav.semuaBahasaTerdaftar') }}</q-item-section>
-            </q-item>
-            <q-item
-              v-for="lang in headerLanguages"
-              :key="lang.id"
-              clickable
-              v-ripple
-              dense
-              @click="onDrawerKelasBahasa(lang)"
-            >
-              <q-item-section v-if="lang.iconUrl" avatar>
-                <q-img :src="lang.iconUrl" ratio="1" class="language-flag-drawer" />
-              </q-item-section>
-              <q-item-section>{{ lang.name }}</q-item-section>
-            </q-item>
           </q-expansion-item>
           <q-item clickable v-ripple dense @click="onDrawerStudyAbroad">
             <q-item-section>{{ $t('nav.studyAbroad') }}</q-item-section>
@@ -200,25 +184,6 @@
                           <div class="program-bwa-card-sub">{{ $t('nav.allCoursesSub') }}</div>
                         </div>
                       </div>
-                      <div class="program-bwa-section">
-                        <div class="program-bwa-section-label">
-                          {{ $t('nav.semuaBahasaTerdaftar') }}
-                        </div>
-                        <div
-                          v-for="lang in headerLanguages"
-                          :key="lang.id"
-                          class="program-bwa-lang row items-center cursor-pointer"
-                          @click="onProgramLanguage(lang)"
-                        >
-                          <q-img
-                            v-if="lang.iconUrl"
-                            :src="lang.iconUrl"
-                            ratio="1"
-                            class="program-bwa-flag"
-                          />
-                          <span>{{ lang.name }}</span>
-                        </div>
-                      </div>
                       <div class="program-bwa-card cursor-pointer" @click="onProgramStudyAbroad">
                         <div class="program-bwa-card-icon">
                           <q-icon name="flight_takeoff" size="28px" color="primary" />
@@ -298,13 +263,7 @@
                       <q-item-section avatar>
                         <q-icon name="home" />
                       </q-item-section>
-                      <q-item-section>Home</q-item-section>
-                    </q-item>
-                    <q-item clickable v-close-popup @click="$router.push('/profile')">
-                      <q-item-section avatar>
-                        <q-icon name="person" />
-                      </q-item-section>
-                      <q-item-section>Profil Saya</q-item-section>
+                      <q-item-section>Dashboard</q-item-section>
                     </q-item>
                     <q-separator />
                     <q-item clickable v-close-popup @click="handleLogout">
@@ -336,17 +295,20 @@
       <footer :class="[isDark ? 'bg-dark text-white' : 'bg-white text-dark', 'footer-main']">
         <div class="container footer-content">
           <div class="row q-col-gutter-xl">
-            <!-- Brand + tagline -->
+            <!-- Brand + PT + Alamat -->
             <div class="col-12 col-md-5 col-lg-4">
               <img src="~assets/Edulang.png" alt="Edulang" class="footer-logo q-mb-md" />
-              <p class="footer-tagline text-body2">
-                {{ $t('footer.tagline') }}
+              <div class="footer-pt text-weight-bold text-body1 q-mb-xs">
+                {{ $t('footer.ptName') }}
+              </div>
+              <p class="footer-alamat text-body2 q-ma-none">
+                {{ $t('footer.alamatValue') }}
               </p>
             </div>
 
-            <!-- Kontak -->
+            <!-- Kontak & Media Sosial -->
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="footer-heading q-mb-md">{{ $t('footer.kontak') }}</div>
+              <div class="footer-heading q-mb-md">{{ $t('footer.kontakMediaSosial') }}</div>
               <ul class="footer-list">
                 <li>
                   <a
@@ -396,7 +358,6 @@
             <!-- Program - Bahasa Yang Tersedia (dari endpoint) -->
             <div class="col-6 col-sm-4 col-md-2">
               <div class="footer-heading q-mb-md">{{ $t('footer.program') }}</div>
-              <div class="footer-heading-sub q-mb-sm">{{ $t('footer.bahasaTersedia') }}</div>
               <ul class="footer-list">
                 <li v-for="lang in headerLanguages" :key="lang.id">
                   <router-link
@@ -418,9 +379,9 @@
               </ul>
             </div>
 
-            <!-- Panduan -->
+            <!-- Panduan & Insight -->
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="footer-heading q-mb-md">{{ $t('footer.panduan') }}</div>
+              <div class="footer-heading q-mb-md">{{ $t('footer.panduanInsight') }}</div>
               <ul class="footer-list">
                 <li>
                   <router-link to="/alur-belajar" class="footer-link">{{
@@ -430,18 +391,6 @@
                 <li>
                   <a href="/#faq" class="footer-link">{{ $t('footer.faq') }}</a>
                 </li>
-                <li>
-                  <router-link to="/contact" class="footer-link">{{
-                    $t('footer.konsultasi')
-                  }}</router-link>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Insight -->
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="footer-heading q-mb-md">{{ $t('footer.insight') }}</div>
-              <ul class="footer-list">
                 <li>
                   <router-link to="/tips" class="footer-link">{{
                     $t('footer.artikelTips')
@@ -456,7 +405,7 @@
               </ul>
             </div>
 
-            <!-- Legal & Trust -->
+            <!-- Legal & Trust (dibawah Panduan & Insight) -->
             <div class="col-6 col-sm-4 col-md-2">
               <div class="footer-heading q-mb-md">{{ $t('footer.legalTrust') }}</div>
               <ul class="footer-list">
@@ -476,6 +425,16 @@
                   }}</a>
                 </li>
               </ul>
+            </div>
+          </div>
+
+          <!-- Metode Pembayaran (icon dari public/icon-trans) -->
+          <div class="footer-payment q-mt-xl q-pt-xl">
+            <div class="footer-heading q-mb-md">{{ $t('footer.metodePembayaran') }}</div>
+            <div class="footer-payment-icons">
+              <div v-for="icon in paymentIcons" :key="icon.name" class="footer-payment-icon-wrap">
+                <img :src="icon.src" :alt="icon.name" class="footer-payment-icon" />
+              </div>
             </div>
           </div>
         </div>
@@ -518,6 +477,16 @@ const headerLanguages = computed(() =>
     iconUrl: lang.iconUrl || lang.icon_url || '',
   })),
 )
+
+// Icon metode pembayaran (public/icon-trans)
+const paymentIcons = [
+  { name: 'BRI', src: '/icon-trans/BANK_BRI_logo.svg.png' },
+  { name: 'Mandiri', src: '/icon-trans/Bank_Mandiri_logo_2016.svg.png' },
+  { name: 'CIMB Niaga', src: '/icon-trans/CIMB_Niaga_logo.svg.png' },
+  { name: 'Gopay', src: '/icon-trans/Gopay_logo.svg.png' },
+  { name: 'Permata Bank', src: '/icon-trans/Permata_Bank_(2024).svg.png' },
+  { name: 'QRIS', src: '/icon-trans/QRIS_logo.svg.png' },
+]
 
 // Theme (Dark mode)
 const isDark = ref(Dark.isActive)
@@ -579,21 +548,6 @@ const fetchLanguages = async () => {
   }
 }
 
-const goToBerlanggananByLanguage = (lang) => {
-  router.push({
-    path: '/berlangganan',
-    query: {
-      languageId: lang.id,
-      languageName: lang.name,
-    },
-  })
-}
-
-const onDrawerKelasBahasa = (lang) => {
-  goToBerlanggananByLanguage(lang)
-  leftDrawerOpen.value = false
-}
-
 const onDrawerAlurBelajar = () => {
   router.push('/alur-belajar')
   leftDrawerOpen.value = false
@@ -635,11 +589,6 @@ const closeProgramMenu = () => {
 
 const onProgramAllCourses = () => {
   goToBerlangganan()
-  closeProgramMenu()
-}
-
-const onProgramLanguage = (lang) => {
-  goToBerlanggananByLanguage(lang)
   closeProgramMenu()
 }
 
@@ -778,6 +727,43 @@ a {
   opacity: 0.8;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+.footer-pt {
+  color: inherit;
+}
+.footer-alamat {
+  color: inherit;
+  opacity: 0.9;
+  line-height: 1.6;
+  max-width: 320px;
+}
+.footer-payment {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.bg-white .footer-payment {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+.footer-payment-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.footer-payment-icon-wrap {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  box-sizing: border-box;
+}
+.footer-payment-icon {
+  height: 24px;
+  width: auto;
+  max-width: 80px;
+  object-fit: contain;
 }
 .footer-list {
   list-style: none;

@@ -201,44 +201,47 @@ async function handleBuy() {
 
   processing.value = true
   try {
-    const id = route.params.id
-
-    // Sesuai pola ERD/endpoint: buat transaksi untuk paket tertentu.
-    const payload = {
-      packageId: id,
-      name: buyer.value.name,
-      email: buyer.value.email,
+    const packageId = route.params.id
+    if (!packageId) {
+      $q.notify({ type: 'negative', message: 'ID package tidak ditemukan.' })
+      return
     }
 
+    // POST sesuai endpoint: body { package: "<packageId>" }
+    const payload = { package: packageId }
     const res = await api.post('/transactions', payload)
     const data = res.data || {}
 
-    const redirectUrl =
-      data.redirectUrl ||
-      data.redirect_url ||
-      data.paymentUrl ||
-      data.transaction?.redirect_url ||
-      data.transaction?.paymentUrl
+    if (!data.success) {
+      throw new Error(data.message || 'Transaksi gagal.')
+    }
 
-    const snapToken = data.snapToken || data.token || data.snap_token
-
+    const redirectUrl = data.redirectUrl || data.redirect_url
     if (redirectUrl) {
+      if (data.message) {
+        $q.notify({ type: 'positive', message: data.message })
+      }
       window.location.href = redirectUrl
       return
     }
 
-    if (snapToken && window.snap && typeof window.snap.pay === 'function') {
+    const snapToken = data.snapToken || data.snap_token
+    if (snapToken && typeof window.snap !== 'undefined' && typeof window.snap.pay === 'function') {
+      if (data.message) {
+        $q.notify({ type: 'positive', message: data.message })
+      }
       window.snap.pay(snapToken)
       return
     }
 
-    throw new Error('Respons transaksi tidak berisi URL pembayaran atau snap token.')
+    throw new Error('Respons tidak berisi redirectUrl atau snapToken.')
   } catch (error) {
     console.error('[BuyCourse] transaksi gagal', error)
     $q.notify({
       type: 'negative',
       message:
         error.response?.data?.message ||
+        error.message ||
         'Gagal memulai pembayaran. Silakan coba lagi atau hubungi admin.',
     })
   } finally {

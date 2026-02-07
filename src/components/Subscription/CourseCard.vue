@@ -1,37 +1,55 @@
 <template>
-  <q-card flat bordered class="rounded-borders-16 bg-white course-card cursor-pointer" @click="goToDetail">
+  <q-card
+    flat
+    bordered
+    class="rounded-borders-16 bg-white course-card cursor-pointer"
+    @click="goToDetail"
+  >
     <q-card-section class="q-pa-none">
-      <q-img :src="thumbnailSrc" :ratio="16 / 9" class="rounded-borders-16-top" />
+      <div class="thumb-wrap rounded-borders-16-top">
+        <IntroVideoThumbnail :course="course" />
+        <div class="level-chip-overlay">
+          <q-chip
+            dense
+            color="white"
+            text-color="dark"
+            icon="signal_cellular_alt"
+            class="text-weight-bold"
+          >
+            {{ levelInfo }}
+          </q-chip>
+        </div>
+      </div>
     </q-card-section>
     <q-card-section>
-      <div class="text-caption text-orange-9 text-weight-bold q-mb-xs">
-        {{ levelInfo }}
-      </div>
-      <div class="text-subtitle1 text-weight-bolder q-mb-xs">
-        {{ title }}
-      </div>
-      <div class="text-caption text-grey-7 q-mb-sm">
-        {{ meetingInfo }}
+      <div class="text-caption text-orange-9 text-weight-bold q-mb-xs">{{ levelInfo }}</div>
+      <div class="text-h6 text-weight-bold ellipsis text-dark q-mb-xs">{{ title }}</div>
+      <div class="text-caption text-grey-7 ellipsis-2-lines q-mb-sm">{{ descriptionText }}</div>
+
+      <div class="row items-center q-mb-md">
+        <q-avatar size="24px" class="q-mr-sm">
+          <img src="https://cdn.quasar.dev/img/avatar.png" alt="" />
+        </q-avatar>
+        <div class="text-caption text-weight-medium text-grey-9">
+          {{ mentorName }}
+        </div>
       </div>
 
-      <div class="row items-center justify-between q-mt-md">
-        <div>
-          <div class="text-caption text-grey-6">Investasi mulai dari</div>
-          <div class="text-weight-bolder text-primary text-subtitle1">
-            {{ priceDisplay }}
-          </div>
+      <div class="row items-center justify-between">
+        <div class="price-text text-weight-bold">{{ priceDisplay }}</div>
+        <div class="row items-center rating-text">
+          <q-icon name="star" size="18px" />
+          <span class="q-ml-xs text-weight-medium">(4.8)</span>
         </div>
-        <q-btn
-          unelevated
-          dense
-          color="warning"
-          text-color="black"
-          no-caps
-          class="text-weight-bold q-px-md"
-          label="Daftar Sekarang"
-          @click.stop="goToDetail"
-        />
       </div>
+
+      <q-btn
+        unelevated
+        class="btn-yellow full-width text-weight-bold no-caps q-mt-md"
+        label="Daftar Sekarang"
+        style="border-radius: 8px"
+        @click.stop="goToDetail"
+      />
     </q-card-section>
   </q-card>
 </template>
@@ -39,6 +57,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import IntroVideoThumbnail from '../Common/IntroVideoThumbnail.vue'
 
 const props = defineProps({
   course: {
@@ -48,40 +67,6 @@ const props = defineProps({
 })
 
 const router = useRouter()
-
-// Mapping bahasa ke thumbnail
-const languageThumbnails = {
-  'Bahasa Arab': 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=800&q=80',
-  'Bahasa German': 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&q=80',
-  'Bahasa Inggris': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80',
-  'Bahasa Inggris (British)':
-    'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=800&q=80',
-  'Bahasa Jepang': 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=800&q=80',
-  'Bahasa Korea': 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=800&q=80',
-  'Bahasa Mandarin': 'https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=800&q=80',
-  'Bahasa Mandarin (Taiwan)':
-    'https://images.unsplash.com/photo-1590419690008-905895e8fe0d?w=800&q=80',
-}
-
-const thumbnailSrc = computed(() => {
-  // Prioritas: 1. Thumbnail dari course, 2. Berdasarkan nama bahasa, 3. Default
-  if (props.course.thumbnail || props.course.imageUrl) {
-    return props.course.thumbnail || props.course.imageUrl
-  }
-
-  // Cek apakah ada nama course/title yang cocok dengan mapping bahasa
-  const courseName = props.course.name || props.course.title || ''
-
-  // Cari thumbnail berdasarkan nama bahasa
-  const matchedThumbnail = languageThumbnails[courseName]
-
-  if (matchedThumbnail) {
-    return matchedThumbnail
-  }
-
-  // Fallback ke gambar default
-  return 'https://cdn.quasar.dev/img/mountains.jpg'
-})
 
 const title = computed(() => props.course.name || props.course.title || 'Nama Course')
 
@@ -99,11 +84,17 @@ const priceDisplay = computed(() => {
   }
 })
 
-const meetingInfo = computed(() => {
+const descriptionText = computed(() => {
+  const desc = props.course.description
+  if (desc) return desc
   const total = props.course.totalMeeting || props.course.total_meeting || props.course.meetingCount
   if (!total) return 'Jadwal menyesuaikan'
   return `${total} Pertemuan`
 })
+
+const mentorName = computed(
+  () => props.course.mentor?.name || props.course.mentor?.email || 'Mentor Edulang',
+)
 
 const levelInfo = computed(() => props.course.level || props.course.levelName || 'Semua level')
 
@@ -122,7 +113,45 @@ const goToDetail = () => {
 .rounded-borders-16-top {
   border-radius: 16px 16px 0 0;
 }
-
+.thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+  display: block;
+}
+.thumb-wrap :deep(.intro-video-thumbnail) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.level-chip-overlay {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 1;
+}
+.price-text {
+  color: var(--edulang-blue, #1976d2);
+  font-size: 1.1rem;
+}
+.rating-text {
+  color: var(--edulang-yellow, #ffc107);
+}
+.rating-text span {
+  color: var(--edulang-black, #212121);
+  opacity: 0.8;
+}
+.btn-yellow {
+  background: var(--edulang-yellow, #ffc42c) !important;
+  color: var(--edulang-black, #212121) !important;
+}
 .course-card {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }

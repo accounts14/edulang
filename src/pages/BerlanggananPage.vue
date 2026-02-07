@@ -118,11 +118,27 @@ const fetchData = async () => {
       : langData.data || []
     languages.value = langs
 
-    // Packages / Course
+    // Packages / Course - GET /packages sudah return introVideoUrl, title, dll
     const pkgRes = await api.get('/packages')
     const pkgData = pkgRes.data || {}
-    const list = Array.isArray(pkgData.packages) ? pkgData.packages : pkgData.data || []
-    courses.value = list
+    const list = Array.isArray(pkgData.packages)
+      ? pkgData.packages
+      : Array.isArray(pkgData.data)
+        ? pkgData.data
+        : []
+    if (list.length === 0) {
+      courses.value = []
+      return
+    }
+    const results = await Promise.allSettled(list.map((p) => api.get(`/packages/${p._id || p.id}`)))
+    const fullPackages = results.map((r, i) => {
+      if (r.status === 'fulfilled' && r.value?.data?.package) {
+        const pkg = r.value.data.package
+        return { ...list[i], ...pkg, _id: pkg._id ?? list[i]._id }
+      }
+      return list[i]
+    })
+    courses.value = fullPackages
   } catch (error) {
     console.error('[BERLANGGANAN] Gagal memuat data', error)
     $q.notify({

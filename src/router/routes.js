@@ -44,16 +44,41 @@ const routes = [
   },
 
   // === HALAMAN DASHBOARD BERDASARKAN ROLE ===
-  // User Dashboard (untuk role 'user')
+  // User Dashboard (layout seperti MentorLayout, bg white dari app/quasar)
   {
     path: '/dashboard',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/UserLayout.vue'),
+    meta: { requiresAuth: true, allowedRoles: ['user'] },
     children: [
       {
         path: '',
         name: 'UserDashboard',
         component: () => import('pages/user/UserDashboard.vue'),
-        meta: { requiresAuth: true, allowedRoles: ['user'] },
+      },
+      {
+        path: 'langganan',
+        name: 'UserLangganan',
+        component: () => import('pages/user/UserLanggananPage.vue'),
+      },
+      {
+        path: 'progres',
+        name: 'UserProgres',
+        component: () => import('pages/user/UserProgresPage.vue'),
+      },
+      {
+        path: 'notifikasi',
+        name: 'UserNotifikasi',
+        component: () => import('pages/user/UserNotifikasiPage.vue'),
+      },
+      {
+        path: 'transaksi',
+        name: 'UserTransaksi',
+        component: () => import('pages/user/UserTransaksiPage.vue'),
+      },
+      {
+        path: 'setting',
+        name: 'UserSetting',
+        component: () => import('pages/user/UserSettingPage.vue'),
       },
     ],
   },
