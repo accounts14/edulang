@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <div v-if="loading" class="text-center q-pa-xl">
       <q-spinner-dots color="primary" size="40px" />
     </div>
@@ -41,9 +41,7 @@
 
         <!-- Similar courses -->
         <q-card flat bordered class="rounded-borders-16 bg-white q-pa-lg q-mt-lg">
-          <div class="text-caption text-orange-9 text-weight-bold">
-            Similar Program
-          </div>
+          <div class="text-caption text-orange-9 text-weight-bold">Similar Program</div>
           <div class="text-h6 text-weight-bolder text-indigo-10 q-mb-md">
             Program Unggulan Lainnya
           </div>
@@ -53,11 +51,7 @@
           </div>
 
           <div v-else class="row q-col-gutter-md">
-            <div
-              v-for="item in similarCourses"
-              :key="item._id || item.id"
-              class="col-12 col-md-4"
-            >
+            <div v-for="item in similarCourses" :key="item._id || item.id" class="col-12 col-md-4">
               <CourseCard :course="item" />
             </div>
           </div>
@@ -141,7 +135,8 @@ const totalMeetingLabel = computed(() => {
 })
 
 const heroImage = computed(
-  () => course.value?.imageUrl || course.value?.thumbnail || 'https://cdn.quasar.dev/img/parallax2.jpg',
+  () =>
+    course.value?.imageUrl || course.value?.thumbnail || 'https://cdn.quasar.dev/img/parallax2.jpg',
 )
 
 const goBack = () => {
@@ -206,4 +201,3 @@ onMounted(() => {
   top: 96px;
 }
 </style>
-

@@ -16,54 +16,48 @@
           </q-item-section>
         </q-item>
 
-        <!-- Navigasi Utama -->
+        <!-- Navigasi Utama: sama urutan seperti header -->
         <q-item clickable v-ripple @click="$router.push('/')" class="text-weight-bold text-primary">
           <q-item-section>{{ $t('nav.home') }}</q-item-section>
         </q-item>
 
-        <!-- Kelas Bahasa: dropdown bahasa (sama seperti desktop) -->
-        <q-expansion-item :label="$t('nav.kelasBahasa')" icon="menu_book" class="text-primary">
-          <q-item
-            v-for="lang in headerLanguages"
-            :key="lang.id"
-            clickable
-            v-ripple
-            dense
-            @click="onDrawerKelasBahasa(lang)"
-          >
-            <q-item-section v-if="lang.iconUrl" avatar>
-              <q-img :src="lang.iconUrl" ratio="1" class="language-flag-drawer" />
-            </q-item-section>
-            <q-item-section>{{ lang.name }}</q-item-section>
-          </q-item>
-          <q-item
-            v-if="!headerLanguages.length"
-            clickable
-            v-ripple
-            dense
-            @click="onDrawerBerlangganan()"
-          >
-            <q-item-section>{{ $t('nav.berlangganan') }}</q-item-section>
+        <q-item clickable v-ripple @click="onDrawerAlurBelajar">
+          <q-item-section>{{ $t('nav.learningPath') }}</q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple @click="onDrawerLangganan">
+          <q-item-section>{{ $t('nav.langganan') }}</q-item-section>
+        </q-item>
+
+        <!-- PROGRAM: Video courses (All + bahasa) + Study abroad -->
+        <q-expansion-item :label="$t('nav.program')" icon="school" class="text-primary">
+          <q-expansion-item :label="$t('nav.videoCourses')" header-class="text-weight-medium">
+            <q-item clickable v-ripple dense @click="onDrawerAllCourses">
+              <q-item-section>{{ $t('nav.allCourses') }}</q-item-section>
+            </q-item>
+            <q-item class="text-caption text-weight-bold q-px-md q-pt-sm">
+              <q-item-section>{{ $t('nav.semuaBahasaTerdaftar') }}</q-item-section>
+            </q-item>
+            <q-item
+              v-for="lang in headerLanguages"
+              :key="lang.id"
+              clickable
+              v-ripple
+              dense
+              @click="onDrawerKelasBahasa(lang)"
+            >
+              <q-item-section v-if="lang.iconUrl" avatar>
+                <q-img :src="lang.iconUrl" ratio="1" class="language-flag-drawer" />
+              </q-item-section>
+              <q-item-section>{{ lang.name }}</q-item-section>
+            </q-item>
+          </q-expansion-item>
+          <q-item clickable v-ripple dense @click="onDrawerStudyAbroad">
+            <q-item-section>{{ $t('nav.studyAbroad') }}</q-item-section>
           </q-item>
         </q-expansion-item>
 
-        <q-item clickable v-ripple @click="$router.push('/berlangganan')">
-          <q-item-section>{{ $t('nav.berlangganan') }}</q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple @click="$router.push('/metode-belajar')">
-          <q-item-section>{{ $t('nav.metodeBelajar') }}</q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple @click="$router.push('/alur-belajar')">
-          <q-item-section>{{ $t('nav.alurBelajar') }}</q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple @click="$router.push('/produk')">
-          <q-item-section>{{ $t('nav.produk') }}</q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple @click="$router.push('/tips')">
+        <q-item clickable v-ripple @click="onDrawerTips">
           <q-item-section>{{ $t('nav.tipsInfo') }}</q-item-section>
         </q-item>
 
@@ -154,50 +148,95 @@
           <q-space />
 
           <div class="gt-md row items-center q-gutter-x-lg text-weight-medium">
-            <!-- Kelas Bahasa dengan dropdown -->
-            <q-btn flat no-caps :label="$t('nav.kelasBahasa')" class="nav-btn text-primary">
-              <q-menu anchor="bottom middle" self="top middle">
-                <q-list style="min-width: 220px">
-                  <q-item
-                    v-for="lang in headerLanguages"
-                    :key="lang.id"
-                    clickable
-                    v-close-popup
-                    @click="goToBerlanggananByLanguage(lang)"
-                  >
-                    <q-item-section v-if="lang.iconUrl" avatar>
-                      <q-img :src="lang.iconUrl" ratio="1" class="language-flag" />
-                    </q-item-section>
-                    <q-item-section class="text-body2">
-                      {{ lang.name }}
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
-
+            <!-- Learning path → Alur Belajar -->
             <q-btn
               flat
               no-caps
-              :label="$t('nav.berlangganan')"
-              class="nav-btn"
-              @click="$router.push('/berlangganan')"
-            />
-            <q-btn flat no-caps :label="$t('nav.metodeBelajar')" class="nav-btn" />
-            <q-btn
-              flat
-              no-caps
-              :label="$t('nav.alurBelajar')"
+              :label="$t('nav.learningPath')"
               class="nav-btn"
               @click="$router.push('/alur-belajar')"
             />
+            <!-- Langganan → Berlangganan -->
             <q-btn
               flat
               no-caps
-              :label="$t('nav.produk')"
+              :label="$t('nav.langganan')"
               class="nav-btn"
-              @click="$router.push('/produk')"
+              @click="$router.push('/berlangganan')"
             />
+            <!-- PROGRAM: hover → Video courses (sub: All courses + Semua bahasa) + Study abroad -->
+            <div
+              class="program-nav-wrapper relative-position"
+              @mouseenter="onProgramMouseEnter"
+              @mouseleave="onProgramMouseLeave"
+            >
+              <q-btn flat no-caps :label="$t('nav.program')" class="nav-btn" />
+              <transition name="dropdown-fade">
+                <div
+                  v-show="programOpen"
+                  class="program-dropdown program-dropdown-bwa shadow-2 rounded-borders overflow-hidden"
+                >
+                  <div class="row no-wrap program-dropdown-bwa-inner">
+                    <!-- Kolom kiri: dark blue CTA (konsep BWA) -->
+                    <div class="program-bwa-left">
+                      <div class="program-bwa-left-content">
+                        <div class="program-bwa-tag">{{ $t('nav.programTrusted') }}</div>
+                        <div class="program-bwa-title">{{ $t('nav.programTitle') }}</div>
+                        <p class="program-bwa-desc">{{ $t('nav.programDesc') }}</p>
+                        <q-btn
+                          unelevated
+                          no-caps
+                          class="program-bwa-btn"
+                          :label="$t('nav.programCta')"
+                          @click="onProgramAllRoadmap"
+                        />
+                      </div>
+                    </div>
+                    <!-- Kolom kanan: daftar program dengan icon + title + subtitle -->
+                    <div class="program-bwa-right">
+                      <div class="program-bwa-card cursor-pointer" @click="onProgramAllCourses">
+                        <div class="program-bwa-card-icon">
+                          <q-icon name="play_circle_filled" size="28px" color="primary" />
+                        </div>
+                        <div class="program-bwa-card-text">
+                          <div class="program-bwa-card-title">{{ $t('nav.allCourses') }}</div>
+                          <div class="program-bwa-card-sub">{{ $t('nav.allCoursesSub') }}</div>
+                        </div>
+                      </div>
+                      <div class="program-bwa-section">
+                        <div class="program-bwa-section-label">
+                          {{ $t('nav.semuaBahasaTerdaftar') }}
+                        </div>
+                        <div
+                          v-for="lang in headerLanguages"
+                          :key="lang.id"
+                          class="program-bwa-lang row items-center cursor-pointer"
+                          @click="onProgramLanguage(lang)"
+                        >
+                          <q-img
+                            v-if="lang.iconUrl"
+                            :src="lang.iconUrl"
+                            ratio="1"
+                            class="program-bwa-flag"
+                          />
+                          <span>{{ lang.name }}</span>
+                        </div>
+                      </div>
+                      <div class="program-bwa-card cursor-pointer" @click="onProgramStudyAbroad">
+                        <div class="program-bwa-card-icon">
+                          <q-icon name="flight_takeoff" size="28px" color="primary" />
+                        </div>
+                        <div class="program-bwa-card-text">
+                          <div class="program-bwa-card-title">{{ $t('nav.studyAbroad') }}</div>
+                          <div class="program-bwa-card-sub">{{ $t('nav.studyAbroadSub') }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </transition>
+            </div>
+            <!-- Tips & Informasi -->
             <q-btn
               flat
               no-caps
@@ -305,80 +344,155 @@
       <router-view />
 
       <footer :class="[isDark ? 'bg-dark text-white' : 'bg-white text-dark', 'border-top']">
-        <div class="container q-py-lg">
+        <div class="container footer-content">
           <div class="row q-col-gutter-xl">
-            <div class="col-12 col-md-6">
-              <img
-                src="~assets/Edulang.png"
-                style="height: 45px"
-                alt="Edulang Logo"
-                class="q-mb-lg"
-              />
-              <p class="text-grey-8 line-height-1-8 text-body1" style="max-width: 500px">
-                Edulang adalah platform pembelajaran bahasa untuk tujuan karir atau pembelajaran
-                masa depan.
+            <!-- Brand + tagline -->
+            <div class="col-12 col-md-5 col-lg-4">
+              <img src="~assets/Edulang.png" alt="Edulang" class="footer-logo q-mb-md" />
+              <p class="footer-tagline text-body2">
+                {{ $t('footer.tagline') }}
               </p>
-              <div class="q-mt-lg">
-                <div class="text-weight-bolder text-h6 q-mb-xs">Alamat</div>
-                <p class="text-grey-8">
-                  Jl. ZA. Pagar Alam No.26, Labuhan Ratu, Kec. Kedaton, Kota Bandar Lampung
-                </p>
-              </div>
-              <div class="q-mt-md">
-                <div class="text-weight-bolder text-h6 q-mb-xs">Kontak</div>
-                <p class="text-grey-8">+62 822-7950-6450</p>
-              </div>
             </div>
 
-            <div class="col-12 col-md-3">
-              <div class="text-weight-bolder text-h6 q-mb-lg">Social Media</div>
-              <q-list dense class="social-list">
-                <q-item class="q-pa-none q-mb-sm">
-                  <q-item-section avatar min-width="32px"
-                    ><q-icon name="mail" size="20px"
-                  /></q-item-section>
-                  <q-item-section class="text-grey-8">contactedulang@gmail.com</q-item-section>
-                </q-item>
-                <q-item class="q-pa-none q-mb-sm">
-                  <q-item-section avatar min-width="32px"
-                    ><q-icon name="fab fa-tiktok" size="20px"
-                  /></q-item-section>
-                  <q-item-section class="text-grey-8">edulang.id</q-item-section>
-                </q-item>
-                <q-item class="q-pa-none q-mb-sm">
-                  <q-item-section avatar min-width="32px"
-                    ><q-icon name="fab fa-instagram" size="20px"
-                  /></q-item-section>
-                  <q-item-section class="text-grey-8">edulang.id</q-item-section>
-                </q-item>
-                <q-item class="q-pa-none q-mb-sm">
-                  <q-item-section avatar min-width="32px"
-                    ><q-icon name="public" size="20px"
-                  /></q-item-section>
-                  <q-item-section class="text-grey-8">edulang.id</q-item-section>
-                </q-item>
-              </q-list>
+            <!-- Kontak -->
+            <div class="col-6 col-sm-4 col-md-2">
+              <div class="footer-heading q-mb-md">{{ $t('footer.kontak') }}</div>
+              <ul class="footer-list">
+                <li>
+                  <a
+                    href="mailto:contactedulang@gmail.com"
+                    class="footer-link row items-center no-wrap"
+                  >
+                    <q-icon name="mail" size="18px" class="q-mr-sm" />
+                    {{ $t('footer.emailSupport') }}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://wa.me/6282279506450"
+                    target="_blank"
+                    rel="noopener"
+                    class="footer-link row items-center no-wrap"
+                  >
+                    <q-icon name="fab fa-whatsapp" size="18px" class="q-mr-sm" />
+                    {{ $t('footer.whatsappKonsultasi') }}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://instagram.com/edulang.id"
+                    target="_blank"
+                    rel="noopener"
+                    class="footer-link row items-center no-wrap"
+                  >
+                    <q-icon name="fab fa-instagram" size="18px" class="q-mr-sm" />
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://tiktok.com/@edulang.id"
+                    target="_blank"
+                    rel="noopener"
+                    class="footer-link row items-center no-wrap"
+                  >
+                    <q-icon name="fab fa-tiktok" size="18px" class="q-mr-sm" />
+                    Tiktok
+                  </a>
+                </li>
+              </ul>
             </div>
 
-            <div class="col-12 col-md-3">
-              <div class="text-weight-bolder text-h6 q-mb-lg">General</div>
-              <q-list dense class="text-grey-8">
-                <q-item clickable class="q-pa-none q-mb-sm">tentang kami</q-item>
-                <q-item clickable class="q-pa-none q-mb-sm">produk</q-item>
-                <q-item clickable class="q-pa-none q-mb-sm">Kelas Bahasa</q-item>
-                <q-item clickable class="q-pa-none">Berlangganan</q-item>
-              </q-list>
+            <!-- Program - Bahasa Yang Tersedia (dari endpoint) -->
+            <div class="col-6 col-sm-4 col-md-2">
+              <div class="footer-heading q-mb-md">{{ $t('footer.program') }}</div>
+              <div class="footer-heading-sub q-mb-sm">{{ $t('footer.bahasaTersedia') }}</div>
+              <ul class="footer-list">
+                <li v-for="lang in headerLanguages" :key="lang.id">
+                  <router-link
+                    :to="{
+                      path: '/berlangganan',
+                      query: { languageId: lang.id, languageName: lang.name },
+                    }"
+                    class="footer-link row items-center no-wrap"
+                  >
+                    <q-img
+                      v-if="lang.iconUrl"
+                      :src="lang.iconUrl"
+                      ratio="1"
+                      class="footer-lang-flag q-mr-sm"
+                    />
+                    <span>{{ lang.name }}</span>
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Panduan -->
+            <div class="col-6 col-sm-4 col-md-2">
+              <div class="footer-heading q-mb-md">{{ $t('footer.panduan') }}</div>
+              <ul class="footer-list">
+                <li>
+                  <router-link to="/alur-belajar" class="footer-link">{{
+                    $t('footer.alurBelajar')
+                  }}</router-link>
+                </li>
+                <li>
+                  <a href="/#faq" class="footer-link">{{ $t('footer.faq') }}</a>
+                </li>
+                <li>
+                  <router-link to="/contact" class="footer-link">{{
+                    $t('footer.konsultasi')
+                  }}</router-link>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Insight -->
+            <div class="col-6 col-sm-4 col-md-2">
+              <div class="footer-heading q-mb-md">{{ $t('footer.insight') }}</div>
+              <ul class="footer-list">
+                <li>
+                  <router-link to="/tips" class="footer-link">{{
+                    $t('footer.artikelTips')
+                  }}</router-link>
+                </li>
+                <li>
+                  <a href="/tips#karir" class="footer-link">{{ $t('footer.insightKarir') }}</a>
+                </li>
+                <li>
+                  <a href="/berlangganan" class="footer-link">{{ $t('footer.updateProgram') }}</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Legal & Trust -->
+            <div class="col-6 col-sm-4 col-md-2">
+              <div class="footer-heading q-mb-md">{{ $t('footer.legalTrust') }}</div>
+              <ul class="footer-list">
+                <li>
+                  <a href="/syarat-ketentuan" class="footer-link">{{
+                    $t('footer.syaratKetentuan')
+                  }}</a>
+                </li>
+                <li>
+                  <a href="/kebijakan-privasi" class="footer-link">{{
+                    $t('footer.kebijakanPrivasi')
+                  }}</a>
+                </li>
+                <li>
+                  <a href="/kebijakan-refund" class="footer-link">{{
+                    $t('footer.kebijakanRefund')
+                  }}</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
 
-        <div class="bg-indigo-10 text-white q-py-lg">
-          <div
-            class="container text-center row justify-center items-center q-gutter-x-sm text-body2"
-          >
-            <span>© 2026 All Right Reserved</span>
-            <q-separator vertical color="white" inset dark />
-            <span class="text-weight-medium">PT Active Edulang Global</span>
+        <div class="footer-bottom">
+          <div class="container text-center text-body2">
+            {{ $t('footer.copyright') }}
           </div>
         </div>
       </footer>
@@ -484,9 +598,78 @@ const onDrawerKelasBahasa = (lang) => {
   leftDrawerOpen.value = false
 }
 
-const onDrawerBerlangganan = () => {
+const onDrawerAlurBelajar = () => {
+  router.push('/alur-belajar')
+  leftDrawerOpen.value = false
+}
+
+const onDrawerLangganan = () => {
   router.push('/berlangganan')
   leftDrawerOpen.value = false
+}
+
+const onDrawerAllCourses = () => {
+  goToBerlangganan()
+  leftDrawerOpen.value = false
+}
+
+const onDrawerStudyAbroad = () => {
+  router.push('/contact')
+  leftDrawerOpen.value = false
+}
+
+const onDrawerTips = () => {
+  router.push('/tips')
+  leftDrawerOpen.value = false
+}
+
+const goToBerlangganan = () => {
+  router.push('/berlangganan')
+}
+
+// PROGRAM hover dropdown
+const programOpen = ref(false)
+const videoSubOpen = ref(false)
+let programCloseTimer = null
+
+const closeProgramMenu = () => {
+  programOpen.value = false
+  videoSubOpen.value = false
+}
+
+const onProgramAllCourses = () => {
+  goToBerlangganan()
+  closeProgramMenu()
+}
+
+const onProgramLanguage = (lang) => {
+  goToBerlanggananByLanguage(lang)
+  closeProgramMenu()
+}
+
+const onProgramStudyAbroad = () => {
+  router.push('/contact')
+  closeProgramMenu()
+}
+
+const onProgramAllRoadmap = () => {
+  router.push('/alur-belajar')
+  closeProgramMenu()
+}
+
+const onProgramMouseEnter = () => {
+  if (programCloseTimer) {
+    clearTimeout(programCloseTimer)
+    programCloseTimer = null
+  }
+  programOpen.value = true
+}
+
+const onProgramMouseLeave = () => {
+  programCloseTimer = setTimeout(() => {
+    programOpen.value = false
+    videoSubOpen.value = false
+  }, 150)
 }
 
 onMounted(() => {
@@ -572,6 +755,76 @@ a {
   border-top: 1px solid #e0e0e0;
 }
 
+/* Footer baru */
+.footer-main {
+  margin-top: 2rem;
+}
+.footer-content {
+  padding-top: 2.5rem;
+  padding-bottom: 2rem;
+}
+.footer-logo {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+.footer-tagline {
+  color: inherit;
+  opacity: 0.85;
+  line-height: 1.6;
+  max-width: 320px;
+}
+.footer-heading {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: inherit;
+}
+.footer-heading-sub {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-list li {
+  margin-bottom: 0.5rem;
+}
+.footer-link {
+  font-size: 0.875rem;
+  color: inherit;
+  opacity: 0.9;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.footer-link:hover {
+  opacity: 1;
+  color: var(--edulang-blue, #0089ff);
+}
+.footer-lang-flag {
+  width: 22px;
+  height: 16px;
+  min-width: 22px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+.footer-bottom {
+  background: var(--edulang-navy, #003387);
+  color: var(--edulang-white, #f5f7fa);
+  padding: 1rem 0;
+}
+.footer-bottom .container {
+  color: inherit;
+}
+.bg-dark .footer-link:hover {
+  color: var(--edulang-yellow, #ffc42c);
+  opacity: 1;
+}
+
 .line-height-1-8 {
   line-height: 1.8;
 }
@@ -653,5 +906,172 @@ a {
 /* No wrap untuk user menu agar tidak break */
 .no-wrap {
   white-space: nowrap;
+}
+
+/* PROGRAM dropdown konsep BWA: kiri dark blue CTA, kanan list program */
+.program-nav-wrapper {
+  display: inline-flex;
+}
+
+.program-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  z-index: 100;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.program-dropdown-bwa {
+  background: var(--edulang-white, #f5f7fa);
+  min-width: 720px;
+  max-width: 90vw;
+}
+
+.program-dropdown-bwa-inner {
+  min-height: 300px;
+}
+
+.program-bwa-left {
+  width: 320px; /* Ubah dari 280px menjadi 320px */
+  min-width: 320px; /* Ubah dari 280px menjadi 320px */
+  background: var(--edulang-navy, #003387);
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+}
+
+.program-bwa-left-content {
+  text-align: center;
+  width: 100%;
+}
+
+.program-bwa-tag {
+  font-size: 0.8125rem;
+  color: var(--edulang-yellow, #ffc42c);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.program-bwa-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--edulang-white, #f5f7fa);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.program-bwa-desc {
+  font-size: 0.875rem;
+  color: rgba(245, 247, 250, 0.95);
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.program-bwa-btn {
+  background: var(--edulang-blue, #0089ff) !important;
+  color: var(--edulang-white, #f5f7fa) !important;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+}
+
+.program-bwa-right {
+  flex: 1;
+  min-width: 380px;
+  padding: 20px 24px;
+  background: var(--edulang-white, #f5f7fa);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.program-bwa-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 12px;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.program-bwa-card:hover {
+  background: rgba(0, 137, 255, 0.08);
+}
+
+.program-bwa-card-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 10px;
+  background: rgba(0, 137, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.program-bwa-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.program-bwa-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--edulang-black, #2d2d2d);
+}
+
+.program-bwa-card-sub {
+  font-size: 0.8125rem;
+  color: var(--edulang-black, #2d2d2d);
+  opacity: 0.7;
+  margin-top: 4px;
+}
+
+.program-bwa-section {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(45, 45, 45, 0.12);
+}
+
+.program-bwa-section-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--edulang-black, #2d2d2d);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  padding-left: 2px;
+}
+
+.program-bwa-lang {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  color: var(--edulang-black, #2d2d2d);
+  transition: background 0.2s;
+}
+
+.program-bwa-lang:hover {
+  background: rgba(0, 137, 255, 0.08);
+  color: var(--edulang-blue, #0089ff);
+}
+
+.program-bwa-flag {
+  width: 24px;
+  height: 16px;
+  min-width: 24px;
+  border-radius: 4px;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.dropdown-fade-enter-active,
+.dropdown-fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+.dropdown-fade-enter-from,
+.dropdown-fade-leave-to {
+  opacity: 0;
 }
 </style>

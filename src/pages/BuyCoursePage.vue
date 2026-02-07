@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xl bg-blue-1">
+  <q-page class="q-pa-xl bg-accent">
     <div v-if="loading" class="text-center q-pa-xl">
       <q-spinner-dots color="primary" size="40px" />
     </div>
@@ -151,7 +151,8 @@ const totalMeetingLabel = computed(() => {
 })
 
 const heroImage = computed(
-  () => course.value?.imageUrl || course.value?.thumbnail || 'https://cdn.quasar.dev/img/parallax2.jpg',
+  () =>
+    course.value?.imageUrl || course.value?.thumbnail || 'https://cdn.quasar.dev/img/parallax2.jpg',
 )
 
 const goBack = () => {
@@ -256,4 +257,3 @@ onMounted(async () => {
   border-radius: 16px;
 }
 </style>
-
