@@ -18,7 +18,16 @@
             </div>
           </div>
 
-          <div class="col-12 col-md-7 q-pa-xl bg-white">
+          <div class="col-12 col-md-7 q-pa-xl bg-white relative-position">
+            <q-btn
+              flat
+              round
+              dense
+              icon="arrow_back"
+              class="absolute-top-left q-ma-md"
+              aria-label="Kembali"
+              @click="$router.push('/')"
+            />
             <div class="column items-center q-mb-lg">
               <q-avatar
                 size="60px"

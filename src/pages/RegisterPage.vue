@@ -19,6 +19,15 @@
           </div>
 
           <div class="col-12 col-md-7 q-pa-xl bg-white relative-position">
+            <q-btn
+              flat
+              round
+              dense
+              icon="arrow_back"
+              class="absolute-top-left q-ma-md"
+              aria-label="Kembali"
+              @click="$router.push('/')"
+            />
             <transition name="fade" mode="out-in">
               <div v-if="!isRegisterSuccess" key="form-register">
                 <div class="column items-center q-mb-lg">

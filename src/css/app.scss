@@ -21,3 +21,28 @@ body {
   border-bottom: 3px solid #003387; // Warna biru tua sesuai header
   border-radius: 0;
 }
+
+// Dark mode: teks di area .bg-dark pakai warna putih (--edulang-white dari App.vue)
+.bg-dark,
+.bg-dark .text-grey-8,
+.bg-dark .text-grey-9,
+.bg-dark .text-dark,
+.bg-dark .q-item,
+.bg-dark .q-item-section,
+.bg-dark .text-body1,
+.bg-dark .text-body2,
+.bg-dark .text-caption,
+.bg-dark .text-h6,
+.bg-dark p {
+  color: var(--edulang-white) !important;
+}
+
+// Tetap kuning untuk aksen di dark (nav primary)
+.bg-dark .text-primary {
+  color: var(--edulang-yellow) !important;
+}
+
+// Tetap merah untuk logout di dark
+.bg-dark .text-negative {
+  color: #c10015 !important;
+}

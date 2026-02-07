@@ -623,4 +623,13 @@ a {
 .no-wrap {
   white-space: nowrap;
 }
+
+/* Hilangkan gap di atas footer */
+.q-page-container {
+  padding-bottom: 0 !important;
+}
+
+footer {
+  margin-top: 0 !important;
+}
 </style>
