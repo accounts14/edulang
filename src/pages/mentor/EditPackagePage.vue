@@ -135,8 +135,8 @@ const loadingLanguageTypes = ref(false)
 // languageType di backend adalah ObjectId (ref), jadi options harus dari API
 const languageTypeOptions = ref([])
 
+// Sesuai endpoint: level = limited | moderated | good | fluent
 const levelOptions = [
-  // Sesuai ERD: enum('fluent','good','moderated','limited')
   { label: 'Limited', value: 'limited' },
   { label: 'Moderated', value: 'moderated' },
   { label: 'Good', value: 'good' },
@@ -214,11 +214,12 @@ async function handleSubmit() {
   try {
     submitting.value = true
 
+    // Sesuai endpoint PUT /api/packages/:id: title, description, introVideoUrl, price, languageType, level
     const payload = {
       title: form.title,
+      description: form.description,
       introVideoUrl: form.introVideoUrl,
       price: Number(form.price || 0),
-      description: form.description,
       languageType: form.languageType,
       level: form.level,
     }

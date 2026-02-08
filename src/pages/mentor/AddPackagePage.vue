@@ -134,11 +134,12 @@ const submitting = ref(false)
 const languageTypeOptions = ref([])
 const loadingLanguageTypes = ref(false)
 
+// Sesuai endpoint: level = limited | moderated | good | fluent
 const levelOptions = [
-  // Sesuai ERD: enum('Pemula','Menengah','Lanjutan')
-  { label: 'Pemula', value: 'Pemula' },
-  { label: 'Menengah', value: 'Menengah' },
-  { label: 'Lanjutan', value: 'Lanjutan' },
+  { label: 'Limited', value: 'limited' },
+  { label: 'Moderated', value: 'moderated' },
+  { label: 'Good', value: 'good' },
+  { label: 'Fluent', value: 'fluent' },
 ]
 
 const form = reactive({
@@ -192,14 +193,15 @@ async function handleSubmit() {
   try {
     submitting.value = true
 
+    // Sesuai endpoint POST /api/packages: title, description, introVideoUrl, price, languageType, level, lessons
     const payload = {
       title: form.title,
+      description: form.description,
       introVideoUrl: form.introVideoUrl,
       price: Number(form.price || 0),
-      description: form.description,
-      // sesuai error backend: languageType wajib ada
       languageType: form.languageType,
       level: form.level,
+      lessons: [],
     }
 
     await api.post('/packages', payload)
