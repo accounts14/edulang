@@ -71,14 +71,10 @@ const router = useRouter()
 const title = computed(() => props.course.name || props.course.title || 'Nama Course')
 
 const priceDisplay = computed(() => {
-  const price = props.course.price || props.course.priceIdr || props.course.price_idr
-  if (!price && price !== 0) return 'Harga belum tersedia'
+  const price = props.course.price ?? props.course.priceIdr ?? props.course.price_idr
+  if (price == null || price === '') return 'Harga belum tersedia'
   try {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      maximumFractionDigits: 0,
-    }).format(price)
+    return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`
   } catch {
     return `Rp ${price}`
   }

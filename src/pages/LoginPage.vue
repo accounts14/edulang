@@ -1,83 +1,72 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
-      <q-page class="flex flex-center bg-grey-2">
-        <q-card class="auth-card row no-wrap shadow-24">
-          <div class="col-md-5 gt-sm relative-position bg-primary overflow-hidden">
-            <q-img
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3"
-              class="full-height"
-              fit="cover"
-            />
-            <div
-              class="absolute-center full-width text-center text-white q-pa-md"
-              style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(2px)"
-            >
-              <div class="text-h3 text-weight-bold">Edulang</div>
-              <p class="text-subtitle1 q-mt-sm">Masuk untuk Melanjutkan</p>
-            </div>
-          </div>
+      <q-page class="auth-page-full row no-wrap">
+        <!-- Left: Image -->
+        <div class="auth-left gt-sm relative-position overflow-hidden">
+          <q-img
+            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3"
+            class="full-height full-width"
+            fit="cover"
+          />
+        </div>
 
-          <div class="col-12 col-md-7 q-pa-xl bg-white relative-position">
-            <q-btn
-              flat
-              round
-              dense
-              icon="arrow_back"
-              class="absolute-top-left q-ma-md"
-              aria-label="Kembali"
-              @click="$router.push('/')"
-            />
+        <!-- Right: Form -->
+        <div class="auth-right flex flex-center column q-pa-xl">
+          <q-btn
+            flat
+            round
+            dense
+            icon="arrow_back"
+            class="auth-back-btn"
+            aria-label="Kembali"
+            @click="$router.push('/')"
+          />
+
+          <div class="auth-form-wrap">
             <div class="column items-center q-mb-lg">
-              <q-avatar
-                size="60px"
-                color="blue-1"
-                text-color="primary"
-                icon="lock_open"
-                class="q-mb-md shadow-1"
-              />
-              <h1 class="text-h5 text-weight-bolder q-ma-none text-dark">Sign In Now</h1>
-              <p class="text-grey-7 text-center q-mt-sm">Masukkan data ke form sesuai dan valid</p>
+              <div class="auth-logo-circle q-mb-md">
+                <img src="~assets/LogoWhite.png" alt="Edulang" class="auth-logo-img" />
+              </div>
+              <h1 class="text-h4 text-weight-bolder q-ma-none text-dark">Sign In Now</h1>
+              <p class="text-grey-7 text-center q-mt-sm">
+                Masukkan data ke form sesuai dan valid
+              </p>
             </div>
 
             <q-form @submit="handleLogin" class="q-gutter-y-sm">
               <div class="field-wrapper">
                 <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
-                  >Email Address</label
+                  >Email Address :</label
                 >
                 <q-input
                   v-model="form.email"
-                  placeholder="example@email.com"
+                  placeholder="Example@gmai.com"
                   filled
                   rounded
                   bg-color="grey-2"
                   dense
                   borderless
-                  class="q-mt-xs"
+                  class="q-mt-xs auth-input"
                 >
-                  <template v-slot:append
-                    ><q-icon name="mail_outline" size="xs" color="grey-7"
-                  /></template>
+                  <template v-slot:append>
+                    <q-icon name="mail_outline" size="xs" color="grey-7" />
+                  </template>
                 </q-input>
               </div>
 
               <div class="field-wrapper">
-                <div class="row justify-between items-center">
-                  <label class="text-weight-bold text-caption q-ml-sm text-grey-9">Password</label>
-                  <span class="text-caption text-primary cursor-pointer text-weight-medium"
-                    >Lupa Password?</span
-                  >
-                </div>
+                <label class="text-weight-bold text-caption q-ml-sm text-grey-9">Password :</label>
                 <q-input
                   v-model="form.password"
                   :type="isPwd ? 'password' : 'text'"
-                  placeholder="••••••••"
+                  placeholder="Password"
                   filled
                   rounded
                   bg-color="grey-2"
                   dense
                   borderless
-                  class="q-mt-xs"
+                  class="q-mt-xs auth-input"
                 >
                   <template v-slot:append>
                     <q-icon
@@ -94,24 +83,21 @@
               <q-btn
                 label="Sign In"
                 type="submit"
-                color="primary"
-                rounded
-                unelevated
-                class="full-width q-py-md text-weight-bold q-mt-md shadow-3"
+                class="auth-primary-btn full-width q-py-md text-weight-bold q-mt-lg"
                 :loading="loading"
               />
 
-              <div class="text-center q-mt-xl text-body2">
+              <div class="text-center q-mt-lg text-body2 auth-switch-text">
                 Belum punya akun?
                 <span
-                  class="text-primary cursor-pointer text-weight-bold hover-underline"
+                  class="auth-link cursor-pointer text-weight-bold"
                   @click="$router.push('/register')"
                   >Daftar sekarang</span
                 >
               </div>
             </q-form>
           </div>
-        </q-card>
+        </div>
       </q-page>
     </q-page-container>
   </q-layout>
@@ -142,10 +128,6 @@ const handleLogin = async () => {
   loading.value = true
   try {
     const res = await api.post('/auth/login', form.value)
-
-    console.log('[LOGIN RESP]', res.data) // 👈 DEBUG: Lihat struktur nyata
-
-    // Ambil token dan user dengan safe access
     const token = res.data.token || res.data.data?.token
     const user = res.data.user || res.data.data?.user
 
@@ -153,25 +135,18 @@ const handleLogin = async () => {
       throw new Error('Token tidak ditemukan dalam respons API')
     }
 
-    // Simpan ke localStorage
     localStorage.setItem('token', token)
     localStorage.setItem('userRole', user?.role || 'user')
     localStorage.setItem('userName', user?.name || 'Pengguna')
-    // Simpan juga id & email untuk kebutuhan filter data per-mentor
     const userId = user?._id || user?.id || user?.userId
-    if (userId) {
-      localStorage.setItem('userId', String(userId))
-    }
-    if (user?.email) {
-      localStorage.setItem('userEmail', user.email)
-    }
+    if (userId) localStorage.setItem('userId', String(userId))
+    if (user?.email) localStorage.setItem('userEmail', user.email)
 
     $q.notify({
       type: 'positive',
       message: `Selamat datang, ${user?.name || 'Pengguna'}!`,
     })
 
-    // Redirect berdasarkan role atau redirect URL jika disediakan
     const role = user?.role || 'user'
     const redirect = route.query.redirect
 
@@ -186,7 +161,6 @@ const handleLogin = async () => {
     }
   } catch (error) {
     console.error('[LOGIN ERROR]', error.response?.data || error.message)
-
     let msg = 'Login gagal. Cek email/password.'
     if (error.response?.status === 400) {
       msg = error.response.data?.message || 'Data login tidak valid.'
@@ -195,7 +169,6 @@ const handleLogin = async () => {
     } else if (error.code === 'ERR_NETWORK') {
       msg = 'Koneksi jaringan bermasalah.'
     }
-
     $q.notify({ type: 'negative', message: msg })
   } finally {
     loading.value = false
@@ -204,29 +177,73 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-.auth-card {
+.auth-page-full {
+  min-height: 100vh;
+}
+
+.auth-left {
+  flex: 1;
+  min-height: 100vh;
+}
+
+.auth-right {
+  flex: 1;
+  min-height: 100vh;
+  background: var(--edulang-white, #f5f7fa);
+  position: relative;
+}
+
+.auth-back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: var(--edulang-black, #2d2d2d) !important;
+}
+
+.auth-form-wrap {
   width: 100%;
-  max-width: 1000px;
-  height: 90vh;
-  max-height: 700px;
-  border-radius: 24px;
-  overflow: hidden;
+  max-width: 420px;
 }
 
-.bg-primary {
-  background-color: #003366 !important;
+.auth-logo-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--edulang-navy, #003387);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
-/* Custom Input Styling agar match dengan RegisterPage */
-:deep(.q-field--filled .q-field__control) {
-  background: #f5f6f8 !important;
+.auth-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.auth-primary-btn {
+  background: var(--edulang-navy, #003387) !important;
+  color: white !important;
   border-radius: 12px;
 }
-:deep(.q-field--filled .q-field__control:hover) {
-  background: #eef0f3 !important;
+
+.auth-switch-text {
+  color: var(--edulang-black, #2d2d2d);
 }
 
-.hover-underline:hover {
+.auth-link {
+  color: var(--edulang-blue, #0089ff) !important;
   text-decoration: underline;
+}
+
+.auth-link:hover {
+  opacity: 0.9;
+}
+
+:deep(.auth-input .q-field--filled .q-field__control) {
+  background: #eef0f3 !important;
+  border-radius: 12px;
 }
 </style>

@@ -1,176 +1,155 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
-      <q-page class="flex flex-center bg-grey-2">
-        <q-card class="auth-card row no-wrap shadow-24">
-          <div class="col-md-5 gt-sm relative-position bg-primary overflow-hidden">
-            <q-img
-              src="https://images.unsplash.com/photo-1510070112810-d4e9a46d9e91?ixlib=rb-4.0.3"
-              class="full-height"
-              fit="cover"
-            />
-            <div
-              class="absolute-center full-width text-center text-white q-pa-md"
-              style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(2px)"
-            >
-              <div class="text-h3 text-weight-bold">Edulang</div>
-              <p class="text-subtitle1 q-mt-sm">Mulai Karier Global Anda</p>
-            </div>
-          </div>
+      <q-page class="auth-page-full row no-wrap">
+        <!-- Left: Image -->
+        <div class="auth-left gt-sm relative-position overflow-hidden">
+          <q-img
+            src="https://images.unsplash.com/photo-1510070112810-d4e9a46d9e91?ixlib=rb-4.0.3"
+            class="full-height full-width"
+            fit="cover"
+          />
+        </div>
 
-          <div class="col-12 col-md-7 q-pa-xl bg-white relative-position">
-            <q-btn
-              flat
-              round
-              dense
-              icon="arrow_back"
-              class="absolute-top-left q-ma-md"
-              aria-label="Kembali"
-              @click="$router.push('/')"
-            />
-            <transition name="fade" mode="out-in">
-              <div v-if="!isRegisterSuccess" key="form-register">
-                <div class="column items-center q-mb-lg">
-                  <q-avatar
-                    size="60px"
-                    color="blue-1"
-                    text-color="primary"
-                    icon="school"
-                    class="q-mb-md shadow-1"
-                  />
-                  <h1 class="text-h5 text-weight-bolder q-ma-none text-dark">Create New Account</h1>
-                  <p class="text-grey-7 text-center q-mt-sm">
-                    Lengkapi form di bawah dengan data valid
-                  </p>
+        <!-- Right: Form -->
+        <div class="auth-right flex flex-center column q-pa-xl">
+          <q-btn
+            flat
+            round
+            dense
+            icon="arrow_back"
+            class="auth-back-btn"
+            aria-label="Kembali"
+            @click="$router.push('/')"
+          />
+
+          <transition name="fade" mode="out-in">
+            <div v-if="!isRegisterSuccess" key="form-register" class="auth-form-wrap">
+              <div class="column items-center q-mb-lg">
+                <div class="auth-logo-circle q-mb-md">
+                  <img src="~assets/LogoWhite.png" alt="Edulang" class="auth-logo-img" />
                 </div>
-
-                <q-form @submit="handleRegister" class="q-gutter-y-md">
-                  <div class="field-wrapper">
-                    <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
-                      >Nama Lengkap</label
-                    >
-                    <q-input
-                      v-model="form.name"
-                      placeholder="John Doe"
-                      filled
-                      rounded
-                      bg-color="grey-2"
-                      dense
-                      borderless
-                      class="q-mt-xs"
-                    >
-                      <template v-slot:append
-                        ><q-icon name="person_outline" size="xs" color="grey-7"
-                      /></template>
-                    </q-input>
-                  </div>
-
-                  <div class="field-wrapper">
-                    <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
-                      >Email Address</label
-                    >
-                    <q-input
-                      v-model="form.email"
-                      placeholder="example@email.com"
-                      filled
-                      rounded
-                      bg-color="grey-2"
-                      dense
-                      borderless
-                      class="q-mt-xs"
-                    >
-                      <template v-slot:append
-                        ><q-icon name="mail_outline" size="xs" color="grey-7"
-                      /></template>
-                    </q-input>
-                  </div>
-
-                  <div class="field-wrapper">
-                    <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
-                      >Password</label
-                    >
-                    <q-input
-                      v-model="form.password"
-                      :type="isPwd ? 'password' : 'text'"
-                      placeholder="••••••••"
-                      filled
-                      rounded
-                      bg-color="grey-2"
-                      dense
-                      borderless
-                      class="q-mt-xs"
-                    >
-                      <template v-slot:append>
-                        <q-icon
-                          :name="isPwd ? 'visibility_off' : 'visibility'"
-                          size="xs"
-                          class="cursor-pointer"
-                          color="grey-7"
-                          @click="isPwd = !isPwd"
-                        />
-                      </template>
-                    </q-input>
-                  </div>
-
-                  <q-btn
-                    label="Continue"
-                    type="submit"
-                    color="primary"
-                    rounded
-                    unelevated
-                    class="full-width q-py-md text-weight-bold q-mt-lg shadow-3"
-                    :loading="loading"
-                  />
-
-                  <div class="text-center q-mt-lg text-body2">
-                    Sudah punya akun?
-                    <span
-                      class="text-primary cursor-pointer text-weight-bold hover-underline"
-                      @click="$router.push('/login')"
-                      >Masuk sekarang</span
-                    >
-                  </div>
-                </q-form>
-              </div>
-
-              <div
-                v-else
-                key="success-message"
-                class="flex flex-center full-height column text-center animate-pop"
-              >
-                <div class="bg-green-1 q-pa-lg rounded-borders circle-icon q-mb-lg">
-                  <q-icon name="mark_email_read" color="green-6" size="80px" />
-                </div>
-
-                <h2 class="text-h4 text-weight-bold text-dark q-mb-sm">Cek Email Anda!</h2>
-
-                <p
-                  class="text-grey-7 text-body1 q-px-md"
-                  style="max-width: 400px; line-height: 1.6"
-                >
-                  Kami telah mengirimkan tautan verifikasi ke
-                  <span class="text-weight-bold text-dark">{{ form.email }}</span
-                  >. <br />Silakan cek kotak masuk (inbox) atau folder spam Anda.
+                <h1 class="text-h4 text-weight-bolder q-ma-none text-dark">Create New Account</h1>
+                <p class="text-grey-7 text-center q-mt-sm">
+                  Lengkapi form di bawah dengan menggunakan data Anda yang valid
                 </p>
+              </div>
 
-                <div class="q-mt-xl full-width" style="max-width: 300px">
-                  <q-btn
-                    unelevated
+              <q-form @submit="handleRegister" class="q-gutter-y-md">
+                <div class="field-wrapper">
+                  <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
+                    >Nama Lengkap :</label
+                  >
+                  <q-input
+                    v-model="form.name"
+                    placeholder="Username"
+                    filled
                     rounded
-                    color="primary"
-                    label="Kembali ke Login"
-                    class="full-width q-py-md text-weight-bold"
-                    @click="$router.push('/login')"
-                  />
+                    bg-color="grey-2"
+                    dense
+                    borderless
+                    class="q-mt-xs auth-input"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="person_outline" size="xs" color="grey-7" />
+                    </template>
+                  </q-input>
+                </div>
 
-                  <div class="q-mt-md text-caption text-grey-6 cursor-pointer hover-text-primary">
-                    Tidak menerima email? <span class="text-weight-bold">Kirim ulang</span>
-                  </div>
+                <div class="field-wrapper">
+                  <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
+                    >Email Address :</label
+                  >
+                  <q-input
+                    v-model="form.email"
+                    placeholder="Example@gmai.com"
+                    filled
+                    rounded
+                    bg-color="grey-2"
+                    dense
+                    borderless
+                    class="q-mt-xs auth-input"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="mail_outline" size="xs" color="grey-7" />
+                    </template>
+                  </q-input>
+                </div>
+
+                <div class="field-wrapper">
+                  <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
+                    >Password :</label
+                  >
+                  <q-input
+                    v-model="form.password"
+                    :type="isPwd ? 'password' : 'text'"
+                    placeholder="Password"
+                    filled
+                    rounded
+                    bg-color="grey-2"
+                    dense
+                    borderless
+                    class="q-mt-xs auth-input"
+                  >
+                    <template v-slot:append>
+                      <q-icon
+                        :name="isPwd ? 'visibility_off' : 'visibility'"
+                        size="xs"
+                        class="cursor-pointer"
+                        color="grey-7"
+                        @click="isPwd = !isPwd"
+                      />
+                    </template>
+                  </q-input>
+                </div>
+
+                <q-btn
+                  label="Continue"
+                  type="submit"
+                  class="auth-primary-btn full-width q-py-md text-weight-bold q-mt-lg"
+                  :loading="loading"
+                />
+
+                <div class="text-center q-mt-lg text-body2 auth-switch-text">
+                  Sudah punya akun?
+                  <span
+                    class="auth-link cursor-pointer text-weight-bold"
+                    @click="$router.push('/login')"
+                    >Masuk sekarang</span
+                  >
+                </div>
+              </q-form>
+            </div>
+
+            <div
+              v-else
+              key="success-message"
+              class="auth-form-wrap flex flex-center column text-center animate-pop"
+            >
+              <div class="bg-green-1 q-pa-lg rounded-borders circle-icon q-mb-lg">
+                <q-icon name="mark_email_read" color="green-6" size="80px" />
+              </div>
+              <h2 class="text-h4 text-weight-bold text-dark q-mb-sm">Cek Email Anda!</h2>
+              <p class="text-grey-7 text-body1 q-px-md" style="max-width: 400px; line-height: 1.6">
+                Kami telah mengirimkan tautan verifikasi ke
+                <span class="text-weight-bold text-dark">{{ form.email }}</span
+                >. <br />Silakan cek kotak masuk (inbox) atau folder spam Anda.
+              </p>
+              <div class="q-mt-xl full-width" style="max-width: 300px">
+                <q-btn
+                  unelevated
+                  rounded
+                  class="auth-primary-btn full-width q-py-md text-weight-bold"
+                  label="Kembali ke Login"
+                  @click="$router.push('/login')"
+                />
+                <div class="q-mt-md text-caption text-grey-6 cursor-pointer hover-text-primary">
+                  Tidak menerima email? <span class="text-weight-bold">Kirim ulang</span>
                 </div>
               </div>
-            </transition>
-          </div>
-        </q-card>
+            </div>
+          </transition>
+        </div>
       </q-page>
     </q-page-container>
   </q-layout>
@@ -180,23 +159,17 @@
 import { ref } from 'vue'
 import { api } from 'boot/axios'
 import { useQuasar } from 'quasar'
-// import { useRouter } dihapus karena kita pakai $router langsung di template
 
 const $q = useQuasar()
-// const router dihapus karena tidak dipakai di logic script
 const isPwd = ref(true)
 const loading = ref(false)
 const isRegisterSuccess = ref(false)
-
 const form = ref({ name: '', email: '', password: '' })
 
 const handleRegister = async () => {
   loading.value = true
   try {
-    // FIX: Menggunakan 'api' sungguhan (Error 'api defined never used' akan hilang)
     await api.post('/auth/register', form.value)
-
-    // Jika sukses, ubah tampilan
     $q.notify({ type: 'positive', message: 'Registrasi Berhasil!' })
     isRegisterSuccess.value = true
   } catch (error) {
@@ -212,30 +185,79 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-.auth-card {
-  width: 100%;
-  max-width: 1000px;
-  height: 90vh; /* Agar tampilan konsisten tinggi */
-  max-height: 700px;
-  border-radius: 24px;
-  overflow: hidden;
+.auth-page-full {
+  min-height: 100vh;
 }
 
-/* Custom Input Styling */
-:deep(.q-field--filled .q-field__control) {
-  background: #f5f6f8 !important;
+.auth-left {
+  flex: 1;
+  min-height: 100vh;
+}
+
+.auth-right {
+  flex: 1;
+  min-height: 100vh;
+  background: var(--edulang-white, #f5f7fa);
+  position: relative;
+}
+
+.auth-back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: var(--edulang-black, #2d2d2d) !important;
+}
+
+.auth-form-wrap {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-logo-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--edulang-navy, #003387);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.auth-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.auth-primary-btn {
+  background: var(--edulang-navy, #003387) !important;
+  color: white !important;
   border-radius: 12px;
 }
-:deep(.q-field--filled .q-field__control:hover) {
-  background: #eef0f3 !important;
+
+.auth-switch-text {
+  color: var(--edulang-black, #2d2d2d);
 }
 
-/* Transisi Fade Out-In */
+.auth-link {
+  color: var(--edulang-blue, #0089ff) !important;
+  text-decoration: underline;
+}
+
+.auth-link:hover {
+  opacity: 0.9;
+}
+
+:deep(.auth-input .q-field--filled .q-field__control) {
+  background: #eef0f3 !important;
+  border-radius: 12px;
+}
+
 .fade-enter-active,
 .fade-leave-active {
-  transition:
-    opacity 0.4s ease,
-    transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .fade-enter-from,
@@ -244,7 +266,6 @@ const handleRegister = async () => {
   transform: translateY(10px);
 }
 
-/* Styling Khusus Halaman Sukses */
 .circle-icon {
   border-radius: 50%;
   animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -261,11 +282,7 @@ const handleRegister = async () => {
   }
 }
 
-.hover-underline:hover {
-  text-decoration: underline;
-}
-
 .hover-text-primary:hover {
-  color: #1976d2 !important; /* Warna primary */
+  color: var(--edulang-blue, #0089ff) !important;
 }
 </style>

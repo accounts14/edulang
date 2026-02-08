@@ -1,9 +1,21 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="user-layout font-poppins">
-    <q-header elevated class="bg-white text-dark lt-md">
+  <q-layout view="lHh Lpr lFf" class="bg-accent font-poppins">
+    <q-header elevated class="bg-white text-dark">
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
-        <q-toolbar-title class="text-weight-bold">Edulang</q-toolbar-title>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          class="q-mr-sm"
+          @click="leftDrawerOpen = !leftDrawerOpen"
+        />
+        <q-toolbar-title class="text-weight-bold">
+          {{ pageTitle }}
+        </q-toolbar-title>
+        <q-space />
+        <div class="text-caption text-grey-7 gt-sm">{{ userData.name || 'User' }}</div>
       </q-toolbar>
     </q-header>
 
@@ -13,24 +25,26 @@
       bordered
       behavior="mobile"
       :breakpoint="768"
-      class="user-drawer bg-white"
+      class="bg-white q-pa-md"
     >
-      <div class="flex flex-center q-mb-lg q-mt-md">
-        <img src="~assets/Edulang.png" alt="Edulang" class="user-logo" />
+      <div class="flex flex-center q-mb-xl q-mt-md">
+        <img src="~assets/Edulang.png" style="width: 140px" alt="Edulang Logo" />
       </div>
 
-      <div class="text-center q-mb-xl q-px-sm">
-        <q-avatar size="80px" class="q-mb-md shadow-2">
+      <div class="text-center q-mb-xl">
+        <q-avatar size="100px" class="q-mb-md shadow-2">
           <img :src="userAvatar" alt="" />
         </q-avatar>
+
         <div class="text-weight-bolder text-subtitle1 text-grey-9">
           {{ userData.name || 'User' }}
         </div>
+
         <q-chip
           dense
-          color="primary"
+          color="blue-6"
           text-color="white"
-          class="q-px-md text-weight-bold"
+          class="q-px-md text-weight-bold q-mt-sm"
           style="text-transform: capitalize"
         >
           User
@@ -42,10 +56,12 @@
           clickable
           v-ripple
           to="/dashboard"
-          active-class="bg-primary text-white rounded-borders"
+          active-class="bg-blue-6 text-white rounded-borders"
           exact
         >
-          <q-item-section avatar><q-icon name="dashboard" /></q-item-section>
+          <q-item-section avatar>
+            <q-icon name="dashboard" size="sm" />
+          </q-item-section>
           <q-item-section class="text-weight-bold">Dashboard</q-item-section>
         </q-item>
 
@@ -53,10 +69,12 @@
           clickable
           v-ripple
           to="/dashboard/langganan"
-          active-class="bg-primary text-white rounded-borders"
+          active-class="bg-blue-6 text-white rounded-borders"
           class="text-grey-7"
         >
-          <q-item-section avatar><q-icon name="description" /></q-item-section>
+          <q-item-section avatar>
+            <q-icon name="description" size="sm" />
+          </q-item-section>
           <q-item-section class="text-weight-medium">Langganan</q-item-section>
         </q-item>
 
@@ -64,10 +82,12 @@
           clickable
           v-ripple
           to="/dashboard/progres"
-          active-class="bg-primary text-white rounded-borders"
+          active-class="bg-blue-6 text-white rounded-borders"
           class="text-grey-7"
         >
-          <q-item-section avatar><q-icon name="list_alt" /></q-item-section>
+          <q-item-section avatar>
+            <q-icon name="list_alt" size="sm" />
+          </q-item-section>
           <q-item-section class="text-weight-medium">Progres Belajar</q-item-section>
         </q-item>
 
@@ -75,10 +95,12 @@
           clickable
           v-ripple
           to="/dashboard/notifikasi"
-          active-class="bg-primary text-white rounded-borders"
+          active-class="bg-blue-6 text-white rounded-borders"
           class="text-grey-7"
         >
-          <q-item-section avatar><q-icon name="notifications" /></q-item-section>
+          <q-item-section avatar>
+            <q-icon name="notifications" size="sm" />
+          </q-item-section>
           <q-item-section class="text-weight-medium">Notifikasi</q-item-section>
         </q-item>
 
@@ -86,10 +108,12 @@
           clickable
           v-ripple
           to="/dashboard/transaksi"
-          active-class="bg-primary text-white rounded-borders"
+          active-class="bg-blue-6 text-white rounded-borders"
           class="text-grey-7"
         >
-          <q-item-section avatar><q-icon name="shopping_bag" /></q-item-section>
+          <q-item-section avatar>
+            <q-icon name="shopping_bag" size="sm" />
+          </q-item-section>
           <q-item-section class="text-weight-medium">Transaksi</q-item-section>
         </q-item>
 
@@ -97,28 +121,32 @@
           clickable
           v-ripple
           to="/dashboard/setting"
-          active-class="bg-primary text-white rounded-borders"
+          active-class="bg-blue-6 text-white rounded-borders"
           class="text-grey-7"
         >
-          <q-item-section avatar><q-icon name="settings" /></q-item-section>
+          <q-item-section avatar>
+            <q-icon name="settings" size="sm" />
+          </q-item-section>
           <q-item-section class="text-weight-medium">Setting</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple class="text-negative q-mt-xl" @click="handleLogout">
-          <q-item-section avatar><q-icon name="logout" /></q-item-section>
+          <q-item-section avatar>
+            <q-icon name="logout" color="negative" />
+          </q-item-section>
           <q-item-section class="text-weight-bold">Keluar</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
 
-    <q-page-container class="user-page-container">
+    <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 
@@ -129,6 +157,19 @@ const route = useRoute()
 
 const userData = ref({ name: '' })
 const userAvatar = ref('https://cdn.quasar.dev/img/avatar2.jpg')
+
+const pageTitle = computed(() => {
+  const t = route.meta?.title || route.name || ''
+  if (t) return String(t)
+  const path = route.path
+  if (path === '/dashboard') return 'Dashboard'
+  if (path.startsWith('/dashboard/langganan')) return 'Langganan'
+  if (path.startsWith('/dashboard/progres')) return 'Progres Belajar'
+  if (path.startsWith('/dashboard/notifikasi')) return 'Notifikasi'
+  if (path.startsWith('/dashboard/transaksi')) return 'Transaksi'
+  if (path.startsWith('/dashboard/setting')) return 'Setting'
+  return 'Edulang'
+})
 
 onMounted(() => {
   userData.value.name = localStorage.getItem('userName') || 'User'
@@ -154,21 +195,8 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
-.user-layout {
-  background: var(--edulang-white, #f5f7fa);
-}
-.user-layout :deep(.q-page-container) {
-  background: var(--edulang-white, #f5f7fa);
-}
 .font-poppins {
   font-family: 'Poppins', sans-serif;
-}
-.user-logo {
-  width: 140px;
-  height: auto;
-}
-.user-drawer {
-  background: #fff !important;
 }
 .rounded-borders {
   border-radius: 10px;
