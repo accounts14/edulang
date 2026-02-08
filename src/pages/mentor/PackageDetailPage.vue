@@ -95,6 +95,16 @@
                   flat
                   dense
                   round
+                  icon="auto_awesome"
+                  color="lime-3"
+                  @click.stop="goGenerateSoal(lesson)"
+                >
+                  <q-tooltip>Generate Soal</q-tooltip>
+                </q-btn>
+                <q-btn
+                  flat
+                  dense
+                  round
                   icon="edit"
                   color="yellow-4"
                   @click.stop="goEditLesson(lesson)"
@@ -161,6 +171,10 @@ function goAddLesson() {
 
 function goEditLesson(lesson) {
   router.push(`/mentor/packages/${route.params.id}/lessons/${lesson.order}/edit`)
+}
+
+function goGenerateSoal(lesson) {
+  router.push(`/mentor/packages/${route.params.id}/lessons/${lesson.order}/generate-soal`)
 }
 
 async function confirmDeleteLesson(lesson) {

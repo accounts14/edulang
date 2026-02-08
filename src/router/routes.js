@@ -175,6 +175,14 @@ const routes = [
     ],
   },
 
+  // Mentor: base path /mentor
+  // Package & Lessons (route params: id = packageId, order = lessonOrder):
+  //   /mentor/packages/add                              → MentorAddPackage      (POST /api/packages)
+  //   /mentor/packages/:id                              → MentorPackageDetail   (GET /api/packages/:id)
+  //   /mentor/packages/:id/edit                          → MentorEditPackage     (GET/PUT /api/packages/:id)
+  //   /mentor/packages/:id/lessons/add                   → MentorPackageAddLesson (POST /api/packages/:id/lessons)
+  //   /mentor/packages/:id/lessons/:order/edit           → MentorPackageEditLesson (GET/PUT /api/packages/:id/lessons/:order)
+  //   /mentor/packages/:id/lessons/:order/generate-soal  → MentorGenerateSoal    (POST /api/packages/:id/lessons/:order/generate-ai)
   {
     path: '/mentor',
     component: () => import('layouts/MentorLayout.vue'),
@@ -215,6 +223,25 @@ const routes = [
         component: () => import('pages/mentor/AddPackagePage.vue'),
         meta: { requiresAuth: true, allowedRoles: ['mentor'] },
       },
+      // Lebih spesifik dulu (lessons) agar tidak tertukar dengan packages/:id
+      {
+        path: 'packages/:id/lessons/:order/generate-soal',
+        name: 'MentorGenerateSoal',
+        component: () => import('pages/mentor/GenerateSoalPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
+      },
+      {
+        path: 'packages/:id/lessons/:order/edit',
+        name: 'MentorPackageEditLesson',
+        component: () => import('pages/mentor/EditLessonPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
+      },
+      {
+        path: 'packages/:id/lessons/add',
+        name: 'MentorPackageAddLesson',
+        component: () => import('pages/mentor/AddLessonPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
+      },
       {
         path: 'packages/:id/edit',
         name: 'MentorEditPackage',
@@ -225,18 +252,6 @@ const routes = [
         path: 'packages/:id',
         name: 'MentorPackageDetail',
         component: () => import('pages/mentor/PackageDetailPage.vue'),
-        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
-      },
-      {
-        path: 'packages/:id/lessons/add',
-        name: 'MentorPackageAddLesson',
-        component: () => import('pages/mentor/AddLessonPage.vue'),
-        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
-      },
-      {
-        path: 'packages/:id/lessons/:order/edit',
-        name: 'MentorPackageEditLesson',
-        component: () => import('pages/mentor/EditLessonPage.vue'),
         meta: { requiresAuth: true, allowedRoles: ['mentor'] },
       },
     ],
