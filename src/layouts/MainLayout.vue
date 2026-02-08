@@ -70,14 +70,11 @@
           </q-item-section>
         </q-item>
 
-        <q-item>
+        <q-item clickable v-ripple @click="toggleDark(!isDark)">
           <q-item-section avatar>
-            <q-icon :name="isDark ? 'dark_mode' : 'light_mode'" size="sm" />
+            <q-icon :name="isDark ? 'light_mode' : 'dark_mode'" size="sm" />
           </q-item-section>
           <q-item-section>{{ $t('theme.darkMode') }}</q-item-section>
-          <q-item-section side>
-            <q-toggle dense v-model="isDark" @update:model-value="toggleDark" />
-          </q-item-section>
         </q-item>
 
         <!-- Auth -->
@@ -227,12 +224,14 @@
               </q-menu>
             </q-btn>
 
-            <q-toggle
+            <q-btn
+              flat
+              round
               dense
-              v-model="isDark"
-              @update:model-value="toggleDark"
-              :label="$t('theme.darkMode')"
-              class="theme-toggle"
+              :icon="isDark ? 'light_mode' : 'dark_mode'"
+              class="theme-icon-btn"
+              :aria-label="$t('theme.darkMode')"
+              @click="toggleDark(!isDark)"
             />
 
             <!-- Learning Center (→ login) / User Info -->
@@ -685,7 +684,7 @@ const handleLogout = () => {
 .bg-dark .user-menu-btn span {
   color: var(--edulang-white) !important;
 }
-.bg-dark .theme-toggle {
+.bg-dark .theme-icon-btn {
   color: var(--edulang-white) !important;
 }
 .rounded-borders {
