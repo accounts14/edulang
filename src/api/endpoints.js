@@ -12,6 +12,10 @@
  * - PUT    /packages/:packageId/lessons/:lessonOrder → update lesson
  * - DELETE /packages/:packageId/lessons/:lessonOrder  → hapus lesson
  * - POST   /packages/:packageId/lessons/:lessonOrder/generate-ai → generate soal dengan AI
+ *
+ * User Learn (Langganan → Mulai Belajar → video + pertemuan + Soal + Penjelasan AI):
+ * - GET    /packages/:packageId/lessons/:lessonOrder/assignment → ambil soal (pilihan ganda + esai)
+ * - POST   /packages/:packageId/lessons/:lessonOrder/assignment/submit → kirim jawaban, dapat penjelasan AI
  */
 
 export const packageEndpoints = {
@@ -29,4 +33,13 @@ export const lessonEndpoints = {
   /** Generate soal (assignment) dengan AI. Body: { prompt } */
   generateAi: (packageId, lessonOrder) =>
     `/packages/${packageId}/lessons/${lessonOrder}/generate-ai`,
+}
+
+/** User: ambil soal & submit jawaban untuk dapat penjelasan AI */
+export const assignmentEndpoints = {
+  /** GET: daftar soal (pilihan ganda + esai) untuk lesson */
+  get: (packageId, lessonOrder) => `/packages/${packageId}/lessons/${lessonOrder}/assignment`,
+  /** POST: submit jawaban, response berisi penjelasan AI (benar/salah) */
+  submit: (packageId, lessonOrder) =>
+    `/packages/${packageId}/lessons/${lessonOrder}/assignment/submit`,
 }

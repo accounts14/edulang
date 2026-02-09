@@ -137,10 +137,9 @@ const languageTypeOptions = ref([])
 
 // Sesuai endpoint: level = limited | moderated | good | fluent
 const levelOptions = [
-  { label: 'Limited', value: 'limited' },
-  { label: 'Moderated', value: 'moderated' },
-  { label: 'Good', value: 'good' },
-  { label: 'Fluent', value: 'fluent' },
+  { label: 'Pemula', value: 'Pemula' },
+  { label: 'Menengah', value: 'Menengah' },
+  { label: 'Lanjutan', value: 'Lanjutan' },
 ]
 
 const form = reactive({

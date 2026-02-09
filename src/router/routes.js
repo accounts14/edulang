@@ -45,6 +45,7 @@ const routes = [
 
   // === HALAMAN DASHBOARD BERDASARKAN ROLE ===
   // User Dashboard (layout seperti MentorLayout, bg white dari app/quasar)
+  // Alur: Langganan → Mulai Belajar → Learn (video + pertemuan + Deskripsi/Soal) → Kerjakan Soal → Penjelasan AI
   {
     path: '/dashboard',
     component: () => import('layouts/UserLayout.vue'),
@@ -59,6 +60,22 @@ const routes = [
         path: 'langganan',
         name: 'UserLangganan',
         component: () => import('pages/user/UserLanggananPage.vue'),
+      },
+      // Mulai Belajar: video + daftar pertemuan + tab Deskripsi / Soal + button Kerjakan Soal
+      {
+        path: 'learn/:packageId/lessons/:order/soal',
+        name: 'UserSoal',
+        component: () => import('pages/user/UserSoalPage.vue'),
+      },
+      {
+        path: 'learn/:packageId/lessons/:order',
+        name: 'UserLearnLesson',
+        component: () => import('pages/user/UserLearnPage.vue'),
+      },
+      {
+        path: 'learn/:packageId',
+        name: 'UserLearn',
+        component: () => import('pages/user/UserLearnPage.vue'),
       },
       {
         path: 'progres',

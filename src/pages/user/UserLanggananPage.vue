@@ -45,7 +45,7 @@
                 color="primary"
                 class="col text-weight-bold"
                 label="Mulai Belajar"
-                :to="`/courses/${course._id || course.id}`"
+                :to="{ name: 'UserLearn', params: { packageId: course._id || course.id } }"
               />
               <q-btn
                 unelevated
