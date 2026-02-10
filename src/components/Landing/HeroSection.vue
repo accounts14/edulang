@@ -62,8 +62,8 @@
           </div>
         </div>
 
-        <!-- Right: Character + floating language bubbles -->
-        <div class="col-12 col-lg-6 flex flex-center q-mt-lg q-mt-none hero-right-col">
+        <!-- Right: Character + floating bubbles (isi dari gambar kedua) -->
+        <div class="col-12 col-lg-6 flex flex-center q-mt-lg q-mt-none hero-right-col hero-right-align-top">
           <div class="hero-right-inner">
             <div class="hero-character-area">
               <!-- Floating oval bubbles: iconUrl + teks (animasi) -->
@@ -258,7 +258,7 @@ onMounted(async () => {
 .hero-desc {
   color: var(--edulang-black, #2d2d2d);
   opacity: 0.9;
-  font-size: 1.1rem;
+  max-width: 500px; /* Atur angka ini sesuai kebutuhan */
   line-height: 1.7;
 }
 
@@ -299,14 +299,22 @@ onMounted(async () => {
 }
 
 .hero-right-col {
-  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-right-align-top {
+  align-self: flex-start;
 }
 
 .hero-right-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
+  min-width: 300px;
 }
 
 .hero-character-area {
@@ -317,13 +325,6 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    180deg,
-    rgba(245, 247, 250, 0.6) 0%,
-    rgba(255, 255, 255, 0.9) 50%,
-    rgba(245, 247, 250, 0.8) 100%
-  );
-  border-radius: 24px;
   box-shadow: none;
 }
 
@@ -335,8 +336,8 @@ onMounted(async () => {
 }
 
 .hero-character {
-  width: 110%;
-  max-height: 5600px;
+  width: 100%;
+  max-height: 500px;
   object-fit: contain;
 }
 
