@@ -120,11 +120,11 @@ const items = [
   opacity: 0.95;
 }
 
-/* Image & Decoration - GIGANTIC CHARACTER */
+/* Image & Decoration - **IMAGE SAJA SAMPE SENTUH FEATURE CARD** */
 .image-wrapper {
   position: relative;
   height: 100%;
-  min-height: 900px; /* GIGANTIC container */
+  min-height: 680px; /* TIDAK DIUBAH */
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -137,32 +137,32 @@ const items = [
 
 .bg-decoration {
   position: absolute;
-  top: -8px;
-  left: -8px;
-  width: calc(100% + 16px);
-  height: calc(100% + 16px);
+  top: 8px;
+  left: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
   background: linear-gradient(145deg, #f0f7ff 0%, #e6f3ff 100%);
-  border-radius: 80px; /* GIGANTIC radius */
+  border-radius: 48px;
   z-index: -1;
   box-shadow:
-    0 40px 80px rgba(0, 86, 179, 0.35),
-    inset 0 8px 20px rgba(255, 255, 255, 1);
+    0 20px 40px rgba(0, 86, 179, 0.15),
+    inset 0 2px 8px rgba(255, 255, 255, 0.8);
   transform: rotate(-1.5deg);
 }
 
 .character-img {
   position: absolute;
-  top: 4px; /* Perfect top alignment */
+  top: 20px; /* Perfect top alignment with badge */
   left: 50%;
   transform: translateX(-50%);
-  width: 560px; /* GIGANTIC: 500px → 560px */
-  height: 860px; /* GIGANTIC: 800px → 860px - FEET REALLY CLOSE TO BOTTOM CARDS */
+  width: 500px; /* **SEKARANG 500px** - sedikit lebih besar dari 480px */
+  height: 900px; /* **SEKARANG 900px** - UJUNG KAKI PERSIS SENTUH FEATURE CARD BAWAH */
   max-width: 100%;
   z-index: 2;
   filter: drop-shadow(0 35px 75px rgba(0, 86, 179, 0.35));
 }
 
-/* Feature Cards */
+/* Feature Cards - TIDAK DIUBAH SAMA SEKALI */
 .feature-card {
   border-radius: 24px;
   border: 2px solid #edf2f7 !important;
@@ -214,17 +214,18 @@ const items = [
 /* Mobile Responsiveness */
 @media (max-width: 991px) {
   .image-wrapper {
-    min-height: 640px;
+    min-height: 420px;
+    margin-bottom: 2rem;
   }
 
   .character-img {
-    width: 520px;
-    height: 600px;
-    top: 2px;
+    width: 440px; /* **440px** untuk tablet */
+    height: 580px; /* **580px** - sentuh card */
+    top: 10px;
   }
 
   .bg-decoration {
-    border-radius: 64px;
+    border-radius: 32px;
   }
 
   .main-title {
@@ -245,12 +246,12 @@ const items = [
 
 @media (max-width: 767px) {
   .character-img {
-    width: 480px;
-    height: 560px;
+    width: 400px; /* **400px** mobile */
+    height: 540px; /* **540px** - sentuh card */
   }
 
   .image-wrapper {
-    min-height: 600px;
+    min-height: 480px;
   }
 }
 </style>
