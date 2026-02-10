@@ -15,7 +15,10 @@
  *
  * User Learn (Langganan → Mulai Belajar → video + pertemuan + Soal + Penjelasan AI):
  * - GET    /packages/:packageId/lessons/:lessonOrder/assignment → ambil soal (pilihan ganda + esai)
- * - POST   /packages/:packageId/lessons/:lessonOrder/assignment/submit → kirim jawaban, dapat penjelasan AI
+ *
+ * Submissions (User menjawab soal, dapat feedback AI):
+ * - POST   /submissions                      → kirim jawaban 1 soal (MCQ + Esai), dapat aiScore + aiFeedback
+ * - GET    /submissions/my/subs             → lihat riwayat submissions user (grouped by lesson)
  */
 
 export const packageEndpoints = {
@@ -39,7 +42,12 @@ export const lessonEndpoints = {
 export const assignmentEndpoints = {
   /** GET: daftar soal (pilihan ganda + esai) untuk lesson */
   get: (packageId, lessonOrder) => `/packages/${packageId}/lessons/${lessonOrder}/assignment`,
-  /** POST: submit jawaban, response berisi penjelasan AI (benar/salah) */
-  submit: (packageId, lessonOrder) =>
-    `/packages/${packageId}/lessons/${lessonOrder}/assignment/submit`,
+}
+
+/** User submissions (jawaban + feedback AI) */
+export const submissionEndpoints = {
+  /** POST: kirim jawaban 1 soal (langsung dinilai AI) */
+  create: '/submissions',
+  /** GET: history submissions milik user */
+  mySubs: '/submissions/my/subs',
 }

@@ -50,12 +50,29 @@
           </div>
         </div>
 
-        <!-- Tab Deskripsi | Soal -->
-        <q-tabs v-model="activeTab" dense align="left" class="text-grey-8">
-          <q-tab name="deskripsi" label="Deskripsi" />
-          <q-tab name="soal" label="Soal" />
+        <!-- Tab Deskripsi | Soal (gaya sesuai desain) -->
+        <q-tabs
+          v-model="activeTab"
+          align="left"
+          dense
+          class="learn-tabs bg-grey-3 q-mt-md rounded-borders"
+          indicator-color="transparent"
+        >
+          <q-tab
+            name="deskripsi"
+            label="Deskripsi"
+            no-caps
+            class="learn-tab"
+            :class="{ 'learn-tab--active': activeTab === 'deskripsi' }"
+          />
+          <q-tab
+            name="soal"
+            label="Soal"
+            no-caps
+            class="learn-tab"
+            :class="{ 'learn-tab--active': activeTab === 'soal' }"
+          />
         </q-tabs>
-        <q-separator />
         <q-tab-panels v-model="activeTab" animated class="bg-transparent">
           <q-tab-panel name="deskripsi" class="q-pa-none q-pt-md">
             <div class="text-body1 text-grey-8" style="white-space: pre-line">
@@ -93,9 +110,10 @@
             v-for="lesson in lessons"
             :key="lesson.order"
             clickable
-            :active="Number(lesson.order) === Number(currentOrder)"
-            active-class="bg-primary text-white rounded-borders"
-            class="rounded-borders q-mb-xs"
+            class="pertemuan-item q-mb-xs"
+            :class="{
+              'pertemuan-item--active': Number(lesson.order) === Number(currentOrder),
+            }"
             @click="goToLesson(lesson.order)"
           >
             <q-item-section avatar>
@@ -170,8 +188,26 @@ async function fetchPackage() {
   if (!packageId.value) return
   loading.value = true
   try {
-    const res = await api.get(packageEndpoints.detail(packageId.value))
-    packageData.value = res.data?.data ?? res.data ?? null
+    let data
+    try {
+      // Utama: gunakan API User Progress (my-progress)
+      const res = await api.get(`/userprogress/my-progress/${packageId.value}`)
+      const body = res.data ?? {}
+      data = body.data ?? body
+    } catch {
+      // Fallback jika endpoint my-progress belum tersedia
+      const res = await api.get(packageEndpoints.detail(packageId.value))
+      const body = res.data ?? {}
+      data = body.data ?? body
+    }
+
+    const pkg = data.package ?? data.packageDetail ?? data
+    packageData.value = {
+      ...(typeof pkg === 'object' ? pkg : {}),
+      lessons: data.lessons ?? pkg.lessons ?? [],
+      progress:
+        data.percentage ?? data.progress ?? data.progressPercent ?? pkg.progress ?? 0,
+    }
   } catch {
     packageData.value = null
   } finally {
@@ -209,6 +245,40 @@ watch(
   min-width: 280px;
   border-left: 1px solid rgba(0, 0, 0, 0.08);
 }
+
+/* Gaya tab Deskripsi / Soal agar mirip desain (gambar 1 & 2) */
+.learn-tabs {
+  display: inline-flex;
+  padding: 4px;
+}
+.learn-tab {
+  min-width: 140px;
+  border-radius: 999px;
+  background: transparent;
+  color: #6b7280;
+  font-weight: 600;
+}
+.learn-tab--active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Gaya daftar pertemuan di sidebar (tombol biru vertikal) */
+.pertemuan-item {
+  border-radius: 12px;
+  background: #2563eb;
+  color: #ffffff;
+}
+.pertemuan-item--active {
+  background: #1d4ed8;
+}
+.pertemuan-item :deep(.q-item__section--avatar .q-icon) {
+  color: #ffffff;
+}
+.pertemuan-item :deep(.q-item__label) {
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .sidebar-pertemuan {
     width: 100%;
