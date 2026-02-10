@@ -1,9 +1,17 @@
-<!-- Bergabung Sebagai Mentor - Bagikan Ilmu Bahasamu & Raih Penghasilan -->
+<!-- Mentor - Konsep LP2: Berbagi Skill, Bangun Dampak Untukmu -->
 <template>
   <section class="mentor-section">
     <div class="container">
       <div class="row items-center q-col-gutter-xl">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 order-2 order-md-1 flex flex-center justify-center">
+          <div class="mentor-character-block">
+            <div class="mentor-character-frame">
+              <q-img src="~assets/landing/character-mentor.png" class="mentor-img" fit="contain" />
+            </div>
+            <div class="mentor-tagline">Berbagi Skill, Bangun Dampak</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 order-1 order-md-2">
           <h2 class="section-title text-weight-bold q-mb-md">Bergabung Sebagai Mentor</h2>
           <h3 class="section-subtitle text-weight-bold">Bagikan Ilmu Bahasamu & Raih Penghasilan</h3>
           <p class="mentor-desc q-mb-lg">
@@ -38,9 +46,6 @@
             icon-right="arrow_forward"
             :to="{ path: '/mentor/dashboard' }"
           />
-        </div>
-        <div class="col-12 col-md-6 flex flex-center">
-          <q-img src="~assets/MENTOR.png" class="mentor-img" />
         </div>
       </div>
     </div>
@@ -96,8 +101,28 @@
   font-weight: 600;
 }
 
+.mentor-character-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mentor-character-frame {
+  background: linear-gradient(180deg, rgba(0, 137, 255, 0.08) 0%, transparent 100%);
+  border-radius: 24px;
+  padding: 2rem;
+  border: 1px solid rgba(0, 137, 255, 0.15);
+}
+
 .mentor-img {
-  max-width: 480px;
+  max-width: 280px;
   width: 100%;
+}
+
+.mentor-tagline {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--edulang-navy, #003387);
 }
 </style>

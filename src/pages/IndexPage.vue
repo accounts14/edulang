@@ -18,6 +18,9 @@
         <ProgramEdulangSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
+        <BelajarBaruSection />
+      </section>
+      <section class="landing-section reveal-section" data-reveal>
         <TestimonialSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
@@ -45,6 +48,7 @@ import TentangEdulangSection from 'components/Landing/TentangEdulangSection.vue'
 import EdulangUntukSiapaSection from 'components/Landing/EdulangUntukSiapaSection.vue'
 import KenapaPilihEdulangSection from 'components/Landing/KenapaPilihEdulangSection.vue'
 import ProgramEdulangSection from 'components/Landing/ProgramEdulangSection.vue'
+import BelajarBaruSection from 'components/Landing/BelajarBaruSection.vue'
 import TestimonialSection from 'components/Landing/TestimonialSection.vue'
 import MentorSection from 'components/Landing/MentorSection.vue'
 import PartnershipSection from 'components/Landing/PartnershipSection.vue'
@@ -91,6 +95,11 @@ onMounted(() => {
   padding-top: 1rem;
 }
 
+/* Kurangi jarak Hero – Tentang Edulang (feedback) */
+.landing-section:nth-child(2) {
+  padding-top: 1rem;
+}
+
 @media (min-width: 1024px) {
   .landing-section {
     padding-top: 1.5rem;
@@ -98,6 +107,9 @@ onMounted(() => {
   }
   .landing-section:first-child {
     padding-top: 1.5rem;
+  }
+  .landing-section:nth-child(2) {
+    padding-top: 0.5rem;
   }
 }
 

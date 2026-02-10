@@ -76,6 +76,9 @@ export default {
     kebijakanPrivasi: 'Kebijakan Privasi',
     kebijakanRefund: 'Kebijakan Refund',
     copyright: '© Edulang 2026. All rights reserved',
+    subscribeLabel: 'Dapatkan update program & tips belajar',
+    subscribePlaceholder: 'Masukkan email Anda',
+    subscribeBtn: 'Daftar',
   },
   subscription: {
     fastTrackTag: 'Kelas Fast-Track',

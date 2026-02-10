@@ -12,7 +12,8 @@
       <div v-for="(item, i) in items" :key="i" class="col-12 col-sm-6 col-md-4">
         <q-card flat bordered class="benefit-card q-pa-lg rounded-borders">
           <div class="benefit-number text-weight-bold">{{ String(i + 1).padStart(2, '0') }}</div>
-          <p class="benefit-desc">{{ item }}</p>
+          <div class="benefit-title text-weight-bold q-mb-sm">{{ item.title }}</div>
+          <p class="benefit-desc">{{ item.desc }}</p>
         </q-card>
       </div>
     </div>
@@ -21,12 +22,12 @@
 
 <script setup>
 const items = [
-  'Akses ribuan video pembelajaran berkualitas tinggi dari mentor profesional.',
-  'Belajar langsung dari mentor native speaker dan profesional bersertifikat.',
-  'Dapatkan sertifikat yang diakui setelah menyelesaikan program.',
-  'Belajar kapan saja dan di mana saja sesuai jadwal kamu.',
-  'Investasi pendidikan dengan harga yang ramah di kantong.',
-  'Tim support yang siap membantu kapanpun kamu butuhkan.',
+  { title: 'Video Pembelajaran HD', desc: 'Akses ribuan video pembelajaran berkualitas tinggi dari mentor profesional.' },
+  { title: 'Mentor Berpengalaman', desc: 'Belajar langsung dari mentor native speaker dan profesional bersertifikat.' },
+  { title: 'Sertifikat Resmi', desc: 'Dapatkan sertifikat yang diakui setelah menyelesaikan program.' },
+  { title: 'Fleksibel & Mandiri', desc: 'Belajar kapan saja dan di mana saja sesuai jadwal kamu.' },
+  { title: 'Harga Terjangkau', desc: 'Investasi pendidikan dengan harga yang ramah di kantong.' },
+  { title: 'Support 24/7', desc: 'Tim support yang siap membantu kapanpun kamu butuhkan.' },
 ]
 </script>
 
@@ -67,9 +68,14 @@ const items = [
 
 .benefit-number {
   color: var(--edulang-blue, #0089ff);
-  font-size: 1.5rem;
-  opacity: 0.6;
-  margin-bottom: 8px;
+  font-size: 1.25rem;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.benefit-title {
+  color: var(--edulang-navy, #003387);
+  font-size: 1rem;
 }
 
 .benefit-desc {

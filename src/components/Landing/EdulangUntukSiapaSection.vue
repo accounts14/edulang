@@ -1,4 +1,4 @@
-<!-- Edulang Untuk Siapa? - Cocok untuk Semua Kalangan -->
+<!-- Edulang Untuk Siapa? - Konsep LP2 (friendly, horizontal cards) -->
 <template>
   <section class="untuk-siapa-section">
     <div class="container">
@@ -10,10 +10,13 @@
           baru.
         </p>
       </div>
-      <div class="row q-col-gutter-lg">
-        <div v-for="(item, i) in items" :key="i" class="col-12 col-sm-6 col-md-3">
-          <q-card flat bordered class="use-case-card q-pa-lg text-center rounded-borders">
-            <q-icon :name="item.icon" size="40px" color="primary" class="q-mb-md" />
+      <div class="use-case-row">
+        <div v-for="(item, i) in items" :key="i" class="use-case-card-wrap">
+          <q-card flat bordered class="use-case-card q-pa-lg rounded-borders">
+            <div class="use-case-icon-wrap">
+              <q-icon :name="item.icon" size="36px" color="primary" />
+            </div>
+            <div class="use-case-title text-weight-bold q-mb-sm">{{ item.title }}</div>
             <p class="use-case-desc">{{ item.desc }}</p>
           </q-card>
         </div>
@@ -24,22 +27,10 @@
 
 <script setup>
 const items = [
-  {
-    icon: 'school',
-    desc: 'Persiapan kuliah ke luar negeri atau menambah skill bahasa asing.',
-  },
-  {
-    icon: 'trending_up',
-    desc: 'Tingkatkan karir dengan kemampuan bahasa asing untuk bisnis internasional.',
-  },
-  {
-    icon: 'flight',
-    desc: 'Persiapan traveling dan komunikasi dengan native speaker.',
-  },
-  {
-    icon: 'menu_book',
-    desc: 'Untuk kamu yang ingin mempelajari budaya melalui bahasanya.',
-  },
+  { icon: 'school', title: 'Pelajar & Mahasiswa', desc: 'Persiapan kuliah ke luar negeri atau menambah skill bahasa asing.' },
+  { icon: 'work', title: 'Profesional', desc: 'Tingkatkan karir dengan kemampuan bahasa asing untuk bisnis internasional.' },
+  { icon: 'person_search', title: 'Job Seeker', desc: 'Raih peluang kerja global dengan kemampuan bahasa yang mumpuni.' },
+  { icon: 'emoji_events', title: 'Calon Penerima Beasiswa', desc: 'Siapkan JLPT, HSK, IELTS untuk beasiswa impianmu.' },
 ]
 </script>
 
@@ -76,9 +67,45 @@ const items = [
   margin-right: auto;
 }
 
+.use-case-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.use-case-card-wrap {
+  flex: 1 1 220px;
+  min-width: 200px;
+  max-width: 280px;
+}
+
 .use-case-card {
   height: 100%;
   border-color: #e2e8f0 !important;
+  text-align: center;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.use-case-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 51, 135, 0.1);
+  transform: translateY(-2px);
+}
+
+.use-case-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(0, 137, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.use-case-title {
+  color: var(--edulang-navy, #003387);
+  font-size: 1rem;
 }
 
 .use-case-desc {

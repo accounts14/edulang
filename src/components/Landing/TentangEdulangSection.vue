@@ -2,16 +2,14 @@
 <template>
   <section class="tentang-section container">
     <div class="row items-center q-col-gutter-xl">
-      <div class="col-12 col-lg-5">
+      <div class="col-12 col-lg-7">
         <h2 class="section-title text-weight-bold q-mb-md">Tentang Edulang</h2>
         <h3 class="subtitle text-weight-bold q-mb-md">Platform Pendidikan Bahasa Terlengkap</h3>
-        <p class="section-desc">
+        <p class="section-desc q-mb-lg">
           Edulang adalah platform pendidikan bahasa yang membantu siapa saja belajar dengan mudah,
           cepat, dan terjangkau. Dilengkapi AI Speaking Partner, mentor marketplace, dan pathway
           untuk kerja maupun kuliah luar negeri.
         </p>
-      </div>
-      <div class="col-12 col-lg-7">
         <div class="row q-col-gutter-md">
           <div v-for="(item, i) in items" :key="i" class="col-12 col-sm-6">
             <q-card flat bordered class="feature-card q-pa-lg rounded-borders">
@@ -21,6 +19,21 @@
               <div class="feature-title text-weight-bold q-mb-sm">{{ item.title }}</div>
               <p class="feature-desc">{{ item.desc }}</p>
             </q-card>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-5 flex flex-center justify-center">
+        <div class="tentang-character-block">
+          <q-img
+            src="~assets/landing/character-mentor.png"
+            class="tentang-character"
+            fit="contain"
+          />
+          <div class="character-copy">
+            <div class="character-role">Mentor Edulang</div>
+            <div class="character-expertise">Native Speaker • Sertifikat Internasional</div>
+            <div class="character-value">Berbagi skill bahasa untuk peluang global</div>
+            <div class="character-langs">Bahasa: Jepang, Mandarin, Inggris, Korea, Arab, Jerman</div>
           </div>
         </div>
       </div>
@@ -115,5 +128,49 @@ const items = [
 
 .rounded-borders {
   border-radius: 16px;
+}
+
+.tentang-character-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tentang-character {
+  max-width: 260px;
+  max-height: 320px;
+}
+
+.character-copy {
+  text-align: center;
+  max-width: 280px;
+}
+
+.character-role {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--edulang-navy, #003387);
+  margin-bottom: 4px;
+}
+
+.character-expertise {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--edulang-blue, #0089ff);
+  margin-bottom: 6px;
+}
+
+.character-value {
+  font-size: 0.9rem;
+  color: var(--edulang-black, #2d2d2d);
+  opacity: 0.9;
+  margin-bottom: 6px;
+}
+
+.character-langs {
+  font-size: 0.8125rem;
+  color: var(--edulang-black, #2d2d2d);
+  opacity: 0.75;
 }
 </style>
