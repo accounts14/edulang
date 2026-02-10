@@ -79,6 +79,9 @@ export default {
     subscribeLabel: 'Dapatkan update program & tips belajar',
     subscribePlaceholder: 'Masukkan email Anda',
     subscribeBtn: 'Daftar',
+    subscribeTitle: 'Subscribe Email',
+    subscribeDesc:
+      'Get the best new products in your inbox, every day. Get the latest content first.',
   },
   subscription: {
     fastTrackTag: 'Kelas Fast-Track',

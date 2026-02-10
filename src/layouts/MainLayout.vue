@@ -12,7 +12,7 @@
         <!-- Logo -->
         <q-item class="q-mb-md">
           <q-item-section>
-            <img src="~assets/Edulang.png" style="height: 40px; width: auto" alt="Edulang Logo" />
+            <img src="~assets/Edulang.png" style="width: 200px; height: auto" alt="Edulang Logo" />
           </q-item-section>
         </q-item>
 
@@ -117,9 +117,23 @@
             style="min-width: 200px; height: 50px"
           >
             <div class="absolute-center-left">
-              <img src="~assets/Edulang.png" class="main-logo" alt="Edulang Logo" />
-              <div class="header-tagline-container gt-sm">
-                <span class="header-tagline">{{ $t('nav.tagline') }}</span>
+              <!-- Logo Image -->
+              <img src="~assets/Edulang1.png" class="main-logo" alt="Edulang Logo" />
+
+              <!-- Kontainer untuk teks: Edulang (di atas) + tagline (di bawah) -->
+              <div class="header-text-container gt-sm">
+                <!-- Edulang (di atas, warna #003387, lebar sesuai 'World with Education') -->
+                <div
+                  class="edulang-header-text"
+                  style="color: #003387; font-weight: bold; font-size: 1.9rem; line-height: 1.2"
+                >
+                  Edulang
+                </div>
+
+                <!-- Tagline: Unlock The World with Education -->
+                <div class="header-tagline">
+                  {{ $t('nav.tagline') }}
+                </div>
               </div>
             </div>
           </q-toolbar-title>
@@ -300,7 +314,7 @@
       <footer :class="[isDark ? 'bg-dark text-white' : 'bg-white text-dark', 'footer-main']">
         <div class="container footer-content">
           <div class="row q-col-gutter-xl">
-            <!-- Brand + PT + Alamat -->
+            <!-- Brand + PT + Alamat + Subscribe Email -->
             <div class="col-12 col-md-5 col-lg-4">
               <img src="~assets/Edulang.png" alt="Edulang" class="footer-logo q-mb-md" />
               <div class="footer-pt text-weight-bold text-body1 q-mb-xs">
@@ -309,58 +323,45 @@
               <p class="footer-alamat text-body2 q-ma-none">
                 {{ $t('footer.alamatValue') }}
               </p>
+
+              <!-- 🔹 SUBSCRIBE EMAIL (dibawah alamat, seperti gambar 2) -->
+              <div class="footer-subscribe q-mt-md">
+                <div class="footer-subscribe-title text-h6 q-mb-sm">
+                  {{ $t('footer.subscribeTitle') }}
+                </div>
+                <p class="footer-subscribe-desc text-caption q-mb-md">
+                  {{ $t('footer.subscribeDesc') }}
+                </p>
+                <q-input
+                  v-model="subscribeName"
+                  outlined
+                  dense
+                  placeholder="Your full name"
+                  class="q-mb-sm"
+                  :class="isDark ? 'bg-grey-9' : 'bg-grey-1'"
+                />
+                <q-input
+                  v-model="subscribeEmail"
+                  type="email"
+                  outlined
+                  dense
+                  placeholder="Your email"
+                  class="q-mb-sm"
+                  :class="isDark ? 'bg-grey-9' : 'bg-grey-1'"
+                />
+                <q-btn
+                  unelevated
+                  color="positive"
+                  text-color="white"
+                  class="full-width"
+                  @click="onSubscribe"
+                >
+                  {{ $t('footer.subscribeBtn') }}
+                </q-btn>
+              </div>
             </div>
 
-            <!-- Kontak & Media Sosial -->
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="footer-heading q-mb-md">{{ $t('footer.kontakMediaSosial') }}</div>
-              <ul class="footer-list">
-                <li>
-                  <a
-                    href="mailto:contactedulang@gmail.com"
-                    class="footer-link row items-center no-wrap"
-                  >
-                    <q-icon name="mail" size="18px" class="q-mr-sm" />
-                    {{ $t('footer.emailSupport') }}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://wa.me/6282279506450"
-                    target="_blank"
-                    rel="noopener"
-                    class="footer-link row items-center no-wrap"
-                  >
-                    <q-icon name="fab fa-whatsapp" size="18px" class="q-mr-sm" />
-                    {{ $t('footer.whatsappKonsultasi') }}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://instagram.com/edulang.id"
-                    target="_blank"
-                    rel="noopener"
-                    class="footer-link row items-center no-wrap"
-                  >
-                    <q-icon name="fab fa-instagram" size="18px" class="q-mr-sm" />
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://tiktok.com/@edulang.id"
-                    target="_blank"
-                    rel="noopener"
-                    class="footer-link row items-center no-wrap"
-                  >
-                    <q-icon name="fab fa-tiktok" size="18px" class="q-mr-sm" />
-                    Tiktok
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <!-- Program - Bahasa Yang Tersedia (dari endpoint) -->
+            <!-- Program - Bahasa Yang Tersedia -->
             <div class="col-6 col-sm-4 col-md-2">
               <div class="footer-heading q-mb-md">{{ $t('footer.program') }}</div>
               <ul class="footer-list">
@@ -410,7 +411,7 @@
               </ul>
             </div>
 
-            <!-- Legal & Trust (dibawah Panduan & Insight) -->
+            <!-- Legal & Trust -->
             <div class="col-6 col-sm-4 col-md-2">
               <div class="footer-heading q-mb-md">{{ $t('footer.legalTrust') }}</div>
               <ul class="footer-list">
@@ -433,7 +434,7 @@
             </div>
           </div>
 
-          <!-- Metode Pembayaran (icon dari public/icon-trans) -->
+          <!-- Metode Pembayaran -->
           <div class="footer-payment q-mt-xl q-pt-xl">
             <div class="footer-heading q-mb-md">{{ $t('footer.metodePembayaran') }}</div>
             <div class="footer-payment-icons">
@@ -444,9 +445,51 @@
           </div>
         </div>
 
+        <!-- Footer bottom (copyright) -->
         <div class="footer-bottom">
-          <div class="container text-center text-body2">
-            {{ $t('footer.copyright') }}
+          <div class="container footer-bottom-inner">
+            <div class="footer-bottom-left text-body2">
+              {{ $t('footer.copyright') }}
+            </div>
+
+            <div class="footer-bottom-right row items-center q-gutter-x-sm">
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="fab fa-instagram"
+                target="_blank"
+                href="https://instagram.com/edulang.id"
+                class="footer-social-icon"
+              />
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="fab fa-tiktok"
+                target="_blank"
+                href="https://tiktok.com/@edulang.id"
+                class="footer-social-icon"
+              />
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="fab fa-whatsapp"
+                target="_blank"
+                href="https://wa.me/6282279506450"
+                class="footer-social-icon"
+              />
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="far fa-envelope"
+                target="_blank"
+                href="mailto:contactedulang@gmail.com"
+                class="footer-social-icon"
+              />
+            </div>
           </div>
         </div>
       </footer>
@@ -569,7 +612,7 @@ const onDrawerAllCourses = () => {
 }
 
 const onDrawerStudyAbroad = () => {
-  router.push('/contact')
+  window.location.href = 'https://study.edulang.id/'
   leftDrawerOpen.value = false
 }
 
@@ -598,7 +641,7 @@ const onProgramAllCourses = () => {
 }
 
 const onProgramStudyAbroad = () => {
-  router.push('/contact')
+  window.location.href = 'https://study.edulang.id/'
   closeProgramMenu()
 }
 
@@ -647,9 +690,93 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
+.footer-subscribe {
+  max-width: 320px;
+}
+
+.footer-subscribe-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+.footer-subscribe-desc {
+  color: inherit;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+.q-input {
+  border-radius: 8px;
+}
+
+.q-btn.full-width {
+  padding: 12px 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: #c1f7a0; /* hijau muda seperti gambar 2 */
+  color: #003387;
+}
+
+.bg-dark .q-btn.full-width {
+  background: #a8e67a;
+  color: #00225a;
+}
+
+/* Social icons at very bottom (gambar 3) */
+.footer-social-bottom {
+  background: var(--edulang-navy, #003387);
+  padding: 12px 0;
+}
+
+.footer-social-icon {
+  color: #f5f7fa;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 50%;
+  background: rgba(245, 247, 250, 0.1);
+  transition: all 0.3s ease;
+}
+
+.footer-social-icon:hover {
+  background: rgba(245, 247, 250, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Pastikan tidak ada margin/padding berlebih */
+.row.justify-center.items-center.q-gutter-x-md {
+  margin: 0;
+}
+
 .font-poppins {
   font-family: 'Poppins', sans-serif;
 }
+
+.header-text-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px; /* jarak antara logo dan teks */
+}
+
+.edulang-header-text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.5px;
+  /* Agar lebar visual ≈ 'World with Education' */
+  /* Gunakan fit-content + max-width sesuai panjang string */
+  display: inline-block;
+  white-space: nowrap;
+  /* Kita gunakan trick: width ~ panjang 'World with Education' dalam px */
+  /* Estimasi: 'World with Education' ≈ 160px pada font Poppins 10px (tagline), tapi untuk Edulang kita pakai ukuran lebih besar */
+  /* Lebih aman: gunakan width: 160px (sesuai estimasi visual), tidak gepeng */
+  width: 160px;
+  text-align: left;
+  overflow: visible;
+}
+
 .header-brand {
   overflow: visible !important;
 }
@@ -659,12 +786,13 @@ const handleLogout = () => {
   display: block;
 }
 .header-tagline {
-  font-size: 10px; /* Ukuran font kecil agar tidak dominan */
-  font-weight: 500;
+  font-size: 8px;
+  font-weight: 600;
   line-height: 1;
   color: var(--edulang-black, #2d2d2d);
   opacity: 0.8;
   letter-spacing: 0px;
+  margin-top: 4px;
 }
 
 .header-tagline-container {
@@ -832,6 +960,21 @@ a {
   color: #f5f7fa;
   padding: 1rem 0;
 }
+
+.footer-bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-bottom-left {
+  text-align: left;
+}
+
+.footer-bottom-right {
+  justify-content: flex-end;
+}
+
 .footer-bottom .container {
   color: inherit;
 }

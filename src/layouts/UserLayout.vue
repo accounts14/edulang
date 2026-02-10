@@ -27,7 +27,7 @@
       :breakpoint="768"
       class="bg-white q-pa-md"
     >
-      <div class="flex flex-center q-mb-xl q-mt-md">
+      <div class="flex flex-center q-mb-xl q-mt-md cursor-pointer" @click="router.push('/')">
         <img src="~assets/Edulang.png" style="width: 140px" alt="Edulang Logo" />
       </div>
 
