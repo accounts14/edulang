@@ -422,7 +422,7 @@ onMounted(async () => {
 
 /* Bottom section: Tersedia dalam berbagai bahasa populer */
 .hero-bottom-section {
-  margin-top: 4rem;
+  margin-top: 4.5rem;
   padding-top: 0;
   text-align: center;
 }
