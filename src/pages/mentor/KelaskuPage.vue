@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-lg bg-blue-1">
+  <q-page class="q-pa-lg bg-accent">
     <!-- Header -->
     <div class="q-mb-lg">
       <div class="text-caption text-grey-6 q-mb-xs">
@@ -44,16 +44,9 @@
 
           <div v-else class="chart-wrapper">
             <div class="chart-bars">
-              <div
-                v-for="(month, idx) in monthLabels"
-                :key="month"
-                class="chart-bar-item"
-              >
+              <div v-for="(month, idx) in monthLabels" :key="month" class="chart-bar-item">
                 <div class="chart-bar">
-                  <div
-                    class="chart-bar-fill"
-                    :style="{ height: barHeight(monthlyRevenue[idx]) }"
-                  />
+                  <div class="chart-bar-fill" :style="{ height: barHeight(monthlyRevenue[idx]) }" />
                 </div>
                 <div class="chart-bar-label text-caption text-grey-6">
                   {{ month }}
@@ -68,13 +61,7 @@
       <div class="col-12 col-md-4">
         <q-card flat bordered class="rounded-borders-16 bg-white q-pa-lg summary-card full-height">
           <div class="row items-center no-wrap">
-            <q-avatar
-              color="blue-6"
-              text-color="white"
-              icon="group"
-              size="52px"
-              class="q-mr-md"
-            />
+            <q-avatar color="blue-6" text-color="white" icon="group" size="52px" class="q-mr-md" />
             <div>
               <div class="text-caption text-grey-6">Total User Course-mu</div>
               <div class="text-h5 text-weight-bolder text-indigo-10">
@@ -129,11 +116,7 @@
       >
         <template #body-cell-image="props">
           <q-td :props="props">
-            <q-img
-              :src="props.row.imageUrl"
-              ratio="4/3"
-              class="thumb-image"
-            />
+            <q-img :src="props.row.imageUrl" ratio="4/3" class="thumb-image" />
           </q-td>
         </template>
 
@@ -289,9 +272,7 @@ const monthlyRevenue = computed(() => {
   return arr
 })
 
-const maxRevenue = computed(() =>
-  Math.max(1, ...monthlyRevenue.value.map((v) => Number(v || 0))),
-)
+const maxRevenue = computed(() => Math.max(1, ...monthlyRevenue.value.map((v) => Number(v || 0))))
 
 const tableRows = computed(() => {
   const map = packageUserCountMap.value
@@ -494,4 +475,3 @@ onMounted(fetchData)
   max-width: 260px;
 }
 </style>
-

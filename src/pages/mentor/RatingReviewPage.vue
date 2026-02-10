@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-lg bg-blue-1">
+  <q-page class="q-pa-lg bg-accent">
     <!-- Header -->
     <div class="q-mb-lg">
       <div class="text-caption text-grey-6 q-mb-xs">

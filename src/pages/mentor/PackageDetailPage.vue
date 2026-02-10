@@ -1,136 +1,188 @@
 <template>
-  <q-page class="q-pa-lg bg-blue-1">
-    <div v-if="loading" class="text-center q-pa-xl">
-      <q-spinner-dots color="primary" size="40px" />
+  <q-page class="q-pa-xl" style="background-color: #f5f7fa">
+    <div v-if="loading" class="flex flex-center q-pa-xl">
+      <q-spinner-ring color="primary" size="80px" />
     </div>
 
     <div v-else-if="!pkg" class="text-center q-pa-xl">
-      <q-icon name="error_outline" size="64px" color="negative" class="q-mb-md" />
-      <div class="text-h6 text-grey-9">Package tidak ditemukan</div>
-      <q-btn class="q-mt-md" color="primary" unelevated no-caps label="Kembali" @click="goBack" />
+      <q-card flat class="rounded-borders-16 q-pa-xl shadow-1">
+        <q-icon name="search_off" size="100px" color="grey-4" />
+        <div class="text-h5 text-grey-8 q-mt-md">Package tidak ditemukan</div>
+        <q-btn
+          class="q-mt-lg rounded-btn"
+          color="edulang-navy"
+          unelevated
+          no-caps
+          label="Kembali ke Dashboard"
+          icon="arrow_back"
+          @click="goBack"
+        />
+      </q-card>
     </div>
 
     <div v-else class="row q-col-gutter-xl items-start">
-      <!-- Left: package info -->
-      <div class="col-12 col-md-5 col-lg-4">
-        <q-card class="no-shadow rounded-borders-16">
-          <q-img :src="heroImage" :ratio="16 / 9" class="rounded-borders-16" />
+      <div class="col-12 col-md-4">
+        <div class="text-h5 text-weight-bold text-edulang-navy q-mb-lg">Detail Package</div>
+        <q-card flat class="content-card shadow-1 overflow-hidden">
+          <q-img :src="heroImage" :ratio="16 / 9">
+            <div class="absolute-bottom bg-transparent flex justify-end q-pa-sm">
+              <q-badge color="edulang-blue" class="q-pa-sm rounded-btn shadow-2">
+                {{ pkg.languageType?.name || 'Language' }}
+              </q-badge>
+            </div>
+          </q-img>
 
-          <q-card-section>
-            <div class="text-caption text-grey-7 q-mb-xs">Title</div>
-            <q-input v-model="pkgForm.title" dense outlined bg-color="white" />
+          <q-card-section class="q-pa-lg q-gutter-y-md">
+            <div>
+              <label class="label-custom">Judul Package</label>
+              <q-input
+                v-model="pkgForm.title"
+                dense
+                outlined
+                bg-color="white"
+                color="edulang-blue"
+                readonly
+              />
+            </div>
 
-            <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Price</div>
-            <q-input v-model.number="pkgForm.price" dense outlined type="number" bg-color="white" />
+            <div>
+              <label class="label-custom">Harga (IDR)</label>
+              <q-input
+                v-model.number="pkgForm.price"
+                dense
+                outlined
+                type="number"
+                bg-color="white"
+                readonly
+              >
+                <template v-slot:prepend><span class="text-caption">Rp</span></template>
+              </q-input>
+            </div>
 
-            <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Description</div>
-            <q-input
-              v-model="pkgForm.description"
-              dense
-              outlined
-              type="textarea"
-              autogrow
-              bg-color="white"
-            />
+            <div>
+              <label class="label-custom">Deskripsi</label>
+              <q-input
+                v-model="pkgForm.description"
+                dense
+                outlined
+                type="textarea"
+                autogrow
+                bg-color="white"
+                readonly
+              />
+            </div>
 
-            <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Level</div>
-            <q-input :model-value="pkg.level" dense outlined readonly bg-color="white" />
-
-            <div class="text-caption text-grey-7 q-mt-md q-mb-xs">Type Language</div>
-            <q-input
-              :model-value="pkg.languageType?.name"
-              dense
-              outlined
-              readonly
-              bg-color="white"
-            />
+            <div class="row q-col-gutter-sm">
+              <div class="col-6">
+                <label class="label-custom">Level</label>
+                <q-input :model-value="pkg.level" dense outlined readonly bg-color="grey-1" />
+              </div>
+              <div class="col-6">
+                <label class="label-custom">Status</label>
+                <q-badge
+                  color="positive"
+                  class="full-width flex flex-center"
+                  style="height: 40px; border-radius: 8px"
+                >
+                  AKTIF
+                </q-badge>
+              </div>
+            </div>
 
             <q-btn
-              class="q-mt-lg"
-              color="primary"
-              unelevated
+              class="full-width q-mt-lg rounded-btn"
+              outline
+              color="grey-7"
               no-caps
               label="Kembali"
+              icon="chevron_left"
               @click="goBack"
             />
           </q-card-section>
         </q-card>
       </div>
 
-      <!-- Right: lessons list -->
-      <div class="col-12 col-md-7 col-lg-8">
-        <q-card class="no-shadow rounded-borders-16 q-pa-md">
-          <div class="row items-center justify-between q-mb-md">
-            <div class="text-subtitle1 text-weight-bold text-indigo-10">Lessons</div>
-            <q-btn
-              color="positive"
-              unelevated
-              no-caps
-              label="Tambah Materi"
-              class="rounded-borders"
-              @click="goAddLesson"
-            />
-          </div>
-
-          <div v-if="lessons.length === 0" class="text-center q-pa-xl text-grey-7">
-            Belum ada materi. Klik <b>Tambah Materi</b> untuk menambahkan.
-          </div>
-
-          <q-list v-else bordered class="rounded-borders-16">
-            <q-item
-              v-for="lesson in lessons"
-              :key="lesson.order"
-              class="bg-primary text-white q-mb-sm rounded-borders"
-            >
-              <q-item-section avatar>
-                <q-icon name="play_circle" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label class="text-weight-medium">
-                  Pertemuan {{ lesson.order }} - ({{ lesson.title || 'Introduce' }})
-                </q-item-label>
-              </q-item-section>
-              <q-item-section side class="text-white">
-                <q-btn
-                  flat
-                  dense
-                  round
-                  icon="auto_awesome"
-                  color="lime-3"
-                  @click.stop="goGenerateSoal(lesson)"
-                >
-                  <q-tooltip>Generate Soal</q-tooltip>
-                </q-btn>
-                <q-btn
-                  flat
-                  dense
-                  round
-                  icon="edit"
-                  color="yellow-4"
-                  @click.stop="goEditLesson(lesson)"
-                />
-                <q-btn
-                  flat
-                  dense
-                  round
-                  icon="delete"
-                  color="red-4"
-                  @click.stop="confirmDeleteLesson(lesson)"
-                />
-              </q-item-section>
-            </q-item>
-          </q-list>
-
+      <div class="col-12 col-md-8">
+        <div class="row items-center justify-between q-mb-lg">
+          <div class="text-h5 text-weight-bold text-edulang-navy">Daftar Materi</div>
           <q-btn
-            v-if="lessons.length > 0"
-            class="q-mt-md full-width"
-            color="positive"
+            color="edulang-blue"
             unelevated
             no-caps
-            label="Tambah Video"
+            label="Tambah Materi Baru"
+            icon="add"
+            class="rounded-btn q-px-md"
             @click="goAddLesson"
           />
-        </q-card>
+        </div>
+
+        <div v-if="lessons.length === 0" class="empty-state text-center q-pa-xl">
+          <q-img
+            src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png"
+            style="width: 120px; opacity: 0.5"
+          />
+          <div class="text-h6 text-grey-6 q-mt-md">Belum ada materi yang ditambahkan</div>
+          <p class="text-grey-5">Silakan tambah materi video untuk paket belajar ini.</p>
+        </div>
+
+        <div v-else class="q-gutter-y-md">
+          <q-card v-for="lesson in lessons" :key="lesson.order" flat class="lesson-card shadow-1">
+            <q-item class="q-pa-md">
+              <q-item-section avatar>
+                <div class="order-badge flex flex-center">
+                  {{ lesson.order }}
+                </div>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label class="text-weight-bold text-edulang-navy text-subtitle1">
+                  {{ lesson.title || 'Materi Pertemuan ' + lesson.order }}
+                </q-item-label>
+                <q-item-label caption class="row items-center">
+                  <q-icon name="link" size="14px" class="q-mr-xs" />
+                  {{ lesson.videoUrl }}
+                </q-item-label>
+              </q-item-section>
+
+              <q-item-section side>
+                <div class="row q-gutter-xs">
+                  <q-btn
+                    flat
+                    round
+                    color="primary"
+                    icon="auto_awesome"
+                    @click="goGenerateSoal(lesson)"
+                  >
+                    <q-tooltip>Generate Soal AI</q-tooltip>
+                  </q-btn>
+                  <q-btn flat round color="orange-8" icon="edit" @click="goEditLesson(lesson)">
+                    <q-tooltip>Edit Materi</q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    flat
+                    round
+                    color="negative"
+                    icon="delete"
+                    @click="confirmDeleteLesson(lesson)"
+                  >
+                    <q-tooltip>Hapus</q-tooltip>
+                  </q-btn>
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-card>
+        </div>
+
+        <q-btn
+          v-if="lessons.length > 0"
+          class="q-mt-xl full-width rounded-btn border-dashed"
+          outline
+          color="edulang-blue"
+          no-caps
+          label="Klik untuk Tambah Video Lagi"
+          icon="add_circle_outline"
+          @click="goAddLesson"
+        />
       </div>
     </div>
   </q-page>
@@ -239,11 +291,78 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* Color Overrides based on Edulang Guideline */
+.text-edulang-navy {
+  color: #003387;
+}
+.bg-edulang-navy {
+  background-color: #003387;
+}
+.text-edulang-blue {
+  color: #0089ff;
+}
+.bg-edulang-blue {
+  background-color: #0089ff;
+}
+
+/* UI Styling */
 .rounded-borders-16 {
   border-radius: 16px;
-  overflow: hidden;
 }
-.text-indigo-10 {
-  color: #0d2a5c;
+
+.rounded-btn {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.content-card {
+  border-radius: 20px;
+  background: white;
+  border: 1px solid #eef0f3;
+}
+
+.lesson-card {
+  border-radius: 16px;
+  background: white;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.lesson-card:hover {
+  transform: translateY(-3px);
+  border-color: #0089ff;
+  box-shadow: 0 10px 20px rgba(0, 51, 135, 0.08) !important;
+}
+
+.label-custom {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #003387;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.order-badge {
+  width: 40px;
+  height: 40px;
+  background-color: #f5f7fa;
+  color: #003387;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  border: 1px solid #e0e4e9;
+}
+
+.empty-state {
+  background: white;
+  border: 2px dashed #d1d9e2;
+  border-radius: 24px;
+}
+
+.border-dashed {
+  border-style: dashed !important;
+  border-width: 2px;
 }
 </style>

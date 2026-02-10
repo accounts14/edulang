@@ -1,80 +1,130 @@
 <template>
-  <q-page class="q-pa-lg">
-    <div class="row justify-between items-center q-mb-xl">
+  <q-page class="q-pa-xl" style="background-color: #f5f7fa">
+    <div class="row justify-between items-end q-mb-xl">
       <div class="col-12 col-md-8">
-        <div class="text-orange-9 text-weight-bold">#Kelas</div>
-        <div class="text-h4 text-weight-bolder text-indigo-10 q-mt-sm">
-          Ruang Berkarya para Mentor Edulang
+        <div class="text-edulang-blue text-weight-bolder text-uppercase letter-spacing-1">
+          #RuangMentor
         </div>
-        <div class="text-grey-7 q-mt-xs">
-          Kelola jalur pembelajaran yang kamu dampingi, pantau progress peserta, dan pastikan setiap
-          langkah terarah.
+        <div class="text-h3 text-weight-bold text-edulang-navy q-mt-sm leading-tight">
+          Pusat Kendali <br />
+          Program Belajar Anda
+        </div>
+        <div class="text-subtitle1 text-grey-7 q-mt-md max-width-600">
+          Kelola kurikulum, pantau pertumbuhan peserta, dan hadirkan pengalaman belajar terbaik
+          bersama Edulang.
         </div>
       </div>
-      <div class="col-12 col-md-auto q-mt-md">
+      <div class="col-12 col-md-auto q-mt-lg">
         <q-btn
           unelevated
-          color="primary"
           label="Tambahkan Program Baru"
+          icon="add"
           no-caps
-          class="rounded-borders q-px-lg"
+          class="rounded-btn q-px-xl btn-edulang-primary shadow-2"
           @click="goToAddPackage"
         />
       </div>
     </div>
 
-    <div v-if="loading" class="text-center q-pa-xl">
-      <q-spinner-dots color="primary" size="40px" />
+    <div v-if="loading" class="flex flex-center q-pa-xl">
+      <q-spinner-ios color="primary" size="60px" />
     </div>
 
-    <div v-else-if="packages.length === 0 && !loading">
-      <div class="text-center q-pt-xl">
-        <q-icon name="folder_open" size="64px" color="grey-5" class="q-mb-md" />
-        <div class="text-h6 text-grey-8">Belum ada kelas</div>
-        <p class="text-grey-6 q-mt-sm">Mulailah dengan membuat program baru.</p>
-      </div>
+    <div v-else-if="packages.length === 0 && !loading" class="flex flex-center q-pt-xl">
+      <q-card flat class="bg-white q-pa-xl text-center shadow-1 rounded-borders-24 border-dashed">
+        <q-icon name="auto_stories" size="80px" color="grey-3" class="q-mb-lg" />
+        <div class="text-h5 text-edulang-navy text-weight-bold">Belum ada kelas aktif</div>
+        <p class="text-grey-6 q-mt-sm">Waktunya berbagi ilmu. Buat program pertamamu sekarang.</p>
+        <q-btn
+          outline
+          color="primary"
+          label="Mulai Membuat"
+          class="q-mt-md rounded-btn q-px-lg"
+          @click="goToAddPackage"
+        />
+      </q-card>
     </div>
 
-    <div v-else class="row q-col-gutter-lg">
-      <div v-for="pkg in packages" :key="pkg._id || pkg.id" class="col-12 col-sm-6 col-md-4">
+    <div v-else class="row q-col-gutter-xl">
+      <div v-for="pkg in packages" :key="pkg._id || pkg.id" class="col-12 col-sm-6 col-lg-4">
         <q-card
-          class="my-card no-shadow border-light rounded-borders-16 cursor-pointer"
+          class="package-card no-shadow border-light rounded-borders-20 cursor-pointer"
           @click="goToPackage(pkg)"
         >
-          <q-img :src="pkg.imageUrl || 'https://cdn.quasar.dev/img/parallax2.jpg'" :ratio="16 / 9">
-            <div class="absolute-bottom-right bg-transparent q-pa-xs">
-              <q-icon name="flag" color="negative" size="sm" />
+          <q-img
+            :src="
+              pkg.imageUrl ||
+              'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop'
+            "
+            :ratio="16 / 9"
+          >
+            <div class="absolute-top-right bg-transparent q-pa-md">
+              <q-badge
+                color="white"
+                text-color="edulang-navy"
+                class="q-pa-sm text-weight-bold shadow-1 rounded-borders-8"
+              >
+                {{ pkg.level || 'Umum' }}
+              </q-badge>
             </div>
           </q-img>
 
-          <q-card-section>
-            <div class="text-indigo-10 text-weight-bold text-subtitle1">
-              {{ pkg.title || pkg.name || 'Kelas Tanpa Judul' }}
+          <q-card-section class="q-pa-lg">
+            <div class="row justify-between items-start no-wrap q-mb-xs">
+              <div class="text-edulang-navy text-weight-bolder text-h6 line-clamp-1">
+                {{ pkg.title || 'Kelas Tanpa Judul' }}
+              </div>
             </div>
-            <div class="text-grey-6 text-caption">Trainer : {{ mentorData.name }}</div>
-            <div class="text-weight-bolder text-h6 q-mt-sm text-dark">
-              Rp {{ (pkg.price || 0).toLocaleString('id-ID') }}
+            <div class="row items-center text-grey-6 q-mb-md">
+              <q-icon name="person" size="16px" class="q-mr-xs" />
+              <span class="text-caption">Oleh Mentor: {{ mentorData.name }}</span>
+            </div>
+
+            <div class="row items-center justify-between">
+              <div class="text-weight-bolder text-h5 text-edulang-blue">
+                Rp {{ (pkg.price || 0).toLocaleString('id-ID') }}
+              </div>
+              <div class="row q-gutter-x-xs">
+                <q-btn
+                  flat
+                  round
+                  color="edulang-navy"
+                  icon="edit"
+                  size="sm"
+                  class="bg-grey-1"
+                  @click.stop="goEditPackage(pkg)"
+                >
+                  <q-tooltip>Edit Program</q-tooltip>
+                </q-btn>
+                <q-btn
+                  flat
+                  round
+                  color="negative"
+                  icon="delete_outline"
+                  size="sm"
+                  class="bg-red-1"
+                  @click.stop="confirmDeletePackage(pkg)"
+                >
+                  <q-tooltip>Hapus</q-tooltip>
+                </q-btn>
+              </div>
             </div>
           </q-card-section>
 
-          <q-card-actions align="right" class="q-pb-md q-pr-md">
+          <q-separator color="grey-1" />
+
+          <q-card-actions class="q-px-lg q-py-sm bg-grey-1 flex justify-between">
+            <div class="text-caption text-grey-7">
+              Status: <span class="text-positive text-weight-bold">Aktif</span>
+            </div>
             <q-btn
               flat
-              round
-              color="orange-5"
-              icon="edit_note"
-              size="sm"
-              @click.stop="goEditPackage(pkg)"
+              no-caps
+              label="Detail Program"
+              color="primary"
+              icon-right="chevron_right"
+              dense
             />
-            <q-btn
-              flat
-              round
-              color="negative"
-              icon="delete_outline"
-              size="sm"
-              @click.stop="confirmDeletePackage(pkg)"
-            />
-            <q-btn flat round color="primary" icon="filter_list" size="sm" />
           </q-card-actions>
         </q-card>
       </div>
@@ -243,20 +293,71 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.rounded-borders-16 {
-  border-radius: 16px;
+/* Color Palette from Edulang Brand Guideline */
+.text-edulang-navy {
+  color: #003387;
+}
+.text-edulang-blue {
+  color: #0089ff;
+}
+.btn-edulang-primary {
+  background-color: #003387;
+  color: white;
+}
+
+/* Typography */
+.letter-spacing-1 {
+  letter-spacing: 2px;
+}
+.leading-tight {
+  line-height: 1.1;
+}
+.max-width-600 {
+  max-width: 600px;
+}
+
+/* Card & Borders */
+.rounded-borders-20 {
+  border-radius: 20px;
+}
+.rounded-borders-24 {
+  border-radius: 24px;
+}
+.rounded-borders-8 {
+  border-radius: 8px;
+}
+.rounded-btn {
+  border-radius: 12px;
+}
+
+.border-light {
+  border: 1px solid #eef1f6;
+}
+.border-dashed {
+  border: 2px dashed #d1d9e2;
+  background: white;
+}
+
+.package-card {
+  background: white;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.package-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 51, 135, 0.08) !important;
+  border-color: #0089ff;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.border-light {
-  border: 1px solid #edf2f7;
-}
-.my-card {
-  transition: transform 0.2s;
-}
-.my-card:hover {
-  transform: translateY(-5px);
-}
-.text-indigo-10 {
-  color: #0d2a5c;
+
+/* Badge styling */
+.q-badge {
+  border: 1px solid #eef1f6;
 }
 </style>
