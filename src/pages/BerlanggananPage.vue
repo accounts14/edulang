@@ -1,177 +1,139 @@
 <template>
-  <q-page class="berlangganan-page bg-grey-1">
-    <div class="bg-edulang-gradient q-pb-xl">
-      <div class="container-center q-pa-md q-pa-md-xl">
-        <section class="q-mb-xl">
-          <div class="row items-center justify-between q-mb-lg">
-            <div class="col-12 col-md-8">
-              <div class="row items-center q-gutter-x-sm q-mb-xs">
-                <q-icon name="stars" color="warning" size="sm" />
-                <span class="text-orange-9 text-weight-bold text-uppercase letter-spacing-1">
-                  {{ $t('subscription.recomendedTag') }}
-                </span>
-              </div>
-              <h1 class="text-h3 text-weight-bolder text-edulang-navy q-ma-none leading-tight">
-                {{ $t('subscription.recomendedTitle') }}
-              </h1>
+  <q-page class="berlangganan-page q-pa-xl bg-accent">
+    <!-- Section 1: Rekomendasi Kelas (Random) -->
+    <section class="q-mb-xl">
+      <div class="row items-center justify-between q-mb-md">
+        <div>
+          <div class="text-orange-9 text-weight-bold">{{ $t('subscription.recomendedTag') }}</div>
+          <div class="text-h4 text-weight-bolder text-indigo-10 q-mt-xs">
+            {{ $t('subscription.recomendedTitle') }}
+          </div>
+        </div>
+        <q-btn
+          v-if="recommendedCourses.length"
+          unelevated
+          color="warning"
+          text-color="black"
+          no-caps
+          class="rounded-borders q-px-lg text-weight-bold"
+          :label="$t('subscription.lihatSemuaFastTrack')"
+          @click="scrollToFilter"
+        />
+      </div>
+
+      <div v-if="loading" class="row q-col-gutter-lg">
+        <div v-for="n in 3" :key="n" class="col-12 col-md-4">
+          <q-card flat bordered class="rounded-borders-16">
+            <q-skeleton height="200px" square />
+            <q-card-section>
+              <q-skeleton type="text" class="text-h6" />
+              <q-skeleton type="text" width="60%" />
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+
+      <div v-else-if="recommendedCourses.length === 0" class="text-grey-7 text-caption">
+        {{ $t('subscription.kosongFastTrack') }}
+      </div>
+
+      <div v-else class="row q-col-gutter-lg">
+        <div v-for="course in recommendedCourses" :key="course._id" class="col-12 col-md-4">
+          <CourseCard :course="course" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Cari Kelas Bahasa Sesuai Minatmu -->
+    <section ref="filterSectionRef" class="q-mb-xl">
+      <div class="text-h4 text-weight-bolder text-indigo-10 q-mb-lg">
+        {{ $t('subscription.cariKelasTitle') }}
+      </div>
+
+      <div class="row q-col-gutter-lg">
+        <!-- Left: Filter Sidebar -->
+        <div class="col-12 col-md-3">
+          <div class="filter-sidebar bg-white rounded-borders-16 q-pa-md">
+            <div class="text-subtitle2 text-weight-bold text-grey-9 q-mb-sm">
+              {{ $t('subscription.categoryLabel') }}
             </div>
-            <div class="col-12 col-md-auto q-mt-md q-mt-md-none">
-              <q-btn
-                v-if="recommendedCourses.length"
-                unelevated
-                color="warning"
-                text-color="edulang-navy"
-                no-caps
-                class="rounded-borders-12 q-px-xl text-weight-bold shadow-btn"
-                :label="$t('subscription.lihatSemuaFastTrack')"
-                @click="scrollToFilter"
+            <div class="filter-options-vertical q-mb-lg">
+              <q-checkbox v-model="filterCategoryAll" :label="$t('subscription.categoryAll')" />
+              <q-checkbox
+                v-model="filterCategoryPopuler"
+                :label="$t('subscription.categoryPopuler')"
+              />
+            </div>
+
+            <div class="text-subtitle2 text-weight-bold text-grey-9 q-mb-sm">
+              {{ $t('subscription.bahasaLabel') }}
+            </div>
+            <div class="filter-options-vertical q-mb-lg">
+              <div
+                v-for="lang in languageOptions"
+                :key="lang.id"
+                class="filter-bahasa-item row items-center q-mb-xs"
+              >
+                <q-checkbox v-model="filterBahasa" :val="lang.id" dense />
+                <img
+                  v-if="lang.iconUrl"
+                  :src="lang.iconUrl"
+                  :alt="lang.name"
+                  class="filter-bahasa-icon q-mr-sm"
+                />
+                <span>{{ lang.name }}</span>
+              </div>
+            </div>
+
+            <div class="text-subtitle2 text-weight-bold text-grey-9 q-mb-sm">
+              {{ $t('subscription.levelLabel') }}
+            </div>
+            <div class="filter-options-vertical">
+              <q-checkbox
+                v-for="lvl in levelOptions"
+                :key="lvl"
+                v-model="filterLevel"
+                :val="lvl"
+                :label="lvl"
               />
             </div>
           </div>
+        </div>
 
-          <div v-if="loading" class="row q-col-gutter-xl">
-            <div v-for="n in 3" :key="n" class="col-12 col-md-4">
-              <q-card flat class="rounded-borders-24 overflow-hidden shadow-edulang">
-                <q-skeleton height="220px" square />
-                <q-card-section class="q-pa-lg">
-                  <q-skeleton type="text" class="text-h6" width="80%" />
-                  <q-skeleton type="text" width="40%" class="q-mt-sm" />
+        <!-- Right: Course Grid -->
+        <div class="col-12 col-md-9">
+          <div v-if="loading" class="row q-col-gutter-lg">
+            <div v-for="n in 6" :key="n" class="col-12 col-sm-6 col-md-4">
+              <q-card flat bordered class="rounded-borders-16">
+                <q-skeleton height="160px" square />
+                <q-card-section>
+                  <q-skeleton type="text" class="text-h6" />
+                  <q-skeleton type="text" width="80%" />
                 </q-card-section>
               </q-card>
             </div>
           </div>
 
           <div
-            v-else-if="recommendedCourses.length === 0"
-            class="text-center q-pa-xl text-grey-6 bg-white rounded-borders-24 shadow-sm"
+            v-else-if="filteredCourses.length === 0"
+            class="empty-state flex flex-center column q-pa-xl"
           >
-            {{ $t('subscription.kosongFastTrack') }}
+            <q-icon name="movie_filter" size="120px" color="grey-5" class="q-mb-md" />
+            <div class="text-h6 text-grey-7">{{ $t('subscription.courseBelumTersedia') }}</div>
           </div>
 
-          <div v-else class="row q-col-gutter-xl">
-            <div v-for="course in recommendedCourses" :key="course._id" class="col-12 col-md-4">
-              <CourseCard :course="course" class="recommended-card" />
+          <div v-else class="row q-col-gutter-lg">
+            <div
+              v-for="course in filteredCourses"
+              :key="course._id"
+              class="col-12 col-sm-6 col-md-4"
+            >
+              <CourseCard :course="course" />
             </div>
           </div>
-        </section>
+        </div>
       </div>
-    </div>
-
-    <div class="container-center q-pa-md q-pa-md-xl">
-      <section ref="filterSectionRef" class="q-mb-xl">
-        <div class="text-center q-mb-xl">
-          <h2 class="text-h4 text-weight-bolder text-edulang-navy q-mb-sm">
-            {{ $t('subscription.cariKelasTitle') }}
-          </h2>
-          <div class="bg-warning divider-center rounded-borders"></div>
-        </div>
-
-        <div class="row q-col-gutter-xl">
-          <div class="col-12 col-md-3">
-            <div
-              class="filter-sidebar bg-white rounded-borders-24 q-pa-lg shadow-edulang border-light"
-            >
-              <div class="row items-center q-mb-md">
-                <q-icon name="tune" color="primary" size="sm" class="q-mr-sm" />
-                <span class="text-subtitle1 text-weight-bold text-edulang-navy"
-                  >Filter Pencarian</span
-                >
-              </div>
-
-              <q-separator class="q-mb-lg" />
-
-              <div class="filter-group q-mb-xl">
-                <div class="text-caption text-weight-bold text-grey-6 q-mb-sm text-uppercase">
-                  Kategori
-                </div>
-                <div class="column q-gutter-xs">
-                  <q-checkbox
-                    v-model="filterCategoryAll"
-                    :label="$t('subscription.categoryAll')"
-                    color="primary"
-                  />
-                  <q-checkbox
-                    v-model="filterCategoryPopuler"
-                    :label="$t('subscription.categoryPopuler')"
-                    color="primary"
-                  />
-                </div>
-              </div>
-
-              <div class="filter-group q-mb-xl">
-                <div class="text-caption text-weight-bold text-grey-6 q-mb-sm text-uppercase">
-                  Pilihan Bahasa
-                </div>
-                <div class="column q-gutter-sm">
-                  <div
-                    v-for="lang in languageOptions"
-                    :key="lang.id"
-                    class="filter-bahasa-item row items-center no-wrap"
-                  >
-                    <q-checkbox v-model="filterBahasa" :val="lang.id" dense color="primary" />
-                    <img
-                      v-if="lang.iconUrl"
-                      :src="lang.iconUrl"
-                      class="filter-bahasa-icon q-mx-sm"
-                    />
-                    <span class="text-body2 text-grey-9">{{ lang.name }}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="filter-group">
-                <div class="text-caption text-weight-bold text-grey-6 q-mb-sm text-uppercase">
-                  Tingkatan Level
-                </div>
-                <div class="column q-gutter-xs">
-                  <q-checkbox
-                    v-for="lvl in levelOptions"
-                    :key="lvl"
-                    v-model="filterLevel"
-                    :val="lvl"
-                    :label="lvl"
-                    color="primary"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-md-9">
-            <div v-if="loading" class="row q-col-gutter-lg">
-              <div v-for="n in 6" :key="n" class="col-12 col-sm-6 col-md-4">
-                <q-card flat class="rounded-borders-16 shadow-sm">
-                  <q-skeleton height="160px" square />
-                  <q-card-section>
-                    <q-skeleton type="text" class="text-h6" />
-                    <q-skeleton type="text" width="80%" />
-                  </q-card-section>
-                </q-card>
-              </div>
-            </div>
-
-            <div
-              v-else-if="filteredCourses.length === 0"
-              class="empty-state flex flex-center column q-pa-xl bg-white rounded-borders-24 shadow-edulang"
-            >
-              <q-icon name="search_off" size="120px" color="grey-3" class="q-mb-md" />
-              <div class="text-h6 text-grey-5">{{ $t('subscription.courseBelumTersedia') }}</div>
-              <p class="text-grey-4">Coba ubah filter pencarian Anda</p>
-            </div>
-
-            <div v-else class="row q-col-gutter-lg">
-              <div
-                v-for="course in filteredCourses"
-                :key="course._id"
-                class="col-12 col-sm-6 col-md-4"
-              >
-                <CourseCard :course="course" class="full-height-card" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    </section>
   </q-page>
 </template>
 
@@ -302,89 +264,37 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-/* Brand Colors & Layout */
-.text-edulang-navy {
-  color: #003387;
+.berlangganan-page {
+  min-height: 100%;
 }
-.bg-edulang-gradient {
-  background: linear-gradient(180deg, #f5f7fa 0%, #ffffff 100%);
+.text-indigo-10 {
+  color: #0d2a5c;
 }
-
-.container-center {
-  max-width: 1400px;
-  margin: 0 auto;
+.rounded-borders-16 {
+  border-radius: 16px;
 }
-
-/* Custom UI Elements */
-.rounded-borders-24 {
-  border-radius: 24px;
-}
-.rounded-borders-12 {
-  border-radius: 12px;
-}
-.border-light {
-  border: 1px solid rgba(0, 51, 135, 0.05);
-}
-
-.divider-center {
-  width: 60px;
-  height: 5px;
-  margin: 12px auto 0;
-}
-
-.shadow-edulang {
-  box-shadow: 0 10px 30px rgba(0, 51, 135, 0.05) !important;
-}
-
-.shadow-btn {
-  box-shadow: 0 4px 15px rgba(255, 196, 44, 0.3);
-}
-
-.leading-tight {
-  line-height: 1.2;
-}
-.letter-spacing-1 {
-  letter-spacing: 1.5px;
-}
-
-/* Filter Sidebar Sticky */
 .filter-sidebar {
   position: sticky;
-  top: 100px;
-  z-index: 10;
+  top: 80px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
-
+.filter-options-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.filter-bahasa-item {
+  min-height: 32px;
+}
 .filter-bahasa-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: cover;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
 }
-
-/* Hover effects for cards */
-.recommended-card,
-.full-height-card {
-  transition: all 0.3s ease;
-}
-
-.recommended-card:hover,
-.full-height-card:hover {
-  transform: translateY(-8px);
-}
-
 .empty-state {
-  min-height: 450px;
-  border: 2px dashed #eceff1;
-}
-
-/* Responsivitas */
-@media (max-width: 600px) {
-  .text-h3 {
-    font-size: 1rem;
-  }
-  .q-pa-xl {
-    padding: 24px !important;
-  }
+  min-height: 320px;
+  background: #fafafa;
+  border-radius: 16px;
 }
 </style>
