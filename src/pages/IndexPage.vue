@@ -1,4 +1,4 @@
-<!-- src/pages/IndexPage.vue - Landing Page -->
+<!-- Landing Page - struktur edulang-speak-the-world.vercel.app -->
 <template>
   <q-page class="landing-page bg-accent">
     <div ref="sectionsWrapper" class="landing-sections">
@@ -6,28 +6,31 @@
         <HeroSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
-        <LearningMethodSection />
+        <TentangEdulangSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
-        <LearningPathSection />
+        <EdulangUntukSiapaSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
-        <CertificationSection />
+        <KenapaPilihEdulangSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
-        <FastTrackSection />
-      </section>
-      <section class="landing-section reveal-section" data-reveal>
-        <AlumniNetworkSection />
-      </section>
-      <section class="landing-section reveal-section" data-reveal>
-        <SolutionsSection />
+        <ProgramEdulangSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
         <TestimonialSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
         <MentorSection />
+      </section>
+      <section class="landing-section reveal-section" data-reveal>
+        <PartnershipSection />
+      </section>
+      <section class="landing-section reveal-section" data-reveal>
+        <PenghargaanSection />
+      </section>
+      <section class="landing-section reveal-section" data-reveal>
+        <CTAFinalSection />
       </section>
     </div>
 
@@ -38,14 +41,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import HeroSection from 'components/Landing/HeroSection.vue'
-import LearningMethodSection from 'components/Landing/LearningMethodSection.vue'
-import LearningPathSection from 'components/Landing/LearningPathSection.vue'
-import CertificationSection from 'components/Landing/CertificationSection.vue'
-import FastTrackSection from 'components/Landing/FastTrackSection.vue'
-import AlumniNetworkSection from 'components/Landing/AlumniNetworkSection.vue'
-import SolutionsSection from 'components/Landing/SolutionsSection.vue'
+import TentangEdulangSection from 'components/Landing/TentangEdulangSection.vue'
+import EdulangUntukSiapaSection from 'components/Landing/EdulangUntukSiapaSection.vue'
+import KenapaPilihEdulangSection from 'components/Landing/KenapaPilihEdulangSection.vue'
+import ProgramEdulangSection from 'components/Landing/ProgramEdulangSection.vue'
 import TestimonialSection from 'components/Landing/TestimonialSection.vue'
 import MentorSection from 'components/Landing/MentorSection.vue'
+import PartnershipSection from 'components/Landing/PartnershipSection.vue'
+import PenghargaanSection from 'components/Landing/PenghargaanSection.vue'
+import CTAFinalSection from 'components/Landing/CTAFinalSection.vue'
 import WhatsappConsultWidget from 'components/Common/WhatsappConsultWidget.vue'
 
 const sectionsWrapper = ref(null)
@@ -78,7 +82,6 @@ onMounted(() => {
   max-width: 100%;
 }
 
-/* Jarak antar section konsisten */
 .landing-section {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
@@ -98,7 +101,6 @@ onMounted(() => {
   }
 }
 
-/* Animasi masuk section */
 .reveal-section {
   opacity: 0;
   transform: translateY(28px);
@@ -110,48 +112,5 @@ onMounted(() => {
 .reveal-section.revealed {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Shared untuk child components */
-.container {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-@media (max-width: 1023px) {
-  .reverse-wrap-mobile {
-    flex-direction: column-reverse;
-  }
-}
-
-.method-card {
-  transition: transform 0.3s ease;
-  border: 1px solid #e8eef5;
-}
-
-.method-card:hover {
-  transform: translateY(-6px);
-}
-
-.white-transparent {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-.text-body2 {
-  font-size: 0.9375rem;
-}
-
-.rounded-borders-16 {
-  border-radius: 16px;
-}
-
-.rounded-borders-16-top {
-  border-radius: 16px 16px 0 0;
-}
-
-h2 {
-  line-height: 1.25;
 }
 </style>

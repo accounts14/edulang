@@ -1,122 +1,25 @@
-<!-- src/components/landing/TestimonialSection.vue -->
+<!-- Testimoni Siswa - Cerita Sukses Siswa Edulang (edulang-speak-the-world) -->
 <template>
-  <section class="testimonial-section-full bg-primary text-white">
-    <div class="container testimonial-section-inner">
-      <div class="row items-center q-col-gutter-xl">
-        <div class="col-12 col-md-5">
-          <div class="text-warning text-weight-bold q-mb-sm">
-            500k Orang Sudah Melaju. Kamu Kapan?
-          </div>
-          <h2 class="text-h3 text-weight-bold q-mb-md" style="line-height: 1.2">
-            Temukan Standar Baru dalam Berkarier
-          </h2>
-          <p class="text-white opacity-80 q-mb-xl text-body1">
-            Bergabunglah dengan ekosistem belajar yang menjembatani ambisi Anda menuju karier di
-            kancah global.
-          </p>
-          <div class="q-gutter-md">
-            <q-btn
-              unelevated
-              rounded
-              color="warning"
-              text-color="dark"
-              label="Alur Belajar"
-              class="q-px-xl q-py-md text-weight-bold"
-            />
-            <q-btn
-              outline
-              rounded
-              color="white"
-              label="Update Student"
-              class="q-px-xl q-py-md text-weight-bold"
-            />
-          </div>
-        </div>
-
-        <div class="col-12 col-md-7">
-          <div class="testimonial-grid-wrapper">
-            <div class="marquee-column">
-              <div class="marquee-vertical down">
-                <div v-for="n in 2" :key="'group1-' + n" class="marquee-content">
-                  <q-card
-                    v-for="(testi, i) in testimonials.slice(0, 3)"
-                    :key="i"
-                    class="q-mb-lg testimonial-card"
-                  >
-                    <q-card-section class="q-pa-lg">
-                      <div class="row items-center no-wrap q-mb-md">
-                        <q-avatar size="45px" class="q-mr-md">
-                          <img :src="testi.avatar" />
-                        </q-avatar>
-                        <div class="column">
-                          <span class="text-weight-bold text-dark text-subtitle1">{{
-                            testi.name
-                          }}</span>
-                          <q-badge
-                            color="blue-1"
-                            text-color="primary"
-                            class="q-py-xs q-px-sm text-weight-bold"
-                          >
-                            {{ testi.course }}
-                          </q-badge>
-                        </div>
-                      </div>
-                      <div class="text-weight-bold text-dark q-mb-xs">{{ testi.title }}</div>
-                      <div class="text-body2 text-grey-8 line-height-1-5">{{ testi.comment }}</div>
-                      <q-rating
-                        :model-value="5"
-                        readonly
-                        size="16px"
-                        color="orange"
-                        class="q-mt-md"
-                      />
-                    </q-card-section>
-                  </q-card>
-                </div>
-              </div>
+  <section class="testimonial-section">
+    <div class="container">
+      <div class="text-center section-header q-mb-xl">
+        <h2 class="section-title text-weight-bold">Testimoni Siswa</h2>
+        <h3 class="section-subtitle text-weight-bold">Cerita Sukses Siswa Edulang</h3>
+        <p class="section-desc q-mt-sm">
+          Ribuan siswa telah mencapai tujuan mereka bersama Edulang. Ini kisah mereka.
+        </p>
+      </div>
+      <div class="row q-col-gutter-lg">
+        <div v-for="(t, i) in testimonials" :key="i" class="col-12 col-md-4">
+          <q-card flat bordered class="testimonial-card q-pa-lg rounded-borders">
+            <q-icon name="format_quote" size="40px" color="grey-4" class="q-mb-md" />
+            <p class="testimonial-text q-mb-lg">"{{ t.comment }}"</p>
+            <div class="testimonial-badge text-caption text-primary text-weight-bold q-mb-sm">
+              {{ t.course }}
             </div>
-
-            <div class="marquee-column">
-              <div class="marquee-vertical up">
-                <div v-for="n in 2" :key="'group2-' + n" class="marquee-content">
-                  <q-card
-                    v-for="(testi, i) in testimonials.slice(3, 6)"
-                    :key="i"
-                    class="q-mb-lg testimonial-card"
-                  >
-                    <q-card-section class="q-pa-lg">
-                      <div class="row items-center no-wrap q-mb-md">
-                        <q-avatar size="45px" class="q-mr-md">
-                          <img :src="testi.avatar" />
-                        </q-avatar>
-                        <div class="column">
-                          <span class="text-weight-bold text-dark text-subtitle1">{{
-                            testi.name
-                          }}</span>
-                          <q-badge
-                            color="blue-1"
-                            text-color="primary"
-                            class="q-py-xs q-px-sm text-weight-bold"
-                          >
-                            {{ testi.course }}
-                          </q-badge>
-                        </div>
-                      </div>
-                      <div class="text-weight-bold text-dark q-mb-xs">{{ testi.title }}</div>
-                      <div class="text-body2 text-grey-8 line-height-1-5">{{ testi.comment }}</div>
-                      <q-rating
-                        :model-value="5"
-                        readonly
-                        size="16px"
-                        color="orange"
-                        class="q-mt-md"
-                      />
-                    </q-card-section>
-                  </q-card>
-                </div>
-              </div>
-            </div>
-          </div>
+            <div class="testimonial-name text-weight-bold">{{ t.name }}</div>
+            <div class="testimonial-role text-caption text-grey-7">{{ t.role }}</div>
+          </q-card>
         </div>
       </div>
     </div>
@@ -126,54 +29,34 @@
 <script setup>
 const testimonials = [
   {
-    name: 'Satrial lip',
-    course: 'Japan Course',
-    title: 'Comprehensive Materials',
+    name: 'Rizky Pratama',
+    course: 'Bahasa Korea',
+    role: 'Mahasiswa S2 di Korea',
     comment:
-      'Active Mandarin Indonesia provides a premium learning experience with advanced audio-visual support.',
-    avatar: 'https://cdn.quasar.dev/img/avatar1.jpg',
+      'Berkat Edulang, saya berhasil lulus TOPIK Level 5 dalam waktu 8 bulan. Mentor-mentornya sangat sabar dan metode pembelajaran via videonya sangat efektif!',
   },
   {
-    name: 'Susanty',
-    course: 'Chinese Course',
-    title: 'Easy to understand',
-    comment: 'Great learning experience with patient teachers, starting from the basics!',
-    avatar: 'https://cdn.quasar.dev/img/avatar2.jpg',
+    name: 'Siti Nurhaliza',
+    course: 'Bahasa Mandarin',
+    role: 'Content Creator',
+    comment:
+      'AI Speaking Partner di Edulang membantu saya berlatih Mandarin setiap hari. Sekarang saya bisa berkomunikasi dengan klien dari China dengan lancar.',
   },
   {
-    name: 'Asyrofuddin',
-    course: 'English Course',
-    title: 'High Quality Tutors',
-    comment: 'I am very satisfied learning here because the tutors are friendly and communicative.',
-    avatar: 'https://cdn.quasar.dev/img/avatar3.jpg',
-  },
-  {
-    name: 'Rina Wijaya',
-    course: 'Germany Course',
-    title: 'Best Experience',
-    comment: 'Kurikulumnya sangat dinamis dan selalu update dengan kebutuhan industri.',
-    avatar: 'https://cdn.quasar.dev/img/avatar4.jpg',
-  },
-  {
-    name: 'Budi Santoso',
-    course: 'TOEFL Prep',
-    title: 'Highly Recommended',
-    comment: 'Materi pembelajarannya terstruktur dan sangat membantu persiapan tes saya.',
-    avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-  },
-  {
-    name: 'Lia Amina',
-    course: 'IELTS Prep',
-    title: 'Excellent Support',
-    comment: 'Dukungan mentor sangat luar biasa dalam membimbing setiap progres saya.',
-    avatar: 'https://cdn.quasar.dev/img/avatar6.jpg',
+    name: 'Ahmad Fadli',
+    course: 'Bahasa Jerman',
+    role: 'Software Engineer di Jerman',
+    comment:
+      'Program Bahasa Jerman di Edulang sangat komprehensif. Dalam 1 tahun saya bisa mencapai level B2 dan mendapatkan pekerjaan di Berlin!',
   },
 ]
 </script>
 
 <style scoped>
-.bg-primary {
-  background-color: var(--edulang-navy, #003387) !important;
+.testimonial-section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background: #f8fafc;
 }
 
 .container {
@@ -183,112 +66,39 @@ const testimonials = [
   padding-right: 16px;
 }
 
-.testimonial-section-full {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  overflow: hidden;
+.section-title {
+  color: var(--edulang-navy, #003387);
+  font-size: clamp(1.5rem, 3vw, 1.75rem);
 }
 
-.testimonial-section-inner {
-  width: 100%;
+.section-subtitle {
+  color: var(--edulang-black, #2d2d2d);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
 }
 
-.testimonial-grid-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  height: 560px;
-  overflow: hidden;
-}
-
-.marquee-column {
-  position: relative;
-  height: 100%;
-}
-
-.marquee-vertical {
-  display: flex;
-  flex-direction: column;
-}
-
-.marquee-content {
-  flex-shrink: 0;
-}
-
-.down {
-  animation: scrollDown 30s linear infinite;
-}
-
-.up {
-  animation: scrollUp 30s linear infinite;
-}
-
-@keyframes scrollDown {
-  0% {
-    transform: translateY(-50%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes scrollUp {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-50%);
-  }
+.section-desc {
+  color: var(--edulang-black, #2d2d2d);
+  opacity: 0.85;
 }
 
 .testimonial-card {
-  border-radius: 16px;
-  background: white;
-  border: none;
+  height: 100%;
+  border-color: #e2e8f0 !important;
 }
 
-.line-height-1-5 {
-  line-height: 1.5;
-}
-
-.testi-tag {
-  color: var(--edulang-yellow);
+.testimonial-text {
+  color: var(--edulang-black, #2d2d2d);
   font-size: 0.9375rem;
+  line-height: 1.7;
+  margin: 0;
 }
 
-.testi-title {
-  font-size: clamp(1.5rem, 3.5vw, 1.75rem);
-  line-height: 1.2;
-}
-
-.testi-desc {
-  color: rgba(255, 255, 255, 0.9);
+.testimonial-name {
+  color: var(--edulang-navy, #003387);
   font-size: 1rem;
-  font-weight: 400;
 }
 
-.testi-btn-yellow {
-  background: var(--edulang-yellow) !important;
-  color: var(--edulang-black) !important;
-}
-
-.testi-btn-outline {
-  border-color: white !important;
-  color: white !important;
-}
-
-@media (max-width: 600px) {
-  .testimonial-section-full {
-    min-height: auto;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-  .testimonial-grid-wrapper {
-    grid-template-columns: 1fr;
-    height: 400px;
-  }
+.rounded-borders {
+  border-radius: 16px;
 }
 </style>

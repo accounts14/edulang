@@ -1,129 +1,101 @@
 <template>
-  <q-page class="user-learn-page bg-grey-2">
-    <div v-if="loading" class="flex flex-center q-pa-xl">
-      <q-spinner-dots color="primary" size="40px" />
-    </div>
+  <q-page class="bg-grey-2">
+    <div class="row no-wrap full-height main-wrapper">
+      <div class="col main-content q-pa-lg scroll">
+        <div class="header-section q-mb-lg">
+          <q-breadcrumbs gutter="xs" class="text-azure q-mb-sm">
+            <q-breadcrumbs-el label="Materi" icon="school" />
+            <q-breadcrumbs-el :label="'Pertemuan ' + currentOrder" />
+          </q-breadcrumbs>
+          <div class="text-h5 text-weight-bolder text-navy">
+            {{ currentLesson?.title || 'Judul Materi Belajar' }}
+          </div>
+        </div>
 
-    <div v-else-if="!packageData" class="q-pa-xl text-center">
-      <q-icon name="error_outline" size="48px" color="negative" />
-      <div class="text-h6 q-mt-md">Package tidak ditemukan</div>
-      <q-btn
-        flat
-        no-caps
-        color="primary"
-        label="Kembali ke Langganan"
-        :to="{ name: 'UserLangganan' }"
-      />
-    </div>
-
-    <div v-else class="row no-wrap full-height">
-      <!-- Konten utama: video + tab Deskripsi / Soal -->
-      <div class="col q-pa-md scroll-area">
-        <!-- Video -->
-        <div class="video-wrapper rounded-borders bg-black q-mb-md">
-          <template v-if="currentLesson?.videoUrl">
+        <div class="video-outer-container">
+          <div class="video-inner shadow-4 rounded-borders bg-black">
             <iframe
+              v-if="currentLesson?.videoUrl"
               :src="videoEmbedUrl"
               class="full-width"
-              style="aspect-ratio: 16/9; height: auto; min-height: 320px"
-              frameborder="0"
+              style="aspect-ratio: 16/9; border: none"
               allowfullscreen
-              allow="
-                accelerometer;
-                autoplay;
-                clipboard-write;
-                encrypted-media;
-                gyroscope;
-                picture-in-picture;
-              "
             />
-          </template>
-          <div
-            v-else
-            class="flex flex-center text-white"
-            style="aspect-ratio: 16/9; min-height: 320px"
-          >
-            <div class="text-center">
-              <q-icon name="ondemand_video" size="64px" />
-              <div class="q-mt-sm">Video pertemuan {{ currentOrder }}</div>
+            <div v-else class="flex flex-center text-grey-5" style="aspect-ratio: 16/9">
+              <q-icon name="play_circle_filled" size="80px" />
             </div>
           </div>
         </div>
 
-        <!-- Tab Deskripsi | Soal (gaya sesuai desain) -->
-        <q-tabs
-          v-model="activeTab"
-          align="left"
-          dense
-          class="learn-tabs bg-grey-3 q-mt-md rounded-borders"
-          indicator-color="transparent"
-        >
-          <q-tab
-            name="deskripsi"
-            label="Deskripsi"
+        <div class="content-tabs q-mt-xl">
+          <q-tabs
+            v-model="activeTab"
+            align="left"
             no-caps
-            class="learn-tab"
-            :class="{ 'learn-tab--active': activeTab === 'deskripsi' }"
-          />
-          <q-tab
-            name="soal"
-            label="Soal"
-            no-caps
-            class="learn-tab"
-            :class="{ 'learn-tab--active': activeTab === 'soal' }"
-          />
-        </q-tabs>
-        <q-tab-panels v-model="activeTab" animated class="bg-transparent">
-          <q-tab-panel name="deskripsi" class="q-pa-none q-pt-md">
-            <div class="text-body1 text-grey-8" style="white-space: pre-line">
-              {{ currentLesson?.title || packageData.title || '' }}
-              {{ packageData.description || 'Deskripsi materi untuk pertemuan ini.' }}
-            </div>
-          </q-tab-panel>
-          <q-tab-panel name="soal" class="q-pa-none q-pt-md">
-            <div class="text-h6 text-weight-bold text-grey-9 q-mb-sm">
-              Soal Course - Pertemuan {{ currentOrder }}
-            </div>
-            <div class="text-body2 text-grey-7 q-mb-md">
-              Kerjakan soal untuk pertemuan ini. Klik tombol di bawah untuk mulai.
-            </div>
-            <q-btn
-              unelevated
-              no-caps
-              color="primary"
-              size="lg"
-              label="Kerjakan Soal"
-              icon="quiz"
-              :to="soalRoute"
-              class="rounded-borders"
-            />
-          </q-tab-panel>
-        </q-tab-panels>
+            class="text-grey-7"
+            active-color="azure"
+            indicator-color="azure"
+          >
+            <q-tab name="deskripsi" label="Deskripsi" />
+            <q-tab name="soal" label="Latihan Soal" />
+          </q-tabs>
+          <q-separator />
+
+          <q-tab-panels v-model="activeTab" animated class="bg-transparent q-mt-md">
+            <q-tab-panel name="deskripsi" class="q-pa-none">
+              <p class="text-body1 text-grey-9">
+                {{ currentLesson?.description || 'Tidak ada deskripsi.' }}
+              </p>
+            </q-tab-panel>
+            <q-tab-panel name="soal" class="q-pa-none">
+              <q-btn
+                unelevated
+                color="azure"
+                label="Mulai Kerjakan Soal"
+                icon="quiz"
+                :to="soalRoute"
+              />
+            </q-tab-panel>
+          </q-tab-panels>
+        </div>
       </div>
 
-      <!-- Sidebar kanan: daftar pertemuan -->
-      <div class="sidebar-pertemuan bg-grey-3 q-pa-md">
-        <div class="text-subtitle1 text-weight-bold text-grey-9 q-mb-sm">Selamat Belajar</div>
-        <div class="text-caption text-grey-7 q-mb-md">Materi Belajar</div>
-        <q-list dense>
+      <div class="sidebar-right bg-white shadow-1">
+        <div class="q-pa-md border-bottom bg-grey-1">
+          <div class="text-subtitle1 text-weight-bold text-navy">Kurikulum Belajar</div>
+          <div class="text-caption text-grey-6">{{ lessons.length }} Pertemuan Tersedia</div>
+        </div>
+
+        <q-list class="q-py-md">
           <q-item
             v-for="lesson in lessons"
             :key="lesson.order"
             clickable
-            class="pertemuan-item q-mb-xs"
-            :class="{
-              'pertemuan-item--active': Number(lesson.order) === Number(currentOrder),
-            }"
+            v-ripple
+            :active="Number(lesson.order) === Number(currentOrder)"
+            active-class="active-lesson-item"
+            class="q-mx-sm rounded-borders q-mb-xs lesson-item"
             @click="goToLesson(lesson.order)"
           >
             <q-item-section avatar>
-              <q-icon name="play_circle_outline" size="sm" />
+              <q-icon
+                :name="
+                  Number(lesson.order) === Number(currentOrder) ? 'play_circle' : 'lock_outline'
+                "
+                :color="Number(lesson.order) === Number(currentOrder) ? 'azure' : 'grey-5'"
+              />
             </q-item-section>
             <q-item-section>
               <q-item-label
-                >Pertemuan {{ lesson.order }} -
-                {{ lesson.title || lesson.judulMateri || 'Materi' }}</q-item-label
+                :class="
+                  Number(lesson.order) === Number(currentOrder)
+                    ? 'text-navy text-weight-bold'
+                    : 'text-grey-8'
+                "
               >
+                Pertemuan {{ lesson.order }}
+              </q-item-label>
+              <q-item-label caption lines="1">{{ lesson.title }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -205,8 +177,7 @@ async function fetchPackage() {
     packageData.value = {
       ...(typeof pkg === 'object' ? pkg : {}),
       lessons: data.lessons ?? pkg.lessons ?? [],
-      progress:
-        data.percentage ?? data.progress ?? data.progressPercent ?? pkg.progress ?? 0,
+      progress: data.percentage ?? data.progress ?? data.progressPercent ?? pkg.progress ?? 0,
     }
   } catch {
     packageData.value = null
@@ -233,58 +204,78 @@ watch(
 </script>
 
 <style scoped>
-.user-learn-page {
-  min-height: calc(100vh - 50px);
+/* Variabel Warna sesuai Guideline Edulang */
+.text-navy {
+  color: #0a3967;
 }
-.scroll-area {
-  min-width: 0;
-  overflow: auto;
+.text-azure {
+  color: #0096d9;
 }
-.sidebar-pertemuan {
-  width: 280px;
-  min-width: 280px;
-  border-left: 1px solid rgba(0, 0, 0, 0.08);
+.bg-navy {
+  background-color: #0a3967;
 }
-
-/* Gaya tab Deskripsi / Soal agar mirip desain (gambar 1 & 2) */
-.learn-tabs {
-  display: inline-flex;
-  padding: 4px;
-}
-.learn-tab {
-  min-width: 140px;
-  border-radius: 999px;
-  background: transparent;
-  color: #6b7280;
-  font-weight: 600;
-}
-.learn-tab--active {
-  background: #2563eb;
-  color: #ffffff;
+.bg-azure {
+  background-color: #0096d9;
 }
 
-/* Gaya daftar pertemuan di sidebar (tombol biru vertikal) */
-.pertemuan-item {
-  border-radius: 12px;
-  background: #2563eb;
-  color: #ffffff;
-}
-.pertemuan-item--active {
-  background: #1d4ed8;
-}
-.pertemuan-item :deep(.q-item__section--avatar .q-icon) {
-  color: #ffffff;
-}
-.pertemuan-item :deep(.q-item__label) {
-  font-weight: 500;
+.main-wrapper {
+  height: calc(100vh - 50px); /* Sesuaikan dengan tinggi header Anda */
 }
 
+/* Membatasi Lebar Video Agar Tidak Terlalu Besar */
+.video-outer-container {
+  max-width: 900px; /* Ukuran ideal agar video tidak pecah di layar lebar */
+  width: 100%;
+}
+
+.video-inner {
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar Styling - Lebih Modern */
+.sidebar-right {
+  width: 320px;
+  min-width: 320px;
+  border-left: 1px solid #e0e0e0;
+}
+
+.lesson-item {
+  transition: all 0.2s ease;
+}
+
+.active-lesson-item {
+  background-color: #e6f4fb !important; /* Warna Azure sangat muda */
+  border-left: 4px solid #0096d9; /* Aksen Azure di samping */
+}
+
+.border-bottom {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Scrollbar halus untuk sidebar */
+.scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #0096d9 #f1f1f1;
+}
+
+@media (max-width: 1024px) {
+  .sidebar-right {
+    width: 280px;
+    min-width: 280px;
+  }
+}
+
+/* Responsif Mobile */
 @media (max-width: 768px) {
-  .sidebar-pertemuan {
+  .main-wrapper {
+    flex-direction: column;
+    height: auto;
+  }
+  .sidebar-right {
     width: 100%;
-    min-width: 100%;
     border-left: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid #e0e0e0;
   }
 }
 </style>

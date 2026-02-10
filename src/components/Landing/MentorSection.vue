@@ -1,45 +1,45 @@
-<!-- src/components/landing/MentorSection.vue -->
+<!-- Bergabung Sebagai Mentor - Bagikan Ilmu Bahasamu & Raih Penghasilan -->
 <template>
-  <section class="mentor-section overflow-hidden">
+  <section class="mentor-section">
     <div class="container">
       <div class="row items-center q-col-gutter-xl">
         <div class="col-12 col-md-6">
-          <div class="mentor-tag text-weight-bold q-mb-sm">
-            Berbagi Skill, Bangun Dampak Untukmu
-          </div>
-          <h2 class="mentor-title text-weight-bold q-mb-md">
-            Jadilah Mentor di Edulang <br />
-            Bantu Peserta Melangkah ke <br />
-            Masa Depan Nyata
-          </h2>
+          <h2 class="section-title text-weight-bold q-mb-md">Bergabung Sebagai Mentor</h2>
+          <h3 class="section-subtitle text-weight-bold">Bagikan Ilmu Bahasamu & Raih Penghasilan</h3>
           <p class="mentor-desc q-mb-lg">
-            Berkontribusi dalam sistem pembelajaran bahasa berbasis tujuan, sambil membangun peran
-            profesional yang berkelanjutan.
+            Jadilah bagian dari komunitas mentor Edulang. Buat konten video pembelajaran dan bantu
+            ribuan siswa menguasai bahasa baru.
           </p>
-
-          <q-list class="q-mb-xl">
-            <q-item
-              v-for="(item, index) in mentorBenefits"
-              :key="index"
-              dense
-              class="q-px-none q-mb-sm"
-            >
-              <q-item-section avatar size="24px">
-                <q-icon name="check_circle" class="mentor-check" />
-              </q-item-section>
-              <q-item-section class="mentor-item text-weight-medium">
-                {{ item }}
-              </q-item-section>
-            </q-item>
-          </q-list>
-
-          <div class="q-gutter-md">
-            <q-btn unelevated rounded class="btn-primary q-px-xl" label="Daftar sebagai mentor" />
-            <q-btn outline rounded class="btn-outline q-px-xl" label="Pelajari peran mentor" />
+          <div class="mentor-benefits row q-col-gutter-md q-mb-xl">
+            <div class="col-6">
+              <div class="benefit-item">
+                <q-icon name="payments" size="24px" color="primary" />
+                <span>Penghasilan Kompetitif</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="benefit-item">
+                <q-icon name="groups" size="24px" color="primary" />
+                <span>Jangkau Ribuan Siswa</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="benefit-item">
+                <q-icon name="schedule" size="24px" color="primary" />
+                <span>Waktu Fleksibel</span>
+              </div>
+            </div>
           </div>
+          <q-btn
+            unelevated
+            no-caps
+            class="btn-primary q-px-xl q-py-md"
+            label="Daftar Jadi Mentor"
+            icon-right="arrow_forward"
+            :to="{ path: '/mentor/dashboard' }"
+          />
         </div>
-
-        <div class="col-12 col-md-6 flex flex-center relative-position">
+        <div class="col-12 col-md-6 flex flex-center">
           <q-img src="~assets/MENTOR.png" class="mentor-img" />
         </div>
       </div>
@@ -47,61 +47,12 @@
   </section>
 </template>
 
-<script setup>
-const mentorBenefits = [
-  'Membangun kredibilitas sebagai mentor profesional',
-  'Mendapatkan penghasilan dari sistem pembelajaran terstruktur',
-  'Terhubung dengan ekosistem edukasi dan jalur global',
-  'Berpeluang terlibat dalam kolaborasi edukasi jangka panjang',
-  'Akses ke sistem, data progres peserta, dan peluang lanjutan',
-]
-</script>
+<script setup></script>
 
 <style scoped>
 .mentor-section {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
-.mentor-tag {
-  color: var(--edulang-yellow);
-  font-size: 0.9375rem;
-}
-
-.mentor-title {
-  color: var(--edulang-black);
-  font-size: clamp(1.35rem, 3vw, 1.5rem);
-}
-
-.mentor-desc {
-  color: var(--edulang-black);
-  opacity: 0.85;
-  font-size: 1rem;
-  font-weight: 400;
-}
-
-.mentor-item {
-  color: var(--edulang-black);
-  font-size: 0.9375rem;
-}
-
-.mentor-check {
-  color: var(--edulang-blue) !important;
-}
-
-.btn-primary {
-  background: var(--edulang-blue) !important;
-  color: white !important;
-}
-
-.btn-outline {
-  border-color: var(--edulang-navy) !important;
-  color: var(--edulang-navy) !important;
-}
-
-.mentor-img {
-  max-width: 520px;
-  width: 100%;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .container {
@@ -109,5 +60,44 @@ const mentorBenefits = [
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;
+}
+
+.section-title {
+  color: var(--edulang-yellow, #ffc42c);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.section-subtitle {
+  color: var(--edulang-navy, #003387);
+  font-size: clamp(1.5rem, 3vw, 1.75rem);
+}
+
+.mentor-desc {
+  color: var(--edulang-black, #2d2d2d);
+  opacity: 0.9;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--edulang-black, #2d2d2d);
+}
+
+.btn-primary {
+  background: var(--edulang-blue, #0089ff) !important;
+  color: white !important;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.mentor-img {
+  max-width: 480px;
+  width: 100%;
 }
 </style>
