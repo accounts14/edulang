@@ -1,39 +1,44 @@
-<!-- Tentang Edulang - Platform Pendidikan Bahasa Terlengkap -->
 <template>
-  <section class="tentang-section container">
-    <div class="row items-center q-col-gutter-xl">
-      <div class="col-12 col-lg-7">
-        <h2 class="section-title text-weight-bold q-mb-md">Tentang Edulang</h2>
-        <h3 class="subtitle text-weight-bold q-mb-md">Platform Pendidikan Bahasa Terlengkap</h3>
-        <p class="section-desc q-mb-lg">
-          Edulang adalah platform pendidikan bahasa yang membantu siapa saja belajar dengan mudah,
-          cepat, dan terjangkau. Dilengkapi AI Speaking Partner, mentor marketplace, dan pathway
-          untuk kerja maupun kuliah luar negeri.
-        </p>
-        <div class="row q-col-gutter-md">
-          <div v-for="(item, i) in items" :key="i" class="col-12 col-sm-6">
-            <q-card flat bordered class="feature-card q-pa-lg rounded-borders">
-              <div class="feature-icon q-mb-md">
-                <q-icon :name="item.icon" size="32px" color="primary" />
-              </div>
-              <div class="feature-title text-weight-bold q-mb-sm">{{ item.title }}</div>
-              <p class="feature-desc">{{ item.desc }}</p>
-            </q-card>
+  <section class="tentang-section">
+    <div class="container">
+      <div class="row items-center q-col-gutter-xl">
+        <div class="col-12 col-md-5">
+          <div class="image-wrapper relative-position">
+            <div class="bg-decoration"></div>
+            <q-img src="~assets/landing/character-mentor.png" class="character-img" fit="contain" />
           </div>
         </div>
-      </div>
-      <div class="col-12 col-lg-5 flex flex-center justify-center">
-        <div class="tentang-character-block">
-          <q-img
-            src="~assets/landing/character-mentor.png"
-            class="tentang-character"
-            fit="contain"
-          />
-          <div class="character-copy">
-            <div class="character-role">Mentor Edulang</div>
-            <div class="character-expertise">Native Speaker • Sertifikat Internasional</div>
-            <div class="character-value">Berbagi skill bahasa untuk peluang global</div>
-            <div class="character-langs">Bahasa: Jepang, Mandarin, Inggris, Korea, Arab, Jerman</div>
+
+        <div class="col-12 col-md-7">
+          <div class="content-header q-mb-xl">
+            <div class="badge-custom q-mb-md">Tentang Edulang</div>
+            <h2 class="main-title no-margin text-weight-bold">
+              Platform Pendidikan <br />
+              Bahasa <span class="text-primary">Terlengkap</span>
+            </h2>
+            <p class="section-desc q-mt-lg">
+              Edulang adalah platform pendidikan bahasa yang membantu siapa saja belajar dengan
+              mudah, cepat, dan terjangkau. Dilengkapi AI Speaking Partner, mentor marketplace, dan
+              pathway untuk kerja maupun kuliah luar negeri.
+            </p>
+          </div>
+
+          <div class="row q-col-gutter-lg">
+            <div v-for="(item, i) in items" :key="i" class="col-12 col-sm-6">
+              <q-card flat bordered class="feature-card">
+                <q-card-section class="q-pa-lg">
+                  <div class="icon-box q-mb-md">
+                    <q-icon :name="item.icon" size="24px" color="white" />
+                  </div>
+                  <div class="feature-title text-weight-bold q-mb-sm">
+                    {{ item.title }}
+                  </div>
+                  <div class="feature-desc">
+                    {{ item.desc }}
+                  </div>
+                </q-card-section>
+              </q-card>
+            </div>
           </div>
         </div>
       </div>
@@ -44,22 +49,22 @@
 <script setup>
 const items = [
   {
-    icon: 'route',
+    icon: 'track_changes', // Target/Route icon
     title: 'Pembelajaran Terarah',
     desc: 'Kurikulum yang dirancang khusus untuk mencapai tujuan belajar kamu dengan efektif.',
   },
   {
-    icon: 'school',
+    icon: 'groups', // Mentor icon
     title: 'Mentor Berpengalaman',
     desc: 'Belajar langsung dari native speaker dan mentor profesional bersertifikat.',
   },
   {
-    icon: 'auto_awesome',
+    icon: 'lightbulb', // Innovative icon
     title: 'Metode Inovatif',
     desc: 'Kombinasi video pembelajaran, AI Speaking Partner, dan praktik langsung.',
   },
   {
-    icon: 'public',
+    icon: 'public', // Global icon
     title: 'Peluang Global',
     desc: 'Pathway untuk kerja dan kuliah di luar negeri dengan bimbingan penuh.',
   },
@@ -68,109 +73,108 @@ const items = [
 
 <style scoped>
 .tentang-section {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding: 80px 0;
+  overflow: hidden;
 }
 
-.section-title {
-  color: var(--edulang-yellow, #ffc42c);
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.subtitle {
-  color: var(--edulang-navy, #003387);
-  font-size: clamp(1.5rem, 3vw, 1.75rem);
+/* Badge Style */
+.badge-custom {
+  display: inline-block;
+  padding: 6px 18px;
+  background-color: #fff8e6;
+  color: #8a6d3b;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Title & Text */
+.main-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.2;
+  color: #1a1a1a;
 }
 
 .section-desc {
-  color: var(--edulang-black, #2d2d2d);
-  opacity: 0.9;
-  font-size: 1rem;
-  line-height: 1.7;
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 600px;
 }
 
+/* Image & Decoration */
+.image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-decoration {
+  position: absolute;
+  width: 110%;
+  height: 90%;
+  background: #f0f7ff;
+  border-radius: 40px;
+  z-index: -1;
+  transform: rotate(-2deg);
+}
+
+.character-img {
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Feature Cards */
 .feature-card {
+  border-radius: 20px;
+  border: 1px solid #edf2f7 !important;
   height: 100%;
-  border-color: #e2e8f0 !important;
+  transition: transform 0.3s ease;
 }
 
-.feature-icon {
-  width: 56px;
-  height: 56px;
+.icon-box {
+  width: 48px;
+  height: 48px;
+  background-color: #0056b3; /* Biru sesuai logo */
   border-radius: 12px;
-  background: rgba(0, 137, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .feature-title {
-  color: var(--edulang-navy, #003387);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  color: #1a1a1a;
 }
 
 .feature-desc {
-  color: var(--edulang-black, #2d2d2d);
-  opacity: 0.85;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  margin: 0;
+  color: #718096;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-.rounded-borders {
-  border-radius: 16px;
-}
-
-.tentang-character-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.tentang-character {
-  max-width: 260px;
-  max-height: 320px;
-}
-
-.character-copy {
-  text-align: center;
-  max-width: 280px;
-}
-
-.character-role {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--edulang-navy, #003387);
-  margin-bottom: 4px;
-}
-
-.character-expertise {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--edulang-blue, #0089ff);
-  margin-bottom: 6px;
-}
-
-.character-value {
-  font-size: 0.9rem;
-  color: var(--edulang-black, #2d2d2d);
-  opacity: 0.9;
-  margin-bottom: 6px;
-}
-
-.character-langs {
-  font-size: 0.8125rem;
-  color: var(--edulang-black, #2d2d2d);
-  opacity: 0.75;
+/* Responsive adjustment */
+@media (max-width: 1023px) {
+  .main-title {
+    text-align: center;
+  }
+  .section-desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .badge-custom {
+    display: table;
+    margin: 0 auto 16px auto;
+  }
+  .bg-decoration {
+    width: 80%;
+  }
 }
 </style>
