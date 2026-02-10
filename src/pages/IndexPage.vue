@@ -27,12 +27,6 @@
         <MentorSection />
       </section>
       <section class="landing-section reveal-section" data-reveal>
-        <PartnershipSection />
-      </section>
-      <section class="landing-section reveal-section" data-reveal>
-        <PenghargaanSection />
-      </section>
-      <section class="landing-section reveal-section" data-reveal>
         <CTAFinalSection />
       </section>
     </div>
@@ -51,8 +45,6 @@ import ProgramEdulangSection from 'components/Landing/ProgramEdulangSection.vue'
 import BelajarBaruSection from 'components/Landing/BelajarBaruSection.vue'
 import TestimonialSection from 'components/Landing/TestimonialSection.vue'
 import MentorSection from 'components/Landing/MentorSection.vue'
-import PartnershipSection from 'components/Landing/PartnershipSection.vue'
-import PenghargaanSection from 'components/Landing/PenghargaanSection.vue'
 import CTAFinalSection from 'components/Landing/CTAFinalSection.vue'
 import WhatsappConsultWidget from 'components/Common/WhatsappConsultWidget.vue'
 
@@ -80,37 +72,6 @@ onMounted(() => {
 <style scoped>
 .landing-page {
   font-family: 'Poppins', sans-serif;
-}
-
-.landing-sections {
-  max-width: 100%;
-}
-
-.landing-section {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
-}
-
-.landing-section:first-child {
-  padding-top: 1rem;
-}
-
-/* Kurangi jarak Hero – Tentang Edulang (feedback) */
-.landing-section:nth-child(2) {
-  padding-top: 1rem;
-}
-
-@media (min-width: 1024px) {
-  .landing-section {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-  }
-  .landing-section:first-child {
-    padding-top: 1.5rem;
-  }
-  .landing-section:nth-child(2) {
-    padding-top: 0.5rem;
-  }
 }
 
 .reveal-section {

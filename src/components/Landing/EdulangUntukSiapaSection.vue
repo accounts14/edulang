@@ -159,6 +159,7 @@ const items = [
 .text-blue-gradient {
   background: linear-gradient(90deg, #0052cc 0%, #00a3ff 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
 }
