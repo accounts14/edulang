@@ -1,5 +1,5 @@
 <template>
-  <!-- SATU SECTION RESPONSIVE - KARAKTER EKSTRA BESAR - MARGIN ATAS BALANCED -->
+  <!-- SATU SECTION RESPONSIVE - KARAKTER EKSTRA BESAR - MARGIN TOP 0 -->
   <section class="hero-section">
     <div class="container hero-inner">
       <div class="row hero-main-row items-center q-col-gutter-md">
@@ -220,13 +220,13 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* ↑↑↑ KARAKTER EKSTRA BESAR + MARGIN ATAS BALANCED ↑↑↑ */
+/* ↓↓↓ MARGIN TOP 0 - ZERO MARGIN ↓↓↓ */
 .hero-section {
-  padding-top: 1.5rem; /* ↑ DARI 1rem - balanced */
+  padding-top: 0 !important; /* ZERO MARGIN TOP */
   padding-bottom: 3rem;
   min-height: 88vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   background: var(--edulang-white, #f5f7fa);
 }
 
@@ -235,22 +235,34 @@ onMounted(async () => {
   margin: 0 auto;
   padding-left: 24px;
   padding-right: 24px;
+  padding-top: 0 !important;
+}
+
+.hero-inner {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .hero-main-row {
-  min-height: 75vh; /* ↑ DARI 70vh */
+  min-height: 75vh;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .hero-left-col {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
 .hero-title {
   color: var(--edulang-black, #2d2d2d);
   font-size: clamp(2rem, 5vw, 3rem);
   line-height: 1.2;
+  margin-top: 0 !important;
+  margin-bottom: 1rem;
 }
 
 .text-edulang-blue {
@@ -266,6 +278,7 @@ onMounted(async () => {
   opacity: 0.9;
   max-width: 500px;
   line-height: 1.7;
+  margin-top: 0 !important;
 }
 
 .btn-primary {
@@ -307,8 +320,10 @@ onMounted(async () => {
 .hero-right-col {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 65vh; /* ↑ DARI 55vh */
+  align-items: flex-start;
+  min-height: 65vh;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
 .hero-right-inner {
@@ -317,20 +332,22 @@ onMounted(async () => {
   align-items: flex-end;
   justify-content: center;
   width: 100%;
-  height: 75vh; /* ↑ DARI 65vh - EKSTRA BESAR */
-  min-height: 550px; /* ↑ DARI 450px */
+  height: 75vh;
+  min-height: 550px;
+  margin-top: 0 !important;
 }
 
 .hero-character-area {
   position: relative;
   width: 100%;
-  max-width: 600px; /* ↑ DARI 500px - EKSTRA BESAR */
+  max-width: 600px;
   height: 100%;
   margin-left: auto;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   box-shadow: none;
+  margin-top: 0 !important;
 }
 
 .hero-character-wrap {
@@ -343,12 +360,11 @@ onMounted(async () => {
   justify-content: center;
 }
 
-/* ↑↑↑ KARAKTER EKSTRA BESAR ↑↑↑ */
 .hero-character {
   width: 100%;
   height: auto;
   max-height: 95vh;
-  min-height: 600px; /* ↑ DARI 500px - SUPER BESAR */
+  min-height: 600px;
   object-fit: contain;
   object-position: bottom center;
 }
@@ -433,8 +449,8 @@ onMounted(async () => {
 }
 
 .hero-bottom-section {
-  margin-top: 4rem; /* ↑ DARI 3.5rem - balanced */
-  padding-top: 0;
+  margin-top: 2rem !important; /* ↓ ULTRA RAPAT */
+  padding-top: 0 !important;
   text-align: center;
 }
 
@@ -491,11 +507,10 @@ onMounted(async () => {
   color: var(--edulang-blue, #0089ff);
 }
 
-/* Desktop responsive - KARAKTER SUPER BESAR */
 @media (min-width: 1024px) {
   .hero-main-row {
     min-height: 82vh;
-  } /* ↑ BESAR */
+  }
   .hero-right-col {
     align-items: center;
     justify-content: flex-end;
@@ -508,12 +523,12 @@ onMounted(async () => {
     justify-content: flex-end;
   }
   .hero-character-area {
-    width: clamp(550px, 50vw, 750px); /* ↑ EKSTRA BESAR */
+    width: clamp(550px, 50vw, 750px);
     margin-left: auto;
     margin-right: 0;
   }
   .hero-character {
-    min-height: 700px; /* ↑ SUPER BESAR */
+    min-height: 700px;
   }
 }
 
@@ -535,6 +550,6 @@ onMounted(async () => {
   }
   .hero-character-area {
     width: clamp(750px, 45vw, 950px);
-  } /* ↑ GIGANTIC */
+  }
 }
 </style>
