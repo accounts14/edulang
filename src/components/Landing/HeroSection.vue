@@ -63,7 +63,9 @@
         </div>
 
         <!-- Right: Character + floating bubbles (isi dari gambar kedua) -->
-        <div class="col-12 col-lg-6 flex flex-center q-mt-lg q-mt-none hero-right-col hero-right-align-top">
+        <div
+          class="col-12 col-lg-6 flex flex-center q-mt-lg q-mt-none hero-right-col hero-right-align-top"
+        >
           <div class="hero-right-inner">
             <div class="hero-character-area">
               <!-- Floating oval bubbles: iconUrl + teks (animasi) -->
@@ -302,10 +304,6 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.hero-right-align-top {
-  align-self: flex-start;
 }
 
 .hero-right-inner {
