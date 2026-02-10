@@ -266,7 +266,11 @@ onMounted(async () => {
 }
 
 .text-edulang-blue {
-  color: var(--edulang-blue, #0089ff) !important;
+  background: linear-gradient(90deg, #1a73e8 0%, /* biru terang */ #0d47a1 100% /* biru tua */);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 .text-edulang-black {
@@ -282,14 +286,16 @@ onMounted(async () => {
 }
 
 .btn-primary {
-  background: var(--edulang-blue, #0089ff) !important;
+  background: linear-gradient(90deg, #1a73e8 0%, /* biru terang */ #0d47a1 100% /* biru tua */);
+
   color: white !important;
   border-radius: 8px;
   font-weight: 600;
 }
 
 .btn-outline {
-  border: 2px solid var(--edulang-blue, #0089ff) !important;
+  border: 2px solid
+    linear-gradient(90deg, #1a73e8 0%, /* biru terang */ #0d47a1 100% /* biru tua */);
   color: var(--edulang-blue, #0089ff) !important;
   border-radius: 8px;
   font-weight: 600;
