@@ -38,12 +38,14 @@
         </div>
 
         <div class="col-12 col-md-6 flex flex-center relative-position">
-          <div class="circle-bg">
-            <img
-              src="~assets/landing/character-mentor.png"
-              class="woman-img"
-              alt="Mentor Edulang"
-            />
+          <div class="circle-container">
+            <div class="circle-bg">
+              <img
+                src="~assets/landing/character-mentor.png"
+                class="woman-img"
+                alt="Mentor Edulang"
+              />
+            </div>
 
             <div class="floating-cert cert-jlpt">
               <div class="cert-pill">
@@ -102,7 +104,6 @@ const features = [
   padding: 0 20px;
 }
 
-/* Typography Sesuai Gambar */
 .hashtag-label {
   color: #0089ff;
   font-weight: 700;
@@ -126,12 +127,6 @@ const features = [
   max-width: 450px;
 }
 
-.text-feature {
-  color: #1e293b;
-  font-size: 1rem;
-}
-
-/* Buttons Styling */
 .btn-apply {
   background: #0056b3;
   color: white;
@@ -148,25 +143,36 @@ const features = [
   font-weight: 600;
 }
 
-/* Right Side Illustration (Lingkaran & Foto) */
-.circle-bg {
+/* MODIFIKASI WRAPPER LINGKARAN */
+.circle-container {
+  position: relative;
   width: 450px;
   height: 450px;
+}
+
+.circle-bg {
+  width: 100%;
+  height: 100%;
   background: linear-gradient(135deg, #0089ff 0%, #7dc4ff 100%);
   border-radius: 50%;
   position: relative;
+  overflow: hidden; /* Ini yang memotong bagian bawah gambar mengikuti lingkaran */
   display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 
 .woman-img {
-  height: 110%; /* Lebih tinggi dari lingkaran agar keluar sedikit */
+  height: 100%; /* Ukuran tetap mengikuti tinggi lingkaran */
+  width: auto;
   z-index: 2;
   object-fit: contain;
+  /* Jika ingin kepala sedikit keluar, gunakan transform & scale, 
+     tapi untuk potongan bersih sesuai gambar, 100% adalah yang paling aman */
+  transform: translateY(10%);
 }
 
-/* Floating Card Styling */
+/* Floating Card Styling (Tetap sama, pastikan z-index tinggi) */
 .floating-cert {
   position: absolute;
   z-index: 10;
@@ -207,24 +213,22 @@ const features = [
   margin-top: 2px;
 }
 
-/* Positioning Floating Cards */
 .cert-jlpt {
   top: 10%;
-  right: -10%;
+  right: -5%;
   animation-delay: 0s;
 }
 .cert-ielts {
-  top: 35%;
-  left: -25%;
+  top: 40%;
+  left: -15%;
   animation-delay: 1s;
 }
 .cert-hsk {
-  bottom: 25%;
-  right: -20%;
+  bottom: 20%;
+  right: -10%;
   animation-delay: 2s;
 }
 
-/* Background Colors for Logos */
 .bg-navy {
   background-color: #002d72;
 }
@@ -246,19 +250,13 @@ const features = [
 }
 
 @media (max-width: 1023px) {
-  .circle-bg {
+  .circle-container {
     width: 320px;
     height: 320px;
     margin-top: 50px;
   }
   .section-header {
     text-align: center;
-  }
-  .section-desc {
-    margin: 0 auto 30px;
-  }
-  .feature-item {
-    justify-content: center;
   }
   .action-area {
     justify-content: center;
