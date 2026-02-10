@@ -2,9 +2,9 @@
 <template>
   <section class="hero-section">
     <div class="container hero-inner">
-      <div class="row items-center q-col-gutter-xl">
-        <!-- Left: Content -->
-        <div class="col-12 col-lg-6">
+      <div class="row hero-main-row items-center q-col-gutter-md">
+        <!-- Left: Heading, deskripsi, CTA -->
+        <div class="col-6 hero-left-col">
           <h1 class="hero-title text-weight-bold q-mb-md">
             <span class="text-edulang-blue">Unlock the World</span><br />
             <span class="text-edulang-black">with Education</span>
@@ -31,7 +31,7 @@
               :to="{ name: 'AlurBelajarPage' }"
             />
           </div>
-          <div class="hero-stats row q-mt-xl q-gutter-xl">
+          <div class="hero-stats row items-center no-wrap q-mt-xl q-gutter-xl">
             <div class="stat-item row items-center q-gutter-sm">
               <div class="stat-icon-wrap">
                 <q-icon name="group" size="24px" color="primary" />
@@ -62,10 +62,8 @@
           </div>
         </div>
 
-        <!-- Right: Character + floating bubbles (isi dari gambar kedua) -->
-        <div
-          class="col-12 col-lg-6 flex flex-center q-mt-lg q-mt-none hero-right-col hero-right-align-top"
-        >
+        <!-- Right: Character (center-right) + floating bubbles -->
+        <div class="col-6 flex flex-center q-mt-lg hero-right-col">
           <div class="hero-right-inner">
             <div class="hero-character-area">
               <!-- Floating oval bubbles: iconUrl + teks (animasi) -->
@@ -228,8 +226,8 @@ onMounted(async () => {
 
 <style scoped>
 .hero-section {
-  padding-top: 2.5rem;
-  padding-bottom: 3.5rem;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
   min-height: 88vh;
   display: flex;
   align-items: center;
@@ -237,10 +235,20 @@ onMounted(async () => {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.hero-main-row {
+  min-height: 75vh;
+}
+
+.hero-left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .hero-title {
@@ -304,24 +312,27 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 60vh;
 }
 
 .hero-right-inner {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   width: 100%;
-  min-width: 300px;
+  height: 60vh;
+  min-height: 400px;
 }
 
 .hero-character-area {
   position: relative;
   width: 100%;
-  max-width: 500px;
-  min-height: 450px;
+  max-width: 400px;
+  height: 100%;
+  margin-left: auto;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   box-shadow: none;
 }
@@ -329,14 +340,20 @@ onMounted(async () => {
 .hero-character-wrap {
   position: relative;
   z-index: 1;
-  width: 360px;
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .hero-character {
   width: 100%;
-  max-height: 500px;
+  height: auto;
+  max-height: 90vh;
+  min-height: 420px;
   object-fit: contain;
+  object-position: bottom center;
 }
 
 /* Animasi floating bubbles (bukan karakter) */
@@ -403,20 +420,21 @@ onMounted(async () => {
   white-space: nowrap;
 }
 
+/* Bubbles: bahu–dada, tidak tutupi wajah, responsif dengan % */
 .hero-float-bubble-0 {
-  top: 6%;
-  right: 4%;
+  top: 28%;
+  right: 2%;
 }
 .hero-float-bubble-1 {
-  bottom: 22%;
+  top: 42%;
   right: 0;
 }
 .hero-float-bubble-2 {
-  bottom: 28%;
+  top: 42%;
   left: 0;
 }
 .hero-float-bubble-3 {
-  top: 12%;
+  top: 28%;
   left: 2%;
 }
 
@@ -481,24 +499,59 @@ onMounted(async () => {
   color: var(--edulang-blue, #0089ff);
 }
 
+/* Desktop: teks kiri & gambar kanan sejajar horizontal, center-right */
 @media (min-width: 1024px) {
+  .hero-main-row {
+    min-height: 78vh;
+  }
   .hero-right-col {
-    flex-direction: row;
-    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
+    justify-content: flex-end;
+    min-height: 78vh;
+  }
+  .hero-right-inner {
+    width: 100%;
+    height: 78vh;
+    min-height: 500px;
+    justify-content: flex-end;
   }
   .hero-character-area {
-    max-width: 560px;
-    min-height: 520px;
-    box-shadow: none;
+    width: clamp(380px, 42vw, 560px);
+    margin-left: auto;
+    margin-right: 0;
   }
   .hero-character-wrap {
-    width: 420px;
+    width: 100%;
   }
   .hero-character {
-    max-height: 580px;
+    width: 100%;
+    height: auto;
+    max-height: 90vh;
+    min-height: 480px;
+  }
+}
+
+/* 1366px */
+@media (min-width: 1366px) {
+  .hero-character-area {
+    width: clamp(420px, 42vw, 520px);
+  }
+}
+
+/* 1440px */
+@media (min-width: 1440px) {
+  .hero-character-area {
+    width: clamp(450px, 40vw, 540px);
+  }
+}
+
+/* 1920px+ */
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1600px;
+  }
+  .hero-character-area {
+    width: clamp(500px, 38vw, 600px);
   }
 }
 </style>
