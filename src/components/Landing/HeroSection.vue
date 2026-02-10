@@ -77,7 +77,7 @@
                 <span v-else class="hero-float-fallback">{{ lang.code }}</span>
                 <span class="hero-float-text">{{ lang.nativeText || lang.name }}</span>
               </div>
-              <!-- KARAKTER EKSTRA BESAR -->
+              <!-- KARAKTER SUPER EKSTRA BESAR -->
               <div class="hero-character-wrap">
                 <q-img
                   src="~assets/landing/character-cta.png"
@@ -222,7 +222,7 @@ onMounted(async () => {
 <style scoped>
 /* ↓↓↓ MARGIN TOP 0 - ZERO MARGIN ↓↓↓ */
 .hero-section {
-  padding-top: 0 !important; /* ZERO MARGIN TOP */
+  padding-top: 0 !important;
   padding-bottom: 3rem;
   min-height: 88vh;
   display: flex;
