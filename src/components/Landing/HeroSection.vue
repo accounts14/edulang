@@ -1,5 +1,5 @@
 <template>
-  <!-- SATU SECTION RESPONSIVE - KARAKTER BESAR - MARGIN ATAS KECIL -->
+  <!-- SATU SECTION RESPONSIVE - KARAKTER EKSTRA BESAR - MARGIN ATAS BALANCED -->
   <section class="hero-section">
     <div class="container hero-inner">
       <div class="row hero-main-row items-center q-col-gutter-md">
@@ -62,7 +62,7 @@
           </div>
         </div>
 
-        <!-- Right: KARAKTER BESAR - col-xs-12 col-md-6 -->
+        <!-- Right: KARAKTER EKSTRA BESAR -->
         <div class="col-xs-12 col-md-6 hero-right-col">
           <div class="hero-right-inner">
             <div class="hero-character-area">
@@ -77,7 +77,7 @@
                 <span v-else class="hero-float-fallback">{{ lang.code }}</span>
                 <span class="hero-float-text">{{ lang.nativeText || lang.name }}</span>
               </div>
-              <!-- KARAKTER BESAR -->
+              <!-- KARAKTER EKSTRA BESAR -->
               <div class="hero-character-wrap">
                 <q-img
                   src="~assets/landing/character-cta.png"
@@ -220,11 +220,11 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* ↓↓↓ MARGIN ATAS DIPERKECIL ↓↓↓ */
+/* ↑↑↑ KARAKTER EKSTRA BESAR + MARGIN ATAS BALANCED ↑↑↑ */
 .hero-section {
-  padding-top: 1rem; /* ↓ DARI 2rem */
+  padding-top: 1.5rem; /* ↑ DARI 1rem - balanced */
   padding-bottom: 3rem;
-  min-height: 85vh; /* ↓ DARI 88vh */
+  min-height: 88vh;
   display: flex;
   align-items: center;
   background: var(--edulang-white, #f5f7fa);
@@ -238,7 +238,7 @@ onMounted(async () => {
 }
 
 .hero-main-row {
-  min-height: 70vh; /* ↓ DARI 75vh */
+  min-height: 75vh; /* ↑ DARI 70vh */
 }
 
 .hero-left-col {
@@ -308,7 +308,7 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 55vh; /* ↓ DARI 60vh */
+  min-height: 65vh; /* ↑ DARI 55vh */
 }
 
 .hero-right-inner {
@@ -317,14 +317,14 @@ onMounted(async () => {
   align-items: flex-end;
   justify-content: center;
   width: 100%;
-  height: 65vh; /* ↓ DARI 70vh */
-  min-height: 450px; /* ↓ DARI 500px */
+  height: 75vh; /* ↑ DARI 65vh - EKSTRA BESAR */
+  min-height: 550px; /* ↑ DARI 450px */
 }
 
 .hero-character-area {
   position: relative;
   width: 100%;
-  max-width: 500px; /* ↓ DARI 550px */
+  max-width: 600px; /* ↑ DARI 500px - EKSTRA BESAR */
   height: 100%;
   margin-left: auto;
   display: flex;
@@ -343,11 +343,12 @@ onMounted(async () => {
   justify-content: center;
 }
 
+/* ↑↑↑ KARAKTER EKSTRA BESAR ↑↑↑ */
 .hero-character {
   width: 100%;
   height: auto;
-  max-height: 90vh; /* ↓ DARI 95vh */
-  min-height: 500px; /* ↓ DARI 550px */
+  max-height: 95vh;
+  min-height: 600px; /* ↑ DARI 500px - SUPER BESAR */
   object-fit: contain;
   object-position: bottom center;
 }
@@ -432,7 +433,7 @@ onMounted(async () => {
 }
 
 .hero-bottom-section {
-  margin-top: 3.5rem; /* ↓ DARI 4.5rem */
+  margin-top: 4rem; /* ↑ DARI 3.5rem - balanced */
   padding-top: 0;
   text-align: center;
 }
@@ -490,41 +491,41 @@ onMounted(async () => {
   color: var(--edulang-blue, #0089ff);
 }
 
-/* Desktop responsive - MARGIN ATAS KECIL */
+/* Desktop responsive - KARAKTER SUPER BESAR */
 @media (min-width: 1024px) {
   .hero-main-row {
-    min-height: 78vh;
-  } /* ↓ DARI 85vh */
+    min-height: 82vh;
+  } /* ↑ BESAR */
   .hero-right-col {
     align-items: center;
     justify-content: flex-end;
-    min-height: 78vh;
-  } /* ↓ DARI 85vh */
+    min-height: 82vh;
+  }
   .hero-right-inner {
     width: 100%;
-    height: 78vh; /* ↓ DARI 85vh */
-    min-height: 550px; /* ↓ DARI 650px */
+    height: 82vh;
+    min-height: 650px;
     justify-content: flex-end;
   }
   .hero-character-area {
-    width: clamp(450px, 45vw, 650px); /* ↓ SEDANG */
+    width: clamp(550px, 50vw, 750px); /* ↑ EKSTRA BESAR */
     margin-left: auto;
     margin-right: 0;
   }
   .hero-character {
-    min-height: 550px; /* ↓ DARI 650px */
+    min-height: 700px; /* ↑ SUPER BESAR */
   }
 }
 
 @media (min-width: 1366px) {
   .hero-character-area {
-    width: clamp(500px, 45vw, 650px);
+    width: clamp(600px, 50vw, 800px);
   }
 }
 
 @media (min-width: 1440px) {
   .hero-character-area {
-    width: clamp(550px, 42vw, 700px);
+    width: clamp(650px, 48vw, 850px);
   }
 }
 
@@ -533,7 +534,7 @@ onMounted(async () => {
     max-width: 1600px;
   }
   .hero-character-area {
-    width: clamp(650px, 40vw, 800px);
-  }
+    width: clamp(750px, 45vw, 950px);
+  } /* ↑ GIGANTIC */
 }
 </style>
