@@ -74,7 +74,7 @@ const items = [
 <style scoped>
 .tentang-section {
   padding: 80px 0;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
 }
 
@@ -120,11 +120,11 @@ const items = [
   opacity: 0.95;
 }
 
-/* Image & Decoration - **IMAGE SAJA SAMPE SENTUH FEATURE CARD** */
+/* Image & Decoration - PERFECT BOTTOM ALIGNMENT */
 .image-wrapper {
   position: relative;
   height: 100%;
-  min-height: 680px; /* TIDAK DIUBAH */
+  min-height: 680px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -152,17 +152,17 @@ const items = [
 
 .character-img {
   position: absolute;
-  top: 20px; /* Perfect top alignment with badge */
+  top: -60px; /* **NAIKKAN MASIF: -30px → -60px** - BAWAH PERSIS SENTUH FEATURE CARD BAWAH */
   left: 50%;
   transform: translateX(-50%);
-  width: 500px; /* **SEKARANG 500px** - sedikit lebih besar dari 480px */
-  height: 900px; /* **SEKARANG 900px** - UJUNG KAKI PERSIS SENTUH FEATURE CARD BAWAH */
-  max-width: 100%;
-  z-index: 2;
-  filter: drop-shadow(0 35px 75px rgba(0, 86, 179, 0.35));
+  width: 580px;
+  height: 950px;
+  max-width: none;
+  z-index: 1;
+  filter: drop-shadow(0 40px 85px rgba(0, 86, 179, 0.4));
 }
 
-/* Feature Cards - TIDAK DIUBAH SAMA SEKALI */
+/* Feature Cards */
 .feature-card {
   border-radius: 24px;
   border: 2px solid #edf2f7 !important;
@@ -170,6 +170,8 @@ const items = [
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 3;
 }
 
 .feature-card:hover {
@@ -219,9 +221,9 @@ const items = [
   }
 
   .character-img {
-    width: 440px; /* **440px** untuk tablet */
-    height: 580px; /* **580px** - sentuh card */
-    top: 10px;
+    top: -30px; /* **Tablet: -15px → -30px** */
+    width: 500px;
+    height: 620px;
   }
 
   .bg-decoration {
@@ -246,8 +248,9 @@ const items = [
 
 @media (max-width: 767px) {
   .character-img {
-    width: 400px; /* **400px** mobile */
-    height: 540px; /* **540px** - sentuh card */
+    top: -18px; /* **Mobile: -8px → -18px** */
+    width: 460px;
+    height: 580px;
   }
 
   .image-wrapper {
