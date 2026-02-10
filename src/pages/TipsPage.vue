@@ -1,26 +1,39 @@
 <template>
-  <q-page class="q-pa-xl bg-accent">
-    <div class="row justify-between items-center q-mb-md">
-      <div class="col-12 col-md-8">
-        <div class="text-orange-9 text-weight-bold">#Tips & Informasi</div>
-        <div class="text-h4 text-weight-bolder text-indigo-10 q-mt-sm">
-          Ruang Tips & Informasi Edulang
-        </div>
+  <q-page class="q-pa-xl" style="background-color: #f5f7fa">
+    <div class="row justify-center q-mb-xl">
+      <div class="col-12 col-md-10 text-center">
+        <q-badge
+          color="orange-2"
+          text-color="orange-10"
+          class="q-pa-sm q-px-md rounded-borders-12 text-weight-bold"
+        >
+          <q-icon name="auto_awesome" class="q-mr-xs" /> #TIPS & INFORMASI
+        </q-badge>
+
+        <h1 class="text-h3 text-weight-bolder text-edulang-navy q-mt-md q-mb-sm">
+          Ruang Informasi <span class="text-edulang-blue">Edulang</span>
+        </h1>
+
+        <p class="text-subtitle1 text-grey-7 q-mx-auto text-center" style="max-width: 600px">
+          Temukan panduan kuliah luar negeri, tips belajar bahasa, dan update terbaru seputar studi
+          internasional.
+        </p>
       </div>
     </div>
 
-    <!-- Search Bar -->
-    <div class="row q-mb-xl">
-      <div class="col-12 col-md-6">
+    <div class="row justify-center q-mb-xl">
+      <div class="col-12 col-md-8">
         <q-input
           v-model="searchQuery"
-          filled
-          placeholder="Cari artikel..."
+          outlined
+          rounded
+          placeholder="Cari topik, tips, atau berita..."
           bg-color="white"
+          class="shadow-edulang search-input"
           @update:model-value="filterArticles"
         >
           <template v-slot:prepend>
-            <q-icon name="search" />
+            <q-icon name="search" color="primary" />
           </template>
           <template v-slot:append v-if="searchQuery">
             <q-icon name="close" class="cursor-pointer" @click="clearSearch" />
@@ -29,96 +42,100 @@
       </div>
     </div>
 
-    <!-- Loading State -->
-    <div v-if="loading" class="flex flex-center column q-pa-xl text-grey-7">
-      <q-spinner-dots color="primary" size="40px" class="q-mb-md" />
-      <div>Mengambil data artikel...</div>
+    <div v-if="loading" class="flex flex-center column q-pa-xl">
+      <q-spinner-ring color="primary" size="60px" thickness="4" />
+      <div class="text-edulang-navy q-mt-md font-weight-medium">
+        Menyusun informasi untuk Anda...
+      </div>
     </div>
 
-    <!-- Error State -->
-    <div v-else-if="error" class="text-center q-pa-xl">
-      <q-icon name="error_outline" size="48px" color="negative" class="q-mb-md" />
-      <div class="text-h6 text-grey-6">{{ error }}</div>
-      <q-btn flat label="Coba Lagi" color="primary" class="q-mt-md" @click="fetchArticles" />
+    <div
+      v-else-if="error"
+      class="text-center q-pa-xl bg-white rounded-borders-20 shadow-1 mx-auto"
+      style="max-width: 400px"
+    >
+      <q-icon name="cloud_off" size="64px" color="negative" class="q-mb-md" />
+      <div class="text-h6 text-grey-8 text-weight-bold">Koneksi Terputus</div>
+      <div class="text-body2 text-grey-6">{{ error }}</div>
+      <q-btn
+        unelevated
+        label="Coba Lagi"
+        color="primary"
+        class="q-mt-lg rounded-borders-12"
+        @click="fetchArticles"
+      />
     </div>
 
-    <!-- Articles List -->
-    <div v-else-if="filteredArticles.length > 0" class="row q-col-gutter-md">
+    <div v-else-if="filteredArticles.length > 0" class="row q-col-gutter-xl justify-center">
       <div v-for="article in filteredArticles" :key="article._id" class="col-12 col-sm-6 col-md-4">
-        <q-card class="my-card cursor-pointer" @click="viewArticle(article._id)">
-          <!-- Image -->
-          <q-img
-            v-if="article.imageUrl"
-            :src="getImageUrl(article.imageUrl)"
-            :ratio="16 / 9"
-            class="article-image"
-          >
-            <template v-slot:error>
-              <div class="absolute-full flex flex-center bg-grey-3">
-                <q-icon name="broken_image" size="48px" color="grey-5" />
-              </div>
-            </template>
-            <template v-slot:loading>
-              <div class="absolute-full flex flex-center bg-grey-2">
-                <q-spinner color="primary" size="32px" />
-              </div>
-            </template>
-          </q-img>
+        <q-card class="article-card shadow-edulang" @click="viewArticle(article)">
+          <div class="relative-position">
+            <q-img
+              v-if="article.imageUrl"
+              :src="getImageUrl(article.imageUrl)"
+              :ratio="16 / 9"
+              class="article-image"
+            >
+              <template v-slot:error>
+                <div class="absolute-full flex flex-center bg-grey-2">
+                  <q-icon name="image_not_supported" size="48px" color="grey-4" />
+                </div>
+              </template>
+            </q-img>
+            <div v-else class="no-image-placeholder">
+              <q-icon name="auto_stories" size="64px" color="grey-3" />
+            </div>
 
-          <!-- Placeholder jika tidak ada gambar -->
-          <div v-else class="no-image-placeholder">
-            <q-icon name="article" size="64px" color="grey-5" />
+            <q-badge
+              color="edulang-yellow"
+              text-color="black"
+              class="absolute-top-left q-ma-md q-pa-sm text-weight-bold shadow-2"
+            >
+              NEW
+            </q-badge>
           </div>
 
-          <q-card-section>
-            <div class="text-h6 text-weight-bold line-clamp-2">
+          <q-card-section class="q-pa-lg">
+            <div class="row items-center q-gutter-x-sm q-mb-sm">
+              <q-avatar size="24px" color="edulang-navy" text-color="white">
+                {{ getAuthorName(article.author).charAt(0) }}
+              </q-avatar>
+              <div class="text-caption text-grey-8 text-weight-bold">
+                {{ getAuthorName(article.author) }}
+              </div>
+              <q-icon name="circle" size="4px" color="grey-4" />
+              <div class="text-caption text-grey-6">
+                {{ formatDate(article.createdAt) }}
+              </div>
+            </div>
+
+            <div class="text-h6 text-weight-bold text-edulang-navy line-clamp-2 title-link q-mb-sm">
               {{ article.title }}
             </div>
-            <div class="text-subtitle2 text-grey-7 q-mt-xs">
-              Oleh: {{ getAuthorName(article.author) }}
-            </div>
-            <div class="text-caption text-grey-6 q-mt-xs">
-              <q-icon name="schedule" size="16px" class="q-mr-xs" />
-              {{ formatDate(article.createdAt) }}
-            </div>
-          </q-card-section>
 
-          <q-card-section class="q-pt-none">
-            <div class="text-body2 text-grey-8 line-clamp-3">
+            <div class="text-body2 text-grey-7 line-clamp-3">
               {{ getExcerpt(article) }}
             </div>
           </q-card-section>
 
-          <q-separator />
-
-          <q-card-actions align="right" class="q-pa-md">
+          <q-card-actions class="q-px-lg q-pb-lg">
             <q-btn
               flat
+              no-caps
               label="Baca Selengkapnya"
               color="primary"
-              icon-right="arrow_forward"
-              size="sm"
-              @click.stop="viewArticle(article._id)"
+              class="text-weight-bolder q-px-none read-more-btn"
+              icon-right="chevron_right"
+              @click.stop="viewArticle(article)"
             />
           </q-card-actions>
         </q-card>
       </div>
     </div>
 
-    <!-- Empty State - No Results -->
-    <div v-else-if="searchQuery && !loading" class="text-center q-pa-xl">
-      <q-icon name="search_off" size="64px" color="grey-4" class="q-mb-md" />
-      <div class="text-h6 text-grey-6">Artikel tidak ditemukan</div>
-      <div class="text-body2 text-grey-5 q-mt-sm">
-        Tidak ada artikel yang cocok dengan pencarian "{{ searchQuery }}"
-      </div>
-      <q-btn flat label="Hapus Pencarian" color="primary" class="q-mt-md" @click="clearSearch" />
-    </div>
-
-    <!-- Empty State - No Articles -->
-    <div v-else-if="!loading" class="text-center q-pa-xl">
-      <q-icon name="article" size="64px" color="grey-4" class="q-mb-md" />
-      <div class="text-h6 text-grey-6">Belum ada artikel yang tersedia.</div>
+    <div v-else class="text-center q-pa-xl">
+      <q-icon name="receipt_long" size="80px" color="grey-3" />
+      <div class="text-h5 text-grey-5 q-mt-md">Belum ada artikel yang dipublikasikan.</div>
     </div>
   </q-page>
 </template>
@@ -283,12 +300,11 @@ const formatDate = (dateString) => {
   }
 }
 
-// View article detail
-const viewArticle = (id) => {
-  // Sesuaikan dengan routing Anda
-  router.push({ name: 'article-detail', params: { id } })
-  // Atau:
-  // router.push(`/articles/${id}`)
+// View article detail - navigasi ke BacaArtikel (API memakai slug, bukan _id)
+const viewArticle = (article) => {
+  const slug = article?.slug || article?._id
+  if (!slug) return
+  router.push({ name: 'BacaArtikel', params: { slug } })
 }
 
 onMounted(() => {
@@ -297,49 +313,73 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.text-indigo-10 {
-  color: #0d2a5c;
+/* Color Palette from Edulang Guideline */
+.text-edulang-navy {
+  color: #003387;
+}
+.text-edulang-blue {
+  color: #0089ff;
+}
+.bg-edulang-yellow {
+  background-color: #ffc42c !important;
 }
 
-.my-card {
+/* Global Styling */
+.rounded-borders-12 {
+  border-radius: 12px;
+}
+.rounded-borders-20 {
+  border-radius: 20px;
+}
+
+.shadow-edulang {
+  box-shadow: 0 10px 30px rgba(0, 51, 135, 0.08) !important;
+  border: 1px solid rgba(224, 230, 237, 0.5);
+}
+
+/* Card Styling */
+.article-card {
   height: 100%;
   display: flex;
   flex-direction: column;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  border-radius: 12px;
+  border-radius: 20px;
   overflow: hidden;
-  background: white;
-}
-
-.my-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
-
-.cursor-pointer {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
 }
 
+.article-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 40px rgba(0, 51, 135, 0.12) !important;
+}
+
+.article-card:hover .title-link {
+  color: #0089ff;
+}
+
+.article-card:hover .article-image {
+  transform: scale(1.05);
+}
+
 .article-image {
-  background-color: #f5f5f5;
+  transition: transform 0.6s ease;
 }
 
 .no-image-placeholder {
-  height: 200px;
+  height: 210px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e0e0e0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
 }
 
+/* Typography & Limits */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.4;
+  min-height: 3em;
 }
 
 .line-clamp-3 {
@@ -348,5 +388,24 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.6;
+}
+
+.read-more-btn {
+  transition: all 0.3s ease;
+}
+
+.read-more-btn:hover {
+  letter-spacing: 0.5px;
+  background: rgba(0, 137, 255, 0.05);
+}
+
+/* Search Bar Customization */
+.search-input :deep(.q-field__control) {
+  height: 60px;
+  padding: 0 20px;
+}
+
+.search-input :deep(.q-field__marginal) {
+  height: 60px;
 }
 </style>

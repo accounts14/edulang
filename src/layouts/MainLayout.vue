@@ -112,10 +112,16 @@
         <q-toolbar class="q-px-xl main-layout-toolbar">
           <q-toolbar-title
             shrink
-            class="flex items-center cursor-pointer"
+            class="relative-position cursor-pointer header-brand"
             @click="$router.push('/')"
+            style="min-width: 200px; height: 50px"
           >
-            <img src="~assets/Edulang.png" class="main-logo" alt="Edulang Logo" />
+            <div class="absolute-center-left">
+              <img src="~assets/Edulang.png" class="main-logo" alt="Edulang Logo" />
+              <div class="header-tagline-container gt-sm">
+                <span class="header-tagline">{{ $t('nav.tagline') }}</span>
+              </div>
+            </div>
           </q-toolbar-title>
 
           <q-space />
@@ -644,12 +650,42 @@ const handleLogout = () => {
 .font-poppins {
   font-family: 'Poppins', sans-serif;
 }
+.header-brand {
+  overflow: visible !important;
+}
 .main-logo {
-  height: 42px;
-  max-height: 42px;
+  height: 50px; /* Ukuran logo sedikit dikecilkan agar elegan */
   width: auto;
   display: block;
 }
+.header-tagline {
+  font-size: 10px; /* Ukuran font kecil agar tidak dominan */
+  font-weight: 500;
+  line-height: 1;
+  color: var(--edulang-black, #2d2d2d);
+  opacity: 0.8;
+  letter-spacing: 0px;
+}
+
+.header-tagline-container {
+  position: absolute;
+  bottom: -10px; /* Menempel tepat di bawah logo */
+  left: 40px; /* Geser ke kanan agar lurus dengan teks 'Edulang' (sesuaikan dengan lebar icon logo Anda) */
+  white-space: nowrap;
+}
+
+.bg-dark .header-tagline {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.absolute-center-left {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -790,9 +826,10 @@ a {
   border-radius: 3px;
   object-fit: cover;
 }
+/* Footer bottom strip – Edulang Navy per Brand Guideline (#003387) */
 .footer-bottom {
-  background: var(--edulang-navy, #003387);
-  color: var(--edulang-white, #f5f7fa);
+  background: #003387;
+  color: #f5f7fa;
   padding: 1rem 0;
 }
 .footer-bottom .container {

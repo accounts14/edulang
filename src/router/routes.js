@@ -26,6 +26,11 @@ const routes = [
         component: () => import('pages/TipsPage.vue'),
       },
       {
+        path: 'tips/:slug',
+        name: 'BacaArtikel',
+        component: () => import('pages/BacaArtikelPage.vue'),
+      },
+      {
         path: 'alur-belajar',
         name: 'AlurBelajarPage',
         component: () => import('pages/AlurBelajarPage.vue'),

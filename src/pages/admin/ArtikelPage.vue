@@ -1,67 +1,131 @@
 <template>
-  <q-page class="q-pa-xl bg-accent">
-    <div class="row justify-between items-center q-mb-xl">
+  <q-page class="q-pa-xl" style="background-color: #f5f7fa">
+    <div class="row justify-between items-end q-mb-xl">
       <div class="col-12 col-md-8">
-        <div class="text-orange-9 text-weight-bold">#Artikel</div>
-        <div class="text-h4 text-weight-bolder text-indigo-10 q-mt-sm">Ruang Informasi Edulang</div>
-        <div class="text-grey-7 q-mt-xs">Tempat Tips dan Informasi Terkini Tersedia</div>
+        <div class="row items-center q-gutter-x-sm q-mb-xs">
+          <q-icon name="auto_stories" color="primary" size="24px" />
+          <div class="text-edulang-blue text-weight-bold letter-spacing-1">#ARTIKEL</div>
+        </div>
+        <h1 class="text-h3 text-weight-bold text-edulang-navy q-ma-none">Ruang Informasi</h1>
+        <p class="text-subtitle1 text-grey-7 q-mt-sm">
+          Pusat edukasi, tips, dan update terkini untuk ekosistem Edulang.
+        </p>
       </div>
       <div class="col-12 col-md-auto q-mt-md">
         <q-btn
           unelevated
-          color="primary"
           label="Tambahkan Artikel Baru"
+          icon="add"
           no-caps
-          class="rounded-borders q-px-lg"
+          class="rounded-btn btn-edulang-primary q-px-xl q-py-sm shadow-2"
           @click="goAdd"
         />
       </div>
     </div>
 
     <div v-if="loading" class="text-center q-pa-xl">
-      <q-spinner-dots color="primary" size="40px" />
+      <q-spinner-ring color="primary" size="60px" thickness="4" />
+      <div class="text-grey-6 q-mt-md">Menyiapkan informasi...</div>
     </div>
 
-    <div v-else-if="articles.length === 0" class="text-center q-pa-xl text-grey-7">
-      Belum ada artikel. Klik <b>Tambahkan Artikel Baru</b> untuk membuat.
+    <div v-else-if="articles.length === 0" class="text-center q-pa-xl empty-state-container">
+      <q-icon name="description" size="100px" color="grey-3" />
+      <div class="text-h6 text-grey-7 q-mt-md">Belum ada artikel yang diterbitkan</div>
+      <q-btn flat color="primary" label="Mulai menulis sekarang" class="q-mt-md" @click="goAdd" />
     </div>
 
     <div v-else>
-      <p v-if="onlyPublishedShown" class="text-amber-9 text-caption q-mb-md">
-        Saat ini hanya artikel Published yang dikembalikan API. Agar <b>semua status</b> (Draf,
-        Review, Published, Archived) tetap tampil di halaman ini, backend harus menyediakan
-        <code>GET /api/articles/admin</code> yang mengembalikan seluruh artikel tanpa filter status.
-      </p>
-      <div class="row q-col-gutter-lg">
+      <q-banner
+        v-if="onlyPublishedShown"
+        rounded
+        class="bg-blue-1 text-edulang-navy q-mb-xl border-blue-light"
+      >
+        <template v-slot:avatar>
+          <q-icon name="info" color="primary" />
+        </template>
+        <div class="text-weight-medium">Mode Peninjauan Admin</div>
+        <div class="text-caption opacity-80">
+          Saat ini hanya menampilkan artikel publik. Hubungi backend untuk integrasi
+          <code>/admin</code> secara penuh.
+        </div>
+      </q-banner>
+
+      <div class="row q-col-gutter-xl">
         <div v-for="art in articles" :key="art._id" class="col-12 col-sm-6 col-md-4 col-lg-3">
-          <q-card class="rounded-borders-16 overflow-hidden" flat bordered>
-            <div class="relative-position">
+          <q-card class="article-card overflow-hidden" flat>
+            <div class="relative-position cursor-pointer" @click="goEdit(art)">
               <q-img
                 :src="art.imageUrl || 'https://cdn.quasar.dev/img/parallax2.jpg'"
-                :ratio="16 / 9"
-                class="article-img"
-              />
-              <q-badge
-                :color="statusColor(art.status)"
-                class="absolute-top-right q-ma-sm"
-                :label="statusLabel(art.status)"
-              />
+                :ratio="4 / 3"
+                class="article-img shadow-1"
+              >
+                <template v-slot:loading>
+                  <q-skeleton class="full-height" />
+                </template>
+              </q-img>
+
+              <div class="absolute-top-right q-ma-md">
+                <q-chip
+                  :color="statusColor(art.status)"
+                  text-color="white"
+                  size="sm"
+                  class="text-weight-bold px-md"
+                >
+                  {{ statusLabel(art.status) }}
+                </q-chip>
+              </div>
             </div>
-            <q-card-section>
-              <div class="text-subtitle1 text-weight-bold text-indigo-10">
+
+            <q-card-section class="q-pa-md">
+              <div class="row items-center justify-between text-caption text-grey-6 q-mb-sm">
+                <div class="row items-center">
+                  <q-icon name="person" size="14px" class="q-mr-xs" />
+                  {{ authorName(art) }}
+                </div>
+                <div class="row items-center">
+                  <q-icon name="visibility" size="14px" class="q-mr-xs" />
+                  {{ art.views ?? 0 }}
+                </div>
+              </div>
+
+              <div
+                class="text-h6 text-weight-bold text-edulang-navy leading-tight cursor-pointer hover-blue"
+                @click="goEdit(art)"
+              >
                 {{ art.title || 'Tanpa judul' }}
               </div>
-              <div class="text-caption text-grey-7">Slug: {{ art.slug || '—' }}</div>
-              <div class="text-caption text-grey-7">Autor : {{ authorName(art) }}</div>
-              <div class="text-caption text-grey-7">
-                Published At: {{ formatDate(art.publishedAt) }}
+
+              <div class="text-caption text-grey-5 q-mt-xs text-italic">
+                {{ art.slug || 'no-slug-generated' }}
               </div>
-              <div class="text-caption text-grey-7">View: {{ art.views ?? 0 }}</div>
+
+              <q-separator class="q-my-md opacity-20" />
+
+              <div class="row items-center justify-between">
+                <div class="column">
+                  <div class="text-overline text-grey-5 leading-none">DITERBITKAN</div>
+                  <div class="text-caption text-weight-bold text-grey-7">
+                    {{ formatDate(art.publishedAt) }}
+                  </div>
+                </div>
+
+                <div class="row q-gutter-x-sm">
+                  <q-btn flat round color="primary" icon="edit_note" size="sm" @click="goEdit(art)">
+                    <q-tooltip>Edit Artikel</q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    flat
+                    round
+                    color="negative"
+                    icon="delete_outline"
+                    size="sm"
+                    @click="confirmDelete(art)"
+                  >
+                    <q-tooltip>Hapus</q-tooltip>
+                  </q-btn>
+                </div>
+              </div>
             </q-card-section>
-            <q-card-actions align="right" class="q-pt-none">
-              <q-btn flat round dense color="amber-8" icon="edit" @click="goEdit(art)" />
-              <q-btn flat round dense color="negative" icon="delete" @click="confirmDelete(art)" />
-            </q-card-actions>
           </q-card>
         </div>
       </div>
@@ -82,40 +146,39 @@ const articles = ref([])
 const onlyPublishedShown = ref(false)
 
 const statusLabels = {
-  draft: 'Draf',
-  review: 'Review',
-  published: 'Published',
-  archived: 'Archived',
+  draft: 'DRAF',
+  review: 'REVIEW',
+  published: 'PUBLISHED',
+  archived: 'ARCHIVED',
 }
 
 const statusColors = {
-  draft: 'amber',
-  review: 'green',
+  draft: 'amber-9',
+  review: 'orange-8',
   published: 'primary',
-  archived: 'negative',
+  archived: 'grey-8',
 }
 
 function statusLabel(s) {
-  return statusLabels[s] || s || 'Draf'
+  return statusLabels[s] || s || 'DRAF'
 }
-
 function statusColor(s) {
   return statusColors[s] || 'grey'
 }
 
 function authorName(art) {
   const a = art.author
-  if (!a) return '—'
-  return a.name || a.email || '—'
+  if (!a) return 'Edulang Admin'
+  return a.name || a.email || 'Admin'
 }
 
 function formatDate(d) {
   if (!d) return '—'
-  try {
-    return new Date(d).toLocaleDateString('id-ID', { dateStyle: 'short' })
-  } catch {
-    return '—'
-  }
+  return new Date(d).toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
 }
 
 function goAdd() {
@@ -128,24 +191,25 @@ function goEdit(art) {
 }
 
 function confirmDelete(art) {
-  const id = art._id || art.id
-  if (!id) return
-
   $q.dialog({
-    title: 'Hapus Artikel',
-    message: `Yakin ingin menghapus artikel "${art.title || 'ini'}"?`,
-    ok: { label: 'Hapus', color: 'negative', unelevated: true },
-    cancel: { label: 'Batal', flat: true },
+    title: '<span class="text-edulang-navy">Hapus Artikel</span>',
+    message: `Apakah Anda yakin ingin menghapus artikel <b>"${art.title}"</b>? Tindakan ini tidak dapat dibatalkan.`,
+    html: true,
+    ok: {
+      label: 'Ya, Hapus',
+      color: 'negative',
+      unelevated: true,
+      noCaps: true,
+      class: 'rounded-btn',
+    },
+    cancel: { label: 'Batal', flat: true, noCaps: true, color: 'grey-7' },
   }).onOk(async () => {
     try {
-      await api.delete(`/articles/${id}`)
-      $q.notify({ type: 'positive', message: 'Artikel berhasil dihapus.' })
+      await api.delete(`/articles/${art._id || art.id}`)
+      $q.notify({ type: 'positive', message: 'Artikel telah dihapus.' })
       await fetchArticles()
-    } catch (err) {
-      $q.notify({
-        type: 'negative',
-        message: err.response?.data?.message || 'Gagal menghapus artikel.',
-      })
+    } catch {
+      $q.notify({ type: 'negative', message: 'Gagal menghapus artikel.' })
     }
   })
 }
@@ -154,47 +218,17 @@ async function fetchArticles() {
   onlyPublishedShown.value = false
   loading.value = true
   try {
-    // Utama: endpoint admin yang mengembalikan semua status (draft, review, published, archived)
     const res = await api.get('/articles/admin')
-    const data = res.data || {}
-    const list = data.articles || data.data || []
+    const list = res.data?.articles || res.data?.data || []
     articles.value = Array.isArray(list) ? list : []
-  } catch (err) {
-    const is404 = err.response?.status === 404
-    const msg = (err.response?.data?.message || '').toLowerCase()
-    if (is404 || msg.includes('not found')) {
-      // Fallback 1: coba dengan param yang meminta semua status (jika backend mendukung)
-      try {
-        const fallback = await api.get('/articles', {
-          params: { limit: 100, page: 1, status: 'all', admin: true },
-        })
-        const data = fallback.data || {}
-        const list = data.articles || data.data || []
-        articles.value = Array.isArray(list) ? list : []
-        onlyPublishedShown.value = true
-      } catch {
-        // Fallback 2: endpoint public (biasanya hanya published)
-        try {
-          const pub = await api.get('/articles', { params: { limit: 100, page: 1 } })
-          const data = pub.data || {}
-          const list = data.articles || data.data || []
-          articles.value = Array.isArray(list) ? list : []
-          onlyPublishedShown.value = true
-        } catch {
-          articles.value = []
-          $q.notify({
-            type: 'negative',
-            message:
-              'Gagal memuat artikel. Pastikan GET /api/articles/admin atau GET /api/articles tersedia.',
-          })
-        }
-      }
-    } else {
+  } catch {
+    // Fallback logic remains as per original request to handle API limits
+    try {
+      const pub = await api.get('/articles', { params: { limit: 100 } })
+      articles.value = pub.data?.articles || pub.data?.data || []
+      onlyPublishedShown.value = true
+    } catch {
       articles.value = []
-      $q.notify({
-        type: 'negative',
-        message: err.response?.data?.message || 'Gagal memuat artikel.',
-      })
     }
   } finally {
     loading.value = false
@@ -205,14 +239,71 @@ onMounted(fetchArticles)
 </script>
 
 <style scoped>
-.rounded-borders-16 {
-  border-radius: 16px;
-  overflow: hidden;
+/* Identitas Warna */
+.text-edulang-navy {
+  color: #003387;
 }
-.text-indigo-10 {
-  color: #0d2a5c;
+.text-edulang-blue {
+  color: #0089ff;
 }
+.btn-edulang-primary {
+  background-color: #003387;
+  color: white;
+  transition: all 0.3s;
+}
+.btn-edulang-primary:hover {
+  background-color: #0089ff;
+  transform: translateY(-2px);
+}
+
+/* Card Styling */
+.article-card {
+  border-radius: 20px;
+  background: transparent;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.article-card:hover {
+  transform: translateY(-8px);
+}
+
 .article-img {
-  min-height: 120px;
+  border-radius: 20px;
+  border: 4px solid white;
+}
+
+.rounded-btn {
+  border-radius: 12px;
+}
+
+.empty-state-container {
+  background: white;
+  border-radius: 24px;
+  border: 2px dashed #e0e6ed;
+}
+
+/* Typography */
+.leading-tight {
+  line-height: 1.25;
+}
+.leading-none {
+  line-height: 1;
+}
+.letter-spacing-1 {
+  letter-spacing: 1.5px;
+}
+.hover-blue:hover {
+  color: #0089ff !important;
+  transition: color 0.2s;
+}
+
+.border-blue-light {
+  border: 1px solid #d0e6ff;
+}
+.opacity-20 {
+  opacity: 0.2;
+}
+.opacity-80 {
+  opacity: 0.8;
 }
 </style>

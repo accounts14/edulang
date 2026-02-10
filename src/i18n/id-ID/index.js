@@ -20,6 +20,7 @@ export default {
     programDesc: 'Panduan mentor expert untuk belajar jadi lebih terarah',
     programCta: 'All Roadmap',
     tipsInfo: 'Tips & Informasi',
+    tagline: 'Unlock The World With Education',
     learningCenter: 'Learning Center',
   },
   auth: {

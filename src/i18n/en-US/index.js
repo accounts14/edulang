@@ -20,6 +20,7 @@ export default {
     programDesc: 'Expert mentor guidance to learn more directed',
     programCta: 'All Roadmap',
     tipsInfo: 'Tips & Info',
+    tagline: 'Unlock The World With Education',
     learningCenter: 'Learning Center',
   },
   auth: {
