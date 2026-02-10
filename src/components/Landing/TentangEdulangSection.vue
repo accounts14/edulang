@@ -120,11 +120,11 @@ const items = [
   opacity: 0.95;
 }
 
-/* Image & Decoration - EVEN LARGER CHARACTER */
+/* Image & Decoration - GIGANTIC CHARACTER */
 .image-wrapper {
   position: relative;
   height: 100%;
-  min-height: 780px; /* Increased for even larger character */
+  min-height: 900px; /* GIGANTIC container */
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -137,29 +137,29 @@ const items = [
 
 .bg-decoration {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
+  top: -8px;
+  left: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
   background: linear-gradient(145deg, #f0f7ff 0%, #e6f3ff 100%);
-  border-radius: 64px; /* Even larger radius */
+  border-radius: 80px; /* GIGANTIC radius */
   z-index: -1;
   box-shadow:
-    0 30px 60px rgba(0, 86, 179, 0.25),
-    inset 0 4px 12px rgba(255, 255, 255, 0.95);
+    0 40px 80px rgba(0, 86, 179, 0.35),
+    inset 0 8px 20px rgba(255, 255, 255, 1);
   transform: rotate(-1.5deg);
 }
 
 .character-img {
   position: absolute;
-  top: 12px; /* Perfect top alignment with badge */
+  top: 4px; /* Perfect top alignment */
   left: 50%;
   transform: translateX(-50%);
-  width: 440px; /* EKSTRA BESAR: dari 380px → 440px */
-  height: 740px; /* EKSTRA BESAR: dari 680px → 740px */
+  width: 560px; /* GIGANTIC: 500px → 560px */
+  height: 860px; /* GIGANTIC: 800px → 860px - FEET REALLY CLOSE TO BOTTOM CARDS */
   max-width: 100%;
   z-index: 2;
-  filter: drop-shadow(0 25px 55px rgba(0, 86, 179, 0.25));
+  filter: drop-shadow(0 35px 75px rgba(0, 86, 179, 0.35));
 }
 
 /* Feature Cards */
@@ -214,18 +214,17 @@ const items = [
 /* Mobile Responsiveness */
 @media (max-width: 991px) {
   .image-wrapper {
-    min-height: 540px;
-    margin-bottom: 2rem;
+    min-height: 640px;
   }
 
   .character-img {
-    width: 400px; /* Much larger mobile */
-    height: 500px;
-    top: 6px;
+    width: 520px;
+    height: 600px;
+    top: 2px;
   }
 
   .bg-decoration {
-    border-radius: 48px;
+    border-radius: 64px;
   }
 
   .main-title {
@@ -246,12 +245,12 @@ const items = [
 
 @media (max-width: 767px) {
   .character-img {
-    width: 360px; /* Very large mobile */
-    height: 460px;
+    width: 480px;
+    height: 560px;
   }
 
   .image-wrapper {
-    min-height: 500px;
+    min-height: 600px;
   }
 }
 </style>
