@@ -1,10 +1,10 @@
-<!-- Hero - Unlock the World with Education (sesuai gambar + Brand Guideline) -->
 <template>
+  <!-- SATU SECTION RESPONSIVE - KARAKTER BESAR - MARGIN ATAS KECIL -->
   <section class="hero-section">
     <div class="container hero-inner">
       <div class="row hero-main-row items-center q-col-gutter-md">
-        <!-- Left: Heading, deskripsi, CTA -->
-        <div class="col-6 hero-left-col">
+        <!-- Left: Content - col-xs-12 col-md-6 -->
+        <div class="col-xs-12 col-md-6 hero-left-col">
           <h1 class="hero-title text-weight-bold q-mb-md">
             <span class="text-edulang-blue">Unlock the World</span><br />
             <span class="text-edulang-black">with Education</span>
@@ -62,11 +62,11 @@
           </div>
         </div>
 
-        <!-- Right: Character (center-right) + floating bubbles -->
-        <div class="col-6 flex flex-center q-mt-lg hero-right-col">
+        <!-- Right: KARAKTER BESAR - col-xs-12 col-md-6 -->
+        <div class="col-xs-12 col-md-6 hero-right-col">
           <div class="hero-right-inner">
             <div class="hero-character-area">
-              <!-- Floating oval bubbles: iconUrl + teks (animasi) -->
+              <!-- Floating bubbles -->
               <div
                 v-for="(lang, i) in floatingLanguages"
                 :key="lang.id"
@@ -77,7 +77,7 @@
                 <span v-else class="hero-float-fallback">{{ lang.code }}</span>
                 <span class="hero-float-text">{{ lang.nativeText || lang.name }}</span>
               </div>
-              <!-- Character (lebih besar) -->
+              <!-- KARAKTER BESAR -->
               <div class="hero-character-wrap">
                 <q-img
                   src="~assets/landing/character-cta.png"
@@ -91,7 +91,7 @@
         </div>
       </div>
 
-      <!-- Bottom: Tersedia dalam berbagai bahasa populer + language pills -->
+      <!-- Bottom language pills -->
       <div class="hero-bottom-section">
         <div class="hero-divider" />
         <p class="hero-available-text">Tersedia dalam berbagai bahasa populer</p>
@@ -120,7 +120,6 @@ import { api } from 'boot/axios'
 const router = useRouter()
 const languages = ref([])
 
-// Mapping nama bahasa ke kode negara (SA, BA/DE, US, JP, KR, CN)
 const nameToCode = {
   arab: 'SA',
   jerman: 'DE',
@@ -140,7 +139,6 @@ const nameToCode = {
   'bahasa korea': 'KR',
 }
 
-// Teks native untuk floating bubbles (JP 日本語, DE Deutsch, dll)
 const nameToNative = {
   arab: 'العربية',
   jerman: 'Deutsch',
@@ -173,7 +171,6 @@ function getNativeText(name) {
   return name
 }
 
-// Floating bubbles: iconUrl + teks native (gambar 2: JP 日本語, DE Deutsch)
 const floatingLanguages = computed(() =>
   languages.value.slice(0, 4).map((l) => ({
     id: l._id || l.id,
@@ -184,7 +181,6 @@ const floatingLanguages = computed(() =>
   })),
 )
 
-// Bottom pills: iconUrl + teks (gambar 3: SA Bahasa Arab, dll)
 const displayLanguages = computed(() =>
   languages.value.map((l) => ({
     id: l._id || l.id,
@@ -211,7 +207,6 @@ onMounted(async () => {
       iconUrl: l.iconUrl || l.icon_url || '',
     }))
   } catch {
-    // Fallback jika API gagal
     languages.value = [
       { _id: 1, name: 'Bahasa Arab', iconUrl: '', code: 'SA' },
       { _id: 2, name: 'Bahasa Jerman', iconUrl: '', code: 'DE' },
@@ -225,10 +220,11 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* ↓↓↓ MARGIN ATAS DIPERKECIL ↓↓↓ */
 .hero-section {
-  padding-top: 2rem;
+  padding-top: 1rem; /* ↓ DARI 2rem */
   padding-bottom: 3rem;
-  min-height: 88vh;
+  min-height: 85vh; /* ↓ DARI 88vh */
   display: flex;
   align-items: center;
   background: var(--edulang-white, #f5f7fa);
@@ -242,7 +238,7 @@ onMounted(async () => {
 }
 
 .hero-main-row {
-  min-height: 75vh;
+  min-height: 70vh; /* ↓ DARI 75vh */
 }
 
 .hero-left-col {
@@ -268,7 +264,7 @@ onMounted(async () => {
 .hero-desc {
   color: var(--edulang-black, #2d2d2d);
   opacity: 0.9;
-  max-width: 500px; /* Atur angka ini sesuai kebutuhan */
+  max-width: 500px;
   line-height: 1.7;
 }
 
@@ -312,7 +308,7 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 60vh;
+  min-height: 55vh; /* ↓ DARI 60vh */
 }
 
 .hero-right-inner {
@@ -321,14 +317,14 @@ onMounted(async () => {
   align-items: flex-end;
   justify-content: center;
   width: 100%;
-  height: 60vh;
-  min-height: 400px;
+  height: 65vh; /* ↓ DARI 70vh */
+  min-height: 450px; /* ↓ DARI 500px */
 }
 
 .hero-character-area {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px; /* ↓ DARI 550px */
   height: 100%;
   margin-left: auto;
   display: flex;
@@ -350,13 +346,12 @@ onMounted(async () => {
 .hero-character {
   width: 100%;
   height: auto;
-  max-height: 90vh;
-  min-height: 420px;
+  max-height: 90vh; /* ↓ DARI 95vh */
+  min-height: 500px; /* ↓ DARI 550px */
   object-fit: contain;
   object-position: bottom center;
 }
 
-/* Animasi floating bubbles (bukan karakter) */
 @keyframes hero-bubble-float {
   0%,
   100% {
@@ -381,7 +376,6 @@ onMounted(async () => {
   animation-delay: 0.9s;
 }
 
-/* Floating oval bubbles: iconUrl + teks (gambar 2: JP 日本語, DE Deutsch) */
 .hero-float-bubble {
   position: absolute;
   z-index: 2;
@@ -420,7 +414,6 @@ onMounted(async () => {
   white-space: nowrap;
 }
 
-/* Bubbles: bahu–dada, tidak tutupi wajah, responsif dengan % */
 .hero-float-bubble-0 {
   top: 28%;
   right: 2%;
@@ -438,9 +431,8 @@ onMounted(async () => {
   left: 2%;
 }
 
-/* Bottom section: Tersedia dalam berbagai bahasa populer */
 .hero-bottom-section {
-  margin-top: 4.5rem;
+  margin-top: 3.5rem; /* ↓ DARI 4.5rem */
   padding-top: 0;
   text-align: center;
 }
@@ -451,7 +443,6 @@ onMounted(async () => {
   margin-bottom: 1.5rem;
 }
 
-/* Teks dibesarkan dan agak dibawahin sedikit */
 .hero-available-text {
   font-size: 1.25rem;
   font-weight: 500;
@@ -499,59 +490,50 @@ onMounted(async () => {
   color: var(--edulang-blue, #0089ff);
 }
 
-/* Desktop: teks kiri & gambar kanan sejajar horizontal, center-right */
+/* Desktop responsive - MARGIN ATAS KECIL */
 @media (min-width: 1024px) {
   .hero-main-row {
     min-height: 78vh;
-  }
+  } /* ↓ DARI 85vh */
   .hero-right-col {
     align-items: center;
     justify-content: flex-end;
     min-height: 78vh;
-  }
+  } /* ↓ DARI 85vh */
   .hero-right-inner {
     width: 100%;
-    height: 78vh;
-    min-height: 500px;
+    height: 78vh; /* ↓ DARI 85vh */
+    min-height: 550px; /* ↓ DARI 650px */
     justify-content: flex-end;
   }
   .hero-character-area {
-    width: clamp(380px, 42vw, 560px);
+    width: clamp(450px, 45vw, 650px); /* ↓ SEDANG */
     margin-left: auto;
     margin-right: 0;
   }
-  .hero-character-wrap {
-    width: 100%;
-  }
   .hero-character {
-    width: 100%;
-    height: auto;
-    max-height: 90vh;
-    min-height: 480px;
+    min-height: 550px; /* ↓ DARI 650px */
   }
 }
 
-/* 1366px */
 @media (min-width: 1366px) {
   .hero-character-area {
-    width: clamp(420px, 42vw, 520px);
+    width: clamp(500px, 45vw, 650px);
   }
 }
 
-/* 1440px */
 @media (min-width: 1440px) {
   .hero-character-area {
-    width: clamp(450px, 40vw, 540px);
+    width: clamp(550px, 42vw, 700px);
   }
 }
 
-/* 1920px+ */
 @media (min-width: 1920px) {
   .container {
     max-width: 1600px;
   }
   .hero-character-area {
-    width: clamp(500px, 38vw, 600px);
+    width: clamp(650px, 40vw, 800px);
   }
 }
 </style>
