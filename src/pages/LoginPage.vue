@@ -29,9 +29,7 @@
                 <img src="~assets/LogoWhite.png" alt="Edulang" class="auth-logo-img" />
               </div>
               <h1 class="text-h4 text-weight-bolder q-ma-none text-dark">Sign In Now</h1>
-              <p class="text-grey-7 text-center q-mt-sm">
-                Masukkan data ke form sesuai dan valid
-              </p>
+              <p class="text-grey-7 text-center q-mt-sm">Masukkan data ke form sesuai dan valid</p>
             </div>
 
             <q-form @submit="handleLogin" class="q-gutter-y-sm">
