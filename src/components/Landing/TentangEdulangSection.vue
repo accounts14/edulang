@@ -257,4 +257,89 @@ const items = [
     min-height: 480px;
   }
 }
+
+/* ========================================
+   ✅ IPAD RESPONSIVE (768px - 1023px) 
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  /* iPad: 40% image | 60% content */
+  .col-12.col-md-5 {
+    flex: 0 0 40%;
+    max-width: 40%;
+  }
+
+  .col-12.col-md-7 {
+    flex: 0 0 60%;
+    max-width: 60%;
+  }
+
+  /* Image optimization iPad */
+  .image-wrapper {
+    min-height: 520px;
+  }
+
+  .character-img {
+    top: -40px;
+    width: 480px;
+    height: 680px;
+  }
+
+  .bg-decoration {
+    border-radius: 36px;
+  }
+
+  /* Typography iPad */
+  .main-title {
+    font-size: 2.75rem;
+    line-height: 1.18;
+  }
+
+  .section-desc {
+    font-size: 1.1rem;
+    max-width: 520px;
+  }
+
+  /* Feature cards: 1 kolom iPad */
+  .row.q-col-gutter-lg > .col-12.col-sm-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  /* Spacing iPad */
+  .tentang-section {
+    padding: 60px 0;
+  }
+
+  .content-header {
+    margin-bottom: 2rem !important;
+  }
+
+  .q-pa-lg {
+    padding: 1.75rem !important;
+  }
+}
+
+/* ========================================
+   IPAD PORTRAIT FIX (768x1024)
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .image-wrapper {
+    min-height: 480px;
+  }
+
+  .character-img {
+    top: -35px;
+    width: 440px;
+    height: 620px;
+  }
+
+  .tentang-section {
+    padding: 50px 0;
+  }
+}
 </style>

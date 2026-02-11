@@ -80,7 +80,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const searchQuery = ref('')
 
 function onSearch() {
@@ -90,11 +92,11 @@ function onSearch() {
 }
 
 function selectPath(type) {
-  if (type === 'profesional') {
-    console.log('Pilih alur Profesional')
-  } else {
-    console.log('Pilih alur Pendidikan')
-  }
+  // Pindah page sesuai pilihan alur belajar
+  router.push({
+    name: 'AlurBelajarRoadmap',
+    query: { mode: type },
+  })
 }
 </script>
 

@@ -36,6 +36,11 @@ const routes = [
         component: () => import('pages/AlurBelajarPage.vue'),
       },
       {
+        path: 'alur-belajar/roadmap',
+        name: 'AlurBelajarRoadmap',
+        component: () => import('pages/AlurBelajarRoadmap.vue'),
+      },
+      {
         path: 'produk',
         name: 'ProdukPage',
         component: () => import('pages/ProdukPage.vue'),

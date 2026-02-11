@@ -46,3 +46,83 @@ body {
 .bg-dark .text-negative {
   color: #c10015 !important;
 }
+
+/* --- GLOBAL RESPONSIVE AUTO-SCALING --- */
+
+// Mixin untuk memudahkan pengaturan breakpoint
+@media (max-width: $breakpoint-sm-max) {
+  // 1. OTOMATISASI PADDING HALAMAN
+  // Memastikan semua konten di setiap page tidak nempel ke pinggir layar HP
+  .q-page {
+    padding: 16px !important;
+  }
+
+  // 2. OTOMATISASI TIPOGRAFI (SCALING)
+  // Judul besar di Desktop akan mengecil secara proporsional di HP
+  .text-h1 {
+    font-size: 2.5rem !important;
+    line-height: 3rem;
+  }
+  .text-h2 {
+    font-size: 2rem !important;
+    line-height: 2.5rem;
+  }
+  .text-h3 {
+    font-size: 1.75rem !important;
+    line-height: 2.2rem;
+  }
+  .text-h4 {
+    font-size: 1.5rem !important;
+    line-height: 1.8rem;
+  }
+  .text-h5 {
+    font-size: 1.25rem !important;
+  }
+  .text-h6 {
+    font-size: 1.1rem !important;
+  }
+
+  // 3. AUTO-GRID REPAIR
+  // Jika Anda terlanjur pakai class "row", kita perkecil jarak antar kolomnya (gutter)
+  .row {
+    margin-left: -8px !important;
+    margin-right: -8px !important;
+
+    > div {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+    }
+  }
+
+  // 4. OTOMATISASI CARD & BUTTON
+  // Card di mobile biasanya lebih bagus dengan radius yang konsisten
+  .q-card {
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  // Memperlebar tombol action di mobile agar mudah ditekan jari
+  .q-btn {
+    &.full-width-mobile {
+      width: 100% !important;
+    }
+  }
+
+  // 5. HIDDEN UTILITIES
+  // Gunakan class .gt-sm untuk sembunyikan elemen desktop di HP
+  // Gunakan class .lt-md untuk tampilkan elemen mobile di Desktop
+}
+
+/* --- EDULANG BRAND SPECIFIC RESPONSIVE --- */
+.bg-edulang-white {
+  background-color: #f5f7fa;
+}
+
+// Perbaikan khusus untuk menu aktif di mobile agar tidak pakai border-bottom
+@media (max-width: $breakpoint-xs-max) {
+  .active-link {
+    border-bottom: none;
+    background-color: rgba(0, 51, 135, 0.1); // Highlight background saja di HP
+    color: #003387 !important;
+  }
+}

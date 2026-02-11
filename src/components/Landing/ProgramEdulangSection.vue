@@ -229,4 +229,117 @@ const goToBerlangganan = (lang) => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* ========================================
+   🎯 MOBILE (<768px) - 1 KOLOM
+   ======================================== */
+@media (max-width: 767px) {
+  .program-section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .section-title {
+    font-size: 1.9rem;
+    line-height: 1.25;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    padding: 0 8px;
+  }
+
+  /* Cards: 1 kolom full-width mobile */
+  .col-12.col-sm-6.col-md-4.col-lg-3 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .lang-card-header {
+    height: 120px;
+  }
+
+  .lang-name {
+    font-size: 1.1rem;
+  }
+}
+
+/* ========================================
+   ✅ IPAD (768px-1023px) - 2 KOLOM
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  .program-section {
+    padding: 70px 0;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+
+  /* Cards: 2 kolom iPad */
+  .col-12.col-sm-6.col-md-4.col-lg-3 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .lang-card-header {
+    height: 110px;
+  }
+
+  .lang-name {
+    font-size: 1rem;
+  }
+
+  .stat-box span {
+    font-size: 0.8rem;
+  }
+}
+
+/* ========================================
+   ✅ IPAD PORTRAIT (768x1024) FIX
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .program-section {
+    padding: 65px 0;
+  }
+
+  .col-12.col-sm-6.col-md-4.col-lg-3 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP SMALL (1024px-1365px) - 3 KOLOM
+   ======================================== */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
+  }
+
+  /* 3 kolom desktop small */
+  .col-12.col-sm-6.col-md-4.col-lg-3 {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP LARGE (≥1366px) - 4 KOLOM
+   ======================================== */
+@media (min-width: 1366px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 48px;
+  }
+}
 </style>

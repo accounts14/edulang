@@ -140,4 +140,128 @@ const items = [
     padding: 60px 0;
   }
 }
+
+/* ========================================
+   🎯 MOBILE (<768px) - 2 KOLOM
+   ======================================== */
+@media (max-width: 767px) {
+  .kenapa-section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    padding: 0 8px;
+  }
+
+  /* Cards: 2 kolom mobile */
+  .col-12.col-sm-6.col-md-4 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .benefit-card {
+    padding: 1.25rem !important;
+  }
+
+  .icon-wrap {
+    width: 40px;
+    height: 40px;
+  }
+
+  .benefit-title {
+    font-size: 1.1rem;
+  }
+
+  .benefit-desc {
+    font-size: 0.875rem;
+  }
+}
+
+/* ========================================
+   ✅ IPAD (768px-1023px) - 3 KOLOM
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  .kenapa-section {
+    padding: 80px 0;
+  }
+
+  .section-title {
+    font-size: 2.6rem;
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+  }
+
+  /* Cards: 3 kolom iPad */
+  .col-12.col-sm-6.col-md-4 {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+  }
+
+  .benefit-card {
+    padding: 1.5rem !important;
+  }
+
+  .benefit-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* ========================================
+   ✅ IPAD PORTRAIT (768x1024) FIX
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .kenapa-section {
+    padding: 70px 0;
+  }
+
+  .benefit-card {
+    padding: 1.25rem !important;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP SMALL (1024px-1365px)
+   ======================================== */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP LARGE (≥1366px)
+   ======================================== */
+@media (min-width: 1366px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 48px;
+  }
+}
+
+/* ========================================
+   ✅ DARK MODE & HOVER FIXES
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+  .benefit-card {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+}
 </style>

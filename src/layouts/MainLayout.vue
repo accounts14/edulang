@@ -1302,4 +1302,143 @@ a {
 .dropdown-fade-leave-to {
   opacity: 0;
 }
+
+/* ========================================
+   🎯 RESPONSIVE BREAKPOINTS LENGKAP
+   ======================================== */
+
+/* MOBILE (< 768px) - SUDAH OK */
+@media (max-width: 767px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  .main-layout-toolbar {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .nav-links-wrap {
+    display: none !important;
+  }
+}
+
+/* IPAD (768px - 1023px) - BARU */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    max-width: 100%;
+    padding: 0 24px;
+  }
+
+  /* Header: compact nav */
+  .nav-links-wrap {
+    gap: 16px;
+  }
+
+  .nav-btn {
+    font-size: 14px;
+    padding: 4px 12px;
+  }
+
+  /* Program dropdown: lebih compact */
+  .program-dropdown-bwa {
+    min-width: 600px;
+    max-width: 85vw;
+  }
+
+  .program-bwa-left {
+    width: 280px;
+    min-width: 280px;
+    padding: 20px 16px;
+  }
+
+  .program-bwa-right {
+    min-width: 320px;
+    padding: 16px 20px;
+  }
+
+  /* Footer: 2 kolom */
+  .footer-content .row {
+    flex-direction: column;
+  }
+
+  .col-12.col-md-5.col-lg-4,
+  .col-6.col-sm-4.col-md-2 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .footer-payment-icons {
+    justify-content: center;
+  }
+}
+
+/* DESKTOP SMALL (1024px - 1365px) */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
+  }
+
+  .program-dropdown-bwa {
+    min-width: 680px;
+  }
+}
+
+/* DESKTOP LARGE (≥1366px) - SUDAH OK */
+@media (min-width: 1366px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 48px;
+  }
+}
+
+/* DARK MODE FIXES */
+@media (prefers-color-scheme: dark) {
+  .bg-dark .q-drawer {
+    border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+}
+
+/* IPAD PORTRAIT FIX (768x1024) */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .main-layout-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+}
+
+/* SAFARI IPAD FIX */
+@supports (-webkit-touch-callout: none) {
+  .lt-md .main-layout-header {
+    position: sticky !important;
+    top: 0 !important;
+  }
+}
+
+/* ANIMATION SMOOTHNESS */
+@media (prefers-reduced-motion: no-preference) {
+  .program-dropdown {
+    will-change: opacity, transform;
+  }
+
+  .nav-btn {
+    will-change: color, background;
+  }
+}
+
+/* PRINT OPTIMIZATION */
+@media print {
+  .q-drawer,
+  .main-layout-header,
+  .footer-main {
+    display: none !important;
+  }
+
+  .container {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+}
 </style>

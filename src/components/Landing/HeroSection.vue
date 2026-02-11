@@ -558,4 +558,122 @@ onMounted(async () => {
     width: clamp(750px, 45vw, 950px);
   }
 }
+
+/* ========================================
+   ✅ IPAD RESPONSIVE (768px - 1023px) 
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .hero-title {
+    font-size: 2.25rem;
+    line-height: 1.15;
+  }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    max-width: 450px;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    font-size: 1rem;
+  }
+
+  /* iPad: 50/50 split + karakter agak besar */
+  .hero-main-row {
+    min-height: 75vh;
+  }
+
+  .hero-left-col {
+    padding-right: 24px;
+  }
+
+  .hero-right-col {
+    padding-left: 24px;
+    align-items: flex-end;
+  }
+
+  .hero-right-inner {
+    height: 70vh;
+    min-height: 500px;
+  }
+
+  .hero-character-area {
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .hero-character {
+    min-height: 450px;
+    max-height: 550px;
+  }
+
+  /* Stats horizontal di iPad */
+  .hero-stats {
+    flex-wrap: nowrap;
+    gap: 2rem;
+  }
+
+  .hero-stats .stat-item {
+    flex: 1;
+  }
+
+  /* Language pills 2 baris */
+  .hero-lang-pills {
+    max-width: 600px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-lang-pill {
+    flex: 0 1 calc(50% - 8px);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  /* Floating bubbles posisi iPad */
+  .hero-float-bubble-0 {
+    top: 25%;
+    right: 5%;
+    min-width: 70px;
+  }
+  .hero-float-bubble-1 {
+    top: 40%;
+    right: 2%;
+  }
+  .hero-float-bubble-2 {
+    top: 40%;
+    left: 2%;
+  }
+  .hero-float-bubble-3 {
+    top: 25%;
+    left: 5%;
+    min-width: 70px;
+  }
+}
+
+/* ========================================
+   FIX IPAD PORTRAIT (768px x 1024px)
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .hero-main-row {
+    min-height: 70vh;
+  }
+
+  .hero-right-inner {
+    height: 65vh;
+    min-height: 450px;
+  }
+
+  .hero-character {
+    min-height: 400px;
+  }
+}
 </style>

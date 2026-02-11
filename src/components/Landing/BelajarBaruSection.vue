@@ -262,4 +262,154 @@ const features = [
     justify-content: center;
   }
 }
+
+/* ========================================
+   🎯 MOBILE (<768px) - FULL RESPONSIVE
+   ======================================== */
+@media (max-width: 767px) {
+  .belajar-baru-section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Content full width + centered */
+  .col-12.col-md-6:nth-child(1) {
+    order: 2;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  /* Circle image dibawah */
+  .col-12.col-md-6:nth-child(2) {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-title {
+    font-size: 2.1rem;
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    text-align: center;
+    max-width: none;
+  }
+
+  .circle-container {
+    width: 280px;
+    height: 280px;
+    margin: 0 auto;
+  }
+
+  .circle-bg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .woman-img {
+    height: 95%;
+  }
+
+  /* Buttons stack vertical */
+  .action-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-apply,
+  .btn-how {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/* ========================================
+   ✅ IPAD (768px-1023px) - PERFECT SPLIT
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  .belajar-baru-section {
+    padding: 80px 0;
+  }
+
+  /* iPad: 50/50 split */
+  .col-12.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .section-title {
+    font-size: 2.8rem;
+    line-height: 1.15;
+  }
+
+  .section-desc {
+    font-size: 1.1rem;
+  }
+
+  .circle-container {
+    width: 380px;
+    height: 380px;
+  }
+
+  /* Feature list: 1 kolom iPad */
+  .feature-list {
+    max-width: 400px;
+  }
+
+  /* Buttons horizontal iPad */
+  .action-area {
+    justify-content: flex-start;
+  }
+
+  .btn-apply,
+  .btn-how {
+    padding: 14px 28px;
+  }
+}
+
+/* ========================================
+   ✅ IPAD PORTRAIT (768x1024) FIX
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .belajar-baru-section {
+    padding: 70px 0;
+  }
+
+  .circle-container {
+    width: 360px;
+    height: 360px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP SMALL (1024px-1365px)
+   ======================================== */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP LARGE (≥1366px)
+   ======================================== */
+@media (min-width: 1366px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 48px;
+  }
+}
 </style>

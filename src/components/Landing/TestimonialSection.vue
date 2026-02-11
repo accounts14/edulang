@@ -178,4 +178,110 @@ const testimonials = [
     margin-bottom: 50px;
   }
 }
+
+/* ========================================
+   🎯 MOBILE (<768px) - 1 KOLOM
+   ======================================== */
+@media (max-width: 767px) {
+  .testimonial-section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  .section-title {
+    font-size: 1.9rem;
+    line-height: 1.25;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    padding: 0 8px;
+  }
+
+  /* Cards: 1 kolom full-width mobile */
+  .col-12.col-md-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .q-pa-xl {
+    padding: 1.5rem !important;
+  }
+
+  .quote-icon-wrapper {
+    top: -15px;
+    left: 20px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .testimonial-text {
+    font-size: 0.95rem;
+  }
+}
+
+/* ========================================
+   ✅ IPAD (768px-1023px) - 2 KOLOM
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  .testimonial-section {
+    padding: 70px 0;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+
+  /* Cards: 2 kolom iPad */
+  .col-12.col-md-4 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .q-pa-xl {
+    padding: 1.75rem !important;
+  }
+
+  .quote-icon-wrapper {
+    top: -18px;
+    left: 25px;
+  }
+}
+
+/* ========================================
+   ✅ IPAD PORTRAIT (768x1024) FIX
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .testimonial-section {
+    padding: 65px 0;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP SMALL (1024px-1365px) - 3 KOLOM
+   ======================================== */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP LARGE (≥1366px)
+   ======================================== */
+@media (min-width: 1366px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 48px;
+  }
+}
 </style>

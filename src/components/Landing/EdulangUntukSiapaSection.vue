@@ -286,4 +286,168 @@ const items = [
     margin-top: 60px;
   }
 }
+
+/* ========================================
+   🎯 MOBILE (<768px) - FULL RESPONSIVE
+   ======================================== */
+@media (max-width: 767px) {
+  .untuk-siapa-section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Content full width + centered */
+  .col-12.col-md-7 {
+    order: 2;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Image/bubble area dibawah */
+  .col-12.col-md-5 {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    text-align: center;
+    margin: 0 auto 2rem;
+  }
+
+  /* Cards: 1 kolom full */
+  .row.q-col-gutter-md > .col-12.col-sm-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  /* Bubble: lebih compact */
+  .bubble-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    justify-content: center;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .inner-box {
+    width: 90px;
+    height: 90px;
+    padding: 14px;
+  }
+
+  .glow-bg {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+/* ========================================
+   ✅ IPAD (768px-1023px) - BARU
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  .untuk-siapa-section {
+    padding: 80px 0;
+  }
+
+  /* iPad: 55% content | 45% bubble */
+  .col-12.col-md-7 {
+    flex: 0 0 55%;
+    max-width: 55%;
+  }
+
+  .col-12.col-md-5 {
+    flex: 0 0 45%;
+    max-width: 45%;
+  }
+
+  .section-title {
+    font-size: 2.6rem;
+    line-height: 1.12;
+  }
+
+  .section-desc {
+    font-size: 1.05rem;
+    max-width: 500px;
+  }
+
+  /* Cards: 1 kolom iPad */
+  .row.q-col-gutter-md > .col-12.col-sm-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  /* Bubble iPad optimized */
+  .bubble-grid {
+    gap: 20px;
+  }
+
+  .inner-box {
+    width: 110px;
+    height: 110px;
+  }
+
+  .glow-bg {
+    width: 380px;
+    height: 380px;
+  }
+}
+
+/* ========================================
+   ✅ IPAD PORTRAIT (768x1024) FIX
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .untuk-siapa-section {
+    padding: 70px 0;
+  }
+
+  .bubble-grid {
+    gap: 18px;
+  }
+
+  .inner-box {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP SMALL (1024px-1365px)
+   ======================================== */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
+  }
+
+  .glow-bg {
+    width: 420px;
+    height: 420px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP LARGE (≥1366px)
+   ======================================== */
+@media (min-width: 1366px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 48px;
+  }
+}
 </style>

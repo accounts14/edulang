@@ -255,4 +255,160 @@
     display: none;
   }
 }
+
+/* ========================================
+   🎯 MOBILE (<768px) - FULL RESPONSIVE
+   ======================================== */
+@media (max-width: 767px) {
+  .cta-final-section {
+    padding: 50px 0;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Single column stacked */
+  .cta-content-wrapper {
+    order: 2;
+    width: 100%;
+    padding: 2rem 1.5rem !important;
+    text-align: center;
+  }
+
+  .cta-image-container {
+    order: 1;
+    width: 100%;
+    min-height: 300px;
+    margin-bottom: 2rem;
+  }
+
+  .cta-title {
+    font-size: 1.8rem;
+    line-height: 1.25;
+  }
+
+  .cta-desc {
+    font-size: 1rem;
+    max-width: none;
+  }
+
+  .cta-benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: 320px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .benefit-item {
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  /* Buttons stack vertical */
+  .cta-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-cta-yellow,
+  .btn-cta-outline {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .cta-card {
+    min-height: 650px;
+    border-radius: 20px;
+  }
+
+  .cta-character-img {
+    width: 100%;
+    max-width: 320px;
+    transform: translateY(10px) scale(1);
+  }
+}
+
+/* ========================================
+   ✅ IPAD (768px-1023px) - PERFECT SPLIT
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  .cta-final-section {
+    padding: 55px 0;
+  }
+
+  /* iPad: 60% content | 40% image */
+  .col-12.col-md-7 {
+    flex: 0 0 60%;
+    max-width: 60%;
+  }
+
+  .col-12.col-md-5 {
+    flex: 0 0 40%;
+    max-width: 40%;
+  }
+
+  .cta-content-wrapper {
+    padding: 2.5rem !important;
+  }
+
+  .cta-title {
+    font-size: 2.3rem;
+  }
+
+  .cta-benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .cta-card {
+    min-height: 550px;
+    border-radius: 24px;
+  }
+
+  .cta-character-img {
+    width: 160%;
+    max-width: 600px;
+    transform: translateY(25px) scale(1.1);
+  }
+}
+
+/* ========================================
+   ✅ IPAD PORTRAIT (768x1024) FIX
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .cta-final-section {
+    padding: 50px 0;
+  }
+
+  .cta-card {
+    min-height: 520px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP SMALL (1024px-1365px)
+   ======================================== */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP LARGE (≥1366px)
+   ======================================== */
+@media (min-width: 1366px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 48px;
+  }
+}
 </style>

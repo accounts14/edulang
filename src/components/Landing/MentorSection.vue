@@ -247,4 +247,161 @@ const benefits = [
     text-align: left;
   }
 }
+
+/* ========================================
+   🎯 MOBILE (<768px) - FULL RESPONSIVE
+   ======================================== */
+@media (max-width: 767px) {
+  .mentor-section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Content full width + centered */
+  .col-12.col-md-6:nth-child(1) {
+    order: 2;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  /* Image dibawah */
+  .col-12.col-md-6:nth-child(2) {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+
+  .section-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .mentor-desc {
+    font-size: 1rem;
+    text-align: center;
+    max-width: none;
+  }
+
+  /* Visual compact mobile */
+  .mentor-viz-container {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .viz-background {
+    width: 280px;
+    height: 240px;
+  }
+
+  .floating-mentor-card {
+    top: 120px;
+    right: -20px;
+    width: 240px;
+    padding: 16px;
+  }
+
+  /* Buttons stack vertical */
+  .action-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-register-mentor,
+  .btn-learn-more {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/* ========================================
+   ✅ IPAD (768px-1023px) - PERFECT SPLIT
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding: 0 24px;
+    max-width: 100%;
+  }
+
+  .mentor-section {
+    padding: 80px 0;
+  }
+
+  /* iPad: 50/50 split */
+  .col-12.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .section-title {
+    font-size: 2.4rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.4rem;
+  }
+
+  /* Visual iPad optimized */
+  .mentor-viz-container {
+    max-width: 420px;
+  }
+
+  .viz-background {
+    width: 360px;
+    height: 320px;
+  }
+
+  .floating-mentor-card {
+    top: 180px;
+    right: -60px;
+    width: 270px;
+  }
+
+  /* Buttons horizontal */
+  .action-area {
+    justify-content: flex-start;
+  }
+}
+
+/* ========================================
+   ✅ IPAD PORTRAIT (768x1024) FIX
+   ======================================== */
+@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
+  .mentor-section {
+    padding: 70px 0;
+  }
+
+  .viz-background {
+    width: 340px;
+    height: 300px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP SMALL (1024px-1365px)
+   ======================================== */
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
+  }
+}
+
+/* ========================================
+   ✅ DESKTOP LARGE (≥1366px)
+   ======================================== */
+@media (min-width: 1366px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 48px;
+  }
+}
 </style>
