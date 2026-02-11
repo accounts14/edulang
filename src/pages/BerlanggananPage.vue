@@ -1,125 +1,141 @@
 <template>
-  <q-page class="berlangganan-page q-pa-xl bg-accent">
-    <!-- Section 1: Rekomendasi Kelas (Random) -->
+  <q-page class="berlangganan-page q-pa-xl bg-edulang-white">
     <section class="q-mb-xl">
-      <div class="row items-center justify-between q-mb-md">
-        <div>
-          <div class="text-orange-9 text-weight-bold">{{ $t('subscription.recomendedTag') }}</div>
-          <div class="text-h4 text-weight-bolder text-indigo-10 q-mt-xs">
+      <div class="row items-end justify-between q-mb-xl">
+        <div class="col-12 col-md-8">
+          <div class="row items-center q-gutter-x-sm q-mb-sm">
+            <q-icon name="auto_awesome" color="edulang-blue" size="20px" />
+            <div class="text-edulang-blue text-weight-bold letter-spacing-1">
+              {{ $t('subscription.recomendedTag').toUpperCase() }}
+            </div>
+          </div>
+          <div class="text-h3 text-weight-bolder text-edulang-navy q-mt-xs">
             {{ $t('subscription.recomendedTitle') }}
           </div>
         </div>
-        <q-btn
-          v-if="recommendedCourses.length"
-          unelevated
-          color="warning"
-          text-color="black"
-          no-caps
-          class="rounded-borders q-px-lg text-weight-bold"
-          :label="$t('subscription.lihatSemuaFastTrack')"
-          @click="scrollToFilter"
-        />
+        <div class="col-12 col-md-auto q-mt-md">
+          <q-btn
+            v-if="recommendedCourses.length"
+            unelevated
+            class="btn-edulang-blue text-weight-bold q-px-xl q-py-sm"
+            no-caps
+            :label="$t('subscription.lihatSemuaFastTrack')"
+            @click="scrollToFilter"
+          />
+        </div>
       </div>
 
-      <div v-if="loading" class="row q-col-gutter-lg">
+      <div v-if="loading" class="row q-col-gutter-xl">
         <div v-for="n in 3" :key="n" class="col-12 col-md-4">
-          <q-card flat bordered class="rounded-borders-16">
-            <q-skeleton height="200px" square />
+          <q-card flat class="card-premium skeleton-card">
+            <q-skeleton height="240px" square />
             <q-card-section>
+              <q-skeleton type="text" width="40%" class="q-mb-sm" />
               <q-skeleton type="text" class="text-h6" />
-              <q-skeleton type="text" width="60%" />
             </q-card-section>
           </q-card>
         </div>
       </div>
 
-      <div v-else-if="recommendedCourses.length === 0" class="text-grey-7 text-caption">
-        {{ $t('subscription.kosongFastTrack') }}
+      <div v-else-if="recommendedCourses.length === 0" class="empty-box flex flex-center">
+        <div class="text-grey-6">{{ $t('subscription.kosongFastTrack') }}</div>
       </div>
 
-      <div v-else class="row q-col-gutter-lg">
+      <div v-else class="row q-col-gutter-xl">
         <div v-for="course in recommendedCourses" :key="course._id" class="col-12 col-md-4">
-          <CourseCard :course="course" />
+          <CourseCard :course="course" class="card-premium active-hover" />
         </div>
       </div>
     </section>
 
-    <!-- Section 2: Cari Kelas Bahasa Sesuai Minatmu -->
-    <section ref="filterSectionRef" class="q-mb-xl">
-      <div class="text-h4 text-weight-bolder text-indigo-10 q-mb-lg">
-        {{ $t('subscription.cariKelasTitle') }}
+    <section ref="filterSectionRef" class="q-pt-md">
+      <div class="row items-center q-mb-xl">
+        <div class="separator-line q-mr-md"></div>
+        <div class="text-h4 text-weight-bolder text-edulang-navy">
+          {{ $t('subscription.cariKelasTitle') }}
+        </div>
       </div>
 
-      <div class="row q-col-gutter-lg">
-        <!-- Left: Filter Sidebar -->
+      <div class="row q-col-gutter-xl">
         <div class="col-12 col-md-3">
-          <div class="filter-sidebar bg-white rounded-borders-16 q-pa-md">
-            <div class="text-subtitle2 text-weight-bold text-grey-9 q-mb-sm">
-              {{ $t('subscription.categoryLabel') }}
-            </div>
-            <div class="filter-options-vertical q-mb-lg">
-              <q-checkbox v-model="filterCategoryAll" :label="$t('subscription.categoryAll')" />
-              <q-checkbox
-                v-model="filterCategoryPopuler"
-                :label="$t('subscription.categoryPopuler')"
-              />
-            </div>
-
-            <div class="text-subtitle2 text-weight-bold text-grey-9 q-mb-sm">
-              {{ $t('subscription.bahasaLabel') }}
-            </div>
-            <div class="filter-options-vertical q-mb-lg">
-              <div
-                v-for="lang in languageOptions"
-                :key="lang.id"
-                class="filter-bahasa-item row items-center q-mb-xs"
-              >
-                <q-checkbox v-model="filterBahasa" :val="lang.id" dense />
-                <img
-                  v-if="lang.iconUrl"
-                  :src="lang.iconUrl"
-                  :alt="lang.name"
-                  class="filter-bahasa-icon q-mr-sm"
-                />
-                <span>{{ lang.name }}</span>
+          <div class="filter-sidebar">
+            <div class="filter-card q-pa-lg">
+              <div class="row items-center q-mb-lg">
+                <q-icon name="tune" color="edulang-navy" size="24px" class="q-mr-sm" />
+                <span class="text-h6 text-weight-bold text-edulang-navy">Filter</span>
               </div>
-            </div>
 
-            <div class="text-subtitle2 text-weight-bold text-grey-9 q-mb-sm">
-              {{ $t('subscription.levelLabel') }}
-            </div>
-            <div class="filter-options-vertical">
-              <q-checkbox
-                v-for="lvl in levelOptions"
-                :key="lvl"
-                v-model="filterLevel"
-                :val="lvl"
-                :label="lvl"
-              />
+              <div class="filter-group">
+                <div class="filter-label">{{ $t('subscription.categoryLabel') }}</div>
+                <div class="column q-gutter-y-xs">
+                  <q-checkbox
+                    v-model="filterCategoryAll"
+                    :label="$t('subscription.categoryAll')"
+                    color="edulang-blue"
+                  />
+                  <q-checkbox
+                    v-model="filterCategoryPopuler"
+                    :label="$t('subscription.categoryPopuler')"
+                    color="edulang-blue"
+                  />
+                </div>
+              </div>
+
+              <q-separator class="q-my-lg" />
+
+              <div class="filter-group">
+                <div class="filter-label">{{ $t('subscription.bahasaLabel') }}</div>
+                <div class="column q-gutter-y-sm">
+                  <div
+                    v-for="lang in languageOptions"
+                    :key="lang.id"
+                    class="row items-center lang-item"
+                  >
+                    <q-checkbox v-model="filterBahasa" :val="lang.id" color="edulang-blue" dense />
+                    <img v-if="lang.iconUrl" :src="lang.iconUrl" class="lang-flag q-mx-sm" />
+                    <span class="text-body2 text-grey-8">{{ lang.name }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <q-separator class="q-my-lg" />
+
+              <div class="filter-group">
+                <div class="filter-label">{{ $t('subscription.levelLabel') }}</div>
+                <div class="column q-gutter-y-xs">
+                  <q-checkbox
+                    v-for="lvl in levelOptions"
+                    :key="lvl"
+                    v-model="filterLevel"
+                    :val="lvl"
+                    :label="lvl"
+                    color="edulang-blue"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Right: Course Grid -->
         <div class="col-12 col-md-9">
           <div v-if="loading" class="row q-col-gutter-lg">
             <div v-for="n in 6" :key="n" class="col-12 col-sm-6 col-md-4">
-              <q-card flat bordered class="rounded-borders-16">
-                <q-skeleton height="160px" square />
-                <q-card-section>
-                  <q-skeleton type="text" class="text-h6" />
-                  <q-skeleton type="text" width="80%" />
-                </q-card-section>
+              <q-card flat class="card-premium skeleton-card">
+                <q-skeleton height="180px" />
+                <q-card-section><q-skeleton type="text" /></q-card-section>
               </q-card>
             </div>
           </div>
 
           <div
             v-else-if="filteredCourses.length === 0"
-            class="empty-state flex flex-center column q-pa-xl"
+            class="empty-state-v2 flex flex-center column"
           >
-            <q-icon name="movie_filter" size="120px" color="grey-5" class="q-mb-md" />
-            <div class="text-h6 text-grey-7">{{ $t('subscription.courseBelumTersedia') }}</div>
+            <q-icon name="search_off" size="120px" color="grey-4" />
+            <div class="text-h6 text-grey-6 q-mt-md">
+              {{ $t('subscription.courseBelumTersedia') }}
+            </div>
+            <div class="text-caption text-grey-5">Coba ubah filter pencarian kamu</div>
           </div>
 
           <div v-else class="row q-col-gutter-lg">
@@ -128,7 +144,7 @@
               :key="course._id"
               class="col-12 col-sm-6 col-md-4"
             >
-              <CourseCard :course="course" />
+              <CourseCard :course="course" class="card-premium active-hover" />
             </div>
           </div>
         </div>
@@ -264,37 +280,104 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-.berlangganan-page {
-  min-height: 100%;
+/* Edulang Brand Colors Implementation */
+.bg-edulang-white {
+  background-color: #f5f7fa;
 }
-.text-indigo-10 {
-  color: #0d2a5c;
+.text-edulang-navy {
+  color: #003387;
 }
-.rounded-borders-16 {
-  border-radius: 16px;
+.text-edulang-blue {
+  color: #0089ff;
 }
+.btn-edulang-blue {
+  background-color: #0089ff !important;
+  color: #f5f7fa;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+.btn-edulang-blue:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 196, 44, 0.4);
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.letter-spacing-1 {
+  letter-spacing: 1.5px;
+}
+
+/* Card Premium Style */
+.card-premium {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 51, 135, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 51, 135, 0.03);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.active-hover:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 51, 135, 0.08);
+  border: 1px solid rgba(0, 137, 255, 0.2);
+}
+
+/* Sidebar & Filters */
 .filter-sidebar {
   position: sticky;
-  top: 80px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  top: 100px;
 }
-.filter-options-vertical {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+
+.filter-card {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 51, 135, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 51, 135, 0.04);
 }
-.filter-bahasa-item {
-  min-height: 32px;
+
+.filter-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #003387;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
 }
-.filter-bahasa-icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  border-radius: 4px;
+
+.lang-flag {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.empty-state {
-  min-height: 320px;
-  background: #fafafa;
-  border-radius: 16px;
+
+.separator-line {
+  width: 60px;
+  height: 6px;
+  background: #0089ff;
+  border-radius: 10px;
+}
+
+.empty-state-v2 {
+  min-height: 450px;
+  background: white;
+  border-radius: 30px;
+  border: 2px dashed #e0e0e0;
+}
+
+.empty-box {
+  min-height: 200px;
+  border: 2px dashed #d0d0d0;
+  border-radius: 20px;
+}
+
+/* Override Quasar Checkbox for Edulang Style */
+:deep(.q-checkbox__inner--active .q-checkbox__bg) {
+  background: #0089ff !important;
+  border-color: #0089ff !important;
 }
 </style>

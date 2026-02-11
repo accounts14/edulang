@@ -145,8 +145,8 @@ const goToDetail = () => {
   opacity: 0.8;
 }
 .btn-yellow {
-  background: var(--edulang-yellow, #ffc42c) !important;
-  color: var(--edulang-black, #212121) !important;
+  background: var(--edulang-blue, #1976d2) !important;
+  color: var(--edulang-white, #f5f7fa) !important;
 }
 .course-card {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);

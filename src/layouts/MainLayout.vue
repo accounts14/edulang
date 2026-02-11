@@ -150,7 +150,7 @@
           <q-space />
 
           <div class="gt-md row items-center nav-links-wrap text-weight-medium">
-            <!-- Learning path → Alur Belajar -->
+            <!-- Learning Path -->
             <q-btn
               flat
               no-caps
@@ -158,15 +158,7 @@
               :class="['nav-btn', { 'nav-btn-active': isNavActive('/alur-belajar') }]"
               @click="$router.push('/alur-belajar')"
             />
-            <!-- Langganan → Berlangganan -->
-            <q-btn
-              flat
-              no-caps
-              :label="$t('nav.langganan')"
-              :class="['nav-btn', { 'nav-btn-active': isNavActive('/berlangganan') }]"
-              @click="$router.push('/berlangganan')"
-            />
-            <!-- PROGRAM: hover → Video courses (sub: All courses + Semua bahasa) + Study abroad -->
+            <!-- PROGRAM (sekarang di posisi ke-2) -->
             <div
               class="program-nav-wrapper relative-position"
               @mouseenter="onProgramMouseEnter"
@@ -199,7 +191,7 @@
                         />
                       </div>
                     </div>
-                    <!-- Kolom kanan: daftar program dengan icon + title + subtitle -->
+                    <!-- Kolom kanan: daftar program -->
                     <div class="program-bwa-right">
                       <div class="program-bwa-card cursor-pointer" @click="onProgramAllCourses">
                         <div class="program-bwa-card-icon">
@@ -224,6 +216,14 @@
                 </div>
               </transition>
             </div>
+            <!-- Langganan (sekarang di posisi ke-3) -->
+            <q-btn
+              flat
+              no-caps
+              :label="$t('nav.langganan')"
+              :class="['nav-btn', { 'nav-btn-active': isNavActive('/berlangganan') }]"
+              @click="$router.push('/berlangganan')"
+            />
             <!-- Tips & Informasi -->
             <q-btn
               flat
