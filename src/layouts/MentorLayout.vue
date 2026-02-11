@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="bg-accent font-poppins">
+  <q-layout view="lHh Lpr lFf" class="bg-edulang-white font-poppins">
     <q-header elevated class="bg-white text-dark">
-      <q-toolbar>
+      <q-toolbar class="q-py-sm">
         <q-btn
           flat
           dense
@@ -11,7 +11,7 @@
           class="q-mr-sm"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title class="text-weight-bold">
+        <q-toolbar-title class="text-weight-bold text-edulang-navy">
           {{ pageTitle }}
         </q-toolbar-title>
         <q-space />
@@ -21,28 +21,28 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      :width="260"
+      :width="280"
       bordered
-      behavior="mobile"
+      show-if-above
       :breakpoint="768"
       class="bg-white q-pa-md"
     >
       <div class="flex flex-center q-mb-xl q-mt-md cursor-pointer" @click="router.push('/')">
-        <img src="~assets/Edulang.png" style="width: 140px" />
+        <img src="~assets/Edulang.png" style="width: 140px" alt="Edulang Logo" />
       </div>
 
       <div class="text-center q-mb-xl">
-        <q-avatar size="100px" class="q-mb-md shadow-2">
+        <q-avatar size="100px" class="q-mb-md shadow-premium">
           <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
         </q-avatar>
-        <div class="text-weight-bolder text-subtitle1 text-grey-9">
+        <div class="text-weight-bolder text-subtitle1 text-edulang-navy">
           {{ mentorData.name || 'Mentor Edulang' }}
         </div>
         <q-chip
           dense
-          color="blue-6"
+          color="primary"
           text-color="white"
-          class="q-px-md text-weight-bold"
+          class="q-px-md text-weight-bold q-mt-sm"
           style="text-transform: capitalize"
         >
           {{ mentorData.role || 'Mentor' }}
@@ -54,20 +54,21 @@
           clickable
           v-ripple
           to="/mentor/dashboard"
-          active-class="bg-primary text-white rounded-borders"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
-          <q-item-section avatar><q-icon name="dashboard" /></q-item-section>
-          <q-item-section class="text-weight-bold">Dashboard</q-item-section>
+          <q-item-section avatar><q-icon name="dashboard" size="sm" /></q-item-section>
+          <q-item-section class="text-weight-medium">Dashboard</q-item-section>
         </q-item>
 
         <q-item
           clickable
           v-ripple
           to="/mentor/kelasku"
-          active-class="bg-primary text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
-          <q-item-section avatar><q-icon name="menu_book" /></q-item-section>
+          <q-item-section avatar><q-icon name="menu_book" size="sm" /></q-item-section>
           <q-item-section class="text-weight-medium">Kelasku</q-item-section>
         </q-item>
 
@@ -75,10 +76,10 @@
           clickable
           v-ripple
           to="/mentor/rating"
-          active-class="bg-primary text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
-          <q-item-section avatar><q-icon name="star_outline" /></q-item-section>
+          <q-item-section avatar><q-icon name="star_outline" size="sm" /></q-item-section>
           <q-item-section class="text-weight-medium">Rating dan Review</q-item-section>
         </q-item>
 
@@ -86,10 +87,10 @@
           clickable
           v-ripple
           to="/mentor/revenue"
-          active-class="bg-primary text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
-          <q-item-section avatar><q-icon name="payments" /></q-item-section>
+          <q-item-section avatar><q-icon name="payments" size="sm" /></q-item-section>
           <q-item-section class="text-weight-medium">Revenue</q-item-section>
         </q-item>
 
@@ -97,16 +98,16 @@
           clickable
           v-ripple
           to="/mentor/setting"
-          active-class="bg-primary text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
-          <q-item-section avatar><q-icon name="settings" /></q-item-section>
+          <q-item-section avatar><q-icon name="settings" size="sm" /></q-item-section>
           <q-item-section class="text-weight-medium">Setting</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple class="text-negative q-mt-xl" @click="handleLogout">
-          <q-item-section avatar><q-icon name="logout" /></q-item-section>
-          <q-item-section class="text-weight-bold">Keluar</q-item-section>
+        <q-item clickable v-ripple class="logout-item q-mt-xl" @click="handleLogout">
+          <q-item-section avatar><q-icon name="logout" color="negative" /></q-item-section>
+          <q-item-section class="text-weight-bold text-negative">Keluar</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
@@ -138,26 +139,13 @@ const pageTitle = computed(() => {
   if (path.startsWith('/mentor/setting')) return 'Setting'
   return 'Edulang Mentor'
 })
+
 const mentorData = ref({ name: '', role: '' })
 
-// Ambil dari localStorage saat mount
 onMounted(() => {
   updateMentorData()
 })
 
-// Update jika localStorage berubah (misal: login di tab lain)
-watch(
-  () => localStorage.getItem('userName'),
-  (newName) => {
-    mentorData.value.name = newName || ''
-  },
-)
-watch(
-  () => localStorage.getItem('userRole'),
-  (newRole) => {
-    mentorData.value.role = newRole || 'user'
-  },
-)
 watch(
   () => route.path,
   () => {
@@ -167,7 +155,7 @@ watch(
 
 function updateMentorData() {
   mentorData.value.name = localStorage.getItem('userName') || ''
-  mentorData.value.role = localStorage.getItem('userRole') || 'user'
+  mentorData.value.role = localStorage.getItem('userRole') || 'Mentor'
 }
 
 const handleLogout = () => {
@@ -177,11 +165,44 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
+.text-edulang-navy {
+  color: #003387;
+}
+.bg-edulang-white {
+  background-color: #f5f7fa;
+}
 .font-poppins {
   font-family: 'Poppins', sans-serif;
 }
-.rounded-borders {
-  border-radius: 10px;
-  margin-bottom: 4px;
+
+.menu-item-non-active {
+  color: #616161 !important;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  transition: all 0.3s ease;
+  padding: 10px 16px;
+}
+
+.menu-item-non-active:hover {
+  background-color: rgba(0, 137, 255, 0.08);
+  color: #0089ff !important;
+}
+
+.active-menu {
+  background-color: #0089ff !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(0, 137, 255, 0.3);
+}
+
+.active-menu .q-icon {
+  color: white !important;
+}
+
+.logout-item {
+  border-radius: 12px;
+}
+
+.shadow-premium {
+  box-shadow: 0 10px 30px rgba(0, 51, 135, 0.15);
 }
 </style>

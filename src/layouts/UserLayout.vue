@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="bg-accent font-poppins">
+  <q-layout view="lHh Lpr lFf" class="bg-edulang-white font-poppins">
     <q-header elevated class="bg-white text-dark">
-      <q-toolbar>
+      <q-toolbar class="q-py-sm">
         <q-btn
           flat
           dense
@@ -11,19 +11,19 @@
           class="q-mr-sm"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title class="text-weight-bold">
+        <q-toolbar-title class="text-weight-bold text-edulang-navy">
           {{ pageTitle }}
         </q-toolbar-title>
         <q-space />
-        <div class="text-caption text-grey-7 gt-sm">{{ userData.name || 'User' }}</div>
+        <div class="text-caption text-grey-7 gt-sm">Halo, {{ userData.name || 'User' }}</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
-      :width="260"
+      :width="280"
       bordered
-      behavior="mobile"
+      show-if-above
       :breakpoint="768"
       class="bg-white q-pa-md"
     >
@@ -32,22 +32,16 @@
       </div>
 
       <div class="text-center q-mb-xl">
-        <q-avatar size="100px" class="q-mb-md shadow-2">
-          <img :src="userAvatar" alt="" />
+        <q-avatar size="100px" class="q-mb-md shadow-premium">
+          <img :src="userAvatar" alt="Avatar" />
         </q-avatar>
 
-        <div class="text-weight-bolder text-subtitle1 text-grey-9">
-          {{ userData.name || 'User' }}
+        <div class="text-weight-bolder text-subtitle1 text-edulang-navy">
+          {{ userData.name || 'User Edulang' }}
         </div>
 
-        <q-chip
-          dense
-          color="blue-6"
-          text-color="white"
-          class="q-px-md text-weight-bold q-mt-sm"
-          style="text-transform: capitalize"
-        >
-          User
+        <q-chip dense color="primary" text-color="white" class="q-px-md text-weight-bold q-mt-sm">
+          Siswa
         </q-chip>
       </div>
 
@@ -56,21 +50,22 @@
           clickable
           v-ripple
           to="/dashboard"
-          active-class="bg-blue-6 text-white rounded-borders"
+          active-class="active-menu"
+          class="menu-item-non-active"
           exact
         >
           <q-item-section avatar>
             <q-icon name="dashboard" size="sm" />
           </q-item-section>
-          <q-item-section class="text-weight-bold">Dashboard</q-item-section>
+          <q-item-section class="text-weight-medium">Dashboard</q-item-section>
         </q-item>
 
         <q-item
           clickable
           v-ripple
           to="/dashboard/langganan"
-          active-class="bg-blue-6 text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
           <q-item-section avatar>
             <q-icon name="description" size="sm" />
@@ -82,8 +77,8 @@
           clickable
           v-ripple
           to="/dashboard/progres"
-          active-class="bg-blue-6 text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
           <q-item-section avatar>
             <q-icon name="list_alt" size="sm" />
@@ -95,8 +90,8 @@
           clickable
           v-ripple
           to="/dashboard/notifikasi"
-          active-class="bg-blue-6 text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
           <q-item-section avatar>
             <q-icon name="notifications" size="sm" />
@@ -108,8 +103,8 @@
           clickable
           v-ripple
           to="/dashboard/transaksi"
-          active-class="bg-blue-6 text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
           <q-item-section avatar>
             <q-icon name="shopping_bag" size="sm" />
@@ -121,8 +116,8 @@
           clickable
           v-ripple
           to="/dashboard/setting"
-          active-class="bg-blue-6 text-white rounded-borders"
-          class="text-grey-7"
+          active-class="active-menu"
+          class="menu-item-non-active"
         >
           <q-item-section avatar>
             <q-icon name="settings" size="sm" />
@@ -130,11 +125,11 @@
           <q-item-section class="text-weight-medium">Setting</q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple class="text-negative q-mt-xl" @click="handleLogout">
+        <q-item clickable v-ripple class="logout-item q-mt-xl" @click="handleLogout">
           <q-item-section avatar>
             <q-icon name="logout" color="negative" />
           </q-item-section>
-          <q-item-section class="text-weight-bold">Keluar</q-item-section>
+          <q-item-section class="text-weight-bold text-negative">Keluar</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
@@ -176,12 +171,6 @@ onMounted(() => {
 })
 
 watch(
-  () => localStorage.getItem('userName'),
-  (newName) => {
-    userData.value.name = newName || 'User'
-  },
-)
-watch(
   () => route.path,
   () => {
     if ($q.screen.lt.md) leftDrawerOpen.value = false
@@ -195,11 +184,48 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
+/* Brand Colors Edulang */
+.text-edulang-navy {
+  color: #003387;
+}
+.bg-edulang-white {
+  background-color: #f5f7fa;
+}
 .font-poppins {
   font-family: 'Poppins', sans-serif;
 }
-.rounded-borders {
-  border-radius: 10px;
-  margin-bottom: 4px;
+
+/* Style Menu Non-Aktif */
+.menu-item-non-active {
+  color: #616161 !important; /* text-grey-7 */
+  border-radius: 12px;
+  margin-bottom: 6px;
+  transition: all 0.3s ease;
+  padding: 10px 16px;
+}
+
+.menu-item-non-active:hover {
+  background-color: rgba(0, 137, 255, 0.08);
+  color: #0089ff !important;
+}
+
+/* Style Menu Aktif (Putih & Biru) */
+.active-menu {
+  background-color: #0089ff !important; /* Edulang Blue */
+  color: white !important; /* Paksa teks jadi putih */
+  box-shadow: 0 4px 15px rgba(0, 137, 255, 0.3);
+}
+
+/* Paksa ikon jadi putih saat menu aktif */
+.active-menu .q-icon {
+  color: white !important;
+}
+
+.logout-item {
+  border-radius: 12px;
+}
+
+.shadow-premium {
+  box-shadow: 0 10px 30px rgba(0, 51, 135, 0.15);
 }
 </style>
