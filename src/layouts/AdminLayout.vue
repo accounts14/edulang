@@ -117,6 +117,7 @@ const pageTitle = computed(() => {
   if (path.startsWith('/admin/produk')) return 'Produk'
   if (path.startsWith('/admin/artikel')) return 'Artikel'
   if (path.startsWith('/admin/setting')) return 'Setting'
+  if (path === '/admin/mentor/register') return 'Registrasi Mentor'
   return 'Edulang Admin'
 })
 
@@ -157,6 +158,7 @@ watch(
 const menuList = [
   { label: 'Kategori', icon: 'assignment', to: '/admin/kategori' },
   { label: 'Mentor', icon: 'groups', to: '/admin/mentor' },
+  { label: 'Daftar Mentor Baru', icon: 'person_add_alt', to: '/admin/mentor/register' },
   { label: 'Revenue', icon: 'payments', to: '/admin/revenue' },
   { label: 'User', icon: 'person_outline', to: '/admin/user' },
   { label: 'Mendaftar', icon: 'person_add', to: '/admin/pendaftar' },

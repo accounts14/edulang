@@ -194,6 +194,12 @@ const routes = [
         component: () => import('pages/admin/EditArticlePage.vue'),
         meta: { requiresAuth: true, allowedRoles: ['admin'] },
       },
+      {
+        path: 'mentor/register',
+        name: 'AdminMentorRegister',
+        component: () => import('pages/admin/RegisterMentorPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] },
+      },
     ],
   },
 

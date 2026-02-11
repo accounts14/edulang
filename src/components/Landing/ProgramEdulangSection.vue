@@ -58,10 +58,29 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const defaultLanguages = [
-  { flag: '🇸🇦', name: 'Bahasa Arab', students: 2500, rating: 4.9, videos: 120, color: '#10a37f' },
-  { flag: '🇩🇪', name: 'Bahasa Jerman', students: 1800, rating: 4.8, videos: 100, color: '#f59e0b' },
+  {
+    flag: '🇸🇦',
+    name: 'Bahasa Arab',
+    students: 2500,
+    rating: 4.9,
+    videos: 120,
+    color: '#10a37f',
+    path: '/berlangganan',
+  },
+  {
+    flag: '🇩🇪',
+    name: 'Bahasa Jerman',
+    students: 1800,
+    rating: 4.8,
+    videos: 100,
+    color: '#f59e0b',
+    path: '/berlangganan',
+  },
   {
     flag: '🇺🇸',
     name: 'Bahasa Inggris',
@@ -69,6 +88,7 @@ const defaultLanguages = [
     rating: 4.9,
     videos: 150,
     color: '#4f46e5',
+    path: '/berlangganan',
   },
   {
     flag: '🇬🇧',
@@ -77,10 +97,35 @@ const defaultLanguages = [
     rating: 4.8,
     videos: 90,
     color: '#ef4444',
+    path: '/berlangganan',
   },
-  { flag: '🇯🇵', name: 'Bahasa Jepang', students: 3200, rating: 4.9, videos: 130, color: '#f43f5e' },
-  { flag: '🇰🇷', name: 'Bahasa Korea', students: 4100, rating: 4.9, videos: 140, color: '#3b82f6' },
-  { flag: '🇨🇳', name: 'Mandarin', students: 2800, rating: 4.8, videos: 125, color: '#ea580c' },
+  {
+    flag: '🇯🇵',
+    name: 'Bahasa Jepang',
+    students: 3200,
+    rating: 4.9,
+    videos: 130,
+    color: '#f43f5e',
+    path: '/berlangganan',
+  },
+  {
+    flag: '🇰🇷',
+    name: 'Bahasa Korea',
+    students: 4100,
+    rating: 4.9,
+    videos: 140,
+    color: '#3b82f6',
+    path: '/berlangganan',
+  },
+  {
+    flag: '🇨🇳',
+    name: 'Mandarin',
+    students: 2800,
+    rating: 4.8,
+    videos: 125,
+    color: '#ea580c',
+    path: '/berlangganan',
+  },
   {
     flag: '🇹🇼',
     name: 'Mandarin (Taiwan)',
@@ -88,6 +133,7 @@ const defaultLanguages = [
     rating: 4.7,
     videos: 80,
     color: '#0ea5e9',
+    path: '/berlangganan',
   },
 ]
 
@@ -96,7 +142,13 @@ const displayedLanguages = computed(() => {
 })
 
 const goToBerlangganan = (lang) => {
-  console.log('Navigating to:', lang.name)
+  // Ganti console.log dengan navigasi router
+  router.push({
+    path: '/berlangganan',
+    query: {
+      language: lang.name, // ← Opsional: kirim nama bahasa sebagai query param
+    },
+  })
 }
 </script>
 
