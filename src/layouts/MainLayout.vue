@@ -94,6 +94,15 @@
               $t('auth.halo', { name: userName })
             }}</q-item-section>
           </q-item>
+
+          <!-- Dashboard (baru ditambahkan) -->
+          <q-item clickable v-ripple @click="$router.push('/dashboard')">
+            <q-item-section avatar>
+              <q-icon name="home" />
+            </q-item-section>
+            <q-item-section>{{ $t('nav.dashboard') }}</q-item-section>
+          </q-item>
+
           <q-item clickable v-ripple @click="handleLogout">
             <q-item-section avatar>
               <q-icon name="logout" color="negative" />
@@ -553,9 +562,10 @@ const toggleDark = (val) => {
 
 // Active nav (route) – warna biru untuk item yang aktif ($info / --edulang-blue)
 const isNavActive = (path) => route.path === path
-const isProgramNavActive = computed(
-  () => route.path === '/berlangganan' || route.path === '/contact',
-)
+const isProgramNavActive = computed(() => {
+  // Hanya aktif jika di halaman Study Abroad (atau halaman khusus program lain di masa depan)
+  return route.path === '/study-abroad'
+})
 
 // Language switch
 const currentLangLabel = computed(() => (locale.value === 'en-US' ? t('lang.eng') : t('lang.ind')))
@@ -1077,6 +1087,17 @@ a {
 .bg-white .nav-btn:hover {
   color: var(--edulang-blue, #0089ff) !important;
   background: rgba(0, 137, 255, 0.05);
+}
+
+/* Hilangkan background saat diklik/active */
+.nav-btn:active,
+.nav-btn:focus,
+.nav-btn:active:focus {
+  background: transparent !important;
+}
+
+.nav-btn::before {
+  display: none !important;
 }
 
 .language-flag,

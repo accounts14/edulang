@@ -22,6 +22,7 @@ export default {
     tipsInfo: 'Tips & Info',
     tagline: 'Unlock The World With Education',
     learningCenter: 'Learning Center',
+    dashboard: 'Dashboard',
   },
   auth: {
     masuk: 'Sign in',

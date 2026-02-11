@@ -14,11 +14,9 @@
  * - POST   /packages/:packageId/lessons/:lessonOrder/generate-ai → generate soal dengan AI
  *
  * User Learn (Langganan → Mulai Belajar → video + pertemuan + Soal + Penjelasan AI):
- * - GET    /packages/:packageId/lessons/:lessonOrder/assignment → ambil soal (pilihan ganda + esai)
- *
- * Submissions (User menjawab soal, dapat feedback AI):
- * - POST   /submissions                      → kirim jawaban 1 soal (MCQ + Esai), dapat aiScore + aiFeedback
- * - GET    /submissions/my/subs             → lihat riwayat submissions user (grouped by lesson)
+ * - GET    /userprogress/my-progress/:packageId  → narik soal (lessons + assignment)
+ * - POST   /submissions                          → jawab soal (packageId, lessonOrder, questionIndex, userAnswer)
+ * - GET    /submissions/my/subs                  → history jawaban user (grouped by Lesson Q1, Q2, ...)
  */
 
 export const packageEndpoints = {

@@ -20,7 +20,7 @@
               @click="currentIndex = n - 1"
             />
           </div>
-          <q-btn flat no-caps label="&larr; Home" class="q-mt-md" :to="backToLearnRoute" />
+          <q-btn flat no-caps label="← Home" class="q-mt-md" :to="backToLearnRoute" />
         </q-card>
       </div>
 
@@ -34,6 +34,7 @@
             <div class="text-body1 text-grey-9 q-mb-lg">
               {{ questionText }}
             </div>
+
             <!-- Pilihan Ganda -->
             <template v-if="isPilihanGanda">
               <div
@@ -47,6 +48,7 @@
                 {{ opt.text || opt }}
               </div>
             </template>
+
             <!-- Esai -->
             <template v-else>
               <q-input
@@ -59,7 +61,7 @@
               />
             </template>
 
-            <!-- Penjelasan AI (selalu muncul di bawah soal setelah submit) -->
+            <!-- Penjelasan AI (selalu muncul setelah submit) -->
             <div v-if="penjelasan" class="penjelasan-box q-pa-md q-mt-xl rounded-borders">
               <div class="text-subtitle2 text-weight-bold q-mb-xs">Penjelasan</div>
               <div class="text-body2 text-grey-8" style="white-space: pre-line">
@@ -104,7 +106,6 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { api } from 'src/boot/axios'
 import { useQuasar } from 'quasar'
-import { submissionEndpoints } from 'src/api/endpoints'
 
 const $q = useQuasar()
 const route = useRoute()
@@ -116,19 +117,18 @@ const lessonOrder = computed(() => route.params.order)
 const loadingSoal = ref(true)
 const submitting = ref(false)
 const soalList = ref([])
-const multipleChoiceCount = ref(0)
 const currentIndex = ref(0)
 const selectedOption = ref(null)
 const jawabanEsai = ref('')
 const penjelasan = ref('')
-const isJawabanBenar = ref(null) // true / false / null
+const isJawabanBenar = ref(null)
 const correctOptionIndex = ref(null)
 
-const totalSoal = computed(() => (soalList.value.length ? soalList.value.length : 1))
-const currentSoal = computed(() => soalList.value[currentIndex.value])
+const totalSoal = computed(() => soalList.value.length || 1)
+const currentSoal = computed(() => soalList.value[currentIndex.value] || {})
 
 const questionText = computed(() => {
-  const q = currentSoal.value || {}
+  const q = currentSoal.value
   return (
     q.question ||
     q.pertanyaan ||
@@ -143,7 +143,7 @@ const questionText = computed(() => {
 const isPilihanGanda = computed(() => {
   const t = currentSoal.value?.type ?? currentSoal.value?.tipe ?? currentSoal.value?.questionType
   const lower = String(t || '').toLowerCase()
-  if (!lower) return true // default ke pilihan ganda
+  if (!lower) return true
   return (
     lower.includes('pilihan') ||
     lower.includes('ganda') ||
@@ -156,26 +156,25 @@ const isPilihanGanda = computed(() => {
 const tipeSoalLabel = computed(() => (isPilihanGanda.value ? 'Pilihan Ganda' : 'Pilihan Essai'))
 
 const options = computed(() => {
-  const s = currentSoal.value || {}
+  const s = currentSoal.value
   const opts =
     s.options ?? s.choices ?? s.opsi ?? s.answers ?? s.jawaban ?? s.pilihan ?? s.answerOptions
   return Array.isArray(opts) ? opts : []
 })
-const isLastSoal = computed(() => currentIndex.value >= totalSoal.value - 1 && totalSoal.value > 0)
+
+const isLastSoal = computed(() => currentIndex.value >= totalSoal.value - 1)
 
 const backToLearnRoute = computed(() => ({
   name: 'UserLearnLesson',
   params: { packageId: packageId.value, order: lessonOrder.value },
 }))
 
+// Class untuk option
 function optionClass(i) {
-  // Sebelum submit: hanya highlight pilihan user
   if (!penjelasan.value) {
-    if (selectedOption.value === i) return 'option-selected'
-    return 'option-default'
+    return selectedOption.value === i ? 'option-selected' : 'option-default'
   }
 
-  // Setelah ada penjelasan AI: mirip desain mockup (hijau untuk benar, merah untuk salah)
   if (isJawabanBenar.value === false && selectedOption.value === i) {
     return 'option-wrong'
   }
@@ -198,223 +197,137 @@ async function fetchSoal() {
   if (!packageId.value || !lessonOrder.value) return
   loadingSoal.value = true
   try {
-    // Ambil dari endpoint User Progress: /userprogress/my-progress/:packageId
     const res = await api.get(`/userprogress/my-progress/${packageId.value}`)
     const body = res.data ?? {}
     const data = body.data ?? body
 
     let questions = []
 
-    // 1. Coba ambil dari daftar lesson yang dikembalikan oleh my-progress
-    const lessons =
-      data.lessons ??
-      data.package?.lessons ??
-      data.packageDetail?.lessons ??
-      data.course?.lessons ??
-      []
+    // Parse lessons dari my-progress
+    const lessons = data.lessons ?? data.package?.lessons ?? []
+    const targetLesson =
+      lessons.find(
+        (l) =>
+          String(l.order ?? l.lessonOrder ?? l.pertemuan ?? l.sequence) ===
+          String(lessonOrder.value),
+      ) ?? lessons[0]
 
-    if (Array.isArray(lessons) && lessons.length) {
-      const targetLesson =
-        lessons.find(
-          (l) =>
-            String(l.order ?? l.lessonOrder ?? l.pertemuan ?? l.sequence) ===
-            String(lessonOrder.value),
-        ) ?? lessons[0]
-
-      if (targetLesson) {
-        const assignment =
-          targetLesson.assignment ??
-          targetLesson.assignments ??
-          targetLesson.questions ??
-          targetLesson.soal ??
-          targetLesson.questionList
-
-        // Struktur baru dari my-progress:
-        // assignment: {
-        //   multipleChoice: [ { question, options, correctAnswer, ... } ],
-        //   essays: [ { question, wordLimit, ... } ],
-        //   ...
-        // }
-        if (assignment && !Array.isArray(assignment) && typeof assignment === 'object') {
-          const mc = Array.isArray(assignment.multipleChoice)
-            ? assignment.multipleChoice.map((q) => ({
-                ...q,
-                type: q.type || q.questionType || 'multiple_choice',
-              }))
-            : []
-
-          const essays = Array.isArray(assignment.essays)
-            ? assignment.essays.map((q) => ({
-                ...q,
-                type: q.type || q.questionType || 'essay',
-              }))
-            : []
-
-          questions = [...mc, ...essays]
-          multipleChoiceCount.value = mc.length
-        } else if (Array.isArray(assignment)) {
-          questions = assignment
-          multipleChoiceCount.value = questions.filter((q) =>
-            /pilihan|ganda|mcq|multiple|pg/i.test(String(q?.type ?? q?.questionType ?? '')),
-          ).length
-        } else if (assignment) {
-          questions = [assignment]
-          multipleChoiceCount.value = 0
-        }
+    if (targetLesson) {
+      const assignment =
+        targetLesson.assignment ?? targetLesson.assignments ?? targetLesson.questions
+      if (assignment) {
+        const essays = (assignment.essays ?? []).map((q) => ({ ...q, type: 'essay' }))
+        const multipleChoice = (assignment.multipleChoice ?? []).map((q) => ({
+          ...q,
+          type: 'multiple_choice',
+        }))
+        // Urutan: essays dulu (questionIndex 0, 1...), lalu multipleChoice
+        questions = [...essays, ...multipleChoice]
       }
     }
 
-    // 2. Jika belum ketemu, coba dari field tingkat root (mis. currentQuestion)
-    if (!questions.length) {
-      const q =
-        data.currentQuestion ??
-        data.current_question ??
-        data.question ??
-        data.soal ??
-        data.assignment
-
-      if (q) {
-        questions = Array.isArray(q) ? q : [q]
-      }
-    }
-
-    soalList.value = questions
-
-    if (!soalList.value.length) {
-      multipleChoiceCount.value = 1
-      soalList.value = [
-        {
-          question:
-            'Contoh soal (endpoint /userprogress/my-progress/:packageId belum mengembalikan daftar soal).',
-          type: 'pilihan_ganda',
-          options: ['Pilihan A', 'Pilihan B', 'Pilihan C', 'Pilihan D'],
-        },
-      ]
-    }
+    soalList.value = questions.length
+      ? questions
+      : [
+          {
+            question: 'Contoh soal (data belum tersedia)',
+            type: 'pilihan_ganda',
+            options: ['Pilihan A', 'Pilihan B', 'Pilihan C', 'Pilihan D'],
+          },
+        ]
   } catch (e) {
     $q.notify({ type: 'negative', message: e.response?.data?.message || 'Gagal memuat soal.' })
     soalList.value = []
-    multipleChoiceCount.value = 0
   } finally {
     loadingSoal.value = false
   }
 }
 
 async function onNext() {
-  // Pertama kali klik: kirim jawaban & tampilkan penjelasan AI untuk soal saat ini
   if (!penjelasan.value) {
     await submitDanLihatPenjelasan()
     return
   }
 
-  // Kalau penjelasan sudah tampil: pindah ke soal berikutnya / selesai
   if (isLastSoal.value) {
     router.push(backToLearnRoute.value)
     return
   }
 
+  // Next soal - reset state
   currentIndex.value = Math.min(currentIndex.value + 1, totalSoal.value - 1)
-  selectedOption.value = null
-  jawabanEsai.value = ''
-  penjelasan.value = ''
-  isJawabanBenar.value = null
-  correctOptionIndex.value = null
 }
 
 async function submitDanLihatPenjelasan() {
   submitting.value = true
+
   try {
-    // Validasi jawaban sebelum submit
+    // Validasi jawaban
     if (isPilihanGanda.value && selectedOption.value === null) {
-      $q.notify({ type: 'warning', message: 'Silakan pilih salah satu jawaban terlebih dahulu.' })
-      submitting.value = false
+      $q.notify({ type: 'warning', message: 'Silakan pilih salah satu jawaban!' })
       return
     }
     if (!isPilihanGanda.value && !jawabanEsai.value.trim()) {
-      $q.notify({ type: 'warning', message: 'Silakan isi jawaban esai terlebih dahulu.' })
-      submitting.value = false
+      $q.notify({ type: 'warning', message: 'Silakan isi jawaban esai!' })
       return
     }
 
-    const opt = options.value[selectedOption.value]
-    const mcqAnswer =
-      opt != null
-        ? typeof opt === 'object'
-          ? (opt.value ?? opt.text ?? selectedOption.value)
-          : opt
-        : selectedOption.value
-
-    const typeSpecificIndex = isPilihanGanda.value
-      ? currentIndex.value
-      : currentIndex.value - multipleChoiceCount.value
-
+    // ✅ Payload sesuai API: essays = questionIndex 0,1... lalu MCQ
     const payload = {
       packageId: packageId.value,
-      lessonOrder: lessonOrder.value,
-      questionIndex: typeSpecificIndex,
-      questionType: isPilihanGanda.value ? 'multiple_choice' : 'essay',
-      userAnswer: isPilihanGanda.value ? mcqAnswer : jawabanEsai.value,
+      lessonOrder: Number(lessonOrder.value) || 1,
+      questionIndex: currentIndex.value, // 0-based: essay dulu, lalu pilihan ganda
+      userAnswer: isPilihanGanda.value
+        ? String(selectedOption.value) // "0" = A, "1" = B, dst
+        : jawabanEsai.value.trim(), // Text essay
     }
 
-    const res = await api.post(submissionEndpoints.create, payload)
-    const body = res.data ?? {}
-    const submission = body.submission ?? body.data?.submission ?? body.data ?? body
+    console.log('[Submit] Payload:', payload)
 
+    // ✅ ENDPOINT SESUAI: /api/submissions/
+    const res = await api.post('/submissions/', payload)
+    const data = res.data ?? {}
+
+    console.log('[Submit] Response:', data)
+
+    // Parse penjelasan dari response
     const rawPenjelasan =
-      submission?.aiFeedback ??
-      submission?.ai_feedback ??
-      submission?.explanation ??
-      submission?.penjelasan ??
-      ''
-    const essayGetsMcqFeedback = /jawaban benar[.:]\s*[a-d]/i.test(rawPenjelasan.trim())
-    const isInvalid =
-      /auto-save success/i.test(rawPenjelasan) ||
-      (isPilihanGanda.value === false && essayGetsMcqFeedback) ||
-      (isPilihanGanda.value === false &&
-        rawPenjelasan.trim().length < 20 &&
-        /salah|benar/i.test(rawPenjelasan))
-    penjelasan.value =
-      rawPenjelasan && !isInvalid ? rawPenjelasan : 'Penjelasan dari AI akan muncul di sini.'
+      data.aiFeedback ??
+      data.ai_feedback ??
+      data.explanation ??
+      data.penjelasan ??
+      data.message ??
+      'Penjelasan dari AI akan muncul di sini.'
 
+    penjelasan.value = rawPenjelasan
+
+    // Parse feedback untuk pilihan ganda
     if (isPilihanGanda.value) {
-      const localCorrect =
-        currentSoal.value?.correctAnswer ??
-        currentSoal.value?.jawabanBenar ??
-        currentSoal.value?.correctIndex
-      correctOptionIndex.value =
-        typeof localCorrect === 'number' && localCorrect >= 0 ? localCorrect : null
+      const correctAnswer = currentSoal.value?.correctAnswer ?? currentSoal.value?.jawabanBenar
+      correctOptionIndex.value = typeof correctAnswer === 'number' ? correctAnswer : null
       isJawabanBenar.value =
         correctOptionIndex.value !== null && selectedOption.value === correctOptionIndex.value
-    } else {
-      const explicitCorrect = submission?.isCorrect ?? submission?.benar ?? submission?.correct
-      if (typeof explicitCorrect === 'boolean') {
-        isJawabanBenar.value = explicitCorrect
-      } else if (typeof submission?.aiScore === 'number') {
-        const score = submission.aiScore
-        isJawabanBenar.value = score >= 60 || score >= 0.6
-      } else {
-        isJawabanBenar.value = null
-      }
-      correctOptionIndex.value = null
     }
-  } catch (e) {
+  } catch (error) {
+    console.error('[Submit] Error:', error)
     $q.notify({
       type: 'negative',
-      message: e.response?.data?.message || 'Gagal mengirim jawaban.',
+      message: error.response?.data?.message || 'Gagal mengirim jawaban.',
     })
-    penjelasan.value = 'Terjadi kesalahan saat memuat penjelasan AI.'
+    penjelasan.value = 'Terjadi kesalahan saat memuat penjelasan.'
   } finally {
     submitting.value = false
   }
 }
 
+// Watch untuk load soal
 watch(
   () => [packageId.value, lessonOrder.value],
   () => fetchSoal(),
   { immediate: true },
 )
 
-// Reset state ketika pindah nomor soal
+// Reset state saat pindah soal
 watch(currentIndex, () => {
   selectedOption.value = null
   jawabanEsai.value = ''
@@ -429,10 +342,7 @@ watch(currentIndex, () => {
   border-radius: 16px;
   border: 1.5px solid #e2e8f0;
   background: #f9fafb;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 .option-default:hover {
   border-color: #cbd5f5;

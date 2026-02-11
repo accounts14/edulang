@@ -73,7 +73,11 @@
             Ringkasan Pembayaran
           </div>
           <div class="text-caption text-grey-7 q-mb-md">
-            Periksa kembali detail pembayaranmu sebelum melanjutkan ke Midtrans.
+            {{
+              priceDisplay === 'Rp 0'
+                ? 'Kelas gratis! Langsung akses materi.'
+                : 'Periksa kembali detail pembayaranmu sebelum melanjutkan ke Midtrans.'
+            }}
           </div>
 
           <q-separator spaced />
@@ -105,7 +109,7 @@
             unelevated
             no-caps
             class="full-width q-py-sm text-weight-bold q-mt-sm"
-            label="Buy Now"
+            :label="priceDisplay === 'Rp 0' ? 'Akses Gratis' : 'Buy Now'"
             :loading="processing"
             @click="handleBuy"
           />
@@ -207,42 +211,78 @@ async function handleBuy() {
       return
     }
 
-    // POST sesuai endpoint: body { package: "<packageId>" }
-    const payload = { package: packageId }
+    // POST ke endpoint - backend handle semua logic
+    const payload = {
+      package: packageId,
+      buyer_name: buyer.value.name,
+      buyer_email: buyer.value.email,
+    }
+
     const res = await api.post('/transactions', payload)
     const data = res.data || {}
 
-    if (!data.success) {
-      throw new Error(data.message || 'Transaksi gagal.')
-    }
+    console.log('[BuyCourse] Response:', data) // Debug log
 
-    const redirectUrl = data.redirectUrl || data.redirect_url
-    if (redirectUrl) {
-      if (data.message) {
-        $q.notify({ type: 'positive', message: data.message })
+    // ✅ SUCCESS CHECK - Handle semua kemungkinan response
+    if (data.success || data.message) {
+      // Free package success atau generic success
+      if (
+        course.value?.price === 0 ||
+        data.message?.toLowerCase().includes('gratis') ||
+        data.message?.toLowerCase().includes('berhasil')
+      ) {
+        $q.notify({
+          type: 'positive',
+          message: data.message || 'Package berhasil diakses!',
+        })
+        router.push(`/dashboard/learn/${packageId}`)
+        return
       }
-      window.location.href = redirectUrl
+
+      // Midtrans redirect URL
+      const redirectUrl = data.redirectUrl || data.redirect_url
+      if (redirectUrl) {
+        if (data.message) {
+          $q.notify({ type: 'positive', message: data.message })
+        }
+        window.location.href = redirectUrl
+        return
+      }
+
+      // Midtrans Snap Token
+      const snapToken = data.snapToken || data.snap_token
+      if (
+        snapToken &&
+        typeof window.snap !== 'undefined' &&
+        typeof window.snap.pay === 'function'
+      ) {
+        if (data.message) {
+          $q.notify({ type: 'positive', message: data.message })
+        }
+        window.snap.pay(snapToken)
+        return
+      }
+
+      // Generic success - redirect ke dashboard
+      $q.notify({
+        type: 'positive',
+        message: data.message || 'Transaksi berhasil diproses!',
+      })
+      router.push('/dashboard')
       return
     }
 
-    const snapToken = data.snapToken || data.snap_token
-    if (snapToken && typeof window.snap !== 'undefined' && typeof window.snap.pay === 'function') {
-      if (data.message) {
-        $q.notify({ type: 'positive', message: data.message })
-      }
-      window.snap.pay(snapToken)
-      return
-    }
-
-    throw new Error('Respons tidak berisi redirectUrl atau snapToken.')
+    // Error dari backend
+    throw new Error(data.message || data.error || 'Transaksi gagal.')
   } catch (error) {
     console.error('[BuyCourse] transaksi gagal', error)
     $q.notify({
       type: 'negative',
       message:
         error.response?.data?.message ||
+        error.response?.data?.error ||
         error.message ||
-        'Gagal memulai pembayaran. Silakan coba lagi atau hubungi admin.',
+        'Gagal memproses transaksi. Silakan coba lagi.',
     })
   } finally {
     processing.value = false
