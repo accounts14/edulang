@@ -128,10 +128,10 @@ const nameToCode = {
   english: 'US',
   jepang: 'JP',
   japanese: 'JP',
-  korea: 'KR',
-  korean: 'KR',
   mandarin: 'CN',
   chinese: 'CN',
+  korea: 'KR',
+  korean: 'KR',
   'bahasa arab': 'SA',
   'bahasa jerman': 'DE',
   'bahasa inggris': 'US',
@@ -147,10 +147,10 @@ const nameToNative = {
   english: 'English',
   jepang: '日本語',
   japanese: '日本語',
-  korea: '한국어',
-  korean: '한국어',
   mandarin: '中文',
   chinese: '中文',
+  korea: '한국어',
+  korean: '한국어',
 }
 
 function getCode(name) {
@@ -172,7 +172,7 @@ function getNativeText(name) {
 }
 
 const floatingLanguages = computed(() =>
-  languages.value.slice(0, 4).map((l) => ({
+  languages.value.slice(1, 6).map((l) => ({
     id: l._id || l.id,
     name: l.name || l.label,
     code: l.code || getCode(l.name || l.label),
@@ -259,7 +259,7 @@ onMounted(async () => {
 
 .hero-title {
   color: var(--edulang-black, #2d2d2d);
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
   line-height: 1.2;
   margin-top: 0 !important;
   margin-bottom: 1rem;
@@ -398,6 +398,9 @@ onMounted(async () => {
 .hero-float-bubble-animated.hero-float-bubble-3 {
   animation-delay: 0.9s;
 }
+.hero-float-bubble-animated.hero-float-bubble-4 {
+  animation-delay: 1.1s;
+}
 
 .hero-float-bubble {
   position: absolute;
@@ -452,6 +455,10 @@ onMounted(async () => {
 .hero-float-bubble-3 {
   top: 28%;
   left: 2%;
+}
+.hero-float-bubble-4 {
+  bottom: 35%;
+  right: 5%;
 }
 
 .hero-bottom-section {
@@ -656,6 +663,10 @@ onMounted(async () => {
     top: 25%;
     left: 5%;
     min-width: 70px;
+  }
+  .hero-float-bubble-4 {
+    bottom: 15%;
+    right: 2%;
   }
 }
 

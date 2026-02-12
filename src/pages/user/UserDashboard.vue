@@ -1,30 +1,35 @@
 <template>
-  <q-page class="user-dashboard-page q-pa-lg q-pa-md-xl">
-    <div class="q-mb-xl">
-      <h1 class="text-h4 text-weight-bolder text-edulang-navy q-mb-xs">
+  <q-page class="user-dashboard-page q-pa-md">
+    <div class="q-mb-lg q-ml-xs">
+      <div class="text-h5 text-weight-bold text-edulang-navy">
         Selamat Datang di, <span class="text-edulang-blue">Edulang</span>
-      </h1>
-      <p class="text-body1 text-grey-7 max-width-600">
-        Platform literasi bahasa dengan kurikulum berstandar internasional dan dukungan sertifikasi
-        resmi.
+      </div>
+      <p class="text-body2 text-grey-7 q-mb-none">
+        Platform literasi bahasa dengan kurikulum berstandar internasional.
       </p>
     </div>
 
-    <div class="row q-col-gutter-lg q-mb-xl">
+    <div class="row q-col-gutter-md q-mb-lg">
       <div v-for="(stat, index) in summaryData" :key="index" class="col-12 col-sm-4">
-        <q-card flat class="summary-card rounded-20 shadow-soft" :class="stat.borderClass">
-          <q-card-section class="row items-center no-wrap">
-            <div :class="`icon-box ${stat.bgClass} q-mr-md`">
-              <q-icon :name="stat.icon" size="32px" :color="stat.color" />
+        <q-card
+          flat
+          class="stat-card-custom rounded-12 shadow-subtle"
+          :style="{ borderLeft: `6px solid ${stat.borderColor}` }"
+        >
+          <q-card-section class="row items-center no-wrap q-pa-md">
+            <div :class="`icon-box-md ${stat.bgClass} q-mr-md`">
+              <q-icon :name="stat.icon" size="24px" :style="{ color: stat.borderColor }" />
             </div>
             <div>
               <div
-                class="text-caption text-grey-7 text-uppercase text-weight-bold letter-spacing-1"
+                class="text-grey-7 text-weight-bold text-uppercase letter-spacing-1"
+                style="font-size: 11px"
               >
                 {{ stat.label }}
               </div>
-              <div class="text-h5 text-weight-bolder text-edulang-navy">
-                {{ stat.value }} Course
+              <div class="text-h6 text-weight-bolder text-edulang-navy line-height-tight">
+                {{ stat.value }}
+                <span class="text-subtitle2 text-weight-medium text-grey-6">Course</span>
               </div>
             </div>
           </q-card-section>
@@ -32,109 +37,98 @@
       </div>
     </div>
 
-    <div class="row q-col-gutter-xl">
-      <div class="col-12 col-lg-7">
-        <q-card flat class="rounded-20 bg-white shadow-soft full-height">
-          <q-card-section class="q-pa-lg">
-            <div class="row items-center justify-between q-mb-xl">
-              <div class="row items-center">
-                <div class="accent-bar q-mr-md"></div>
-                <div>
-                  <div class="text-h6 text-weight-bolder text-edulang-navy">Course Saya</div>
-                  <div class="text-caption text-grey-6">Lanjutkan pembelajaran Anda</div>
-                </div>
+    <div class="row q-col-gutter-md">
+      <div class="col-12 col-md-8">
+        <q-card flat class="rounded-16 bg-white shadow-subtle q-pa-md full-height">
+          <div class="row items-center justify-between q-mb-md q-px-xs">
+            <div class="row items-center">
+              <div class="accent-bar q-mr-md"></div>
+              <div>
+                <div class="text-subtitle1 text-weight-bolder text-edulang-navy">Course Saya</div>
+                <div class="text-caption text-grey-6">Lanjutkan pembelajaran Anda</div>
               </div>
-              <q-btn
-                flat
-                no-caps
-                color="primary"
-                label="Lihat Semua"
-                :to="{ path: '/dashboard/langganan' }"
-                icon-right="arrow_forward"
-                class="rounded-12"
-              />
             </div>
+            <q-btn
+              flat
+              dense
+              no-caps
+              color="primary"
+              label="Lihat Semua"
+              icon-right="arrow_forward"
+              to="/dashboard/langganan"
+            />
+          </div>
 
-            <div v-if="loading" class="q-pa-xl text-center">
-              <q-spinner-ring color="primary" size="40px" />
-            </div>
+          <div v-if="loading" class="q-pa-lg text-center">
+            <q-spinner-dots color="primary" size="30px" />
+          </div>
 
+          <div v-else class="q-px-xs">
             <div
-              v-else-if="myCourses.length === 0"
-              class="text-grey-7 text-body2 q-pa-xl text-center border-dashed rounded-16"
+              v-for="(item, idx) in myCoursesWithProgress.slice(0, 3)"
+              :key="item._id || idx"
+              class="row items-center q-mb-md no-wrap"
             >
-              <q-icon name="history_edu" size="48px" color="grey-4" class="q-mb-sm" />
-              <div>Belum ada course terdaftar. Yuk, cari kelas baru!</div>
-            </div>
-
-            <div v-else>
-              <div
-                v-for="(item, idx) in myCoursesWithProgress.slice(0, 3)"
-                :key="item._id || idx"
-                class="row items-center q-mb-lg course-row transition-base"
-              >
-                <q-img
-                  :src="getThumbnail(item)"
-                  ratio="1"
-                  class="course-thumb rounded-16 shadow-subtle"
-                  style="width: 85px; min-width: 85px"
-                />
-                <div class="col q-ml-lg">
-                  <div class="text-weight-bolder text-subtitle1 text-edulang-navy q-mb-xs">
-                    {{ item.title || item.name }}
-                  </div>
-                  <div class="row items-center no-wrap">
-                    <div class="col">
-                      <q-linear-progress
-                        :value="item.progress !== undefined ? item.progress / 100 : 1"
-                        size="10px"
-                        color="primary"
-                        track-color="blue-1"
-                        class="rounded-borders"
-                      />
-                    </div>
-                    <div class="text-caption text-weight-bold text-primary q-ml-md">
-                      {{ Math.round(item.progress ?? 0) }}%
-                    </div>
+              <q-img
+                :src="getThumbnail(item)"
+                class="rounded-12 shadow-sm"
+                style="width: 56px; height: 56px; flex-shrink: 0"
+                fit="cover"
+              />
+              <div class="col q-ml-md">
+                <div class="text-subtitle2 text-weight-bold text-edulang-navy ellipsis">
+                  {{ item.title || item.name }}
+                </div>
+                <div class="row items-center no-wrap q-mt-xs">
+                  <q-linear-progress
+                    :value="item.progress / 100"
+                    size="8px"
+                    rounded
+                    color="primary"
+                    track-color="blue-1"
+                    class="col"
+                  />
+                  <div
+                    class="text-weight-bold text-primary q-ml-md"
+                    style="min-width: 40px; text-align: right"
+                  >
+                    {{ Math.round(item.progress) }}%
                   </div>
                 </div>
               </div>
             </div>
-          </q-card-section>
+          </div>
         </q-card>
       </div>
 
-      <div class="col-12 col-lg-5">
+      <div class="col-12 col-md-4">
         <q-card
           flat
-          class="rounded-20 bg-edulang-navy text-white shadow-navy overflow-hidden relative-position full-height"
+          class="stats-card-dark rounded-16 text-white overflow-hidden full-height relative-position shadow-subtle"
         >
-          <div class="abs-decor"></div>
-
-          <q-card-section class="q-pa-lg relative-position">
-            <div class="row items-center q-mb-xl">
-              <q-icon name="insights" size="24px" class="q-mr-sm text-edulang-yellow" />
-              <div class="text-h6 text-weight-bolder">Statistik Progres</div>
+          <div class="circle-decor-1"></div>
+          <q-card-section class="q-pa-lg column flex-center full-height">
+            <div class="row items-center self-start q-mb-md full-width">
+              <q-icon name="insights" size="20px" class="q-mr-sm text-yellow-8" />
+              <div class="text-subtitle1 text-weight-bold">Statistik Progres</div>
             </div>
 
-            <div class="flex flex-center q-pa-md">
-              <q-circular-progress
-                show-value
-                :value="progressPercent"
-                size="200px"
-                :thickness="0.15"
-                color="edulang-yellow"
-                track-color="blue-9"
-                class="text-white text-weight-bolder"
-              >
-                <div class="column items-center">
-                  <div class="text-h4">{{ Math.round(progressPercent) }}%</div>
-                  <div class="text-caption text-blue-2">Rata-rata</div>
-                </div>
-              </q-circular-progress>
-            </div>
+            <q-circular-progress
+              show-value
+              :value="progressPercent"
+              size="130px"
+              :thickness="0.18"
+              color="orange-5"
+              track-color="white-opacity"
+              class="text-white text-weight-bolder"
+            >
+              <div class="column items-center">
+                <div class="text-h4 q-mb-none">{{ Math.round(progressPercent) }}%</div>
+                <div class="text-caption text-blue-2">Rata-rata</div>
+              </div>
+            </q-circular-progress>
 
-            <div class="text-center q-mt-lg text-blue-2 text-body2">
+            <div class="text-center q-mt-lg text-blue-1 text-caption" style="line-height: 1.4">
               Terus tingkatkan untuk meraih sertifikat internasional!
             </div>
           </q-card-section>
@@ -150,50 +144,39 @@ import { useMyCourses } from 'src/composables/useMyCourses'
 
 const { loading, myCourses, fetchData } = useMyCourses()
 
-// Gabungkan semua logic stats dan summaryData di sini agar tidak konflik
 const stats = computed(() => {
   const total = myCourses.value.length
   const aktif = myCourses.value.filter((c) => (c.progress || 0) < 100).length
   const selesai = myCourses.value.filter((c) => (c.progress || 0) >= 100).length
-  return {
-    courseAktif: aktif || 0,
-    courseTerdaftar: total || 0,
-    courseSelesai: selesai || 0,
-  }
+  return { aktif, total, selesai }
 })
 
 const summaryData = computed(() => [
   {
-    label: 'Course Aktif',
-    value: stats.value.courseAktif,
-    icon: 'business',
-    color: 'primary',
+    label: 'Aktif',
+    value: stats.value.aktif,
+    icon: 'play_circle_filled',
+    borderColor: '#0089ff',
     bgClass: 'bg-blue-1',
-    borderClass: 'border-blue',
   },
   {
     label: 'Terdaftar',
-    value: stats.value.courseTerdaftar,
-    icon: 'folder',
-    color: 'warning',
+    value: stats.value.total,
+    icon: 'collections_bookmark',
+    borderColor: '#ffb300',
     bgClass: 'bg-orange-1',
-    borderClass: 'border-yellow',
   },
   {
-    label: 'Telah Selesai',
-    value: stats.value.courseSelesai,
-    icon: 'check_circle',
-    color: 'primary',
-    bgClass: 'bg-blue-1',
-    borderClass: 'border-blue',
+    label: 'Selesai',
+    value: stats.value.selesai,
+    icon: 'stars',
+    borderColor: '#00c853',
+    bgClass: 'bg-green-1',
   },
 ])
 
 const myCoursesWithProgress = computed(() =>
-  myCourses.value.map((p, i) => ({
-    ...p,
-    progress: p.progress ?? (i === 0 ? 100 : 60),
-  })),
+  myCourses.value.map((p) => ({ ...p, progress: p.progress ?? 0 })),
 )
 
 const progressPercent = computed(() => {
@@ -205,7 +188,7 @@ const progressPercent = computed(() => {
 function getThumbnail(pkg) {
   if (pkg?.introVideoUrl) return pkg.introVideoUrl
   if (pkg?.thumbnail || pkg?.imageUrl) return pkg.thumbnail || pkg.imageUrl
-  return 'https://placehold.co/120x120?text=Edulang'
+  return 'https://placehold.co/100x100?text=ED'
 }
 
 onMounted(() => {
@@ -214,109 +197,73 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Edulang Brand Colors */
+.user-dashboard-page {
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
 .text-edulang-navy {
   color: #003387;
 }
 .text-edulang-blue {
   color: #0089ff;
 }
-.bg-edulang-navy {
-  background-color: #003387;
-}
-.bg-edulang-yellow {
-  background-color: #ffc42c;
+.white-opacity {
+  color: rgba(255, 255, 255, 0.15);
 }
 
-.user-dashboard-page {
-  background: #f8fafc; /* White-Grey background */
-  min-height: 100vh;
-}
-
-/* Card Improvements */
-.summary-card {
-  background: #ffffff;
+/* Card Styling */
+.stat-card-custom {
+  background: white;
+  transition: transform 0.2s;
   border: 1px solid #edf2f7;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-.summary-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 20px rgba(0, 51, 135, 0.08);
 }
 
-.border-blue {
-  border-left: 6px solid #0089ff;
-}
-.border-yellow {
-  border-left: 6px solid #ffc42c;
-}
-
-.icon-box {
-  width: 56px;
-  height: 56px;
+.icon-box-md {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
 }
 
-/* Utilities */
-.rounded-20 {
-  border-radius: 20px;
+.shadow-subtle {
+  box-shadow: 0 4px 15px rgba(0, 51, 135, 0.06);
+}
+
+.accent-bar {
+  width: 4px;
+  height: 28px;
+  background: #0089ff;
+  border-radius: 4px;
+}
+
+/* Progress Chart Card */
+.stats-card-dark {
+  background: linear-gradient(135deg, #003387 0%, #00235a 100%);
+}
+
+.circle-decor-1 {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+}
+
+.line-height-tight {
+  line-height: 1.1;
+}
+.letter-spacing-1 {
+  letter-spacing: 0.8px;
 }
 .rounded-16 {
   border-radius: 16px;
 }
 .rounded-12 {
   border-radius: 12px;
-}
-
-.accent-bar {
-  width: 6px;
-  height: 38px;
-  background: #0089ff;
-  border-radius: 10px;
-}
-
-.shadow-soft {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-}
-.shadow-subtle {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
-.shadow-navy {
-  box-shadow: 0 15px 35px rgba(0, 51, 135, 0.25);
-}
-
-.letter-spacing-1 {
-  letter-spacing: 1px;
-}
-.max-width-600 {
-  max-width: 600px;
-}
-
-.course-row:hover .course-thumb {
-  transform: scale(1.05);
-}
-.transition-base {
-  transition: all 0.3s ease;
-}
-
-/* Dashboard Accent Shape */
-.abs-decor {
-  position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 180px;
-  height: 180px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 50%;
-  z-index: 0;
-}
-
-.border-dashed {
-  border: 2px dashed #e2e8f0;
 }
 </style>

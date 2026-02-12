@@ -1,53 +1,41 @@
 <template>
-  <div class="wa-widget">
-    <!-- Floating WhatsApp Button -->
+  <div class="wa-widget-container">
     <transition name="fade">
-      <button
-        v-if="!open"
-        class="wa-fab"
-        type="button"
-        aria-label="Konsultasi Kelas via WhatsApp"
-        @click="open = true"
-      >
-        <q-icon name="fab fa-whatsapp" class="q-mr-xs" />
-        <span>Konsultasi</span>
+      <button v-if="!open" class="wa-fab-mini" @click="open = true" aria-label="Chat WhatsApp">
+        <q-icon name="fab fa-whatsapp" size="24px" />
+        <div class="notification-dot"></div>
       </button>
     </transition>
 
-    <!-- Popup Chat -->
-    <transition name="slide-up">
-      <div v-if="open" class="wa-popup shadow-4">
-        <div class="wa-popup-header row items-center q-pa-md">
-          <q-avatar size="32px" class="q-mr-sm">
-            <img src="~assets/favicon-128x128.png" alt="Edulang" />
-          </q-avatar>
-          <div>
-            <div class="text-subtitle2 text-weight-bold">Edulang Admin</div>
-            <div class="text-caption text-grey-6">Online</div>
+    <transition name="toast">
+      <div v-if="open" class="wa-notification-card shadow-10">
+        <div class="row no-wrap items-center q-pa-sm">
+          <div class="relative-position">
+            <q-avatar size="45px" class="bg-grey-2">
+              <img src="https://cdn.quasar.dev/img/avatar.png" />
+            </q-avatar>
+            <div class="status-indicator"></div>
           </div>
-          <q-space />
-          <q-btn dense flat round icon="close" size="sm" @click="open = false" />
-        </div>
 
-        <div class="wa-popup-body q-pa-md">
-          <div class="wa-bubble">
-            <div class="text-caption text-grey-8 q-mb-xs">Edulang Admin</div>
-            <div class="wa-bubble-content">
-              Do you need assistance? We're happy to help you today!
+          <div class="q-ml-md col">
+            <div class="row items-center justify-between">
+              <span class="text-weight-bold text-navy">Edulang Admin</span>
+              <q-btn icon="close" flat round dense size="xs" color="grey-6" @click="open = false" />
             </div>
-            <div class="text-right text-caption text-grey-5 q-mt-xs">09:19</div>
+            <p class="msg-preview q-ma-none text-grey-8">
+              Halo! Ada yang bisa kami bantu hari ini?
+            </p>
+            <q-btn
+              label="Balas di WhatsApp"
+              color="positive"
+              flat
+              no-caps
+              dense
+              class="q-mt-xs text-caption text-weight-bold"
+              icon="fab fa-whatsapp"
+              @click="goToContact"
+            />
           </div>
-        </div>
-
-        <div class="wa-popup-footer q-pa-md">
-          <q-btn
-            class="full-width text-weight-bold"
-            color="positive"
-            text-color="white"
-            no-caps
-            label="Konsultasi"
-            @click="goToContact"
-          />
         </div>
       </div>
     </transition>
@@ -56,78 +44,123 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 const open = ref(false)
-const router = useRouter()
+
+// Munculkan notifikasi otomatis setelah 5 detik (opsional)
+setTimeout(() => {
+  open.value = true
+}, 5000)
 
 function goToContact() {
-  router.push({ name: 'ContactPage' })
+  // Langsung ke WhatsApp atau halaman kontak
+  window.open('https://wa.me/628xxxxxx', '_blank')
 }
 </script>
 
 <style scoped>
-.wa-widget {
+.wa-widget-container {
   position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 2100;
+  right: 20px;
+  bottom: 30px; /* Jarak aman dari footer */
+  z-index: 9999;
+  pointer-events: none; /* Agar tidak menghalangi klik di area kosong */
 }
 
-.wa-fab {
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 16px;
-  border-radius: 999px;
+.wa-widget-container * {
+  pointer-events: auto; /* Aktifkan klik kembali untuk elemen di dalamnya */
+}
+
+/* FAB Kecil */
+.wa-fab-mini {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: white;
   border: none;
   cursor: pointer;
-  background-color: #25d366;
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
-.wa-popup {
+.notification-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #ff5252;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+/* Card ala Notifikasi */
+.wa-notification-card {
   width: 320px;
-  border-radius: 18px;
-  background: #ffffff;
+  background: white;
+  border-radius: 16px;
+  border-left: 5px solid #25d366;
+  padding: 8px;
   overflow: hidden;
 }
 
-.wa-popup-header {
-  background: #f5f7fb;
+.text-navy {
+  color: #003387;
+  font-size: 0.9rem;
 }
 
-.wa-bubble {
-  max-width: 100%;
+.msg-preview {
+  font-size: 0.85rem;
+  line-height: 1.3;
 }
 
-.wa-bubble-content {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 10px 12px;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
-  font-size: 13px;
+.status-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  background: #4caf50;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+/* Animasi ala Toast */
+.toast-enter-active {
+  animation: slide-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.toast-leave-active {
+  animation: slide-in 0.3s reverse ease-in;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s;
 }
-
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
 
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: all 0.25s ease;
-}
-
-.slide-up-enter-from,
-.slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(12px);
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .wa-notification-card {
+    width: calc(100vw - 40px);
+  }
 }
 </style>

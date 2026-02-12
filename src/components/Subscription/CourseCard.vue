@@ -1,55 +1,70 @@
 <template>
   <q-card
     flat
-    bordered
-    class="rounded-borders-16 bg-white course-card cursor-pointer"
+    class="course-card rounded-16 bg-white cursor-pointer shadow-subtle column full-height"
     @click="goToDetail"
   >
     <q-card-section class="q-pa-none">
-      <div class="thumb-wrap rounded-borders-16-top">
+      <div class="thumb-wrap">
         <IntroVideoThumbnail :course="course" />
         <div class="level-chip-overlay">
-          <q-chip
-            dense
-            color="white"
-            text-color="dark"
-            icon="signal_cellular_alt"
-            class="text-weight-bold"
-          >
+          <div class="custom-level-chip">
+            <span class="dot-indicator"></span>
             {{ levelInfo }}
-          </q-chip>
+          </div>
         </div>
       </div>
     </q-card-section>
-    <q-card-section>
-      <div class="text-caption text-orange-9 text-weight-bold q-mb-xs">{{ levelInfo }}</div>
-      <div class="text-h6 text-weight-bold ellipsis text-dark q-mb-xs">{{ title }}</div>
-      <div class="text-caption text-grey-7 ellipsis-2-lines q-mb-sm">{{ descriptionText }}</div>
 
-      <div class="row items-center q-mb-md">
-        <q-avatar size="24px" class="q-mr-sm">
-          <img src="https://cdn.quasar.dev/img/avatar.png" alt="" />
-        </q-avatar>
-        <div class="text-caption text-weight-medium text-grey-9">
-          {{ mentorName }}
+    <q-card-section class="q-pa-md col column justify-between">
+      <div class="col">
+        <div class="text-caption text-weight-bold text-blue-primary text-uppercase q-mb-xs">
+          {{ levelInfo }}
+        </div>
+
+        <div class="text-subtitle1 text-weight-bolder text-navy title-clamp q-mb-xs">
+          {{ title }}
+        </div>
+
+        <div class="text-caption text-grey-7 description-clamp q-mb-md">
+          {{ descriptionText }}
+        </div>
+
+        <div class="row items-center q-mb-lg">
+          <q-avatar
+            size="28px"
+            color="blue-1"
+            text-color="blue-primary"
+            class="q-mr-sm text-weight-bold"
+          >
+            <span v-if="!mentorAvatar">{{ mentorName.charAt(0) }}</span>
+            <img v-else :src="mentorAvatar" />
+          </q-avatar>
+          <div class="text-caption text-weight-medium text-grey-8">
+            {{ mentorName }}
+          </div>
         </div>
       </div>
 
-      <div class="row items-center justify-between">
-        <div class="price-text text-weight-bold">{{ priceDisplay }}</div>
-        <div class="row items-center rating-text">
-          <q-icon name="star" size="18px" />
-          <span class="q-ml-xs text-weight-medium">(4.8)</span>
+      <div>
+        <div class="row items-center justify-between q-mb-md">
+          <div class="text-subtitle1 text-weight-bolder text-blue-primary">
+            {{ priceDisplay }}
+          </div>
+          <div class="row items-center text-grey-8">
+            <q-icon name="star" color="orange-5" size="18px" />
+            <span class="q-ml-xs text-weight-medium text-caption">(4.8)</span>
+          </div>
         </div>
-      </div>
 
-      <q-btn
-        unelevated
-        class="btn-yellow full-width text-weight-bold no-caps q-mt-md"
-        label="Daftar Sekarang"
-        style="border-radius: 8px"
-        @click.stop="goToDetail"
-      />
+        <q-btn
+          unelevated
+          color="blue-primary"
+          class="full-width text-weight-bold no-caps br-12 py-sm"
+          label="DAFTAR SEKARANG"
+          @click.stop="goToDetail"
+        />
+      </div>
     </q-card-section>
   </q-card>
 </template>
@@ -60,95 +75,115 @@ import { useRouter } from 'vue-router'
 import IntroVideoThumbnail from '../Common/IntroVideoThumbnail.vue'
 
 const props = defineProps({
-  course: {
-    type: Object,
-    required: true,
-  },
+  course: { type: Object, required: true },
 })
 
 const router = useRouter()
 
 const title = computed(() => props.course.name || props.course.title || 'Nama Course')
+const mentorName = computed(() => props.course.mentor?.name || 'Mentor Edulang')
+const mentorAvatar = computed(() => props.course.mentor?.avatar || null)
+const levelInfo = computed(() => props.course.level || 'Pemula')
 
 const priceDisplay = computed(() => {
-  const price = props.course.price ?? props.course.priceIdr ?? props.course.price_idr
-  if (price == null || price === '') return 'Harga belum tersedia'
-  try {
-    return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`
-  } catch {
-    return `Rp ${price}`
-  }
+  const price = props.course.price ?? props.course.priceIdr
+  if (price === 0 || price === '0') return 'Rp 0'
+  if (!price) return 'Gratis'
+  return `Rp ${new Intl.NumberFormat('id-ID').format(price)}`
 })
 
 const descriptionText = computed(() => {
-  const desc = props.course.description
-  if (desc) return desc
-  const total = props.course.totalMeeting || props.course.total_meeting || props.course.meetingCount
-  if (!total) return 'Jadwal menyesuaikan'
-  return `${total} Pertemuan`
+  return props.course.description || 'Belajar dari dasar hingga mahir...'
 })
-
-const mentorName = computed(
-  () => props.course.mentor?.name || props.course.mentor?.email || 'Mentor Edulang',
-)
-
-const levelInfo = computed(() => props.course.level || props.course.levelName || 'Semua level')
 
 const goToDetail = () => {
   const id = props.course._id || props.course.id
-  if (!id) return
   router.push(`/courses/${id}`)
 }
 </script>
 
 <style scoped>
-.rounded-borders-16 {
-  border-radius: 16px;
+/* Main Colors */
+.text-blue-primary {
+  color: #0089ff;
+}
+.bg-blue-primary {
+  background: #0089ff !important;
+}
+.text-navy {
+  color: #003387;
 }
 
-.rounded-borders-16-top {
-  border-radius: 16px 16px 0 0;
+/* Card Scaling */
+.course-card {
+  transition: all 0.3s ease;
+  border: none;
+  overflow: hidden;
 }
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 51, 135, 0.12) !important;
+}
+
+.shadow-subtle {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Thumbnail Styling */
 .thumb-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: #000;
-  display: block;
+  aspect-ratio: 4 / 3; /* Mengikuti rasio gambar di contoh */
+  background: #eee;
 }
-.thumb-wrap :deep(.intro-video-thumbnail) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
+
+/* Level Chip Overlay (Custom Dot Style) */
 .level-chip-overlay {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  z-index: 1;
+  bottom: 12px;
+  right: 12px;
 }
-.price-text {
-  color: var(--edulang-blue, #1976d2);
-  font-size: 1.1rem;
+
+.custom-level-chip {
+  background: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: #444;
 }
-.rating-text {
-  color: var(--edulang-yellow, #ffc107);
+
+.dot-indicator {
+  width: 6px;
+  height: 6px;
+  background: #0089ff;
+  border-radius: 50%;
+  margin-right: 6px;
 }
-.rating-text span {
-  color: var(--edulang-black, #212121);
-  opacity: 0.8;
+
+/* Utilities */
+.rounded-16 {
+  border-radius: 16px;
 }
-.btn-yellow {
-  background: var(--edulang-blue, #1976d2) !important;
-  color: var(--edulang-white, #f5f7fa) !important;
+.br-12 {
+  border-radius: 12px;
 }
-.course-card {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+.line-height-tight {
+  line-height: 1.3;
+}
+.py-sm {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Multi-line ellipsis fix */
+.ellipsis-2-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

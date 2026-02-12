@@ -1,86 +1,130 @@
 <template>
-  <q-page class="q-pa-xl bg-accent">
-    <div class="q-mb-xl">
-      <div class="text-h4 text-weight-bolder text-indigo-10">Selamat Datang di, Edulang</div>
-      <div class="text-subtitle1 text-grey-7">Tempat Course Bahasa Terbaik</div>
+  <q-page class="q-pa-md bg-grey-1">
+    <div class="q-mb-lg">
+      <h1 class="text-h5 text-weight-bolder text-edulang-navy q-mb-none">
+        Selamat Datang di, <span class="text-edulang-blue">Edulang</span>
+      </h1>
+      <p class="text-caption text-grey-7">Tempat Course Bahasa Terbaik</p>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="row q-col-gutter-lg q-mb-xl">
-      <div class="col-12 col-md-3" v-for="(stat, index) in summaryStats" :key="index">
+    <div class="row q-col-gutter-md q-mb-lg">
+      <div class="col-12 col-sm-6 col-md-3" v-for="(stat, index) in summaryStats" :key="index">
         <q-card
           flat
-          class="stat-card q-pa-md text-white shadow-3"
+          class="stat-card-modern shadow-sm overflow-hidden"
           :style="{ background: stat.gradient }"
         >
-          <q-item>
-            <q-item-section avatar>
-              <q-avatar color="white-fade" text-color="white" :icon="stat.icon" />
-            </q-item-section>
-            <q-item-section>
-              <div class="text-caption text-weight-bold">{{ stat.label }}</div>
-              <div class="row items-end justify-between">
-                <div class="text-h4 text-weight-bolder">{{ stat.value }}</div>
-                <div class="text-caption text-weight-medium q-mb-xs">{{ stat.subLabel }}</div>
+          <q-card-section class="q-pa-md">
+            <div class="row items-center no-wrap q-mb-sm">
+              <div class="icon-container-blur q-mr-sm flex-shrink-0">
+                <q-icon :name="stat.icon" size="20px" color="white" />
               </div>
-            </q-item-section>
-          </q-item>
+              <div class="text-caption text-white text-weight-medium opacity-80 ellipsis">
+                {{ stat.label }}
+              </div>
+            </div>
+            <div class="row items-end justify-between no-wrap">
+              <div class="text-h5 text-weight-bolder text-white">{{ stat.value }}</div>
+              <div
+                class="text-caption text-white text-weight-bold opacity-70 flex-shrink-0"
+                style="font-size: 10px"
+              >
+                {{ stat.subLabel }}
+              </div>
+            </div>
+          </q-card-section>
+          <div class="decor-circle"></div>
         </q-card>
       </div>
     </div>
 
-    <!-- Course Language Overview -->
-    <q-card flat class="rounded-borders-lg shadow-1 q-pa-xl bg-white">
-      <div class="row items-center q-mb-xl">
-        <q-avatar color="grey-3" icon="translate" size="md" class="q-mr-sm" />
-        <div class="text-h6 text-weight-bolder">Course Language Overview</div>
-      </div>
+    <q-card flat class="rounded-16 shadow-sm bg-white overflow-hidden">
+      <q-card-section class="q-pa-lg">
+        <div class="row items-center q-mb-lg">
+          <div class="section-indicator q-mr-sm"></div>
+          <div class="text-subtitle1 text-weight-bolder text-edulang-navy">
+            Course Language Overview
+          </div>
+        </div>
 
-      <div class="row q-col-gutter-xl items-center">
-        <div class="col-12 col-md-6">
-          <div class="row q-col-gutter-md">
-            <div class="col-6" v-for="lang in languageDetails" :key="lang._id">
-              <q-card flat class="bg-grey-2 q-pa-md rounded-borders relative-position">
-                <div class="row items-center no-wrap q-mb-sm">
-                  <q-img
-                    :src="lang.iconUrl || getFlag(lang.name)"
-                    style="width: 28px; border-radius: 4px"
-                    class="q-mr-sm"
-                  />
-                  <div class="text-caption text-weight-bold">{{ lang.name }}</div>
-                  <q-badge floating color="blue" size="xs">PRO</q-badge>
+        <div class="flex no-wrap items-start justify-between full-width overflow-hidden">
+          <div class="flex-grow-1 q-pr-lg">
+            <div class="row q-col-gutter-sm">
+              <div class="col-6" v-for="lang in languageDetails" :key="lang._id">
+                <q-card flat class="lang-item-card border-light q-pa-sm">
+                  <div class="row items-center justify-between no-wrap q-mb-xs">
+                    <div class="row items-center no-wrap overflow-hidden">
+                      <q-img
+                        :src="lang.iconUrl || getFlag(lang.name)"
+                        style="width: 22px; height: 14px; border-radius: 2px"
+                        class="shadow-xs q-mr-sm flex-shrink-0"
+                      />
+                      <div class="text-caption text-weight-bold text-edulang-navy ellipsis">
+                        {{ lang.name }}
+                      </div>
+                    </div>
+                    <q-badge
+                      rounded
+                      color="blue-6"
+                      label="PRO"
+                      class="text-weight-bolder"
+                      style="font-size: 8px; padding: 2px 4px"
+                    />
+                  </div>
+                  <div class="row items-baseline">
+                    <div class="text-h6 text-weight-bolder text-indigo-10">{{ lang.count }}</div>
+                    <div class="text-caption text-grey-6 q-ml-xs" style="font-size: 10px">
+                      Course Tersedia
+                    </div>
+                  </div>
+                </q-card>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="flex flex-center column flex-shrink-0"
+            style="width: 300px; border-left: 1px solid #f0f0f0"
+          >
+            <div class="chart-wrapper relative-position">
+              <q-circular-progress
+                show-value
+                size="160px"
+                :thickness="0.2"
+                :value="totalCoursePercent"
+                color="blue-6"
+                track-color="grey-2"
+                class="text-edulang-navy text-weight-bolder"
+              >
+                <div class="column items-center">
+                  <div class="text-h5 text-weight-bolder">{{ totalCourse }}</div>
+                  <div
+                    class="text-caption text-grey-6 text-weight-bold text-uppercase"
+                    style="font-size: 9px"
+                  >
+                    Total Course
+                  </div>
                 </div>
-                <div class="text-h4 text-weight-bolder q-mt-sm">{{ lang.count }}</div>
-                <div class="text-caption text-grey-7">Course Tersedia</div>
-              </q-card>
+              </q-circular-progress>
             </div>
-          </div>
-        </div>
 
-        <div class="col-12 col-md-6 text-center">
-          <div class="flex flex-center relative-position">
-            <svg width="300" height="300" viewBox="0 0 42 42" class="donut">
-              <circle
-                v-for="(segment, i) in chartSegments"
+            <div class="text-subtitle2 text-weight-bolder text-edulang-navy q-mt-md">
+              Chart Course Tersedia
+            </div>
+
+            <div class="row q-gutter-xs justify-center q-mt-sm q-px-md">
+              <div
+                v-for="(lang, i) in languageDetails.slice(0, 6)"
                 :key="i"
-                cx="21"
-                cy="21"
-                r="15.915"
-                fill="transparent"
-                :stroke="segment.color"
-                stroke-width="6"
-                :stroke-dasharray="`${segment.percent} ${100 - segment.percent}`"
-                :stroke-dashoffset="segment.offset"
-              ></circle>
-            </svg>
-            <div class="absolute-center">
-              <div class="text-h4 text-weight-bolder">{{ totalCoursePercent }}%</div>
-              <div class="text-caption text-grey-7 text-weight-bold">Total</div>
+                class="row items-center no-wrap q-px-xs"
+              >
+                <div class="legend-dot" :style="{ backgroundColor: getChartColor(i) }"></div>
+                <div class="text-caption text-grey-7" style="font-size: 9px">{{ lang.name }}</div>
+              </div>
             </div>
           </div>
-          <div class="text-h6 text-weight-bolder q-mt-lg">Chart Course Tersedia</div>
         </div>
-      </div>
+      </q-card-section>
     </q-card>
   </q-page>
 </template>
@@ -89,98 +133,75 @@
 import { ref, onMounted, computed } from 'vue'
 import { api } from 'src/boot/axios'
 
-// State
+// State Stats
 const summaryStats = ref([
   {
     label: 'Pengguna',
     value: 0,
     subLabel: 'Pengguna',
     icon: 'person',
-    gradient: 'linear-gradient(to right, #2196F3, #64B5F6)',
+    gradient: 'linear-gradient(135deg, #0089ff 0%, #6ec1ff 100%)',
   },
   {
     label: 'Language',
     value: 0,
     subLabel: 'Bahasa',
     icon: 'translate',
-    gradient: 'linear-gradient(to right, #1A237E, #3F51B5)',
+    gradient: 'linear-gradient(135deg, #003387 0%, #0056e0 100%)',
   },
   {
     label: 'Total Course',
     value: 0,
     subLabel: 'Course',
-    icon: 'book',
-    gradient: 'linear-gradient(to right, #42A5F5, #90CAF9)',
+    icon: 'menu_book',
+    gradient: 'linear-gradient(135deg, #3079ed 0%, #82b1ff 100%)',
   },
   {
     label: 'Total Mentor',
     value: 0,
     subLabel: 'Mentor',
     icon: 'groups',
-    gradient: 'linear-gradient(to right, #0D47A1, #1976D2)',
+    gradient: 'linear-gradient(135deg, #001e54 0%, #003387 100%)',
   },
 ])
 
 const languageDetails = ref([])
 const totalCourse = ref(0)
 
-// Ambil data dashboard admin dari endpoint sesuai dokumentasi
 const fetchData = async () => {
   try {
-    // 1. Total user (optional, tidak ada di dokumen → coba /users kalau tersedia)
     let totalUsers = 0
     try {
       const usersRes = await api.get('/users')
       const usersData = usersRes.data
-      const usersArray = usersData.users || usersData.data || []
-      totalUsers = usersData.count ?? (Array.isArray(usersArray) ? usersArray.length : 0)
-    } catch (userErr) {
-      console.warn(
-        '[ADMIN DASHBOARD] Endpoint /users tidak tersedia, total pengguna diset 0',
-        userErr?.response?.status,
-      )
+      totalUsers = usersData.count ?? (Array.isArray(usersData.data) ? usersData.data.length : 0)
+    } catch {
+      console.warn('Users endpoint skip')
     }
 
-    // 2. Get language types → GET /api/language-types
     const langRes = await api.get('/language-types')
-    const langData = langRes.data || {}
-    const languages = Array.isArray(langData.languagetypes)
-      ? langData.languagetypes
-      : langData.data || []
+    const languages = langRes.data.languagetypes || langRes.data.data || []
 
-    // 3. Get all packages → GET /api/packages
     const pkgRes = await api.get('/packages')
-    const pkgData = pkgRes.data || {}
-    const packages = Array.isArray(pkgData.packages) ? pkgData.packages : pkgData.data || []
+    const packages = pkgRes.data.packages || pkgRes.data.data || []
     totalCourse.value = packages.length
 
-    // 4. Get mentors → GET /api/mentors (admin only)
     const mentorRes = await api.get('/mentors')
-    const mentorData = mentorRes.data || {}
-    const mentors = Array.isArray(mentorData.mentors) ? mentorData.mentors : mentorData.data || []
+    const mentors = mentorRes.data.mentors || mentorRes.data.data || []
 
-    // Update stats cards
     summaryStats.value[0].value = totalUsers
     summaryStats.value[1].value = languages.length
     summaryStats.value[2].value = packages.length
     summaryStats.value[3].value = mentors.length
 
-    // Hitung course per bahasa (LanguageTypes ↔ Packages.languageType)
-    languageDetails.value = languages.map((lang) => {
-      const langId = lang._id
-      const count = packages.filter((p) => {
-        const pLang = p.languageType
-        const pLangId = typeof pLang === 'object' && pLang !== null ? pLang._id || pLang.id : pLang
-        return String(pLangId) === String(langId)
-      }).length
-
-      return {
-        _id: langId,
-        name: lang.name,
-        iconUrl: lang.iconUrl || lang.icon_url || '',
-        count,
-      }
-    })
+    languageDetails.value = languages.map((lang) => ({
+      _id: lang._id,
+      name: lang.name,
+      iconUrl: lang.iconUrl || lang.icon_url || '',
+      count: packages.filter(
+        (p) => String(p.languageType?._id || p.languageType) === String(lang._id),
+      ).length,
+    }))
   } catch (err) {
     console.error('Error fetching dashboard data:', err)
   }
@@ -194,50 +215,96 @@ const getFlag = (name) => {
     Germany: 'https://flagcdn.com/de.svg',
     Arab: 'https://flagcdn.com/sa.svg',
     Indonesian: 'https://flagcdn.com/id.svg',
+    Korean: 'https://flagcdn.com/kr.svg',
+    British: 'https://flagcdn.com/gb.svg',
   }
-  return flags[name] || 'https://flagcdn.com/un.svg'
+  // Cek apakah ada kata kunci di dalam nama bahasa (misal: "Mandarin (Taiwan)")
+  for (const key in flags) {
+    if (name.toLowerCase().includes(key.toLowerCase())) return flags[key]
+  }
+  return 'https://flagcdn.com/un.svg'
 }
 
-const chartSegments = computed(() => {
-  const totalLangs = languageDetails.value.length
-  if (totalLangs === 0) return [{ percent: 100, offset: 25, color: '#e0e0e0' }]
+const getChartColor = (index) => {
+  const colors = ['#0089ff', '#4caf50', '#ffb300', '#f44336', '#9c27b0', '#00bcd4']
+  return colors[index % colors.length]
+}
 
-  const colors = ['#2196F3', '#81C784', '#FFB74D', '#F48FB1', '#FFCC80']
-  let currentOffset = 25
-  const segments = []
-
-  languageDetails.value.forEach((lang, i) => {
-    const percent = totalCourse.value > 0 ? (lang.count / totalCourse.value) * 100 : 0
-    segments.push({
-      percent: parseFloat(percent.toFixed(1)),
-      offset: currentOffset,
-      color: colors[i % colors.length],
-    })
-    currentOffset -= percent
-  })
-
-  return segments
-})
-
-const totalCoursePercent = computed(() => {
-  return totalCourse.value > 0 ? 100 : 0
-})
+const totalCoursePercent = computed(() => (totalCourse.value > 0 ? 100 : 0))
 
 onMounted(fetchData)
 </script>
 
 <style scoped>
-.stat-card {
+/* Colors */
+.text-edulang-navy {
+  color: #003387;
+}
+.text-edulang-blue {
+  color: #0089ff;
+}
+
+/* Dashboard Cards */
+.stat-card-modern {
+  border-radius: 12px; /* Lebih kecil */
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.icon-container-blur {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  padding: 6px; /* Lebih kecil */
+  border-radius: 8px;
+}
+
+.decor-circle {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 70px; /* Lebih kecil */
+  height: 70px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+/* Sections */
+.rounded-16 {
   border-radius: 16px;
+}
+.section-indicator {
+  width: 4px;
+  height: 20px;
+  background: #0089ff;
+  border-radius: 4px;
+}
+
+.lang-item-card {
+  border-radius: 10px;
+  background: #fcfdfe;
+  border: 1px solid #edf2f7;
+  min-height: 70px; /* Lebih pendek */
+}
+
+/* Utils */
+.opacity-80 {
+  opacity: 0.8;
+}
+.opacity-70 {
+  opacity: 0.7;
+}
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.ellipsis {
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
-.rounded-borders-lg {
-  border-radius: 24px;
-}
-.white-fade {
-  background: rgba(255, 255, 255, 0.25);
-}
-.donut {
-  transform: rotate(-90deg);
+.flex-shrink-0 {
+  flex-shrink: 0;
 }
 </style>

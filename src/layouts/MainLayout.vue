@@ -45,40 +45,10 @@
           <q-item-section>{{ $t('nav.tipsInfo') }}</q-item-section>
         </q-item>
 
-        <!-- Pemisah -->
-        <q-separator class="q-my-md" />
-
-        <!-- Bahasa + Theme -->
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="language" size="sm" />
-          </q-item-section>
-          <q-item-section>{{ $t('lang.pilihBahasa') }}</q-item-section>
-          <q-item-section side>
-            <q-btn flat dense no-caps :label="currentLangLabel">
-              <q-menu>
-                <q-list style="min-width: 140px">
-                  <q-item clickable v-close-popup @click="setLocale('id-ID')">
-                    <q-item-section>{{ $t('lang.ind') }}</q-item-section>
-                  </q-item>
-                  <q-item clickable v-close-popup @click="setLocale('en-US')">
-                    <q-item-section>{{ $t('lang.eng') }}</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple @click="toggleDark(!isDark)">
-          <q-item-section avatar>
-            <q-icon :name="isDark ? 'light_mode' : 'dark_mode'" size="sm" />
-          </q-item-section>
-          <q-item-section>{{ $t('theme.darkMode') }}</q-item-section>
-        </q-item>
-
         <!-- Auth -->
         <q-separator class="q-my-md" />
+
+        <!-- BAGIAN BAHASA & THEME DI-DISABLE (DIHAPUS DARI DRAWER) -->
 
         <template v-if="!isLoggedIn">
           <q-item clickable v-ripple @click="$router.push('/login')">
@@ -237,31 +207,9 @@
           <q-space />
 
           <div class="gt-sm row items-center q-gutter-md">
-            <!-- Language Selector -->
-            <q-btn flat dense no-caps class="lang-btn">
-              <q-icon name="language" size="sm" class="q-mr-xs" />
-              <span class="text-weight-medium">{{ currentLangLabel }}</span>
-              <q-menu anchor="bottom right" self="top right">
-                <q-list style="min-width: 140px">
-                  <q-item clickable v-close-popup @click="setLocale('id-ID')">
-                    <q-item-section>{{ $t('lang.ind') }}</q-item-section>
-                  </q-item>
-                  <q-item clickable v-close-popup @click="setLocale('en-US')">
-                    <q-item-section>{{ $t('lang.eng') }}</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
+            <!-- BAGIAN LANGUAGE SELECTOR DI-DISABLE (DIHAPUS) -->
 
-            <q-btn
-              flat
-              round
-              dense
-              :icon="isDark ? 'light_mode' : 'dark_mode'"
-              class="theme-icon-btn"
-              :aria-label="$t('theme.darkMode')"
-              @click="toggleDark(!isDark)"
-            />
+            <!-- BAGIAN THEME TOGGLE DI-DISABLE (DIHAPUS) -->
 
             <!-- Learning Center (→ login) / User Info -->
             <template v-if="!isLoggedIn">
@@ -360,7 +308,7 @@
                 />
                 <q-btn
                   unelevated
-                  color="positive"
+                  color="primary"
                   text-color="white"
                   class="full-width"
                   @click="onSubscribe"
@@ -444,7 +392,7 @@
           </div>
 
           <!-- Metode Pembayaran -->
-          <div class="footer-payment q-mt-xl q-pt-xl">
+          <div class="footer-payment q-mt-lg q-pt-lg q-mb-xl">
             <div class="footer-heading q-mb-md">{{ $t('footer.metodePembayaran') }}</div>
             <div class="footer-payment-icons">
               <div v-for="icon in paymentIcons" :key="icon.name" class="footer-payment-icon-wrap">
@@ -511,7 +459,6 @@ import { ref, onMounted, watch, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { api } from 'src/boot/axios'
 import { Dark } from 'quasar'
-import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const route = useRoute()
@@ -521,8 +468,11 @@ const isLoggedIn = ref(false)
 const userName = ref('')
 const userRole = ref('')
 
+// Subscribe form state
+const subscribeName = ref('')
+const subscribeEmail = ref('')
+
 // i18n
-const { locale, t } = useI18n({ useScope: 'global' })
 
 // Bahasa untuk dropdown Kelas Bahasa di header
 const languages = ref([])
@@ -554,12 +504,6 @@ const applyStoredTheme = () => {
   isDark.value = Dark.isActive
 }
 
-const toggleDark = (val) => {
-  Dark.set(!!val)
-  isDark.value = Dark.isActive
-  localStorage.setItem('theme', Dark.isActive ? 'dark' : 'light')
-}
-
 // Active nav (route) – warna biru untuk item yang aktif ($info / --edulang-blue)
 const isNavActive = (path) => route.path === path
 const isProgramNavActive = computed(() => {
@@ -568,11 +512,6 @@ const isProgramNavActive = computed(() => {
 })
 
 // Language switch
-const currentLangLabel = computed(() => (locale.value === 'en-US' ? t('lang.eng') : t('lang.ind')))
-const setLocale = (l) => {
-  locale.value = l
-  localStorage.setItem('locale', l)
-}
 
 const checkLoginStatus = () => {
   const token = localStorage.getItem('token')
@@ -633,6 +572,11 @@ const onDrawerTips = () => {
 
 const goToBerlangganan = () => {
   router.push('/berlangganan')
+}
+
+const onSubscribe = () => {
+  console.log('Subscribe:', subscribeName.value, subscribeEmail.value)
+  // Add your subscribe logic here
 }
 
 // PROGRAM hover dropdown

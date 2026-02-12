@@ -9,7 +9,7 @@
           </div>
         </div>
 
-        <div class="col-12 col-md-7">
+        <div class="col-12 col-md-7 content-column">
           <div class="content-header q-mb-xl">
             <div class="badge-custom q-mb-md">Tentang Edulang</div>
             <h2 class="main-title no-margin text-weight-bold">
@@ -84,6 +84,11 @@ const items = [
   padding: 0 20px;
 }
 
+/* BAGIAN YANG DIUBAH: Menambahkan jarak antara kiri dan kanan */
+.content-column {
+  padding-left: 80px !important; /* Menjauhkan teks dari gambar */
+}
+
 /* Badge Style */
 .badge-custom {
   display: inline-block;
@@ -120,7 +125,7 @@ const items = [
   opacity: 0.95;
 }
 
-/* Image & Decoration - PERFECT BOTTOM ALIGNMENT */
+/* Image & Decoration */
 .image-wrapper {
   position: relative;
   height: 100%;
@@ -152,7 +157,7 @@ const items = [
 
 .character-img {
   position: absolute;
-  top: -60px; /* **NAIKKAN MASIF: -30px → -60px** - BAWAH PERSIS SENTUH FEATURE CARD BAWAH */
+  top: -60px;
   left: 50%;
   transform: translateX(-50%);
   width: 580px;
@@ -204,7 +209,6 @@ const items = [
   margin-top: 4px;
 }
 
-/* Precise spacing for alignment */
 .content-header {
   margin-bottom: 2.5rem !important;
 }
@@ -213,33 +217,26 @@ const items = [
   padding: 2rem !important;
 }
 
-/* Mobile Responsiveness */
+/* Responsivitas Mobile: Kembalikan padding ke normal agar tidak mencong */
 @media (max-width: 991px) {
+  .content-column {
+    padding-left: 12px !important;
+  }
   .image-wrapper {
     min-height: 420px;
     margin-bottom: 2rem;
   }
-
   .character-img {
-    top: -30px; /* **Tablet: -15px → -30px** */
+    top: -30px;
     width: 500px;
     height: 620px;
   }
-
-  .bg-decoration {
-    border-radius: 32px;
-  }
-
-  .main-title {
-    text-align: center;
-  }
-
+  .main-title,
   .section-desc {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
   }
-
   .badge-custom {
     display: table;
     margin: 0 auto 20px auto;
@@ -248,98 +245,24 @@ const items = [
 
 @media (max-width: 767px) {
   .character-img {
-    top: -18px; /* **Mobile: -8px → -18px** */
+    top: -18px;
     width: 460px;
     height: 580px;
   }
-
-  .image-wrapper {
-    min-height: 480px;
-  }
 }
 
-/* ========================================
-   ✅ IPAD RESPONSIVE (768px - 1023px) 
-   ======================================== */
+/* IPAD */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .container {
-    padding: 0 24px;
-    max-width: 100%;
+  .content-column {
+    padding-left: 30px !important; /* Jarak lebih kecil untuk iPad agar muat */
   }
-
-  /* iPad: 40% image | 60% content */
   .col-12.col-md-5 {
     flex: 0 0 40%;
     max-width: 40%;
   }
-
   .col-12.col-md-7 {
     flex: 0 0 60%;
     max-width: 60%;
-  }
-
-  /* Image optimization iPad */
-  .image-wrapper {
-    min-height: 520px;
-  }
-
-  .character-img {
-    top: -40px;
-    width: 480px;
-    height: 680px;
-  }
-
-  .bg-decoration {
-    border-radius: 36px;
-  }
-
-  /* Typography iPad */
-  .main-title {
-    font-size: 2.75rem;
-    line-height: 1.18;
-  }
-
-  .section-desc {
-    font-size: 1.1rem;
-    max-width: 520px;
-  }
-
-  /* Feature cards: 1 kolom iPad */
-  .row.q-col-gutter-lg > .col-12.col-sm-6 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-
-  /* Spacing iPad */
-  .tentang-section {
-    padding: 60px 0;
-  }
-
-  .content-header {
-    margin-bottom: 2rem !important;
-  }
-
-  .q-pa-lg {
-    padding: 1.75rem !important;
-  }
-}
-
-/* ========================================
-   IPAD PORTRAIT FIX (768x1024)
-   ======================================== */
-@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
-  .image-wrapper {
-    min-height: 480px;
-  }
-
-  .character-img {
-    top: -35px;
-    width: 440px;
-    height: 620px;
-  }
-
-  .tentang-section {
-    padding: 50px 0;
   }
 }
 </style>

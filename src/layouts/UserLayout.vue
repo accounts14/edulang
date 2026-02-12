@@ -1,231 +1,208 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="bg-edulang-white font-poppins">
-    <q-header elevated class="bg-white text-dark">
-      <q-toolbar class="q-py-sm">
+    <q-header class="bg-white text-dark q-py-xs border-bottom">
+      <q-toolbar>
         <q-btn
           flat
           dense
           round
           icon="menu"
-          aria-label="Menu"
-          class="q-mr-sm"
+          class="text-edulang-navy"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title class="text-weight-bold text-edulang-navy">
-          {{ pageTitle }}
-        </q-toolbar-title>
         <q-space />
-        <div class="text-caption text-grey-7 gt-sm">Halo, {{ userData.name || 'User' }}</div>
+        <div class="row items-center q-gutter-md">
+          <div class="text-subtitle2 text-grey-8 gt-xs">
+            Halo, <span class="text-weight-bold">{{ userData.name || 'User' }}</span>
+          </div>
+          <q-btn
+            round
+            flat
+            icon="notifications_none"
+            color="grey-7"
+            size="12px"
+            to="/dashboard/notifikasi"
+          >
+            <q-badge floating color="orange" rounded />
+          </q-btn>
+        </div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
-      :width="280"
+      :width="260"
       bordered
       show-if-above
-      :breakpoint="768"
-      class="bg-white q-pa-md"
+      side="left"
+      class="bg-white sidebar-drawer"
     >
-      <div class="flex flex-center q-mb-xl q-mt-md cursor-pointer" @click="router.push('/')">
-        <img src="~assets/Edulang.png" style="width: 140px" alt="Edulang Logo" />
-      </div>
+      <div class="column full-height">
+        <div class="col-auto">
+          <div
+            class="flex flex-center q-mb-lg q-mt-lg cursor-pointer"
+            @click="router.push('/dashboard')"
+          >
+            <img src="~assets/Edulang.png" style="width: 140px" alt="Edulang Logo" />
+          </div>
 
-      <div class="text-center q-mb-xl">
-        <q-avatar size="100px" class="q-mb-md shadow-premium">
-          <img :src="userAvatar" alt="Avatar" />
-        </q-avatar>
-
-        <div class="text-weight-bolder text-subtitle1 text-edulang-navy">
-          {{ userData.name || 'User Edulang' }}
+          <div class="column items-center q-mb-md q-mt-md">
+            <q-avatar size="85px" class="q-mb-sm shadow-premium">
+              <img :src="userAvatar" alt="Avatar" />
+            </q-avatar>
+            <div class="text-weight-bolder text-subtitle1 text-edulang-navy">
+              {{ userData.name || 'User Edulang' }}
+            </div>
+            <q-chip
+              dense
+              color="primary"
+              text-color="white"
+              class="q-px-md text-weight-bold q-mt-xs text-caption"
+            >
+              Siswa
+            </q-chip>
+          </div>
         </div>
 
-        <q-chip dense color="primary" text-color="white" class="q-px-md text-weight-bold q-mt-sm">
-          Siswa
-        </q-chip>
+        <q-scroll-area class="col">
+          <q-list class="q-pr-md q-pt-sm">
+            <q-item
+              v-for="menu in menuItems"
+              :key="menu.path"
+              clickable
+              v-ripple
+              :to="menu.path"
+              exact
+              active-class="active-menu-pill"
+              class="menu-item-style q-mb-sm"
+            >
+              <q-item-section avatar>
+                <q-icon :name="menu.icon" size="22px" />
+              </q-item-section>
+              <q-item-section class="text-weight-medium">{{ menu.label }}</q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+
+        <div class="col-auto q-pr-md q-pb-md">
+          <q-separator q-mb-sm class="q-ml-md" />
+          <q-item clickable v-ripple class="menu-item-style logout-item" @click="handleLogout">
+            <q-item-section avatar>
+              <q-icon name="logout" color="grey-6" size="22px" />
+            </q-item-section>
+            <q-item-section class="text-weight-medium text-grey-7">Keluar</q-item-section>
+          </q-item>
+
+          <div class="flex flex-center q-mt-md">
+            <q-btn
+              flat
+              dense
+              round
+              icon="keyboard_double_arrow_left"
+              color="grey-4"
+              size="sm"
+              @click="leftDrawerOpen = false"
+            />
+          </div>
+        </div>
       </div>
-
-      <q-list padding>
-        <q-item
-          clickable
-          v-ripple
-          to="/dashboard"
-          active-class="active-menu"
-          class="menu-item-non-active"
-          exact
-        >
-          <q-item-section avatar>
-            <q-icon name="dashboard" size="sm" />
-          </q-item-section>
-          <q-item-section class="text-weight-medium">Dashboard</q-item-section>
-        </q-item>
-
-        <q-item
-          clickable
-          v-ripple
-          to="/dashboard/langganan"
-          active-class="active-menu"
-          class="menu-item-non-active"
-        >
-          <q-item-section avatar>
-            <q-icon name="description" size="sm" />
-          </q-item-section>
-          <q-item-section class="text-weight-medium">Langganan</q-item-section>
-        </q-item>
-
-        <q-item
-          clickable
-          v-ripple
-          to="/dashboard/progres"
-          active-class="active-menu"
-          class="menu-item-non-active"
-        >
-          <q-item-section avatar>
-            <q-icon name="list_alt" size="sm" />
-          </q-item-section>
-          <q-item-section class="text-weight-medium">Progres Belajar</q-item-section>
-        </q-item>
-
-        <q-item
-          clickable
-          v-ripple
-          to="/dashboard/notifikasi"
-          active-class="active-menu"
-          class="menu-item-non-active"
-        >
-          <q-item-section avatar>
-            <q-icon name="notifications" size="sm" />
-          </q-item-section>
-          <q-item-section class="text-weight-medium">Notifikasi</q-item-section>
-        </q-item>
-
-        <q-item
-          clickable
-          v-ripple
-          to="/dashboard/transaksi"
-          active-class="active-menu"
-          class="menu-item-non-active"
-        >
-          <q-item-section avatar>
-            <q-icon name="shopping_bag" size="sm" />
-          </q-item-section>
-          <q-item-section class="text-weight-medium">Transaksi</q-item-section>
-        </q-item>
-
-        <q-item
-          clickable
-          v-ripple
-          to="/dashboard/setting"
-          active-class="active-menu"
-          class="menu-item-non-active"
-        >
-          <q-item-section avatar>
-            <q-icon name="settings" size="sm" />
-          </q-item-section>
-          <q-item-section class="text-weight-medium">Setting</q-item-section>
-        </q-item>
-
-        <q-item clickable v-ripple class="logout-item q-mt-xl" @click="handleLogout">
-          <q-item-section avatar>
-            <q-icon name="logout" color="negative" />
-          </q-item-section>
-          <q-item-section class="text-weight-bold text-negative">Keluar</q-item-section>
-        </q-item>
-      </q-list>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useQuasar } from 'quasar'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-const $q = useQuasar()
 const leftDrawerOpen = ref(true)
 const router = useRouter()
-const route = useRoute()
 
 const userData = ref({ name: '' })
 const userAvatar = ref('https://cdn.quasar.dev/img/avatar2.jpg')
 
-const pageTitle = computed(() => {
-  const t = route.meta?.title || route.name || ''
-  if (t) return String(t)
-  const path = route.path
-  if (path === '/dashboard') return 'Dashboard'
-  if (path.startsWith('/dashboard/langganan')) return 'Langganan'
-  if (path.startsWith('/dashboard/progres')) return 'Progres Belajar'
-  if (path.startsWith('/dashboard/notifikasi')) return 'Notifikasi'
-  if (path.startsWith('/dashboard/transaksi')) return 'Transaksi'
-  if (path.startsWith('/dashboard/setting')) return 'Setting'
-  return 'Edulang'
-})
+const menuItems = [
+  { label: 'Dashboard', icon: 'grid_view', path: '/dashboard' },
+  { label: 'Langganan', icon: 'credit_card', path: '/dashboard/langganan' },
+  { label: 'Progres Belajar', icon: 'bar_chart', path: '/dashboard/progres' },
+  { label: 'Notifikasi', icon: 'notifications_none', path: '/dashboard/notifikasi' },
+  { label: 'Transaksi', icon: 'shopping_bag', path: '/dashboard/transaksi' },
+  { label: 'Setting', icon: 'settings', path: '/dashboard/setting' },
+]
 
 onMounted(() => {
-  userData.value.name = localStorage.getItem('userName') || 'User'
+  userData.value.name = localStorage.getItem('userName') || 'Suika'
 })
 
-watch(
-  () => route.path,
-  () => {
-    if ($q.screen.lt.md) leftDrawerOpen.value = false
-  },
-)
-
 const handleLogout = () => {
+  console.log('Logging out...') // Cek di console log
   localStorage.clear()
   router.push('/')
 }
 </script>
 
 <style scoped>
-/* Brand Colors Edulang */
-.text-edulang-navy {
-  color: #003387;
-}
 .bg-edulang-white {
-  background-color: #f5f7fa;
+  background-color: #f8fafc;
 }
+.border-bottom {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.column.full-height {
+  height: 100vh;
+}
+
+.menu-item-style {
+  color: #64748b;
+  border-radius: 0 25px 25px 0;
+  margin-right: 12px;
+  min-height: 48px;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-item-style:hover {
+  background-color: #f1f5f9;
+  color: #0089ff;
+}
+
+.active-menu-pill {
+  background-color: #0089ff !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(0, 137, 255, 0.25);
+}
+
+.active-menu-pill .q-icon {
+  color: white !important;
+}
+
+.shadow-premium {
+  box-shadow: 0 8px 25px rgba(0, 51, 135, 0.12);
+  border: 3px solid white;
+}
+
 .font-poppins {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Style Menu Non-Aktif */
-.menu-item-non-active {
-  color: #616161 !important; /* text-grey-7 */
-  border-radius: 12px;
-  margin-bottom: 6px;
-  transition: all 0.3s ease;
-  padding: 10px 16px;
+.logout-item:hover {
+  background-color: #fff1f2;
+  color: #e11d48 !important;
 }
 
-.menu-item-non-active:hover {
-  background-color: rgba(0, 137, 255, 0.08);
-  color: #0089ff !important;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
 }
-
-/* Style Menu Aktif (Putih & Biru) */
-.active-menu {
-  background-color: #0089ff !important; /* Edulang Blue */
-  color: white !important; /* Paksa teks jadi putih */
-  box-shadow: 0 4px 15px rgba(0, 137, 255, 0.3);
-}
-
-/* Paksa ikon jadi putih saat menu aktif */
-.active-menu .q-icon {
-  color: white !important;
-}
-
-.logout-item {
-  border-radius: 12px;
-}
-
-.shadow-premium {
-  box-shadow: 0 10px 30px rgba(0, 51, 135, 0.15);
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

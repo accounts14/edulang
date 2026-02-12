@@ -11,19 +11,29 @@
           class="q-mr-sm"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-        <q-toolbar-title class="text-weight-bold text-edulang-navy">
-          {{ pageTitle }}
-        </q-toolbar-title>
+
         <q-space />
+
         <div class="text-caption text-grey-7 gt-sm q-mr-md">
           Terhubung sebagai: <strong>{{ adminData.name || 'Admin' }}</strong>
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" :width="280" bordered show-if-above class="bg-white q-pa-md">
+    <q-drawer
+      v-model="leftDrawerOpen"
+      :width="280"
+      bordered
+      show-if-above
+      dark
+      class="bg-navy q-pa-md"
+    >
       <div class="flex flex-center q-mb-xl q-mt-md cursor-pointer" @click="router.push('/')">
-        <img src="~assets/Edulang.png" style="width: 140px" alt="Edulang Logo" />
+        <img
+          src="~assets/Edulang.png"
+          style="width: 140px; filter: brightness(0) invert(1)"
+          alt="Edulang Logo"
+        />
       </div>
 
       <div class="text-center q-mb-xl">
@@ -31,15 +41,14 @@
           <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
         </q-avatar>
 
-        <div class="text-weight-bolder text-subtitle1 text-edulang-navy">
+        <div class="text-weight-bolder text-subtitle1 text-white">
           {{ adminData.name || 'Admin Edulang' }}
         </div>
 
         <q-chip
           dense
-          color="primary"
-          text-color="white"
-          class="q-px-md text-weight-bold q-mt-sm"
+          outline
+          class="chip-kuning-border q-px-md text-weight-bold q-mt-sm"
           style="text-transform: capitalize"
         >
           {{ adminData.role || 'Admin' }}
@@ -99,7 +108,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 
@@ -108,21 +117,8 @@ const leftDrawerOpen = ref(true)
 const router = useRouter()
 const route = useRoute()
 
-const pageTitle = computed(() => {
-  const t = route.meta?.title || route.name || ''
-  if (t) return String(t)
-  const path = route.path
-  if (path === '/admin/dashboard') return 'Dashboard'
-  if (path.startsWith('/admin/kategori')) return 'Kategori Bahasa'
-  if (path.startsWith('/admin/mentor')) return 'Mentor'
-  if (path.startsWith('/admin/revenue')) return 'Revenue'
-  if (path.startsWith('/admin/user')) return 'User'
-  if (path.startsWith('/admin/pendaftar')) return 'Mendaftar'
-  if (path.startsWith('/admin/produk')) return 'Produk'
-  if (path.startsWith('/admin/artikel')) return 'Artikel'
-  if (path.startsWith('/admin/setting')) return 'Setting'
-  return 'Edulang Admin'
-})
+// Variabel pageTitle dihapus karena sudah tidak dipakai di template
+// Agar tidak menyebabkan error 'variable defined but never used'
 
 const adminData = ref({
   name: '',
@@ -180,14 +176,25 @@ const handleLogout = () => {
 .bg-edulang-white {
   background-color: #f5f7fa;
 }
+.chip-kuning-border {
+  background-color: #fbc02d !important;
+  border: 2px solid #fbc02d !important;
+  color: #2d2d2d !important;
+}
+
+:deep(.q-drawer) {
+  background-color: #003387 !important;
+}
+:deep(.q-drawer__content) {
+  background-color: #003387 !important;
+}
 
 .font-poppins {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Base style untuk menu yang TIDAK aktif */
 .menu-item-non-active {
-  color: #616161 !important; /* text-grey-7 */
+  color: rgba(255, 255, 255, 0.7) !important;
   border-radius: 12px;
   margin-bottom: 6px;
   transition: all 0.3s ease;
@@ -195,28 +202,26 @@ const handleLogout = () => {
 }
 
 .menu-item-non-active:hover {
-  background-color: rgba(0, 137, 255, 0.08);
-  color: #0089ff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff !important;
 }
 
-/* Style KHUSUS saat menu AKTIF (Diklik/Dipilih) */
 .active-menu {
-  background-color: #0089ff !important; /* Edulang Blue */
-  color: white !important; /* PAKSA teks jadi putih */
+  background-color: #0089ff !important;
+  color: white !important;
   box-shadow: 0 4px 15px rgba(0, 137, 255, 0.3);
 }
 
-/* Pastikan icon di dalam menu aktif juga jadi putih */
 .active-menu .q-icon {
   color: white !important;
 }
 
 .logout-item {
   border-radius: 12px;
-  border: 1px solid rgba(193, 0, 21, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .shadow-premium {
-  box-shadow: 0 10px 30px rgba(0, 51, 135, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
-  <section class="kenapa-section">
-    <div class="container">
+  <section class="kenapa-section relative-position overflow-hidden">
+    <div class="bg-grid-overlay"></div>
+
+    <div class="container relative-position">
       <div class="text-center section-header q-mb-xl">
         <div class="badge-header q-mb-md">Kenapa Edulang?</div>
         <h2 class="section-title text-weight-bold q-mb-md">Alasan Memilih Edulang</h2>
@@ -65,12 +67,32 @@ const items = [
   padding: 100px 0;
   background-color: #003387; /* Deep Navy Blue */
   color: #ffffff;
+  position: relative;
+}
+
+/* KODE TAMBAHAN: Garis Kotak-Kotak (Grid) 
+  Menggunakan linear-gradient untuk membuat pattern garis vertikal & horizontal
+*/
+.bg-grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Membuat garis kotak dengan transparansi tipis agar tidak mengganggu konten */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px; /* Ukuran kotak */
+  pointer-events: none; /* Agar tidak menghalangi klik pada card */
+  z-index: 0;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  z-index: 1; /* Pastikan konten di atas grid */
 }
 
 /* Badge Kecil di Atas Judul */
@@ -102,13 +124,16 @@ const items = [
 .benefit-card {
   height: 100%;
   background: rgba(255, 255, 255, 0.05) !important;
+  /* Glassmorphism diperkuat agar garis background terlihat di belakangnya */
+  backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: 24px;
   transition: all 0.3s ease;
 }
 
 .benefit-card:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
   transform: translateY(-8px);
 }
 
