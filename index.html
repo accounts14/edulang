@@ -1,6 +1,30 @@
 <!doctype html>
 <html>
   <head>
+    <!-- Disable Devtool -->
+    <script src="https://cdn.jsdelivr.net/npm/disable-devtool@latest/disable-devtool.min.js"></script>
+    <script>
+      DisableDevtool({
+        contextMenu: true, // Blok right click
+        copyLink: true, // Blok copy
+        shortcutKeys: true, // Blok F12, Ctrl+I
+        ondevtoolopen: () => (document.body.innerHTML = '<h1>Access Denied!</h1>'),
+      })
+    </script>
+
+    <!-- Disable Zoom -->
+    <meta name="viewport" content="width=device-width" />
+    <style>
+      * {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        user-select: none !important;
+        -webkit-touch-callout: none !important;
+      }
+      img {
+        pointer-events: none;
+      }
+    </style>
     <title>Edulang – Unlock The World With Education</title>
 
     <meta charset="utf-8" />

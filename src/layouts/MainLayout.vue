@@ -1138,7 +1138,8 @@ a {
 
 /* PROGRAM dropdown konsep BWA: kiri dark blue CTA, kanan list program */
 .program-nav-wrapper {
-  display: inline-flex;
+  position: relative; /* wajib agar absolute child berada tepat */
+  z-index: 1; /* biar tidak ikut tertimpa oleh stacking context lain */
 }
 
 .program-dropdown {
@@ -1146,8 +1147,11 @@ a {
   top: 100%;
   left: 0;
   margin-top: 4px;
-  z-index: 100;
+  z-index: 2000; /* ⚠️ DITINGKATKAN DARI 100 → 2000 */
   border: 1px solid rgba(0, 0, 0, 0.08);
+  /* Tambahkan ini jika masih tertimpa oleh overflow parent */
+  transform: translateZ(0); /* force GPU layer, hindari clipping */
+  will-change: opacity, transform;
 }
 
 .program-dropdown-bwa {
