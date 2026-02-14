@@ -50,16 +50,6 @@ const routes = [
         name: 'ContactPage',
         component: () => import('pages/ContactPage.vue'),
       },
-      {
-        path: '/forgot-password',
-        name: 'forgot-password',
-        component: () => import('pages/ForgotPasswordPage.vue'),
-      },
-      {
-        path: '/reset-password',
-        name: 'reset-password',
-        component: () => import('pages/ResetPasswordPage.vue'),
-      },
     ],
   },
 
@@ -339,6 +329,16 @@ const routes = [
     path: '/register',
     name: 'register',
     component: () => import('pages/RegisterPage.vue'),
+  },
+  {
+    path: '/forgot-password',
+    name: 'forgot-password',
+    component: () => import('pages/ForgotPasswordPage.vue'),
+  },
+  {
+    path: '/reset-password',
+    name: 'reset-password',
+    component: () => import('pages/ResetPasswordPage.vue'),
   },
 
   // Error 404
