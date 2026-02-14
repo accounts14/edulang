@@ -78,6 +78,15 @@
                 </q-input>
               </div>
 
+              <div class="text-right q-mt-xs">
+    <span 
+      class="auth-link cursor-pointer text-caption" 
+      @click="$router.push('/forgot-password')"
+    >
+      Lupa Password?
+    </span>
+  </div>
+
               <q-btn
                 label="Sign In"
                 type="submit"
