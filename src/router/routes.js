@@ -112,6 +112,11 @@ const routes = [
         name: 'UserSetting',
         component: () => import('pages/user/UserSettingPage.vue'),
       },
+      {
+        path: 'review/:packageId',
+        name: 'UserReview',
+        component: () => import('pages/user/UserReviewPage.vue'),
+      },
     ],
   },
 

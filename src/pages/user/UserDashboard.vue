@@ -81,18 +81,15 @@
                 </div>
                 <div class="row items-center no-wrap q-mt-xs">
                   <q-linear-progress
-                    :value="item.progress / 100"
+                    :value="Math.min(item.progress / 100, 1)"
                     size="8px"
                     rounded
                     color="primary"
                     track-color="blue-1"
                     class="col"
                   />
-                  <div
-                    class="text-weight-bold text-primary q-ml-md"
-                    style="min-width: 40px; text-align: right"
-                  >
-                    {{ Math.round(item.progress) }}%
+                  <div class="text-weight-bold text-primary q-ml-md">
+                    {{ Math.round(Math.min(item.progress, 100)) }}%
                   </div>
                 </div>
               </div>
@@ -176,13 +173,27 @@ const summaryData = computed(() => [
 ])
 
 const myCoursesWithProgress = computed(() =>
-  myCourses.value.map((p) => ({ ...p, progress: p.progress ?? 0 })),
+  myCourses.value.map((p) => {
+    let rawProgress = p.progress ?? 0
+    // Jika API mengirimkan string "35%", kita bersihkan menjadi angka
+    if (typeof rawProgress === 'string') {
+      rawProgress = parseInt(rawProgress.replace('%', '')) || 0
+    }
+    return {
+      ...p,
+      progress: Math.min(rawProgress, 100), // Memastikan tidak lebih dari 100
+    }
+  }),
 )
 
 const progressPercent = computed(() => {
   if (!myCoursesWithProgress.value.length) return 0
-  const sum = myCoursesWithProgress.value.reduce((acc, c) => acc + (c.progress || 0), 0)
-  return sum / myCoursesWithProgress.value.length
+  const totalCourses = myCoursesWithProgress.value.length
+  const sum = myCoursesWithProgress.value.reduce((acc, c) => acc + c.progress, 0)
+
+  // Rata-rata progres keseluruhan
+  const average = sum / totalCourses
+  return Math.min(average, 100) // Double check agar tampilan maksimal 100%
 })
 
 function getThumbnail(pkg) {

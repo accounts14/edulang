@@ -51,9 +51,13 @@
           <div class="text-subtitle1 text-weight-bolder text-blue-primary">
             {{ priceDisplay }}
           </div>
+
+          <!-- 🔹 RATING DARI API (bukan dummy) -->
           <div class="row items-center text-grey-8">
             <q-icon name="star" color="orange-5" size="18px" />
-            <span class="q-ml-xs text-weight-medium text-caption">(4.8)</span>
+            <span class="q-ml-xs text-weight-medium text-caption">
+              {{ ratingDisplay }}
+            </span>
           </div>
         </div>
 
@@ -70,8 +74,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { api } from 'src/boot/axios'
 import IntroVideoThumbnail from '../Common/IntroVideoThumbnail.vue'
 
 const props = defineProps({
@@ -79,6 +84,10 @@ const props = defineProps({
 })
 
 const router = useRouter()
+
+// 🔹 STATE untuk rating dari API
+const avgRating = ref(0)
+const totalRatings = ref(0)
 
 const title = computed(() => props.course.name || props.course.title || 'Nama Course')
 const mentorName = computed(() => props.course.mentor?.name || 'Mentor Edulang')
@@ -96,10 +105,43 @@ const descriptionText = computed(() => {
   return props.course.description || 'Belajar dari dasar hingga mahir...'
 })
 
+// 🔹 COMPUTED untuk display rating
+const ratingDisplay = computed(() => {
+  if (totalRatings.value === 0) {
+    return '(0.0)'
+  }
+  // Format rating dengan 1 desimal
+  return `(${avgRating.value.toFixed(1)})`
+})
+
 const goToDetail = () => {
   const id = props.course._id || props.course.id
   router.push(`/courses/${id}`)
 }
+
+// 🔹 FETCH RATING dari API
+const fetchRating = async () => {
+  try {
+    const packageId = props.course._id || props.course.id
+    if (!packageId) return
+
+    const response = await api.get(`/ratings/packages/${packageId}`)
+    const data = response.data.data || response.data
+
+    avgRating.value = data.avgRating || 0
+    totalRatings.value = data.totalRatings || 0
+  } catch (error) {
+    console.error('Error fetching rating:', error)
+    // Jika error, biarkan default 0
+    avgRating.value = 0
+    totalRatings.value = 0
+  }
+}
+
+// 🔹 FETCH saat component dimount
+onMounted(() => {
+  fetchRating()
+})
 </script>
 
 <style scoped>
@@ -133,9 +175,9 @@ const goToDetail = () => {
 .thumb-wrap {
   position: relative;
   width: 100%;
-  height: 200px; /* Fixed height biar ga berubah */
+  height: 200px;
   background: #eee;
-  overflow: hidden; /* Penting! Cegah content overflow */
+  overflow: hidden;
 }
 
 /* Level Chip Overlay (Custom Dot Style) */
@@ -143,8 +185,8 @@ const goToDetail = () => {
   position: absolute;
   bottom: 12px;
   right: 12px;
-  z-index: 10; /* Pastikan di atas thumbnail */
-  pointer-events: none; /* Biar ga ganggu click play */
+  z-index: 10;
+  pointer-events: none;
 }
 
 .custom-level-chip {
