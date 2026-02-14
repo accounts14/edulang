@@ -5,11 +5,11 @@
         <div class="text-edulang-blue text-weight-bolder text-uppercase letter-spacing-1">
           #RuangMentor
         </div>
-        <div class="text-h3 text-weight-bold text-edulang-navy q-mt-sm leading-tight">
+        <div class="text-h4 text-weight-bold text-edulang-navy q-mt-sm leading-tight">
           Pusat Kendali <br />
           Program Belajar Anda
         </div>
-        <div class="text-subtitle1 text-grey-7 q-mt-md max-width-600">
+        <div class="text-subtitle2 text-grey-7 q-mt-md max-width-600">
           Kelola kurikulum, pantau pertumbuhan peserta, dan hadirkan pengalaman belajar terbaik
           bersama Edulang.
         </div>

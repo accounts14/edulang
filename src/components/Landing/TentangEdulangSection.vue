@@ -218,19 +218,46 @@ const items = [
 }
 
 /* Responsivitas Mobile: Kembalikan padding ke normal agar tidak mencong */
+/* ============================================================
+   FIX RESPONSIVE: Karakter menempel ke garis bawah kotak
+   ============================================================ */
 @media (max-width: 991px) {
   .content-column {
     padding-left: 12px !important;
   }
+
   .image-wrapper {
     min-height: 420px;
     margin-bottom: 2rem;
+    /* Pastikan kaki yang meluber ke bawah terpotong rapi sesuai radius kotak */
+    overflow: hidden;
+    border-radius: 48px;
   }
+
   .character-img {
-    top: -30px;
-    width: 500px;
-    height: 620px;
+    /* RESET koordinat top, gunakan bottom agar menempel di garis bawah */
+    top: auto !important;
+    bottom: 0 !important;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Ukuran tetap proporsional */
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
+
+  .bg-decoration {
+    /* Kotak tetap mengikuti ukuran wrapper */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: none; /* Opsional: kotak lurus agar kaki lebih rata */
+  }
+
   .main-title,
   .section-desc {
     text-align: center;
@@ -244,10 +271,8 @@ const items = [
 }
 
 @media (max-width: 767px) {
-  .character-img {
-    top: -18px;
-    width: 460px;
-    height: 580px;
+  .image-wrapper {
+    min-height: 380px; /* Sedikit lebih pendek di HP kecil */
   }
 }
 

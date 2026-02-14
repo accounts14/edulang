@@ -35,7 +35,7 @@
         color="primary"
         label="Eksplor Halaman Berlangganan"
         class="q-mt-lg rounded-12"
-        :to="{ path: '/dashboard/langganan' }"
+        :to="{ path: '/berlangganan' }"
       />
     </div>
 
@@ -59,28 +59,40 @@
             </div>
 
             <div class="row items-center text-caption text-grey-7 q-mb-lg">
-              <q-icon name="event_note" size="16px" class="q-mr-xs" />
-              <span>{{ meetingInfo(course) }}</span>
+              <q-icon name="event_note" size="18px" color="primary" class="q-mr-xs" />
+              <span class="text-weight-medium">{{ meetingInfo(course) }}</span>
             </div>
 
-            <div class="row q-gutter-md">
+            <div class="column q-gutter-y-md">
               <q-btn
                 unelevated
                 no-caps
                 color="primary"
-                class="col rounded-12 text-weight-bold"
+                class="full-width rounded-12 text-weight-bolder btn-main-learn"
                 label="Mulai Belajar"
-                icon="play_circle_outline"
+                icon="play_circle_filled"
                 :to="{ name: 'UserLearn', params: { packageId: course._id || course.id } }"
               />
-              <q-btn
-                flat
-                no-caps
-                color="grey-7"
-                class="btn-cancel rounded-12"
-                label="Batalkan"
-                @click="onBatalkan(course)"
-              />
+
+              <div class="row q-gutter-x-sm">
+                <q-btn
+                  unelevated
+                  no-caps
+                  class="col rounded-12 text-weight-bold btn-discussion-premium"
+                  label="Diskusi"
+                  icon="chat_bubble"
+                  :to="{ name: 'UserDiscussion', params: { packageId: course._id || course.id } }"
+                />
+
+                <q-btn
+                  flat
+                  no-caps
+                  color="grey-7"
+                  class="col btn-cancel rounded-12"
+                  label="Batalkan"
+                  @click="onBatalkan(course)"
+                />
+              </div>
             </div>
           </q-card-section>
         </q-card>
@@ -99,41 +111,21 @@ const $q = useQuasar()
 const { loading, myCourses, fetchData } = useMyCourses()
 
 function meetingInfo(course) {
-  const total =
-    course.totalLessonsCount ??
-    course.totalLessons ??
-    course.totalMeeting ??
-    course.total_meeting ??
-    course.meetingCount ??
-    (Array.isArray(course.lessons) ? course.lessons.length : 16)
-  const soal = course.totalSoal ?? course.total_soal ?? total ?? 16
-  return `${total} Pertemuan • ${soal} Soal`
+  const total = course.totalLessonsCount ?? course.totalLessons ?? course.totalMeeting ?? 16
+  const soal = course.totalSoal ?? course.total_soal ?? total
+  return `${total} Pertemuan • ${soal} Latihan`
 }
 
 function onBatalkan(course) {
   $q.dialog({
     title: '<span class="text-edulang-navy text-weight-bold">Batalkan Kelas</span>',
-    message: `Apakah Anda yakin ingin membatalkan kursus <b class="text-primary">"${course.title || course.name}"</b>? Tindakan ini tidak dapat dibatalkan.`,
+    message: `Apakah Anda yakin ingin membatalkan kursus <b class="text-primary">"${course.title || course.name}"</b>?`,
     html: true,
-    cancel: {
-      flat: true,
-      label: 'Kembali',
-      color: 'grey-7',
-    },
-    ok: {
-      unelevated: true,
-      label: 'Ya, Batalkan',
-      color: 'negative',
-      class: 'rounded-12',
-    },
+    cancel: { flat: true, label: 'Kembali', color: 'grey-7' },
+    ok: { unelevated: true, label: 'Ya, Batalkan', color: 'negative', class: 'rounded-12' },
     persistent: true,
   }).onOk(() => {
-    $q.notify({
-      type: 'info',
-      message: 'Permintaan pembatalan telah dikirim.',
-      position: 'top',
-      classes: 'rounded-12',
-    })
+    $q.notify({ type: 'info', message: 'Permintaan pembatalan terkirim.', position: 'top' })
   })
 }
 
@@ -142,107 +134,98 @@ onMounted(async () => {
     await fetchData()
   } catch (e) {
     console.error('[UserLangganan]', e)
-    $q.notify({
-      type: 'negative',
-      message: e.response?.data?.message || 'Gagal memuat course kamu.',
-    })
   }
 })
 </script>
 
 <style scoped>
-/* Brand Colors */
+/* --- Brand Colors --- */
 .text-edulang-navy {
   color: #003387;
 }
-.text-edulang-blue {
-  color: #0089ff;
-}
-
 .user-langganan-page {
   background: #f8fafc;
   min-height: 100vh;
 }
 
-/* Accent Header */
+/* --- Accent Header --- */
 .accent-bar {
   width: 6px;
   height: 45px;
-  background: #0089ff;
+  background: linear-gradient(to bottom, #0089ff, #003387);
   border-radius: 10px;
 }
 
-/* Card Styling */
+/* --- Card Styling --- */
 .course-card-premium {
-  border: 1px solid rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   overflow: hidden;
 }
 
 .course-card-premium:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(0, 51, 135, 0.1) !important;
+  box-shadow: 0 20px 40px rgba(0, 51, 135, 0.08) !important;
+}
+
+/* --- Button Styles --- */
+.btn-main-learn {
+  height: 48px;
+  background: linear-gradient(45deg, #003387, #0089ff) !important;
+  box-shadow: 0 4px 15px rgba(0, 137, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-main-learn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+/* Tombol Diskusi Premium */
+.btn-discussion-premium {
+  background: #eef7ff !important;
+  color: #0089ff !important;
+  border: 1px solid #d0e8ff;
+  transition: all 0.3s ease;
+}
+
+.btn-discussion-premium:hover {
+  background: #0089ff !important;
+  color: white !important;
+  box-shadow: 0 6px 12px rgba(0, 137, 255, 0.2);
+}
+
+.btn-cancel {
+  background: #f8fafc;
+  color: #64748b !important;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-cancel:hover {
+  background: #fff1f2;
+  color: #e11d48 !important;
+  border-color: #fecaca;
+}
+
+/* --- Utilities --- */
+.rounded-20 {
+  border-radius: 20px;
+}
+.rounded-12 {
+  border-radius: 12px;
+}
+.transition-base {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.min-height-50 {
+  min-height: 50px;
+}
+.shadow-soft {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
 
 .course-card-media {
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 20px 20px 0 0;
-}
-
-.media-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.05) 100%);
-  pointer-events: none;
-}
-
-/* Utility */
-.rounded-20 {
-  border-radius: 20px;
-}
-.rounded-20-top {
-  border-radius: 20px 20px 0 0;
-}
-.rounded-16 {
-  border-radius: 16px;
-}
-.rounded-12 {
-  border-radius: 12px;
-}
-
-.shadow-soft {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-}
-
-.border-light {
-  border: 1px solid #edf2f7;
-}
-
-.min-height-50 {
-  min-height: 50px;
-}
-
-.btn-cancel {
-  background: #f1f5f9;
-  transition: all 0.2s ease;
-}
-
-.btn-cancel:hover {
-  background: #fee2e2;
-  color: #ef4444 !important;
-}
-
-.transition-base {
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.empty-state-container {
-  min-height: 400px;
-  border: 2px dashed #e2e8f0;
-  border-radius: 24px;
-  background: white;
 }
 </style>

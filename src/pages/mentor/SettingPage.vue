@@ -8,7 +8,7 @@
       </div>
       <h1 class="text-h4 text-weight-bold text-edulang-navy q-ma-none">Setting Profile</h1>
       <p class="text-subtitle1 text-grey-7 q-mt-xs">
-        Kelola informasi akun dan detail pembayaran Anda dalam satu tempat.
+        Kelola informasi akun Anda dalam satu tempat.
       </p>
     </div>
 
@@ -82,28 +82,6 @@
                 />
               </div>
 
-              <div class="col-12">
-                <q-separator class="q-my-md opacity-50" />
-                <div class="text-subtitle2 text-edulang-navy text-weight-bold q-mb-sm">
-                  Pembayaran
-                </div>
-              </div>
-
-              <div class="col-12">
-                <label class="label-custom">Virtual Bank Account</label>
-                <q-input
-                  v-model="form.bankAccount"
-                  outlined
-                  dense
-                  placeholder="Masukkan nomor rekening virtual"
-                  class="custom-input"
-                >
-                  <template v-slot:prepend>
-                    <q-icon name="account_balance" color="primary" />
-                  </template>
-                </q-input>
-              </div>
-
               <div class="col-12 q-mt-lg">
                 <div class="row q-col-gutter-md">
                   <div class="col-12 col-sm-6">
@@ -162,6 +140,7 @@
             unelevated
             class="full-width rounded-btn text-weight-bolder q-mt-md"
             icon="chat"
+            :href="whatsappSupportLink"
           />
         </q-card>
 
@@ -182,7 +161,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
 
@@ -193,7 +172,6 @@ const submitting = ref(false)
 const originalData = ref({
   username: '',
   email: '',
-  bankAccount: '',
 })
 
 const form = ref({
@@ -201,7 +179,6 @@ const form = ref({
   email: '',
   password: '',
   confirmPassword: '',
-  bankAccount: '',
 })
 
 const mentorId = ref(null)
@@ -209,10 +186,15 @@ const mentorId = ref(null)
 function applyFromOriginal() {
   form.value.username = originalData.value.username
   form.value.email = originalData.value.email
-  form.value.bankAccount = originalData.value.bankAccount
   form.value.password = ''
   form.value.confirmPassword = ''
 }
+
+const whatsappSupportLink = computed(() => {
+  // Ganti dengan nomor WA support Anda (format internasional)
+  const phoneNumber = '6282279506450' // Contoh: +62 812-3456-7890
+  return `https://wa.me/${phoneNumber}`
+})
 
 function resetForm() {
   applyFromOriginal()
@@ -220,21 +202,15 @@ function resetForm() {
 
 async function fetchProfile() {
   try {
-    // Coba ambil dari endpoint khusus profil mentor jika tersedia
-    // Fallback: ambil dari /mentors dan filter berdasarkan email di localStorage
     const storedEmail = localStorage.getItem('userEmail') || ''
-
     let profile = null
 
     try {
       const resMe = await api.get('/mentors/me')
       const dataMe = resMe.data || {}
       profile = dataMe.mentor || dataMe.data || dataMe
-    } catch (err) {
-      console.warn(
-        '[Mentor Setting] /mentors/me tidak tersedia, fallback ke /mentors',
-        err?.response?.status,
-      )
+    } catch {
+      console.warn('[Mentor Setting] /mentors/me tidak tersedia, fallback ke /mentors')
     }
 
     if (!profile) {
@@ -251,17 +227,13 @@ async function fetchProfile() {
       }
     }
 
-    if (!profile) {
-      return
-    }
+    if (!profile) return
 
     mentorId.value = profile._id || profile.id || null
 
     originalData.value = {
       username: profile.username || profile.name || '',
       email: profile.email || '',
-      bankAccount:
-        profile.virtualBankAccount || profile.bankAccount || profile.virtual_account || '',
     }
 
     applyFromOriginal()
@@ -269,7 +241,7 @@ async function fetchProfile() {
     console.error('[Mentor Setting] Gagal memuat profil mentor', err)
     $q.notify({
       type: 'negative',
-      message: err.response?.data?.message || 'Gagal memuat data profil mentor.',
+      message: 'Gagal memuat data profil mentor.',
     })
   }
 }
@@ -289,7 +261,6 @@ async function onSubmit() {
     const payload = {
       username: form.value.username,
       email: form.value.email,
-      virtualBankAccount: form.value.bankAccount,
     }
 
     if (form.value.password) {
@@ -310,7 +281,6 @@ async function onSubmit() {
     originalData.value = {
       username: form.value.username,
       email: form.value.email,
-      bankAccount: form.value.bankAccount,
     }
     applyFromOriginal()
   } catch (err) {

@@ -155,6 +155,8 @@ const menuList = [
   { label: 'Mentor', icon: 'groups', to: '/admin/mentor' },
   { label: 'Daftar Mentor Baru', icon: 'person_add_alt', to: '/admin/mentor/register' },
   { label: 'Revenue', icon: 'payments', to: '/admin/revenue' },
+  // TAMBAHKAN MENU INI
+  { label: 'Finance Mentor', icon: 'account_balance_wallet', to: '/admin/finance-mentor' },
   { label: 'User', icon: 'person_outline', to: '/admin/user' },
   { label: 'Mendaftar', icon: 'person_add', to: '/admin/pendaftar' },
   { label: 'Produk', icon: 'inventory_2', to: '/admin/produk' },

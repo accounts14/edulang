@@ -71,6 +71,11 @@ const routes = [
         name: 'UserLangganan',
         component: () => import('pages/user/UserLanggananPage.vue'),
       },
+      {
+        path: 'discussion/:packageId',
+        name: 'UserDiscussion',
+        component: () => import('pages/user/DiscussionPage.vue'),
+      },
       // Mulai Belajar: video + daftar pertemuan + tab Deskripsi / Soal + button Kerjakan Soal
       {
         path: 'learn/:packageId/lessons/:order/soal',
@@ -143,6 +148,12 @@ const routes = [
         path: 'kategori/:id/edit',
         name: 'AdminKategoriEdit',
         component: () => import('pages/admin/EditLanguageCategoryPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['admin'] },
+      },
+      {
+        path: 'finance-mentor',
+        name: 'AdminFinanceMentor',
+        component: () => import('pages/admin/FinanceMentorPage.vue'),
         meta: { requiresAuth: true, allowedRoles: ['admin'] },
       },
       {
@@ -227,6 +238,12 @@ const routes = [
         meta: { requiresAuth: true, allowedRoles: ['mentor'] },
       },
       {
+        path: 'bank',
+        name: 'MentorBankSetting',
+        component: () => import('pages/mentor/BankSettingPage.vue'), // Pastikan nama file sesuai
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
+      },
+      {
         path: 'kelasku',
         name: 'MentorKelasku',
         component: () => import('pages/mentor/KelaskuPage.vue'),
@@ -285,6 +302,18 @@ const routes = [
         path: 'packages/:id',
         name: 'MentorPackageDetail',
         component: () => import('pages/mentor/PackageDetailPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
+      },
+      {
+        path: 'discuss',
+        name: 'MentorDiscussList',
+        component: () => import('pages/mentor/DiscussListPage.vue'),
+        meta: { requiresAuth: true, allowedRoles: ['mentor'] },
+      },
+      {
+        path: 'discuss/:packageId',
+        name: 'MentorDiscussDetail',
+        component: () => import('pages/mentor/DiscussDetailPage.vue'),
         meta: { requiresAuth: true, allowedRoles: ['mentor'] },
       },
     ],

@@ -15,11 +15,7 @@
             </p>
 
             <div class="benefit-list q-gutter-y-md q-mb-xl">
-              <div
-                v-for="(benefit, idx) in benefits"
-                :key="idx"
-                class="benefit-item flex items-center"
-              >
+              <div v-for="(benefit, idx) in benefits" :key="idx" class="benefit-item">
                 <q-icon name="check_circle" color="orange-7" size="20px" class="q-mr-md" />
                 <span class="text-benefit">{{ benefit }}</span>
               </div>
@@ -128,10 +124,25 @@ const benefits = [
   font-size: 1.1rem;
   max-width: 540px;
 }
+.benefit-item {
+  display: grid;
+  grid-template-columns: 24px 1fr; /* Kolom 1 untuk ikon (24px), kolom 2 untuk teks */
+  gap: 12px;
+  align-items: start; /* Mengunci semua elemen di atas */
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.benefit-item .q-icon {
+  margin-top: 2px; /* Penyesuaian mikro agar sejajar baris pertama */
+  display: block;
+}
 
 .text-benefit {
   color: #1e293b;
   font-size: 1rem;
+  line-height: 1.5; /* Memberi ruang agar teks 2 baris terlihat rapi */
+  display: block;
 }
 
 /* Kiri: Buttons */
@@ -252,73 +263,73 @@ const benefits = [
    🎯 MOBILE (<768px) - FULL RESPONSIVE
    ======================================== */
 @media (max-width: 767px) {
+  .section-header {
+    text-align: left; /* Agar judul dan list semuanya rata kiri */
+  }
   .mentor-section {
-    padding: 60px 0;
+    padding: 50px 0;
   }
 
-  .container {
-    padding: 0 16px;
-  }
-
-  /* Content full width + centered */
+  /* Mengatur urutan: Gambar dulu baru Teks agar lebih natural di HP */
   .col-12.col-md-6:nth-child(1) {
     order: 2;
-    width: 100%;
-    max-width: 100%;
-    text-align: center;
+    text-align: left; /* KUNCI: Pastikan semua teks rata kiri agar rapi dengan list */
   }
 
-  /* Image dibawah */
   .col-12.col-md-6:nth-child(2) {
     order: 1;
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 2.5rem;
+    margin-bottom: 3.5rem;
   }
 
-  .section-title {
-    font-size: 2rem;
-    line-height: 1.25;
-  }
-
-  .section-subtitle {
-    font-size: 1.3rem;
-  }
-
+  /* Menghilangkan instruksi center agar konsisten rata kiri */
+  .section-title,
+  .section-subtitle,
   .mentor-desc {
-    font-size: 1rem;
-    text-align: center;
-    max-width: none;
+    text-align: left;
+    max-width: 100%;
   }
 
-  /* Visual compact mobile */
-  .mentor-viz-container {
-    max-width: 320px;
-    margin: 0 auto;
+  .hashtag-label {
+    margin-bottom: 12px;
   }
 
-  .viz-background {
-    width: 280px;
-    height: 240px;
-  }
-
-  .floating-mentor-card {
-    top: 120px;
-    right: -20px;
-    width: 240px;
-    padding: 16px;
-  }
-
-  /* Buttons stack vertical */
+  /* Tombol tetap mudah diklik namun mengikuti aliran teks kiri */
   .action-area {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch; /* Tombol melebar penuh agar jempol mudah menjangkau */
+    gap: 12px;
   }
 
   .btn-register-mentor,
   .btn-learn-more {
     width: 100%;
-    max-width: 280px;
+    max-width: 100%;
+  }
+
+  /* Visual: Pastikan kartu mentor tidak menutupi wajah saat layar sempit */
+  .floating-mentor-card {
+    position: relative; /* Berubah dari absolut agar tidak menabrak elemen lain */
+    top: auto;
+    right: auto;
+    width: 100%;
+    margin-top: -40px; /* Menumpuk sedikit di atas background biru */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  }
+  .benefit-list {
+    padding: 0;
+    margin-left: 0;
+  }
+
+  .benefit-item {
+    grid-template-columns: 24px 1fr; /* Tetap pertahankan 2 kolom di HP */
+    justify-content: start;
+  }
+
+  /* Jika sebelumnya ada text-align: center di mobile, ubah ke left */
+  .mentor-desc,
+  .section-title,
+  .section-subtitle {
+    text-align: left;
   }
 }
 

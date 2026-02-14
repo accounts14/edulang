@@ -114,28 +114,35 @@ function togglePlay() {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 180px;
-  background: #000;
   cursor: pointer;
+  overflow: hidden; /* FIXED: Cegah layout shift */
 }
+
 .thumbnail-img,
 .thumbnail-placeholder,
 .thumbnail-video,
 .thumbnail-iframe {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
+
 .thumbnail-video,
 .thumbnail-iframe {
   object-fit: contain;
   background: #000;
 }
+
 .play-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
+  z-index: 5; /* Pastikan di atas video tapi di bawah level-chip */
+  transition: opacity 0.2s ease;
 }
+
 .play-icon {
   opacity: 0.9;
 }

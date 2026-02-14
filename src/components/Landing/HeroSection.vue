@@ -31,7 +31,7 @@
               :to="{ name: 'AlurBelajarPage' }"
             />
           </div>
-          <div class="hero-stats row items-center no-wrap q-mt-xl q-gutter-xl">
+          <div class="hero-stats row items-center q-mt-xl q-gutter-xl">
             <div class="stat-item row items-center q-gutter-sm">
               <div class="stat-icon-wrap">
                 <q-icon name="group" size="24px" color="primary" />
@@ -685,6 +685,49 @@ onMounted(async () => {
 
   .hero-character {
     min-height: 400px;
+  }
+}
+
+/* Perbaikan Gambar 1: Membuat Stats Menurun di Mobile */
+@media (max-width: 599px) {
+  .hero-stats {
+    flex-direction: column; /* Membuat item menurun */
+    align-items: flex-start !important; /* Rata kiri */
+    gap: 16px; /* Jarak antar item saat menurun */
+  }
+
+  .hero-stats .stat-item {
+    width: 100%; /* Memastikan item mengambil lebar penuh */
+  }
+}
+
+/* ========================================
+   ✅ MOBILE RESPONSIVE (Max 599px) 
+   ======================================== */
+@media (max-width: 599px) {
+  /* Perbaikan Stats: Menurun ke bawah */
+  .hero-stats {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 20px !important;
+    margin-top: 30px !important;
+  }
+
+  /* Perbaikan Language Pills: Menurun tapi border tetap pas (fit-content) */
+  .hero-lang-pills {
+    display: grid; /* Gunakan Grid agar ukuran kotak PASTI sama persis */
+    grid-template-columns: repeat(2, 1fr); /* 2 Kolom sejajar */
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .hero-lang-pill {
+    flex: none; /* Matikan flex karena sudah pakai grid */
+    width: 100%; /* Mengikuti lebar grid */
+    min-width: 0;
+    padding: 10px;
+    justify-content: center; /* Di HP teks & ikon di tengah kotak agar manis */
+    font-size: 0.8rem;
   }
 }
 </style>

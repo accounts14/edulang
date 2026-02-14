@@ -41,9 +41,10 @@
           <div class="circle-container">
             <div class="circle-bg">
               <img
-                src="~assets/landing/character-mentor.png"
+                src="~assets/Edulang.png"
                 class="woman-img"
                 alt="Mentor Edulang"
+                style="filter: brightness(0) invert(1)"
               />
             </div>
 
@@ -158,18 +159,16 @@ const features = [
   position: relative;
   overflow: hidden; /* Ini yang memotong bagian bawah gambar mengikuti lingkaran */
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
 }
 
 .woman-img {
-  height: 100%; /* Ukuran tetap mengikuti tinggi lingkaran */
-  width: auto;
+  height: auto;
+  width: 100%; /* Sesuaikan persentase sesuai keinginan */
   z-index: 2;
   object-fit: contain;
-  /* Jika ingin kepala sedikit keluar, gunakan transform & scale, 
-     tapi untuk potongan bersih sesuai gambar, 100% adalah yang paling aman */
-  transform: translateY(10%);
+  transform: translate(0, 0);
 }
 
 /* Floating Card Styling (Tetap sama, pastikan z-index tinggi) */
@@ -214,12 +213,12 @@ const features = [
 }
 
 .cert-jlpt {
-  top: 10%;
+  top: 8%;
   right: -5%;
   animation-delay: 0s;
 }
 .cert-ielts {
-  top: 40%;
+  top: 70%;
   left: -15%;
   animation-delay: 1s;
 }
@@ -260,6 +259,19 @@ const features = [
   }
   .action-area {
     justify-content: center;
+  }
+  .cert-jlpt {
+    top: 5%;
+    right: -2%;
+  }
+  .cert-ielts {
+    top: 75%;
+    left: -10%;
+  }
+  /* Geser HSK lebih ke bawah/kanan agar tidak berdempetan */
+  .cert-hsk {
+    bottom: 10%;
+    right: -5%;
   }
 }
 
@@ -327,6 +339,22 @@ const features = [
   .btn-how {
     width: 100%;
     max-width: 280px;
+  }
+  .cert-jlpt {
+    top: 0%;
+    right: -10%;
+    transform: scale(0.9); /* Sedikit diperkecil agar tidak penuh */
+  }
+  .cert-ielts {
+    top: 70%;
+    left: -15%;
+    transform: scale(0.9);
+  }
+  /* HSK diletakkan lebih ekstrem ke bawah agar clear dari elemen lain */
+  .cert-hsk {
+    bottom: 5%;
+    right: -20%;
+    transform: scale(0.9);
   }
 }
 

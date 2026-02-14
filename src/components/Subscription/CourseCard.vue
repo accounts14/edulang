@@ -129,12 +129,13 @@ const goToDetail = () => {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-/* Thumbnail Styling */
+/* Thumbnail Styling - FIXED */
 .thumb-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3; /* Mengikuti rasio gambar di contoh */
+  height: 200px; /* Fixed height biar ga berubah */
   background: #eee;
+  overflow: hidden; /* Penting! Cegah content overflow */
 }
 
 /* Level Chip Overlay (Custom Dot Style) */
@@ -142,6 +143,8 @@ const goToDetail = () => {
   position: absolute;
   bottom: 12px;
   right: 12px;
+  z-index: 10; /* Pastikan di atas thumbnail */
+  pointer-events: none; /* Biar ga ganggu click play */
 }
 
 .custom-level-chip {
@@ -183,6 +186,20 @@ const goToDetail = () => {
 .ellipsis-2-lines {
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.title-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.description-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

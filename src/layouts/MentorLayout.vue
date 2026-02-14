@@ -86,12 +86,34 @@
         <q-item
           clickable
           v-ripple
+          to="/mentor/discuss"
+          active-class="active-menu"
+          class="menu-item-non-active"
+        >
+          <q-item-section avatar><q-icon name="forum" size="sm" /></q-item-section>
+          <q-item-section class="text-weight-medium">Diskusi User</q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
+          v-ripple
           to="/mentor/revenue"
           active-class="active-menu"
           class="menu-item-non-active"
         >
           <q-item-section avatar><q-icon name="payments" size="sm" /></q-item-section>
           <q-item-section class="text-weight-medium">Revenue</q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
+          v-ripple
+          to="/mentor/bank"
+          active-class="active-menu"
+          class="menu-item-non-active"
+        >
+          <q-item-section avatar><q-icon name="account_balance" size="sm" /></q-item-section>
+          <q-item-section class="text-weight-medium">Rekening Bank</q-item-section>
         </q-item>
 
         <q-item
@@ -128,16 +150,9 @@ const leftDrawerOpen = ref(true)
 const router = useRouter()
 const route = useRoute()
 
+// Gue ubah logic-nya jadi return string kosong supaya teksnya ilang dari header
 const pageTitle = computed(() => {
-  const t = route.meta?.title || route.name || ''
-  if (t) return String(t)
-  const path = route.path
-  if (path === '/mentor/dashboard') return 'Dashboard'
-  if (path.startsWith('/mentor/kelasku')) return 'Kelasku'
-  if (path.startsWith('/mentor/rating')) return 'Rating dan Review'
-  if (path.startsWith('/mentor/revenue')) return 'Revenue'
-  if (path.startsWith('/mentor/setting')) return 'Setting'
-  return 'Edulang Mentor'
+  return ''
 })
 
 const mentorData = ref({ name: '', role: '' })

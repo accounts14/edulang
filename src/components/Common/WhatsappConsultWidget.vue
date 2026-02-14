@@ -54,7 +54,7 @@ setTimeout(() => {
 
 function goToContact() {
   // Langsung ke WhatsApp atau halaman kontak
-  window.open('https://wa.me/628xxxxxx', '_blank')
+  window.open('https://wa.me/6282279506450', '_blank')
 }
 </script>
 
