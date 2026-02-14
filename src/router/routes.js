@@ -117,6 +117,12 @@ const routes = [
         name: 'UserReview',
         component: () => import('pages/user/UserReviewPage.vue'),
       },
+      // Di dalam children path: '/dashboard'
+      {
+        path: 'progres/:packageId/score',
+        name: 'UserPackageScore',
+        component: () => import('pages/user/UserPackageScorePage.vue'),
+      },
     ],
   },
 
