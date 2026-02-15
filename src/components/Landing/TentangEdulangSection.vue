@@ -274,6 +274,20 @@ const items = [
   .image-wrapper {
     min-height: 380px; /* Sedikit lebih pendek di HP kecil */
   }
+  .character-img {
+    /* RESET koordinat top, gunakan bottom agar menempel di garis bawah */
+    top: auto !important;
+    bottom: 0 !important;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Ukuran tetap proporsional */
+    width: 80%;
+    height: auto;
+    min-height: 50%;
+    object-fit: cover;
+    object-position: top center;
+  }
 }
 
 /* IPAD */
@@ -288,6 +302,20 @@ const items = [
   .col-12.col-md-7 {
     flex: 0 0 60%;
     max-width: 60%;
+  }
+  .character-img {
+    /* RESET koordinat top, gunakan bottom agar menempel di garis bawah */
+    top: auto !important;
+    bottom: 0 !important;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Ukuran tetap proporsional */
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
 }
 </style>

@@ -82,8 +82,14 @@
     </q-drawer>
 
     <q-page-container>
-      <!-- Header -->
-      <header :class="['main-layout-header', isDark ? 'bg-dark text-white' : 'bg-white text-dark']">
+      <!-- Header dengan animasi scroll -->
+      <header
+        :class="[
+          'main-layout-header',
+          isDark ? 'bg-dark text-white' : 'bg-white text-dark',
+          !showHeader ? 'header-hidden' : '',
+        ]"
+      >
         <q-toolbar class="q-px-xl main-layout-toolbar">
           <q-toolbar-title
             shrink
@@ -404,7 +410,7 @@
                 size="sm"
                 icon="fab fa-instagram"
                 target="_blank"
-                href="https://instagram.com/edulang.id"
+                href="https://instagram.com/edulang.id "
                 class="footer-social-icon"
               />
               <q-btn
@@ -413,7 +419,7 @@
                 size="sm"
                 icon="fab fa-tiktok"
                 target="_blank"
-                href="https://tiktok.com/@edulang.id"
+                href="https://tiktok.com/@edulang.id "
                 class="footer-social-icon"
               />
               <q-btn
@@ -434,7 +440,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { api } from 'src/boot/axios'
 import { Dark } from 'quasar'
@@ -442,6 +448,10 @@ import { Dark } from 'quasar'
 const router = useRouter()
 const route = useRoute()
 const leftDrawerOpen = ref(false)
+
+// TAMBAHAN: State untuk header scroll
+const scrollTimeout = ref(null) // ref() bukan let
+const showHeader = ref(true)
 
 const isLoggedIn = ref(false)
 const userName = ref('')
@@ -530,7 +540,7 @@ const onDrawerAllCourses = () => {
 }
 
 const onDrawerStudyAbroad = () => {
-  window.location.href = 'https://study.edulang.id/'
+  window.location.href = 'https://study.edulang.id/ '
   leftDrawerOpen.value = false
 }
 
@@ -562,7 +572,7 @@ const onProgramAllCourses = () => {
 }
 
 const onProgramStudyAbroad = () => {
-  window.location.href = 'https://study.edulang.id/'
+  window.location.href = 'https://study.edulang.id/ '
   closeProgramMenu()
 }
 
@@ -586,16 +596,61 @@ const onProgramMouseLeave = () => {
   }, 150)
 }
 
+// TAMBAHAN: Handler scroll untuk header
+// GANTI handleScroll() INI
+// ✅ REPLACE handleScroll() INI
+const handleScroll = () => {
+  const scrollY = window.scrollY || document.documentElement.scrollTop
+
+  // 🔥 UTAMA: SELALU TERLIHAT saat di ATAS (scrollY <= 10px)
+  if (scrollY <= 10) {
+    showHeader.value = true
+    if (scrollTimeout.value) {
+      window.clearTimeout(scrollTimeout.value) // Cancel hide
+    }
+    return // STOP - jangan lanjut
+  }
+
+  // Hanya saat scroll > 10px (sudah agak ke bawah)
+  showHeader.value = true
+
+  if (scrollTimeout.value) {
+    window.clearTimeout(scrollTimeout.value)
+  }
+
+  scrollTimeout.value = window.setTimeout(() => {
+    showHeader.value = false // Hanya hide saat scroll agak bawah + stop 1.5s
+  }, 1500)
+}
+
 onMounted(() => {
   checkLoginStatus()
   fetchLanguages()
   applyStoredTheme()
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    showHeader.value = true // ✅ FORCE TERLIHAT di awal
+  }
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('scroll', handleScroll)
+  }
+  if (scrollTimeout.value) {
+    window.clearTimeout(scrollTimeout.value)
+  }
 })
 
 watch(
   () => route.path,
   () => {
     checkLoginStatus()
+    showHeader.value = true // ✅ RESET TERLIHAT saat pindah halaman
+    if (scrollTimeout.value) {
+      window.clearTimeout(scrollTimeout.value)
+    }
   },
 )
 
@@ -677,7 +732,7 @@ const handleLogout = () => {
 }
 
 .edulang-header-text {
-  font-size: 18px;
+  font-size: 1.9rem;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: 0.5px;
@@ -873,12 +928,32 @@ a {
   opacity: 1;
 }
 
+/* TAMBAHAN: CSS untuk animasi header scroll */
 .main-layout-header {
-  position: relative;
-  z-index: 1;
+  position: sticky !important; /* Ubah dari fixed ke sticky */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000 !important;
   border: none;
   box-shadow: none;
+  transition:
+    transform 0.4s ease-in-out,
+    opacity 0.4s ease-in-out;
+  transform: translateY(0);
 }
+
+.main-layout-header.header-hidden {
+  transform: translateY(-100%) !important;
+  opacity: 0 !important;
+}
+
+.main-layout-header:not(.header-hidden) {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
 .main-layout-toolbar {
   padding-top: 14px;
   padding-bottom: 14px;
@@ -1154,6 +1229,17 @@ a {
   .nav-links-wrap {
     display: none !important;
   }
+  .edulang-header-text {
+    font-size: 1rem; /* Lebih kecil lagi untuk hp kecil */
+  }
+
+  .header-tagline {
+    font-size: 0.55rem;
+    max-width: 120px; /* Batasi lebar agar tidak overflow */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -1201,6 +1287,20 @@ a {
   .footer-payment-icons {
     justify-content: center;
   }
+  .header-text-container {
+    margin-left: 8px;
+    display: flex !important; /* Pastikan tetap visible */
+  }
+
+  .edulang-header-text {
+    font-size: 1.2rem; /* Lebih kecil untuk mobile */
+    width: auto; /* Hapus fixed width 160px */
+  }
+
+  .header-tagline {
+    font-size: 0.6rem; /* Lebih kecil untuk mobile */
+    margin-top: 2px;
+  }
 }
 
 @media (min-width: 1024px) and (max-width: 1365px) {
@@ -1229,7 +1329,7 @@ a {
 
 @media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
   .main-layout-header {
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 1000;
   }
@@ -1237,7 +1337,7 @@ a {
 
 @supports (-webkit-touch-callout: none) {
   .lt-md .main-layout-header {
-    position: sticky !important;
+    position: fixed !important;
     top: 0 !important;
   }
 }
@@ -1262,6 +1362,17 @@ a {
   .container {
     max-width: none !important;
     padding: 0 !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .header-text-container {
+    display: flex !important;
+    margin-left: 8px;
+  }
+
+  .edulang-header-text {
+    font-size: 1.2rem !important; /* Override inline style */
   }
 }
 </style>

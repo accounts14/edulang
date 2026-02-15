@@ -39,10 +39,7 @@
     >
       <div class="column full-height">
         <div class="col-auto">
-          <div
-            class="flex flex-center q-mb-lg q-mt-lg cursor-pointer"
-            @click="router.push('/dashboard')"
-          >
+          <div class="flex flex-center q-mb-lg q-mt-lg cursor-pointer" @click="router.push('/')">
             <img src="~assets/Edulang.png" style="width: 140px" alt="Edulang Logo" />
           </div>
 
