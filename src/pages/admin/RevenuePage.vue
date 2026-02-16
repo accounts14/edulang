@@ -1,125 +1,165 @@
 <template>
-  <q-page class="q-pa-xl bg-accent">
-    <div class="text-h4 text-weight-bolder text-indigo-10 q-mb-xl">Revenue & Transaksi</div>
-
-    <div class="row q-col-gutter-lg q-mb-xl">
-      <div class="col-12 col-sm-6 col-md-4">
-        <q-card flat class="rounded-borders-lg shadow-1 q-pa-lg bg-white">
-          <div class="row items-center">
-            <q-avatar
-              color="blue-6"
-              text-color="white"
-              icon="description"
-              size="48px"
-              class="q-mr-md"
-            />
-            <div>
-              <div class="text-h4 text-weight-bolder text-grey-9">{{ summary.totalTransaksi }}</div>
-              <div class="text-caption text-grey-7">Total Transaksi ({{ monthLabel }})</div>
-            </div>
-          </div>
-        </q-card>
+  <q-page class="q-pa-md q-pa-sm-xl bg-edulang-white">
+    <div class="max-width-container mx-auto">
+      <div class="q-mb-xl">
+        <h1 class="text-h4 text-weight-bolder text-edulang-navy font-outfit q-ma-none">
+          Revenue & Transaksi
+        </h1>
+        <p class="text-subtitle1 text-grey-7">
+          Monitor arus kas dan riwayat transaksi platform secara real-time.
+        </p>
       </div>
-      <div class="col-12 col-sm-6 col-md-4">
-        <q-card flat class="rounded-borders-lg shadow-1 q-pa-lg bg-white">
-          <div class="row items-center">
-            <q-avatar
-              color="amber-7"
-              text-color="white"
-              icon="payments"
-              size="48px"
-              class="q-mr-md"
-            />
-            <div>
-              <div class="text-h6 text-weight-bolder text-grey-9">
-                {{ summary.pendapatanFormatted }}
+
+      <div class="row q-col-gutter-lg q-mb-xl">
+        <div class="col-12 col-sm-6 col-md-4">
+          <q-card
+            flat
+            class="stat-card q-pa-lg bg-white shadow-brand rounded-24 relative-position overflow-hidden"
+          >
+            <div class="bg-edulang-blue absolute-top" style="height: 4px"></div>
+            <div class="row items-center no-wrap">
+              <q-avatar
+                color="edulang-blue-light"
+                text-color="edulang-blue"
+                icon="receipt_long"
+                size="56px"
+                class="q-mr-md"
+              />
+              <div>
+                <div class="text-h4 text-weight-bolder text-edulang-navy line-height-1">
+                  {{ summary.totalTransaksi }}
+                </div>
+                <div class="text-caption text-weight-bold text-grey-6 uppercase q-mt-xs">
+                  Transaksi ({{ monthLabel }})
+                </div>
               </div>
-              <div class="text-caption text-grey-7">Pendapatan Masuk</div>
+            </div>
+          </q-card>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-4">
+          <q-card
+            flat
+            class="stat-card q-pa-lg bg-white shadow-brand rounded-24 relative-position overflow-hidden"
+          >
+            <div class="bg-edulang-yellow absolute-top" style="height: 4px"></div>
+            <div class="row items-center no-wrap">
+              <q-avatar
+                color="orange-1"
+                text-color="edulang-yellow-dark"
+                icon="payments"
+                size="56px"
+                class="q-mr-md"
+              />
+              <div>
+                <div class="text-h5 text-weight-bolder text-edulang-navy line-height-1">
+                  {{ summary.pendapatanFormatted }}
+                </div>
+                <div class="text-caption text-weight-bold text-grey-6 uppercase q-mt-xs">
+                  Total Pendapatan
+                </div>
+              </div>
+            </div>
+          </q-card>
+        </div>
+      </div>
+
+      <div class="row items-center q-mb-lg q-col-gutter-sm">
+        <div class="col-12 col-sm-auto">
+          <q-input
+            v-model="searchQuery"
+            dense
+            outlined
+            placeholder="Cari Paket atau Email Mentor..."
+            bg-color="white"
+            clearable
+            class="search-input rounded-12"
+            style="min-width: 320px"
+            @keyup.enter="applySearch"
+            @clear="applySearch"
+          >
+            <template v-slot:prepend>
+              <q-icon name="search" color="grey-5" />
+            </template>
+          </q-input>
+        </div>
+        <div class="col-12 col-sm-auto">
+          <q-btn
+            unelevated
+            color="edulang-blue"
+            no-caps
+            label="Filter Data"
+            class="full-width rounded-12 q-px-lg text-weight-bold"
+            @click="applySearch"
+          />
+        </div>
+      </div>
+
+      <q-card flat class="rounded-24 shadow-brand bg-white overflow-hidden border-subtle">
+        <div class="bg-edulang-navy" style="height: 6px"></div>
+        <q-card-section class="q-pa-lg">
+          <div class="text-h6 text-weight-bolder text-edulang-navy font-outfit q-mb-md">
+            Riwayat Transaksi
+          </div>
+
+          <div v-if="loading" class="text-center q-pa-xl">
+            <q-spinner-dots color="edulang-blue" size="40px" />
+          </div>
+
+          <div v-else-if="filteredRows.length === 0" class="text-center q-pa-xl">
+            <q-icon name="history" size="xl" color="grey-3" />
+            <div class="text-grey-6 q-mt-md font-medium">
+              {{
+                searchQuery ? 'Tidak ada data yang cocok.' : 'Belum ada data transaksi tercatat.'
+              }}
             </div>
           </div>
-        </q-card>
-      </div>
+
+          <q-table
+            v-else
+            :rows="filteredRows"
+            :columns="columns"
+            row-key="_id"
+            flat
+            class="edulang-table"
+            :rows-per-page-options="[10, 25, 50]"
+          >
+            <template #body-cell-packageName="props">
+              <q-td :props="props">
+                <div class="text-weight-bold text-edulang-navy">{{ props.row.packageName }}</div>
+                <div class="text-caption text-grey-5 font-mono">
+                  ID: {{ props.row._id.slice(-8) }}
+                </div>
+              </q-td>
+            </template>
+
+            <template #body-cell-amount="props">
+              <q-td :props="props" class="text-weight-bolder text-edulang-blue">
+                {{ formatRupiah(props.row.amount) }}
+              </q-td>
+            </template>
+
+            <template #body-cell-status="props">
+              <q-td :props="props" class="text-center">
+                <q-badge
+                  :color="statusColor(props.row.status)"
+                  class="rounded-8 q-py-xs q-px-md text-weight-bold"
+                  unelevated
+                >
+                  {{ statusLabel(props.row.status) }}
+                </q-badge>
+              </q-td>
+            </template>
+
+            <template #body-cell-createdAt="props">
+              <q-td :props="props">
+                <div class="text-grey-8">{{ formatDate(props.row.createdAt) }}</div>
+              </q-td>
+            </template>
+          </q-table>
+        </q-card-section>
+      </q-card>
     </div>
-
-    <div class="row items-center q-mb-md">
-      <q-input
-        v-model="searchQuery"
-        dense
-        outlined
-        placeholder="Cari Paket / Email Mentor"
-        bg-color="white"
-        clearable
-        class="rounded-borders"
-        style="min-width: 320px"
-        @keyup.enter="applySearch"
-        @clear="applySearch"
-      />
-      <q-btn
-        unelevated
-        color="amber-8"
-        no-caps
-        label="Search"
-        icon="search"
-        class="q-ml-sm"
-        @click="applySearch"
-      />
-    </div>
-
-    <q-card flat class="rounded-borders-lg shadow-1 q-pa-lg bg-white">
-      <div class="text-h6 text-weight-bolder q-mb-md">Data Transaksi</div>
-
-      <div v-if="loading" class="text-center q-pa-xl">
-        <q-spinner-dots color="primary" size="40px" />
-      </div>
-
-      <div v-else-if="filteredRows.length === 0" class="text-center q-pa-xl text-grey-7">
-        {{
-          searchQuery ? 'Tidak ada data yang cocok dengan pencarian.' : 'Belum ada data transaksi.'
-        }}
-      </div>
-
-      <q-table
-        v-else
-        :rows="filteredRows"
-        :columns="columns"
-        row-key="_id"
-        flat
-        bordered
-        class="rounded-borders"
-        :rows-per-page-options="[10, 25, 50]"
-      >
-        <template #body-cell-packageName="props">
-          <q-td>
-            <div class="text-weight-bold">{{ props.row.packageName }}</div>
-            <div class="text-caption text-grey-7" style="font-size: 10px">
-              ID: {{ props.row._id }}
-            </div>
-          </q-td>
-        </template>
-
-        <template #body-cell-emailMentor="props">
-          <q-td>
-            <div>{{ props.row.emailMentor }}</div>
-          </q-td>
-        </template>
-
-        <template #body-cell-amount="props">
-          <q-td class="text-weight-medium">{{ formatRupiah(props.row.amount) }}</q-td>
-        </template>
-
-        <template #body-cell-status="props">
-          <q-td>
-            <q-badge :color="statusColor(props.row.status)" class="q-py-xs q-px-sm">
-              {{ statusLabel(props.row.status) }}
-            </q-badge>
-          </q-td>
-        </template>
-
-        <template #body-cell-createdAt="props">
-          <q-td>{{ formatDate(props.row.createdAt) }}</q-td>
-        </template>
-      </q-table>
-    </q-card>
   </q-page>
 </template>
 
@@ -336,10 +376,93 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-.rounded-borders-lg {
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
+
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Brand Colors */
+.bg-edulang-white {
+  background-color: #f5f7fa !important;
+}
+.text-edulang-navy {
+  color: #003387 !important;
+}
+.bg-edulang-navy {
+  background-color: #003387 !important;
+}
+.bg-edulang-blue {
+  background-color: #0089ff !important;
+}
+.edulang-blue-light {
+  background-color: rgba(0, 137, 255, 0.1) !important;
+}
+.bg-edulang-yellow {
+  background-color: #ffc42c !important;
+}
+.edulang-yellow-dark {
+  color: #b48a1d !important;
+}
+
+/* Components Style */
+.max-width-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.rounded-24 {
   border-radius: 24px;
 }
-.text-indigo-10 {
-  color: #0d2a5c;
+.rounded-12 {
+  border-radius: 12px;
+}
+.rounded-8 {
+  border-radius: 8px;
+}
+
+.shadow-brand {
+  box-shadow: 0 15px 35px -5px rgba(0, 51, 135, 0.08) !important;
+}
+
+.border-subtle {
+  border: 1px solid rgba(0, 51, 135, 0.05);
+}
+.line-height-1 {
+  line-height: 1;
+}
+.font-mono {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+}
+
+/* Table Styling */
+.edulang-table :deep(.q-table__th) {
+  font-weight: 800;
+  color: #616161;
+  background-color: #fafafa;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+}
+
+.stat-card {
+  transition: all 0.3s ease;
+}
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -10px rgba(0, 51, 135, 0.15) !important;
+}
+
+/* Responsivitas */
+@media (max-width: 600px) {
+  .text-h4 {
+    font-size: 1.75rem;
+  }
+  .search-input {
+    width: 100% !important;
+  }
+  .stat-card .text-h4 {
+    font-size: 1.5rem;
+  }
 }
 </style>

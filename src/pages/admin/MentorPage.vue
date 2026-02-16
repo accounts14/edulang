@@ -1,104 +1,149 @@
 <template>
-  <q-page class="q-pa-xl bg-accent">
-    <div class="q-mb-xl">
-      <div class="text-h4 text-weight-bolder text-indigo-10">Kelola Akun Mentor</div>
-      <div class="text-subtitle1 text-grey-7">Tempat Pengelolaan Akun Mentor</div>
-    </div>
-
-    <q-card flat class="rounded-borders-lg shadow-1 q-pa-lg bg-white">
-      <div class="row items-center justify-between q-mb-md">
-        <div class="text-h6 text-weight-bolder">Verifikasi Calon Mentor</div>
-        <div class="row items-center q-gutter-sm">
-          <q-input
-            v-model="searchMentor"
-            dense
-            outlined
-            placeholder="Cari Mentor"
-            bg-color="white"
-            clearable
-            class="search-input"
-            style="min-width: 220px"
-            @keyup.enter="applySearch"
-          />
-          <q-btn
-            unelevated
-            color="amber-8"
-            no-caps
-            label="Search"
-            icon="search"
-            @click="applySearch"
-          />
+  <q-page class="q-pa-md q-pa-sm-xl bg-edulang-white">
+    <div class="max-width-container mx-auto">
+      <div class="row items-center justify-between q-mb-xl">
+        <div class="col-12 col-md-auto q-mb-md q-md-mb-none">
+          <div class="text-h4 text-weight-bolder text-edulang-navy font-outfit q-mb-xs">
+            Kelola Akun Mentor
+          </div>
+          <div class="text-subtitle1 text-grey-7">
+            Pusat verifikasi dan manajemen data instruktur Edulang
+          </div>
+        </div>
+        <div class="col-12 col-md-auto">
+          <div class="row q-col-gutter-sm">
+            <div class="col">
+              <q-input
+                v-model="searchMentor"
+                dense
+                outlined
+                placeholder="Cari mentor..."
+                bg-color="white"
+                clearable
+                class="rounded-12 custom-input"
+                style="min-width: 260px"
+                @keyup.enter="applySearch"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="search" color="grey-5" />
+                </template>
+              </q-input>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div v-if="loading" class="text-center q-pa-xl">
-        <q-spinner-dots color="primary" size="40px" />
-      </div>
+      <q-card flat class="rounded-24 shadow-brand bg-white border-subtle overflow-hidden">
+        <div class="bg-edulang-blue" style="height: 6px"></div>
 
-      <div v-else-if="filteredMentors.length === 0" class="text-center q-pa-xl text-grey-7">
-        {{
-          searchMentor ? 'Tidak ada mentor yang cocok dengan pencarian.' : 'Belum ada data mentor.'
-        }}
-      </div>
-
-      <q-table
-        v-else
-        :rows="filteredMentors"
-        :columns="columns"
-        row-key="_id"
-        flat
-        bordered
-        class="rounded-borders"
-        :rows-per-page-options="[10, 25, 50]"
-      >
-        <template #body-cell-nama="props">
-          <q-td>{{ props.row.name || '-' }}</q-td>
-        </template>
-        <template #body-cell-email="props">
-          <q-td>{{ props.row.email || '-' }}</q-td>
-        </template>
-        <template #body-cell-password>
-          <q-td>
-            <span class="text-grey-6">••••••••</span>
-          </q-td>
-        </template>
-        <template #body-cell-status="props">
-          <q-td>
-            <q-chip v-if="isVerified(props.row)" dense color="green-6" text-color="white" size="sm">
-              Terverifikasi
-            </q-chip>
-            <q-chip v-else dense color="grey-5" text-color="white" size="sm">
-              Belum verifikasi
-            </q-chip>
-          </q-td>
-        </template>
-        <template #body-cell-aksi="props">
-          <q-td>
-            <q-btn
-              unelevated
-              no-caps
-              color="primary"
-              size="sm"
+        <q-card-section class="q-pa-lg">
+          <div class="row items-center q-mb-lg">
+            <q-avatar
+              color="edulang-blue-light"
+              text-color="edulang-blue"
+              icon="verified_user"
+              size="md"
               class="q-mr-sm"
-              label="Konfirmasi"
-              :disable="isVerified(props.row)"
-              :loading="confirmingId === props.row._id"
-              @click="confirmMentor(props.row)"
             />
-            <q-btn
-              unelevated
-              no-caps
-              outline
-              color="grey-7"
-              size="sm"
-              label="Hapus"
-              :loading="deletingId === props.row._id"
-              @click="confirmDelete(props.row)"
-            />
-          </q-td>
-        </template>
-      </q-table>
-    </q-card>
+            <div class="text-h6 text-weight-bold text-edulang-navy font-outfit">
+              Status Verifikasi Mentor
+            </div>
+          </div>
+
+          <div v-if="loading" class="text-center q-pa-xl">
+            <q-spinner-dots color="edulang-blue" size="40px" />
+            <div class="text-grey-6 q-mt-md">Memuat data mentor...</div>
+          </div>
+
+          <div v-else-if="filteredMentors.length === 0" class="text-center q-pa-xl">
+            <q-icon name="person_off" size="xl" color="grey-4" />
+            <div class="text-grey-7 q-mt-sm">
+              {{
+                searchMentor
+                  ? 'Tidak ada mentor yang cocok dengan pencarian.'
+                  : 'Belum ada data mentor yang masuk.'
+              }}
+            </div>
+          </div>
+
+          <q-table
+            v-else
+            :rows="filteredMentors"
+            :columns="columns"
+            row-key="_id"
+            flat
+            class="mentor-table"
+            :rows-per-page-options="[10, 25, 50]"
+          >
+            <template #body-cell-nama="props">
+              <q-td :props="props">
+                <div class="row items-center no-wrap">
+                  <q-avatar color="grey-2" size="sm" class="q-mr-sm">
+                    <q-icon name="person" color="grey-6" size="xs" />
+                  </q-avatar>
+                  <div class="text-weight-bold text-edulang-navy">{{ props.row.name || '-' }}</div>
+                </div>
+              </q-td>
+            </template>
+
+            <template #body-cell-status="props">
+              <q-td :props="props" class="text-center">
+                <q-chip
+                  v-if="isVerified(props.row)"
+                  dense
+                  class="rounded-8 q-px-md text-weight-bold"
+                  color="green-1"
+                  text-color="green-7"
+                  icon="check_circle"
+                >
+                  Terverifikasi
+                </q-chip>
+                <q-chip
+                  v-else
+                  dense
+                  class="rounded-8 q-px-md text-weight-bold"
+                  color="orange-1"
+                  text-color="orange-7"
+                  icon="pending"
+                >
+                  Pending
+                </q-chip>
+              </q-td>
+            </template>
+
+            <template #body-cell-aksi="props">
+              <q-td :props="props" class="text-center">
+                <div class="row justify-center q-gutter-x-sm no-wrap">
+                  <q-btn
+                    unelevated
+                    no-caps
+                    color="edulang-blue"
+                    size="sm"
+                    padding="6px 16px"
+                    class="rounded-8 text-weight-bold"
+                    label="Konfirmasi"
+                    :disable="isVerified(props.row)"
+                    :loading="confirmingId === props.row._id"
+                    @click="confirmMentor(props.row)"
+                  />
+                  <q-btn
+                    flat
+                    round
+                    color="negative"
+                    size="sm"
+                    icon="delete_outline"
+                    :loading="deletingId === props.row._id"
+                    @click="confirmDelete(props.row)"
+                  >
+                    <q-tooltip>Hapus Akun</q-tooltip>
+                  </q-btn>
+                </div>
+              </q-td>
+            </template>
+          </q-table>
+        </q-card-section>
+      </q-card>
+    </div>
   </q-page>
 </template>
 
@@ -215,10 +260,73 @@ onMounted(fetchMentors)
 </script>
 
 <style scoped>
-.rounded-borders-lg {
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
+
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Warna Brand Edulang */
+.bg-edulang-white {
+  background-color: #f5f7fa !important;
+}
+.text-edulang-navy {
+  color: #003387 !important;
+}
+.bg-edulang-navy {
+  background-color: #003387 !important;
+}
+.bg-edulang-blue {
+  background-color: #0089ff !important;
+}
+.edulang-blue-light {
+  background-color: rgba(0, 137, 255, 0.1) !important;
+}
+
+/* Layouting & Shadows */
+.max-width-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.rounded-24 {
   border-radius: 24px;
 }
-.text-indigo-10 {
-  color: #0d2a5c;
+.rounded-12 {
+  border-radius: 12px;
+}
+.rounded-8 {
+  border-radius: 8px;
+}
+
+.shadow-brand {
+  box-shadow: 0 20px 40px -10px rgba(0, 51, 135, 0.08) !important;
+}
+
+.border-subtle {
+  border: 1px solid rgba(0, 51, 135, 0.05);
+}
+
+/* Table Styling */
+.mentor-table :deep(.q-table__th) {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #616161;
+  background-color: #fafafa;
+}
+
+.mentor-table :deep(.q-table__middle) {
+  border-radius: 12px;
+}
+
+/* Responsivitas */
+@media (max-width: 600px) {
+  .text-h4 {
+    font-size: 1.75rem;
+  }
+  .search-input {
+    width: 100% !important;
+  }
 }
 </style>

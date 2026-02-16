@@ -260,76 +260,63 @@ const benefits = [
 }
 
 /* ========================================
-   🎯 MOBILE (<768px) - FULL RESPONSIVE
+    🎯 MOBILE (<768px) - REVISED VISUAL
    ======================================== */
 @media (max-width: 767px) {
-  .section-header {
-    text-align: left; /* Agar judul dan list semuanya rata kiri */
-  }
   .mentor-section {
-    padding: 50px 0;
+    padding: 40px 0;
   }
 
-  /* Mengatur urutan: Gambar dulu baru Teks agar lebih natural di HP */
+  /* Urutan: Gambar di atas, Teks di bawah */
   .col-12.col-md-6:nth-child(1) {
     order: 2;
-    text-align: left; /* KUNCI: Pastikan semua teks rata kiri agar rapi dengan list */
   }
-
   .col-12.col-md-6:nth-child(2) {
     order: 1;
-    margin-bottom: 3.5rem;
+    display: flex;
+    justify-content: center; /* Karakter di tengah */
+    margin-bottom: 80px; /* Memberi ruang untuk kartu yang melayang di bawah */
   }
 
-  /* Menghilangkan instruksi center agar konsisten rata kiri */
-  .section-title,
-  .section-subtitle,
-  .mentor-desc {
+  .section-header {
     text-align: left;
-    max-width: 100%;
   }
 
-  .hashtag-label {
-    margin-bottom: 12px;
+  /* Visual Container di HP */
+  .mentor-viz-container {
+    max-width: 300px; /* Ukuran lebih kecil agar pas di HP */
   }
 
-  /* Tombol tetap mudah diklik namun mengikuti aliran teks kiri */
+  .viz-background {
+    width: 260px;
+    height: 240px;
+    border-radius: 20px;
+  }
+
+  /* KUNCI: Posisi Kartu di HP */
+  .floating-mentor-card {
+    position: absolute; /* Tetap absolut untuk menumpuk */
+    top: 160px; /* Turun ke area bawah karakter */
+    right: -20px; /* Geser sedikit ke kanan luar background biru */
+    left: auto;
+    width: 240px; /* Lebar diperkecil agar tidak makan tempat */
+    padding: 15px;
+    margin-top: 0;
+    transform: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Penyesuaian teks dalam kartu agar tidak terlalu besar di HP */
+  .m-specialty {
+    font-size: 0.75rem;
+  }
+  .m-quote {
+    display: none;
+  } /* Opsional: Sembunyikan kutipan panjang di HP agar ringkas */
+
   .action-area {
     flex-direction: column;
-    align-items: stretch; /* Tombol melebar penuh agar jempol mudah menjangkau */
     gap: 12px;
-  }
-
-  .btn-register-mentor,
-  .btn-learn-more {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  /* Visual: Pastikan kartu mentor tidak menutupi wajah saat layar sempit */
-  .floating-mentor-card {
-    position: relative; /* Berubah dari absolut agar tidak menabrak elemen lain */
-    top: auto;
-    right: auto;
-    width: 100%;
-    margin-top: -40px; /* Menumpuk sedikit di atas background biru */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  }
-  .benefit-list {
-    padding: 0;
-    margin-left: 0;
-  }
-
-  .benefit-item {
-    grid-template-columns: 24px 1fr; /* Tetap pertahankan 2 kolom di HP */
-    justify-content: start;
-  }
-
-  /* Jika sebelumnya ada text-align: center di mobile, ubah ke left */
-  .mentor-desc,
-  .section-title,
-  .section-subtitle {
-    text-align: left;
   }
 }
 

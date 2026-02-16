@@ -17,10 +17,12 @@
               <div
                 v-for="(feat, idx) in features"
                 :key="idx"
-                class="feature-item flex items-center"
+                class="feature-item row no-wrap items-start"
               >
-                <q-icon name="check_circle" color="blue" size="24px" class="q-mr-md" />
-                <span class="text-feature text-weight-medium">{{ feat }}</span>
+                <q-icon name="check_circle" color="blue" size="24px" class="q-mr-md q-mt-xs" />
+                <div class="text-feature text-weight-medium col">
+                  {{ feat }}
+                </div>
               </div>
             </div>
 
@@ -93,6 +95,17 @@ const features = [
 </script>
 
 <style scoped>
+.feature-item {
+  width: 100%;
+  max-width: 500px; /* Jaga agar tidak terlalu lebar di desktop */
+}
+
+.text-feature {
+  color: #1e293b;
+  font-size: 1.1rem;
+  line-height: 1.4; /* Jaga kerapatan antar baris teks */
+}
+
 .belajar-baru-section {
   padding: 100px 0;
   background: #f8fafc;
@@ -355,6 +368,19 @@ const features = [
     bottom: 5%;
     right: -20%;
     transform: scale(0.9);
+  }
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Pastikan list rata kiri di mobile */
+    text-align: left;
+    margin: 0 auto;
+    width: fit-content; /* Membantu penempatan di tengah secara visual tapi konten rata kiri */
+  }
+
+  .text-feature {
+    font-size: 1rem;
+    text-align: left; /* Paksa teks rata kiri meski parent-nya center */
   }
 }
 

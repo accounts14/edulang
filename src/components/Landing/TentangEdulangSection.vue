@@ -282,7 +282,7 @@ const items = [
     transform: translateX(-50%);
 
     /* Ukuran tetap proporsional */
-    width: 80%;
+    width: 100%;
     height: auto;
     min-height: 50%;
     object-fit: cover;

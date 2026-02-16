@@ -102,6 +102,7 @@
             color="primary"
             class="full-width border-light rounded-btn"
             icon="headset_mic"
+            href="https://wa.me/6282279506450"
           />
         </q-card>
       </div>

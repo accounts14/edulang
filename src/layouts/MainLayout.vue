@@ -381,6 +381,11 @@
                     $t('footer.kebijakanRefund')
                   }}</a>
                 </li>
+                <li>
+                  <a href="/kebijakan-refund" class="footer-link">{{
+                    $t('footer.CekSertifikat')
+                  }}</a>
+                </li>
               </ul>
             </div>
           </div>

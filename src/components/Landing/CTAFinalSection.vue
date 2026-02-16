@@ -5,44 +5,48 @@
         <div class="row items-center full-height">
           <div class="col-12 col-md-7 cta-content-wrapper">
             <h2 class="cta-title text-weight-bold q-mb-md">Mulai Perjalanan Bahasamu Hari Ini!</h2>
-            <p class="cta-desc q-mb-xl">
+            <p class="cta-desc q-mb-lg">
               Bergabung dengan 10,000+ siswa yang telah merasakan kemudahan belajar bahasa bersama
               Edulang.
             </p>
 
             <div class="cta-benefits-grid q-mb-xl">
               <div class="benefit-item">
-                <q-icon name="check_circle_outline" size="20px" class="q-mr-sm" />
-                <span>Akses ke semua video pembelajaran</span>
+                <q-icon name="check_circle_outline" size="18px" class="benefit-icon" />
+                <div class="benefit-text">Akses ke semua video pembelajaran</div>
               </div>
               <div class="benefit-item">
-                <q-icon name="check_circle_outline" size="20px" class="q-mr-sm" />
-                <span>Mentor berpengalaman & bersertifikat</span>
+                <q-icon name="check_circle_outline" size="18px" class="benefit-icon" />
+                <div class="benefit-text">Mentor berpengalaman & bersertifikat</div>
               </div>
               <div class="benefit-item">
-                <q-icon name="check_circle_outline" size="20px" class="q-mr-sm" />
-                <span>Sertifikat resmi</span>
+                <q-icon name="check_circle_outline" size="18px" class="benefit-icon" />
+                <div class="benefit-text">Sertifikat resmi</div>
               </div>
               <div class="benefit-item">
-                <q-icon name="check_circle_outline" size="20px" class="q-mr-sm" />
-                <span>Konsultasi dengan mentor</span>
+                <q-icon name="check_circle_outline" size="18px" class="benefit-icon" />
+                <div class="benefit-text">Konsultasi dengan mentor</div>
               </div>
             </div>
 
-            <div class="cta-actions flex q-gutter-md">
+            <div class="cta-actions row q-gutter-md">
               <q-btn
                 unelevated
                 no-caps
-                class="btn-cta-yellow q-px-xl q-py-md"
+                class="btn-cta-yellow col-12 col-sm-auto q-px-xl q-py-md"
                 label="Daftar Gratis Sekarang"
                 icon-right="arrow_forward"
               />
-              <q-btn outline no-caps class="btn-cta-outline q-px-xl q-py-md" label="Hubungi Kami" />
+              <q-btn
+                outline
+                no-caps
+                class="btn-cta-outline col-12 col-sm-auto q-px-xl q-py-md"
+                label="Hubungi Kami"
+              />
             </div>
           </div>
 
           <div class="col-12 col-md-5 relative-position cta-image-container">
-            <!-- Floating elements -->
             <div class="floating-star star-1"></div>
             <div class="floating-star star-2"></div>
             <div class="floating-sparkle sparkle-1"></div>
@@ -76,7 +80,6 @@
   min-height: 500px;
   color: white;
   position: relative;
-  overflow: visible;
 }
 
 .cta-content-wrapper {
@@ -98,17 +101,26 @@
 .cta-benefits-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
+  gap: 16px 32px;
 }
 
 .benefit-item {
   display: flex;
-  align-items: center;
-  font-size: 0.95rem;
+  align-items: flex-start;
+  text-align: left;
 }
 
-.benefit-item .q-icon {
+.benefit-icon {
   color: #ffcc00;
+  flex-shrink: 0;
+  margin-top: 3px;
+  margin-right: 12px;
+}
+
+.benefit-text {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  flex: 1;
 }
 
 .btn-cta-yellow {
@@ -127,288 +139,128 @@
 
 .cta-image-container {
   height: 100%;
-  min-height: 500px;
+  min-height: 450px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  position: relative;
 }
 
 .cta-character-img {
-  width: 220%;
-  max-width: 900px;
-  height: auto;
-  z-index: 3;
-  /* ✅ TURUN LAGI - lebih ke bawah */
-  transform: translateY(30px) scale(1.15);
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+  width: 100%;
+  max-width: 500px;
+  transform: translateY(20px) scale(1.1);
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
 }
 
-/* Floating elements */
-.floating-star {
-  position: absolute;
-  background: #ffd700;
-  border-radius: 50%;
-  z-index: 2;
-}
-
-.star-1 {
-  width: 12px;
-  height: 12px;
-  top: 15%;
-  right: 10%;
-  animation: float 3s ease-in-out infinite;
-}
-
-.star-2 {
-  width: 8px;
-  height: 8px;
-  top: 25%;
-  left: 15%;
-  animation: float 4s ease-in-out infinite reverse;
-}
-
-.floating-sparkle {
-  position: absolute;
-  background: radial-gradient(circle, #ffffff 0%, transparent 70%);
-  border-radius: 50%;
-  z-index: 2;
-}
-
-.sparkle-1 {
-  width: 20px;
-  height: 20px;
-  top: 35%;
-  right: 20%;
-  animation: sparkle 2.5s ease-in-out infinite;
-}
-
-.sparkle-2 {
-  width: 16px;
-  height: 16px;
-  top: 50%;
-  left: 25%;
-  animation: sparkle 3s ease-in-out infinite 0.5s;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(180deg);
-  }
-}
-
-@keyframes sparkle {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.3);
-  }
-}
-
-/* Responsif */
-@media (max-width: 1023px) {
-  .cta-content-wrapper {
-    padding: 40px;
-    text-align: center;
-  }
-  .cta-desc {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .cta-benefits-grid {
-    grid-template-columns: 1fr;
-    justify-items: center;
-  }
-  .cta-actions {
-    justify-content: center;
-  }
-  .cta-card {
-    min-height: 550px;
-  }
-  .cta-image-container {
-    min-height: 400px;
-    margin-top: 30px;
-  }
-  .cta-character-img {
-    width: 140%;
-    max-width: 500px;
-    transform: translateY(20px) scale(1.1);
-  }
-}
-
-@media (max-width: 768px) {
-  .cta-character-img {
-    width: 120%;
-    max-width: 380px;
-    transform: translateY(15px) scale(1.1);
-  }
-  .floating-star,
-  .floating-sparkle {
-    display: none;
-  }
-}
-
-/* ========================================
-   🎯 MOBILE (<768px) - FULL RESPONSIVE
-   ======================================== */
+/* --- RESPONSIVE MOBILE FIX (HP) --- */
 @media (max-width: 767px) {
   .cta-final-section {
-    padding: 50px 0;
+    padding: 40px 0;
   }
 
-  .container {
-    padding: 0 16px;
-  }
-
-  /* Single column stacked */
   .cta-content-wrapper {
+    padding: 30px 20px !important;
+    text-align: left !important;
     order: 2;
-    width: 100%;
-    padding: 2rem 1.5rem !important;
-    text-align: center;
   }
 
   .cta-image-container {
     order: 1;
-    width: 100%;
-    min-height: 300px;
-    margin-bottom: 2rem;
+    min-height: 220px;
+    margin-bottom: 0;
   }
 
+  /* Ukuran Judul Lebih Kecil di HP */
   .cta-title {
-    font-size: 1.8rem;
-    line-height: 1.25;
+    font-size: 1.5rem; /* Lebih ringkas */
+    line-height: 1.3;
   }
 
+  /* Ukuran Deskripsi Lebih Kecil di HP */
   .cta-desc {
-    font-size: 1rem;
-    max-width: none;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
   }
 
+  /* Grid List di HP */
   .cta-benefits-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
-    max-width: 320px;
-    margin: 0 auto 1.5rem;
+    gap: 10px;
+    margin-bottom: 30px !important;
   }
 
-  .benefit-item {
-    justify-content: center;
-    font-size: 0.9rem;
+  /* Teks Benefit Lebih Kecil di HP */
+  .benefit-text {
+    font-size: 0.85rem;
   }
 
-  /* Buttons stack vertical */
+  .benefit-icon {
+    margin-top: 1px; /* Penyesuaian alignment ikon */
+  }
+
+  /* Tombol di HP */
   .cta-actions {
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    align-items: flex-start;
+    gap: 10px;
   }
 
   .btn-cta-yellow,
   .btn-cta-outline {
     width: 100%;
-    max-width: 300px;
-  }
-
-  .cta-card {
-    min-height: 650px;
-    border-radius: 20px;
+    font-size: 0.9rem; /* Teks tombol sedikit lebih kecil */
+    padding: 12px !important;
+    margin-left: 0 !important;
   }
 
   .cta-character-img {
-    width: 100%;
-    max-width: 320px;
-    transform: translateY(10px) scale(1);
+    max-width: 280px;
+    transform: translateY(15px) scale(1);
   }
 }
 
-/* ========================================
-   ✅ IPAD (768px-1023px) - PERFECT SPLIT
-   ======================================== */
+/* --- TABLET/IPAD --- */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .container {
-    padding: 0 24px;
-    max-width: 100%;
-  }
-
-  .cta-final-section {
-    padding: 55px 0;
-  }
-
-  /* iPad: 60% content | 40% image */
-  .col-12.col-md-7 {
-    flex: 0 0 60%;
-    max-width: 60%;
-  }
-
-  .col-12.col-md-5 {
-    flex: 0 0 40%;
-    max-width: 40%;
-  }
-
-  .cta-content-wrapper {
-    padding: 2.5rem !important;
-  }
-
   .cta-title {
-    font-size: 2.3rem;
+    font-size: 2rem;
   }
-
   .cta-benefits-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-
-  .cta-card {
-    min-height: 550px;
-    border-radius: 24px;
-  }
-
-  .cta-character-img {
-    width: 160%;
-    max-width: 600px;
-    transform: translateY(25px) scale(1.1);
+    grid-template-columns: 1fr;
   }
 }
 
-/* ========================================
-   ✅ IPAD PORTRAIT (768x1024) FIX
-   ======================================== */
-@media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
-  .cta-final-section {
-    padding: 50px 0;
-  }
-
-  .cta-card {
-    min-height: 520px;
-  }
+/* Animations */
+.floating-star,
+.floating-sparkle {
+  position: absolute;
+  z-index: 1;
+}
+.star-1 {
+  width: 12px;
+  height: 12px;
+  background: #ffd700;
+  border-radius: 50%;
+  top: 15%;
+  right: 10%;
+  animation: float 3s infinite;
+}
+.star-2 {
+  width: 8px;
+  height: 8px;
+  background: #ffd700;
+  border-radius: 50%;
+  top: 25%;
+  left: 10%;
+  animation: float 4s infinite reverse;
 }
 
-/* ========================================
-   ✅ DESKTOP SMALL (1024px-1365px)
-   ======================================== */
-@media (min-width: 1024px) and (max-width: 1365px) {
-  .container {
-    max-width: 100%;
-    padding: 0 32px;
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
   }
-}
-
-/* ========================================
-   ✅ DESKTOP LARGE (≥1366px)
-   ======================================== */
-@media (min-width: 1366px) {
-  .container {
-    max-width: 1400px;
-    padding: 0 48px;
+  50% {
+    transform: translateY(-12px);
   }
 }
 </style>

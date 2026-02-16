@@ -76,6 +76,7 @@ export default {
     syaratKetentuan: 'Syarat & Ketentuan',
     kebijakanPrivasi: 'Kebijakan Privasi',
     kebijakanRefund: 'Kebijakan Refund',
+    CekSertifikat: 'Cek Sertifikat',
     copyright: '© Edulang 2026. All rights reserved',
     subscribeLabel: 'Dapatkan update program & tips belajar',
     subscribePlaceholder: 'Masukkan email Anda',

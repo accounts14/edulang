@@ -31,30 +31,35 @@
               :to="{ name: 'AlurBelajarPage' }"
             />
           </div>
-          <div class="hero-stats row items-center q-mt-xl q-gutter-xl">
-            <div class="stat-item row items-center q-gutter-sm">
+          <div class="hero-stats row items-start q-mt-xl q-gutter-xl">
+            <div class="stat-item row items-center no-wrap q-gutter-sm">
               <div class="stat-icon-wrap">
                 <q-icon name="group" size="24px" color="primary" />
               </div>
-              <div>
+              <div class="stat-text-wrap">
+                <!-- ✅ TAMBAHKAN CLASS INI -->
                 <div class="stat-value text-weight-bold">10,000+</div>
                 <div class="stat-label text-grey-7">Siswa Aktif</div>
               </div>
             </div>
-            <div class="stat-item row items-center q-gutter-sm">
+
+            <div class="stat-item row items-center no-wrap q-gutter-sm">
               <div class="stat-icon-wrap">
                 <q-icon name="menu_book" size="24px" color="primary" />
               </div>
-              <div>
+              <div class="stat-text-wrap">
+                <!-- ✅ TAMBAHKAN CLASS INI -->
                 <div class="stat-value text-weight-bold">8</div>
                 <div class="stat-label text-grey-7">Bahasa Tersedia</div>
               </div>
             </div>
-            <div class="stat-item row items-center q-gutter-sm">
+
+            <div class="stat-item row items-center no-wrap q-gutter-sm">
               <div class="stat-icon-wrap">
                 <q-icon name="star_outline" size="24px" color="primary" />
               </div>
-              <div>
+              <div class="stat-text-wrap">
+                <!-- ✅ TAMBAHKAN CLASS INI -->
                 <div class="stat-value text-weight-bold">4.9</div>
                 <div class="stat-label text-grey-7">Rating Pengguna</div>
               </div>
@@ -220,6 +225,56 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* ========================================
+   ✅ STATS STYLING - SEJAJAR DENGAN ICON
+   ======================================== */
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+}
+
+.stat-icon-wrap {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 10px;
+  background: rgba(26, 115, 232, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-text-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--edulang-black, #2d2d2d);
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  color: var(--edulang-black, #2d2d2d);
+  opacity: 0.7;
+  white-space: nowrap;
+}
 /* ↓↓↓ MARGIN TOP 0 - ZERO MARGIN ↓↓↓ */
 .hero-section {
   padding-top: 0 !important;
@@ -702,32 +757,152 @@ onMounted(async () => {
 }
 
 /* ========================================
-   ✅ MOBILE RESPONSIVE (Max 599px) 
+   ✅ MOBILE RESPONSIVE (Max 599px) - ANTI-POTONG
    ======================================== */
 @media (max-width: 599px) {
-  /* Perbaikan Stats: Menurun ke bawah */
   .hero-stats {
     flex-direction: column;
     align-items: flex-start !important;
-    gap: 20px !important;
-    margin-top: 30px !important;
+    gap: 1rem;
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  /* Perbaikan Language Pills: Menurun tapi border tetap pas (fit-content) */
+  .stat-item {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .stat-icon-wrap {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .stat-value {
+    font-size: 1.125rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  /* 1. Cegah elemen keluar layar */
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow: hidden; /* Tambahan agar bubble tidak bikin scroll horizontal */
+  }
+
+  .hero-left-col {
+    order: 1;
+    text-align: center;
+    align-items: center;
+  }
+
+  .hero-right-col {
+    order: 2;
+    margin-top: 1rem;
+    min-height: auto;
+  }
+
+  /* 2. Visual Karakter Proporsional */
+  .hero-right-inner {
+    height: auto !important;
+    min-height: 320px !important; /* Jangan terlalu tinggi di HP */
+    margin-bottom: 20px;
+  }
+
+  .hero-character-area {
+    width: 100%;
+    max-width: 280px; /* Perkecil sedikit agar aman */
+    margin: 0 auto;
+  }
+
+  .hero-character {
+    min-height: auto !important;
+    max-height: 350px !important;
+    object-fit: contain;
+  }
+
+  /* 3. Floating Bubbles - Posisikan ke dalam (Inward) */
+  .hero-float-bubble {
+    min-width: 60px;
+    height: 34px;
+    padding: 0 8px;
+  }
+
+  .hero-float-text {
+    font-size: 0.65rem;
+  }
+  .hero-float-icon {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+  }
+
+  /* Geser bubble ke dalam agar tidak kepotong pinggir layar */
+  .hero-float-bubble-0 {
+    top: 15%;
+    right: 5%;
+  }
+  .hero-float-bubble-1 {
+    top: 40%;
+    right: 2%;
+  }
+  .hero-float-bubble-2 {
+    top: 40%;
+    left: 2%;
+  }
+  .hero-float-bubble-3 {
+    top: 15%;
+    left: 5%;
+  }
+  .hero-float-bubble-4 {
+    display: none;
+  }
+
+  /* 4. Language Pills - Solusi Teks Panjang (Taiwan/British) */
   .hero-lang-pills {
-    display: grid; /* Gunakan Grid agar ukuran kotak PASTI sama persis */
-    grid-template-columns: repeat(2, 1fr); /* 2 Kolom sejajar */
-    gap: 10px;
-    padding: 0 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 0;
   }
 
   .hero-lang-pill {
-    flex: none; /* Matikan flex karena sudah pakai grid */
-    width: 100%; /* Mengikuti lebar grid */
-    min-width: 0;
-    padding: 10px;
-    justify-content: center; /* Di HP teks & ikon di tengah kotak agar manis */
-    font-size: 0.8rem;
+    width: 100%;
+    height: auto; /* Biarkan tinggi menyesuaikan teks */
+    min-height: 45px;
+    padding: 8px;
+    border-radius: 12px; /* Lebih kotak sedikit agar teks muat */
+    justify-content: flex-start;
+  }
+
+  .hero-lang-pill-name {
+    white-space: normal; /* AGAR TEKS TURUN KE BAWAH */
+    word-break: break-word;
+    font-size: 11px;
+    line-height: 1.1;
+    text-align: left;
+  }
+
+  /* 5. Stats & Buttons */
+  .hero-stats {
+    flex-direction: column;
+    align-items: center !important;
+    gap: 15px !important;
+  }
+
+  .hero-cta {
+    width: 100%;
+  }
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    padding: 12px !important;
   }
 }
 </style>
