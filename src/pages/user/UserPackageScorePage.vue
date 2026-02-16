@@ -62,53 +62,27 @@
             </div>
           </div>
 
-          <div v-if="hasCertificate" class="column q-gutter-y-md">
-            <div class="row q-col-gutter-sm">
-              <div class="col-12 col-sm-6">
-                <q-btn
-                  unelevated
-                  no-caps
-                  color="edulang-navy"
-                  class="full-width rounded-12 text-weight-bold q-py-md font-outfit btn-hover-effect"
-                  @click="downloadCertificate"
-                >
-                  <q-icon name="cloud_download" size="xs" class="q-mr-sm" /> DOWNLOAD PNG
-                </q-btn>
-              </div>
-              <div class="col-12 col-sm-6">
-                <q-btn
-                  outline
-                  no-caps
-                  color="edulang-blue"
-                  class="full-width rounded-12 text-weight-bold q-py-md font-outfit"
-                  @click="showVerifyModal = true"
-                >
-                  <q-icon name="verified" size="xs" class="q-mr-sm" /> CEK KEASLIAN
-                </q-btn>
-              </div>
-            </div>
+          <div v-if="hasCertificate" class="column">
+            <q-btn
+              unelevated
+              no-caps
+              color="edulang-navy"
+              class="full-width rounded-12 text-weight-bold q-py-md font-outfit btn-hover-effect"
+              :loading="downloading"
+              @click="downloadCertificate"
+            >
+              <q-icon name="cloud_download" size="xs" class="q-mr-sm" /> DOWNLOAD PNG
+            </q-btn>
 
-            <div class="verification-footer q-pa-md rounded-12 bg-blue-1 border-blue-thin">
-              <div class="row items-center justify-between q-mb-sm">
+            <div class="q-mt-md q-pa-md rounded-12 bg-blue-1 border-blue-thin">
+              <div class="row items-center justify-between">
                 <span class="text-caption text-edulang-navy text-weight-medium"
                   >Nomor Sertifikat:</span
                 >
-                <span class="text-caption text-weight-bold text-edulang-blue">{{
-                  certificateData?.certificateNumber
-                }}</span>
+                <span class="text-caption text-weight-bold text-edulang-blue">
+                  {{ certificateData?.certificateNumber }}
+                </span>
               </div>
-              <q-separator color="blue-2" class="q-my-sm" />
-              <q-btn
-                flat
-                dense
-                no-caps
-                color="edulang-blue"
-                size="sm"
-                class="full-width font-poppins text-weight-bold"
-                @click="verifyByQR"
-              >
-                <q-icon name="qr_code_scanner" class="q-mr-xs" /> Verifikasi via QR Code Resmi
-              </q-btn>
             </div>
           </div>
 
@@ -131,54 +105,6 @@
         <q-spinner-dots color="edulang-blue" size="60px" />
         <div class="q-mt-md text-edulang-navy font-outfit">Menyiapkan hasil belajar...</div>
       </div>
-
-      <q-dialog v-model="showVerifyModal" backdrop-filter="blur(8px)">
-        <q-card style="width: 400px; border-radius: 24px" class="overflow-hidden">
-          <q-card-section class="bg-edulang-navy text-white q-pa-lg text-center">
-            <q-icon name="verified_user" size="50px" class="q-mb-sm" />
-            <div class="text-h6 text-weight-bold font-outfit">Sistem Verifikasi</div>
-          </q-card-section>
-
-          <q-card-section class="q-pa-xl text-center">
-            <p class="text-body2 text-edulang-grey font-poppins q-mb-lg">
-              Validasi keaslian sertifikat Anda secara resmi melalui sistem pusat Edulang.
-            </p>
-            <q-btn
-              unelevated
-              no-caps
-              color="edulang-blue"
-              label="Verifikasi Sekarang"
-              :loading="verifying"
-              @click="runManualVerification"
-              class="full-width rounded-12 q-py-md text-weight-bold shadow-blue"
-            />
-
-            <q-slide-transition>
-              <div
-                v-if="verificationResult"
-                class="q-mt-xl q-pa-md bg-edulang-white rounded-16 text-left border-light"
-              >
-                <div class="text-overline text-weight-bold text-grey-6 line-height-none">
-                  HASIL VALIDASI
-                </div>
-                <div
-                  class="text-subtitle1 text-edulang-navy text-weight-bolder q-mt-xs font-outfit"
-                >
-                  {{ verificationResult.holderName }}
-                </div>
-                <div class="row items-center q-mt-sm">
-                  <q-badge
-                    :color="verificationResult.status === 'valid' ? 'positive' : 'negative'"
-                    class="q-px-md q-py-xs rounded-8 text-weight-bold"
-                  >
-                    {{ verificationResult.status.toUpperCase() }}
-                  </q-badge>
-                </div>
-              </div>
-            </q-slide-transition>
-          </q-card-section>
-        </q-card>
-      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -196,41 +122,40 @@ const packageId = route.params.packageId
 // States
 const loading = ref(true)
 const generating = ref(false)
-const verifying = ref(false)
-const showVerifyModal = ref(false)
+const downloading = ref(false)
 const hasCertificate = ref(false)
 const certificateData = ref(null)
-const verificationResult = ref(null)
 const score = ref(0)
 const totalLessons = ref(0)
 const packageData = ref({})
 
+// Fetch Data Awal
 const fetchData = async () => {
   loading.value = true
   try {
-    // 1. Package Info
+    // 1. Ambil Info Paket
     const resPkg = await api.get(`/packages/${packageId}`)
     packageData.value = resPkg.data.package || {}
 
-    // 2. User Progress
+    // 2. Ambil Progres User
     const resProg = await api.get(`/userprogress/my-progress/${packageId}`)
     score.value = parseInt((resProg.data.data.percentage || '0%').replace('%', ''))
     totalLessons.value = resProg.data.data.totalLessons || 0
 
-    // 3. Check Certificate
+    // 3. Cek Kepemilikan Sertifikat
     const resCert = await api.get(`/certificates/my/${packageId}`)
     if (resCert.data.hasCertificate) {
       hasCertificate.value = true
       certificateData.value = resCert.data.certificate
     }
   } catch (e) {
-    console.error(e)
+    console.error('Error fetching data:', e)
   } finally {
     loading.value = false
   }
 }
 
-// ACTION 1: GENERATE (POST)
+// Action: Generate Sertifikat
 const handleGenerate = async () => {
   generating.value = true
   try {
@@ -240,46 +165,45 @@ const handleGenerate = async () => {
       fetchData()
     }
   } catch (e) {
-    $q.notify({ type: 'negative', message: e.response?.data?.message || 'Gagal Generate' })
+    $q.notify({
+      type: 'negative',
+      message: e.response?.data?.message || 'Gagal Generate Sertifikat',
+    })
   } finally {
     generating.value = false
   }
 }
 
-// ACTION 2: DOWNLOAD (GET)
-const downloadCertificate = () => {
-  const downloadUrl = `${api.defaults.baseURL}/certificates/download/${packageId}`
-  window.open(downloadUrl, '_blank')
-}
-
-// ACTION 3: MANUAL VERIFY (POST)
-const runManualVerification = async () => {
-  verifying.value = true
+// Action: Download Sertifikat via Blob (Bearer Token tetap aman)
+const downloadCertificate = async () => {
+  downloading.value = true
   try {
-    const res = await api.post('/certificates/verify', {
-      certNumber: certificateData.value.certificateNumber,
+    const response = await api.get(`/certificates/download/${packageId}`, {
+      responseType: 'blob',
     })
-    verificationResult.value = res.data.verified_data
-    $q.notify({ type: 'positive', message: 'Sertifikat Terverifikasi!' })
-  } catch {
-    $q.notify({ type: 'negative', message: 'Sertifikat Tidak Valid' })
-  } finally {
-    verifying.value = false
-  }
-}
 
-// ACTION 4: QR VERIFY (GET)
-const verifyByQR = () => {
-  // Menggunakan endpoint QR dengan data dari certificateData
-  const qrUrl = `${api.defaults.baseURL}/certificates/verify/qr?qrData=${certificateData.value.certificateNumber}`
-  window.open(qrUrl, '_blank')
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `Sertifikat_${packageData.value.title || 'Edulang'}.png`)
+    document.body.appendChild(link)
+    link.click()
+
+    link.remove()
+    window.URL.revokeObjectURL(url)
+    $q.notify({ type: 'positive', message: 'Download dimulai...' })
+  } catch {
+    $q.notify({ type: 'negative', message: 'Gagal mengunduh sertifikat' })
+  } finally {
+    downloading.value = false
+  }
 }
 
 onMounted(fetchData)
 </script>
 
 <style scoped>
-/* Brands Colors */
+/* Colors & Fonts */
 .bg-edulang-white {
   background-color: #f5f7fa !important;
 }
@@ -298,8 +222,6 @@ onMounted(fetchData)
 .bg-edulang-blue {
   background-color: #0089ff !important;
 }
-
-/* Fonts */
 .font-outfit {
   font-family: 'Outfit', sans-serif;
 }
@@ -307,21 +229,15 @@ onMounted(fetchData)
   font-family: 'Poppins', sans-serif;
 }
 
-/* Layout & Cards */
+/* Layout */
 .max-width-container {
   max-width: 550px;
 }
 .rounded-24 {
   border-radius: 24px;
 }
-.rounded-16 {
-  border-radius: 16px;
-}
 .rounded-12 {
   border-radius: 12px;
-}
-.rounded-8 {
-  border-radius: 8px;
 }
 
 .score-stat-card {
@@ -338,9 +254,6 @@ onMounted(fetchData)
 .shadow-yellow {
   box-shadow: 0 8px 20px rgba(255, 196, 44, 0.35);
 }
-.shadow-blue {
-  box-shadow: 0 8px 20px rgba(0, 137, 255, 0.25);
-}
 
 .border-positive-soft {
   border: 2px solid rgba(76, 175, 80, 0.2);
@@ -348,13 +261,7 @@ onMounted(fetchData)
 .border-blue-thin {
   border: 1px solid rgba(0, 137, 255, 0.15);
 }
-.border-light {
-  border: 1px solid #e2e8f0;
-}
 
-.line-height-none {
-  line-height: 1;
-}
 .back-btn-custom:hover {
   transform: translateX(-4px);
   transition: transform 0.3s;

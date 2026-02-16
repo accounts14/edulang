@@ -7,17 +7,15 @@
         <span class="text-edulang-blue text-weight-bold">Pengaturan Profil</span>
       </div>
       <h1 class="text-h4 text-weight-bold text-edulang-navy q-ma-none">Setting Profile</h1>
-      <p class="text-subtitle1 text-grey-7 q-mt-xs">
-        Kelola informasi akun Anda dalam satu tempat.
-      </p>
+      <p class="text-subtitle1 text-grey-7 q-mt-xs">Kelola keamanan akun Anda dalam satu tempat.</p>
     </div>
 
     <div class="row q-col-gutter-xl">
       <div class="col-12 col-md-8">
         <q-card flat class="content-card q-pa-lg">
           <div class="text-h6 text-edulang-navy text-weight-bold q-mb-lg flex items-center">
-            <q-icon name="manage_accounts" color="primary" class="q-mr-sm" size="28px" />
-            Informasi Personal
+            <q-icon name="lock_reset" color="primary" class="q-mr-sm" size="28px" />
+            Ganti Password
           </div>
 
           <q-form @submit.prevent="onSubmit">
@@ -28,30 +26,44 @@
                   v-model="form.username"
                   outlined
                   dense
-                  placeholder="Masukkan username"
-                  class="custom-input"
-                  :rules="[(val) => !!val || 'Username wajib diisi']"
+                  readonly
+                  disable
+                  class="custom-input bg-grey-2"
                 />
               </div>
-
               <div class="col-12 col-sm-6">
                 <label class="label-custom">Alamat Email</label>
                 <q-input
                   v-model="form.email"
                   outlined
                   dense
-                  type="email"
-                  placeholder="email@edulang.id"
-                  class="custom-input"
-                  :rules="[(val) => !!val || 'Email wajib diisi']"
+                  readonly
+                  disable
+                  class="custom-input bg-grey-2"
                 />
               </div>
 
+              <div class="col-12"><q-separator class="q-my-md opacity-50" /></div>
+
               <div class="col-12">
-                <q-separator class="q-my-md opacity-50" />
-                <div class="text-subtitle2 text-edulang-navy text-weight-bold q-mb-sm">
-                  Keamanan
-                </div>
+                <label class="label-custom">Password Saat Ini</label>
+                <q-input
+                  v-model="form.currentPassword"
+                  outlined
+                  dense
+                  :type="isPwdOld ? 'password' : 'text'"
+                  placeholder="Masukkan password lama"
+                  class="custom-input"
+                  :rules="[(val) => !!val || 'Password lama wajib diisi']"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwdOld ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwdOld = !isPwdOld"
+                    />
+                  </template>
+                </q-input>
               </div>
 
               <div class="col-12 col-sm-6">
@@ -60,33 +72,50 @@
                   v-model="form.password"
                   outlined
                   dense
-                  type="password"
+                  :type="isPwdNew ? 'password' : 'text'"
                   placeholder="••••••••"
                   class="custom-input"
-                  hint="Kosongkan jika tidak ingin mengubah"
-                />
+                  :rules="[(val) => !!val || 'Password baru wajib diisi']"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwdNew ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwdNew = !isPwdNew"
+                    />
+                  </template>
+                </q-input>
               </div>
 
               <div class="col-12 col-sm-6">
-                <label class="label-custom">Konfirmasi Password</label>
+                <label class="label-custom">Konfirmasi Password Baru</label>
                 <q-input
                   v-model="form.confirmPassword"
                   outlined
                   dense
-                  type="password"
+                  :type="isPwdConfirm ? 'password' : 'text'"
                   placeholder="••••••••"
                   class="custom-input"
                   :rules="[
-                    (val) => !form.password || val === form.password || 'Password tidak cocok',
+                    (val) => !!val || 'Konfirmasi password wajib diisi',
+                    (val) => val === form.password || 'Password tidak cocok',
                   ]"
-                />
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isPwdConfirm ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwdConfirm = !isPwdConfirm"
+                    />
+                  </template>
+                </q-input>
               </div>
 
               <div class="col-12 q-mt-lg">
                 <div class="row q-col-gutter-md">
                   <div class="col-12 col-sm-6">
                     <q-btn
-                      label="Simpan Perubahan"
+                      label="Perbarui Password"
                       unelevated
                       no-caps
                       class="full-width rounded-btn btn-edulang-primary shadow-2 text-weight-bold"
@@ -104,7 +133,6 @@
                       class="full-width rounded-btn border-light"
                       padding="12px"
                       @click="resetForm"
-                      :disable="submitting"
                     />
                   </div>
                 </div>
@@ -113,181 +141,97 @@
           </q-form>
         </q-card>
       </div>
-
-      <div class="col-12 col-md-4">
-        <q-card flat class="support-card q-pa-lg text-white relative-position overflow-hidden">
-          <q-icon name="help_outline" class="absolute-top-right q-ma-md opacity-20" size="100px" />
-
-          <div class="row items-center q-mb-md">
-            <q-avatar
-              size="48px"
-              font-size="24px"
-              color="white"
-              text-color="edulang-blue"
-              icon="headset_mic"
-            />
-            <div class="q-ml-md">
-              <div class="text-weight-bold text-h6">Butuh Bantuan?</div>
-              <div class="text-caption opacity-80">Tim kami siap membantu kendala Anda.</div>
-            </div>
-          </div>
-
-          <q-btn
-            label="Hubungi Support"
-            color="white"
-            text-color="edulang-navy"
-            no-caps
-            unelevated
-            class="full-width rounded-btn text-weight-bolder q-mt-md"
-            icon="chat"
-            :href="whatsappSupportLink"
-          />
-        </q-card>
-
-        <q-card flat bordered class="content-card q-pa-md q-mt-lg">
-          <div class="row items-center justify-between">
-            <div class="text-weight-bold text-edulang-navy">Status Akun</div>
-            <q-badge
-              color="green-1"
-              text-color="green-9"
-              label="Aktif"
-              class="q-pa-xs px-md text-weight-bold"
-            />
-          </div>
-        </q-card>
-      </div>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+import { ref, onMounted } from 'vue'
+import { LocalStorage, useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
 
 const $q = useQuasar()
-
 const submitting = ref(false)
 
-const originalData = ref({
-  username: '',
-  email: '',
-})
+// State untuk toggle visibility password (mata)
+const isPwdOld = ref(true)
+const isPwdNew = ref(true)
+const isPwdConfirm = ref(true)
 
 const form = ref({
   username: '',
   email: '',
+  currentPassword: '',
   password: '',
   confirmPassword: '',
 })
 
-const mentorId = ref(null)
+/**
+ * Fungsi mengambil ID dari sessionStorage (Data dihapus saat tab ditutup)
+ */
+function getMentorIdFromSession() {
+  try {
+    const token = LocalStorage.getItem('token') // Pastikan saat login, Anda pakai sessionStorage.setItem('token', ...)
+    if (!token) return null
 
-function applyFromOriginal() {
-  form.value.username = originalData.value.username
-  form.value.email = originalData.value.email
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const payload = JSON.parse(atob(base64))
+
+    return payload.id || payload._id || payload.sub
+  } catch (e) {
+    console.error('Error parsing session token:', e)
+    return null
+  }
+}
+
+async function fetchProfile() {
+  // Hanya untuk menampilkan data username/email saja
+  try {
+    const res = await api.get('/mentors/me')
+    const data = res.data.mentor || res.data.data || res.data
+    form.value.username = data.username || data.name
+    form.value.email = data.email
+  } catch {
+    console.warn('Gagal memuat info profil')
+  }
+}
+
+function resetForm() {
+  form.value.currentPassword = ''
   form.value.password = ''
   form.value.confirmPassword = ''
 }
 
-const whatsappSupportLink = computed(() => {
-  // Ganti dengan nomor WA support Anda (format internasional)
-  const phoneNumber = '6282279506450' // Contoh: +62 812-3456-7890
-  return `https://wa.me/${phoneNumber}`
-})
-
-function resetForm() {
-  applyFromOriginal()
-}
-
-async function fetchProfile() {
-  try {
-    const storedEmail = localStorage.getItem('userEmail') || ''
-    let profile = null
-
-    try {
-      const resMe = await api.get('/mentors/me')
-      const dataMe = resMe.data || {}
-      profile = dataMe.mentor || dataMe.data || dataMe
-    } catch {
-      console.warn('[Mentor Setting] /mentors/me tidak tersedia, fallback ke /mentors')
-    }
-
-    if (!profile) {
-      const res = await api.get('/mentors')
-      const data = res.data || {}
-      const list = data.mentors || data.data || []
-      if (Array.isArray(list) && list.length > 0) {
-        if (storedEmail) {
-          profile =
-            list.find((m) => String(m.email).toLowerCase() === storedEmail.toLowerCase()) || list[0]
-        } else {
-          profile = list[0]
-        }
-      }
-    }
-
-    if (!profile) return
-
-    mentorId.value = profile._id || profile.id || null
-
-    originalData.value = {
-      username: profile.username || profile.name || '',
-      email: profile.email || '',
-    }
-
-    applyFromOriginal()
-  } catch (err) {
-    console.error('[Mentor Setting] Gagal memuat profil mentor', err)
-    $q.notify({
-      type: 'negative',
-      message: 'Gagal memuat data profil mentor.',
-    })
-  }
-}
-
 async function onSubmit() {
-  if (form.value.password && form.value.password !== form.value.confirmPassword) {
-    $q.notify({
-      type: 'negative',
-      message: 'Konfirmasi password tidak cocok.',
-    })
+  const mentorId = getMentorIdFromSession()
+
+  if (!mentorId) {
+    $q.notify({ type: 'negative', message: 'Sesi habis. Silakan login kembali.' })
     return
   }
 
   try {
     submitting.value = true
 
+    // Payload sesuai dokumentasi PUT /api/mentors/:id/change-password
     const payload = {
-      username: form.value.username,
-      email: form.value.email,
+      currentPassword: form.value.currentPassword,
+      newPassword: form.value.password,
     }
 
-    if (form.value.password) {
-      payload.password = form.value.password
-    }
-
-    if (mentorId.value) {
-      await api.put(`/mentors/${mentorId.value}`, payload)
-    } else {
-      await api.put('/mentors/me', payload)
-    }
+    await api.put(`/mentors/${mentorId}/change-password`, payload)
 
     $q.notify({
       type: 'positive',
-      message: 'Profil mentor berhasil diperbarui.',
+      message: 'Password berhasil diubah!',
+      icon: 'done',
     })
-
-    originalData.value = {
-      username: form.value.username,
-      email: form.value.email,
-    }
-    applyFromOriginal()
+    resetForm()
   } catch (err) {
-    console.error('[Mentor Setting] Gagal menyimpan profil mentor', err)
     $q.notify({
       type: 'negative',
-      message: err.response?.data?.message || 'Gagal menyimpan perubahan profil.',
+      message: err.response?.data?.message || 'Gagal mengubah password.',
     })
   } finally {
     submitting.value = false
@@ -298,7 +242,6 @@ onMounted(fetchProfile)
 </script>
 
 <style scoped>
-/* Color Palette based on Brand Guideline */
 .text-edulang-navy {
   color: #003387;
 }
@@ -313,28 +256,18 @@ onMounted(fetchProfile)
 .btn-edulang-primary:hover {
   background-color: #0089ff;
 }
-
-/* Component Styling */
 .content-card {
   border-radius: 20px;
   background: white;
   border: 1px solid #eef0f3;
   box-shadow: 0 4px 25px rgba(0, 51, 135, 0.05) !important;
 }
-
-.support-card {
-  border-radius: 20px;
-  background: linear-gradient(135deg, #003387 0%, #0089ff 100%);
-}
-
 .rounded-btn {
   border-radius: 12px;
 }
-
 .border-light {
   border: 1px solid #e0e0e0;
 }
-
 .label-custom {
   display: block;
   font-size: 0.75rem;
@@ -344,23 +277,7 @@ onMounted(fetchProfile)
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
-
 .custom-input :deep(.q-field__control) {
   border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.custom-input :deep(.q-field--focused .q-field__control) {
-  border-color: #0089ff !important;
-}
-
-.opacity-20 {
-  opacity: 0.2;
-}
-.opacity-50 {
-  opacity: 0.5;
-}
-.opacity-80 {
-  opacity: 0.8;
 }
 </style>
