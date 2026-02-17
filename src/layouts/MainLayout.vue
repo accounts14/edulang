@@ -451,7 +451,7 @@
             </div>
 
             <!-- Kolom 4: Legal -->
-            <div class="col-6 col-sm-4 col-md-2">
+            <div class="">
               <div class="footer-heading q-mb-md">{{ getText('footer.legalTrust') }}</div>
               <ul class="footer-list">
                 <li>
