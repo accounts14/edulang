@@ -394,7 +394,7 @@
             </div>
 
             <!-- Kolom 2: Program -->
-            <div class="col-6 col-sm-4 col-md-2">
+            <div class="">
               <div class="footer-heading q-mb-md">{{ getText('footer.program') }}</div>
               <ul class="footer-list">
                 <li v-for="lang in footerLanguagesWithIcons" :key="lang.id">
@@ -420,7 +420,7 @@
             </div>
 
             <!-- Kolom 3: Panduan -->
-            <div class="col-6 col-sm-4 col-md-2">
+            <div class="">
               <div class="footer-heading q-mb-md">{{ getText('footer.panduanInsight') }}</div>
               <ul class="footer-list">
                 <li>
@@ -592,7 +592,7 @@ const defaultTexts = {
   'auth.halo': 'Halo, {name}',
   'auth.logout': 'Keluar',
   'footer.ptName': 'PT. Edulang Nusantara',
-  'footer.alamatValue': 'Jl. Pendidikan No. 123, Jakarta, Indonesia',
+  'footer.alamatValue': 'Jl. ZA. Pagar Alam No.26, Labuhan Ratu, Kec. Kedaton, Kota Bandar Lampung',
   'footer.subscribeTitle': 'Subscribe Email',
   'footer.subscribeDesc': 'Dapatkan update terbaru tentang program dan promo',
   'footer.subscribeBtn': 'Berlangganan',
