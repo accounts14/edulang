@@ -141,6 +141,24 @@
           </q-form>
         </q-card>
       </div>
+
+      <div class="col-12 col-md-4">
+        <!-- WhatsApp Card - Sesuai Gambar -->
+        <q-card flat class="whatsapp-card q-pa-lg">
+          <div class="whatsapp-content">
+            <q-icon name="headset_mic" class="whatsapp-icon" size="32px" />
+            <p class="whatsapp-text">Hubungi Jika Mengalami Kendala</p>
+            <q-btn
+              class="full-width whatsapp-btn text-weight-bold"
+              no-caps
+              unelevated
+              padding="14px"
+              label="Contact Us"
+              :to="{ name: 'ContactPage' }"
+            />
+          </div>
+        </q-card>
+      </div>
     </div>
   </q-page>
 </template>
@@ -153,7 +171,6 @@ import { api } from 'src/boot/axios'
 const $q = useQuasar()
 const submitting = ref(false)
 
-// State untuk toggle visibility password (mata)
 const isPwdOld = ref(true)
 const isPwdNew = ref(true)
 const isPwdConfirm = ref(true)
@@ -166,27 +183,20 @@ const form = ref({
   confirmPassword: '',
 })
 
-/**
- * Fungsi mengambil ID dari sessionStorage (Data dihapus saat tab ditutup)
- */
 function getMentorIdFromSession() {
   try {
-    const token = LocalStorage.getItem('token') // Pastikan saat login, Anda pakai sessionStorage.setItem('token', ...)
+    const token = LocalStorage.getItem('token')
     if (!token) return null
-
     const base64Url = token.split('.')[1]
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
     const payload = JSON.parse(atob(base64))
-
     return payload.id || payload._id || payload.sub
-  } catch (e) {
-    console.error('Error parsing session token:', e)
+  } catch {
     return null
   }
 }
 
 async function fetchProfile() {
-  // Hanya untuk menampilkan data username/email saja
   try {
     const res = await api.get('/mentors/me')
     const data = res.data.mentor || res.data.data || res.data
@@ -205,23 +215,17 @@ function resetForm() {
 
 async function onSubmit() {
   const mentorId = getMentorIdFromSession()
-
   if (!mentorId) {
     $q.notify({ type: 'negative', message: 'Sesi habis. Silakan login kembali.' })
     return
   }
-
   try {
     submitting.value = true
-
-    // Payload sesuai dokumentasi PUT /api/mentors/:id/change-password
     const payload = {
       currentPassword: form.value.currentPassword,
       newPassword: form.value.password,
     }
-
     await api.put(`/mentors/${mentorId}/change-password`, payload)
-
     $q.notify({
       type: 'positive',
       message: 'Password berhasil diubah!',
@@ -247,6 +251,9 @@ onMounted(fetchProfile)
 }
 .text-edulang-blue {
   color: #0089ff;
+}
+.bg-edulang-navy {
+  background-color: #003387;
 }
 .btn-edulang-primary {
   background-color: #003387;
@@ -279,5 +286,57 @@ onMounted(fetchProfile)
 }
 .custom-input :deep(.q-field__control) {
   border-radius: 12px;
+}
+.opacity-80 {
+  opacity: 0.8;
+}
+.opacity-60 {
+  opacity: 0.6;
+}
+.opacity-20 {
+  opacity: 0.2;
+}
+
+/* ===============================
+   WhatsApp Card - Sesuai Gambar
+   =============================== */
+.whatsapp-card {
+  border-radius: 20px;
+  background: linear-gradient(135deg, #003387 0%, #002a6e 100%);
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.whatsapp-content {
+  text-align: center;
+  width: 100%;
+}
+
+.whatsapp-icon {
+  color: white;
+  margin-bottom: 16px;
+}
+
+.whatsapp-text {
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  opacity: 0.95;
+}
+
+.whatsapp-btn {
+  background: #ffb800;
+  color: #003387;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+  background: #ffc833;
+  transform: translateY(-2px);
 }
 </style>

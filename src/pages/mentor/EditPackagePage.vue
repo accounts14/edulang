@@ -114,14 +114,13 @@
                       v-model.number="form.price"
                       outlined
                       dense
-                      type="number"
+                      readonly
+                      stack-label
                       prefix="Rp"
                       placeholder="0"
-                      class="custom-input"
-                      :rules="[
-                        (val) => (val !== null && val !== '') || 'Price wajib diisi',
-                        (val) => Number(val) >= 0 || 'Minimal 0',
-                      ]"
+                      class="custom-input bg-grey-2"
+                      hint="Program ini diatur gratis (Rp 0)"
+                      :rules="[(val) => val === 0 || 'Harga harus Rp 0']"
                     />
                   </div>
 
@@ -234,7 +233,10 @@ async function fetchPackageDetail() {
 
     form.introVideoUrl = p?.introVideoUrl || ''
     form.title = p?.title || ''
-    form.price = p?.price || 0
+
+    // Paksa harga menjadi 0 meskipun di database ada harganya
+    form.price = 0
+
     form.description = p?.description || ''
     form.languageType = p?.languageType?._id || p?.languageType || null
     form.level = p?.level || null

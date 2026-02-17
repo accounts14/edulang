@@ -1,193 +1,338 @@
 <template>
-  <q-page class="q-pa-md bg-edulang-white">
-    <div class="max-width-900 mx-auto">
-      <div class="row items-center justify-between q-mb-xl q-mt-md">
-        <div class="row items-center">
-          <q-btn
-            icon="chevron_left"
-            unelevated
-            color="white"
-            text-color="edulang-navy"
-            @click="$router.back()"
-            class="rounded-12 q-mr-md shadow-sm"
-          />
-          <div>
-            <div class="text-h5 text-weight-bolder text-edulang-navy header-font">
-              Ruang Konsultasi
-            </div>
-            <div class="text-caption text-edulang-grey body-font">
-              Kelola interaksi dan bimbingan belajar siswa
-            </div>
+  <q-page class="q-pa-lg bg-edulang-white">
+    <div class="max-width-container">
+      <div class="row items-center q-mb-xl">
+        <q-btn
+          flat
+          round
+          icon="arrow_back"
+          color="edulang-navy"
+          @click="$router.back()"
+          class="bg-white shadow-soft q-mr-md back-btn"
+        />
+        <div>
+          <h1 class="text-h4 text-weight-bold text-edulang-navy header-font q-ma-none">
+            Forum Diskusi (Mentor)
+          </h1>
+          <p class="text-body1 text-edulang-grey body-font q-mt-xs">
+            Berinteraksi langsung dengan peserta secara
+            <span class="text-edulang-blue text-weight-medium">aktif dan personal.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="row q-col-gutter-xl">
+        <div class="col-12 col-md-4">
+          <div class="sticky-card">
+            <q-card
+              flat
+              class="rounded-20 border-light bg-white shadow-soft overflow-hidden q-mb-lg"
+            >
+              <div class="bg-edulang-navy q-pa-sm"></div>
+              <q-card-section class="q-pa-lg">
+                <div
+                  class="text-subtitle1 text-weight-bold text-edulang-navy q-mb-md header-font flex items-center"
+                >
+                  <q-icon name="edit_note" size="24px" class="q-mr-sm" />
+                  Kirim Pesan Baru
+                </div>
+                <q-input
+                  v-model="newPost"
+                  type="textarea"
+                  outlined
+                  placeholder="Tulis instruksi atau sapaan baru untuk siswa..."
+                  class="bg-white input-custom body-font"
+                  rows="5"
+                  color="edulang-blue"
+                />
+                <q-btn
+                  unelevated
+                  color="edulang-yellow"
+                  text-color="edulang-navy"
+                  label="Kirim Diskusi"
+                  icon="send"
+                  class="full-width q-mt-md rounded-12 q-py-md text-weight-bold cta-font shadow-yellow"
+                  @click="postDiscussion"
+                  :loading="sending"
+                  :disable="!newPost.trim() || sending"
+                />
+              </q-card-section>
+            </q-card>
+
+            <q-card flat class="rounded-20 border-light bg-white shadow-soft">
+              <q-card-section class="q-pa-md">
+                <div class="text-caption text-grey-7 q-mb-sm body-font text-weight-bold">
+                  URUTKAN BERDASARKAN
+                </div>
+                <q-btn-toggle
+                  v-model="sortBy"
+                  spread
+                  no-caps
+                  unelevated
+                  toggle-color="edulang-navy"
+                  color="grey-2"
+                  text-color="grey-7"
+                  class="rounded-12 overflow-hidden border-light"
+                  :options="[
+                    { label: 'Terbaru', value: 'newest', icon: 'history' },
+                    { label: 'Terlama', value: 'oldest', icon: 'schedule' },
+                  ]"
+                />
+              </q-card-section>
+            </q-card>
           </div>
         </div>
 
-        <q-badge outline color="edulang-blue" class="q-pa-sm rounded-8 body-font">
-          <q-icon name="analytics" class="q-mr-xs" />
-          {{ discussionPosts.length }} Diskusi Aktif
-        </q-badge>
-      </div>
-
-      <div v-if="loading" class="flex flex-center q-pa-xl">
-        <q-spinner-ios color="edulang-blue" size="50px" />
-      </div>
-
-      <div v-else class="q-gutter-y-xl">
-        <div v-for="(post, index) in discussionPosts" :key="index" class="discussion-container">
-          <div class="row items-center q-mb-sm q-px-md">
-            <q-icon name="tag" color="edulang-blue" size="xs" />
-            <span class="text-overline text-weight-bold text-edulang-blue q-ml-xs"
-              >Topik #{{ index + 1 }}</span
-            >
-            <q-spacer />
-            <q-btn
-              flat
-              round
-              dense
-              icon="delete_sweep"
-              color="grey-4"
-              @click="confirmDelete(index)"
-            >
-              <q-tooltip>Tutup Diskusi</q-tooltip>
-            </q-btn>
+        <div class="col-12 col-md-8">
+          <div v-if="loading" class="flex flex-center q-pa-xl">
+            <q-spinner-tail color="edulang-blue" size="50px" />
           </div>
 
-          <q-card flat class="rounded-24 shadow-brand bg-white border-subtle">
-            <q-card-section class="q-pa-lg">
-              <div class="row q-mb-lg">
-                <q-avatar size="40px" class="q-mr-md shadow-sm">
-                  <img
-                    :src="`https://ui-avatars.com/api/?name=${post.author}&background=0089FF&color=fff`"
-                  />
-                </q-avatar>
-                <div class="col">
-                  <div class="student-bubble q-pa-md">
-                    <div class="text-weight-bold text-edulang-navy body-font q-mb-xs">
-                      {{ post.author }}
-                    </div>
-                    <div class="text-body1 body-font">{{ post.content }}</div>
-                  </div>
-                  <div class="text-caption text-grey-5 q-mt-xs q-ml-sm">Siswa • Baru saja</div>
-                </div>
-              </div>
+          <div
+            v-else-if="sortedDiscussions.length === 0"
+            class="flex flex-center q-pa-xl bg-white rounded-20 border-dashed empty-state"
+          >
+            <div class="text-center">
+              <q-icon name="forum" size="100px" color="grey-3" />
+              <div class="text-edulang-navy q-mt-md header-font text-h6">Belum Ada Diskusi</div>
+              <p class="text-grey-6 body-font">Siswa belum memulai percakapan apa pun.</p>
+            </div>
+          </div>
 
-              <!-- Replies Section - Urutan dari lama ke baru -->
-              <div v-if="post.replies?.length" class="q-mt-md column items-end">
-                <div
-                  v-for="(reply, rIdx) in getSortedReplies(post.replies)"
-                  :key="rIdx"
-                  :class="[
-                    'reply-box q-mb-md',
-                    reply.role === 'mentor' ? 'mentor-align' : 'student-align',
-                  ]"
-                >
-                  <div
-                    :class="[
-                      'bubble q-pa-md shadow-sm',
-                      reply.role === 'mentor' ? 'bg-edulang-navy text-white' : 'bg-grey-2',
-                    ]"
-                  >
-                    <div v-if="reply.role === 'mentor'" class="row items-center q-mb-xs">
-                      <q-icon name="verified" size="14px" class="q-mr-xs text-edulang-yellow" />
-                      <span class="text-caption text-weight-bold uppercase opacity-80"
-                        >Mentor (Anda)</span
-                      >
-                    </div>
-                    <div class="text-body2 body-font">{{ reply.content }}</div>
-                  </div>
-                </div>
-              </div>
-
+          <div
+            v-else
+            v-for="post in sortedDiscussions"
+            :key="post.originalIndex"
+            class="discussion-wrapper q-mb-xl"
+          >
+            <div class="row items-center justify-between q-mb-sm">
               <div
-                class="reply-action-area q-mt-lg q-pa-sm rounded-16 bg-edulang-white border-light"
+                class="discussion-tag bg-edulang-blue-light text-edulang-blue text-weight-bold px-md py-xs rounded-8"
               >
-                <div class="row items-center">
-                  <q-input
-                    v-model="replyTexts[index]"
-                    placeholder="Tulis pesan edukatif..."
-                    borderless
-                    dense
-                    autogrow
-                    class="col q-px-md body-font"
-                    @keypress.enter.ctrl="submitReply(index)"
-                  />
-                  <q-btn
-                    unelevated
-                    round
-                    icon="send"
-                    class="btn-send-modern shadow-blue bg-edulang-blue text-white"
-                    :loading="submitting === index"
-                    @click="submitReply(index)"
-                  />
-                </div>
+                Diskusi #{{ post.originalNumber }}
               </div>
-            </q-card-section>
-          </q-card>
+              <div class="row items-center">
+                <div class="text-caption text-grey-6 body-font q-mr-md">
+                  {{ formatDate(post.createdAt) }}
+                </div>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  color="red-4"
+                  icon="delete_sweep"
+                  size="sm"
+                  @click="confirmDelete(post.originalIndex)"
+                >
+                  <q-tooltip class="bg-red">Hapus Seluruh Rangkaian</q-tooltip>
+                </q-btn>
+              </div>
+            </div>
+
+            <q-chat-message
+              :name="post.role === 'mentor' ? 'Anda (Mentor)' : post.username || 'Siswa'"
+              :avatar="
+                post.role === 'mentor'
+                  ? 'https://cdn.quasar.dev/img/avatar2.jpg'
+                  : `https://ui-avatars.com/api/?name=${post.username || 'User'}&background=0089FF&color=fff`
+              "
+              :text="[post.content]"
+              :bg-color="post.role === 'mentor' ? 'edulang-navy' : 'white'"
+              :text-color="post.role === 'mentor' ? 'white' : 'edulang-black'"
+              :sent="post.role === 'mentor'"
+              class="body-font custom-chat main-post"
+            />
+
+            <div
+              v-if="post.replies && post.replies.length > 0"
+              class="replies-section q-ml-xl q-mt-md q-pl-md"
+            >
+              <div class="thread-line"></div>
+              <q-chat-message
+                v-for="(reply, rIndex) in post.replies"
+                :key="rIndex"
+                :name="reply.role === 'mentor' ? 'Anda (Mentor)' : reply.username || 'Siswa'"
+                :avatar="
+                  reply.role === 'mentor'
+                    ? 'https://cdn.quasar.dev/img/avatar2.jpg'
+                    : `https://ui-avatars.com/api/?name=${reply.username || 'User'}&background=0089FF&color=fff`
+                "
+                :text="[reply.content]"
+                :sent="reply.role === 'mentor'"
+                :bg-color="reply.role === 'mentor' ? 'edulang-navy' : 'edulang-blue-light'"
+                :text-color="reply.role === 'mentor' ? 'white' : 'edulang-navy'"
+                class="reply-chat q-mb-sm body-font"
+              />
+            </div>
+
+            <div class="row justify-end q-mt-sm q-pr-sm">
+              <q-btn
+                flat
+                no-caps
+                label="Balas Pesan"
+                color="edulang-blue"
+                icon="add_comment"
+                class="rounded-8 reply-btn body-font text-weight-bold"
+                @click="openReplyDialog(post.originalIndex)"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <q-dialog v-model="replyDialog.show" position="bottom" transition-show="slide-up">
+      <q-card style="width: 550px; max-width: 95vw" class="rounded-t-24 shadow-up-20">
+        <q-card-section class="row items-center q-pb-none q-pa-lg">
+          <div class="text-h6 text-weight-bold text-edulang-navy header-font">
+            <q-icon name="reply" class="q-mr-sm" />Balas Diskusi
+          </div>
+          <q-spacer />
+          <q-btn icon="close" flat round dense v-close-popup color="grey-5" />
+        </q-card-section>
+
+        <q-card-section class="q-pa-lg q-pt-none">
+          <q-input
+            v-model="replyDialog.content"
+            type="textarea"
+            outlined
+            autofocus
+            placeholder="Berikan arahan atau jawaban terbaik Anda..."
+            color="edulang-blue"
+            class="body-font bg-edulang-white rounded-12"
+            rows="4"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="q-pa-lg q-pt-none">
+          <q-btn
+            flat
+            label="Batal"
+            color="grey-7"
+            v-close-popup
+            class="rounded-8 q-px-md body-font"
+          />
+          <q-btn
+            unelevated
+            label="Kirim Balasan"
+            color="blue"
+            @click="submitReply"
+            :loading="sending"
+            class="rounded-12 q-px-xl text-weight-bold cta-font"
+            style="min-width: 150px"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { api } from 'src/boot/axios'
-import { useQuasar } from 'quasar'
+import { useQuasar, date } from 'quasar'
 
 const $q = useQuasar()
 const route = useRoute()
-const discussionPosts = ref([])
-const loading = ref(true)
-const replyTexts = ref({})
-const submitting = ref(null)
+const packageId = route.params.packageId
 
-// Fungsi untuk mengurutkan replies dari lama ke baru (atas ke bawah)
-const getSortedReplies = (replies) => {
-  if (!replies || replies.length === 0) return []
-  return [...replies].reverse()
+const discussions = ref([])
+const newPost = ref('')
+const loading = ref(true)
+const sending = ref(false)
+const sortBy = ref('newest')
+
+const replyDialog = ref({
+  show: false,
+  postIndex: null,
+  content: '',
+})
+
+const formatDate = (timeStamp) => {
+  if (!timeStamp) return ''
+  return date.formatDate(timeStamp, 'DD MMM YYYY, HH:mm')
 }
 
+// Logic Mapping & Sorting
+const sortedDiscussions = computed(() => {
+  if (!discussions.value) return []
+  const mapped = discussions.value.map((post, index) => ({
+    ...post,
+    originalIndex: index,
+    originalNumber: index + 1,
+  }))
+
+  return [...mapped].sort((a, b) => {
+    const dateA = new Date(a.createdAt || 0).getTime()
+    const dateB = new Date(b.createdAt || 0).getTime()
+    return sortBy.value === 'newest' ? dateB - dateA : dateA - dateB
+  })
+})
+
 const fetchDiscussions = async () => {
+  loading.value = true
   try {
-    const res = await api.get(`/discuss/${route.params.packageId}`)
-    discussionPosts.value = res.data.discussion?.posts || []
-  } catch (e) {
-    console.error(e)
+    const res = await api.get(`/discuss/${packageId}`)
+    discussions.value = res.data.discussion?.posts || []
+  } catch {
+    $q.notify({ type: 'negative', message: 'Gagal memuat diskusi' })
   } finally {
     loading.value = false
   }
 }
 
-const submitReply = async (postIndex) => {
-  const content = replyTexts.value[postIndex]
-  if (!content) return
-
-  submitting.value = postIndex
+const postDiscussion = async () => {
+  if (!newPost.value.trim()) return
+  sending.value = true
   try {
-    await api.post(`/discuss/${route.params.packageId}/${postIndex}/reply`, {
-      content: content,
-    })
-    $q.notify({ type: 'positive', message: 'Balasan terkirim' })
-    replyTexts.value[postIndex] = ''
-    fetchDiscussions()
+    await api.post(`/discuss/${packageId}/post`, { content: newPost.value })
+    newPost.value = ''
+    $q.notify({ type: 'positive', message: 'Berhasil dikirim', color: 'edulang-navy' })
+    await fetchDiscussions()
   } catch {
-    $q.notify({ type: 'negative', message: 'Gagal mengirim balasan' })
+    $q.notify({ type: 'negative', message: 'Gagal mengirim' })
   } finally {
-    submitting.value = null
+    sending.value = false
   }
 }
 
-const confirmDelete = (postIndex) => {
+const openReplyDialog = (originalIndex) => {
+  replyDialog.value.postIndex = originalIndex // Samakan dengan versi user
+  replyDialog.value.content = ''
+  replyDialog.value.show = true
+}
+
+const submitReply = async () => {
+  if (!replyDialog.value.content.trim()) return
+  sending.value = true
+  try {
+    // URL sekarang nembak ID asli postingan tersebut
+    await api.post(`/discuss/${packageId}/${replyDialog.value.postIndex}/reply`, {
+      content: replyDialog.value.content,
+    })
+    replyDialog.value.show = false
+    $q.notify({ type: 'positive', message: 'Balasan terkirim', color: 'edulang-navy' })
+    await fetchDiscussions()
+  } catch (err) {
+    console.error(err)
+    $q.notify({ type: 'negative', message: 'Gagal membalas' })
+  } finally {
+    sending.value = false
+  }
+}
+
+const confirmDelete = (originalIndex) => {
   $q.dialog({
-    title: 'Hapus Postingan',
-    message: 'Apakah Anda yakin ingin menghapus diskusi ini?',
+    title: 'Hapus Diskusi',
+    message: 'Apakah Anda yakin? Seluruh percakapan di topik ini akan dihapus permanen.',
     cancel: true,
-    persistent: true,
+    ok: { color: 'red-6', label: 'Hapus' },
   }).onOk(async () => {
     try {
-      await api.delete(`/discuss/${route.params.packageId}/${postIndex}`)
-      $q.notify({ type: 'info', message: 'Postingan dihapus' })
-      fetchDiscussions()
+      await api.delete(`/discuss/${packageId}/${originalIndex}`)
+      $q.notify({ type: 'info', message: 'Terhapus' })
+      await fetchDiscussions()
     } catch {
       $q.notify({ type: 'negative', message: 'Gagal menghapus' })
     }
@@ -198,45 +343,40 @@ onMounted(fetchDiscussions)
 </script>
 
 <style scoped>
-/* Brands & Layout */
 .bg-edulang-white {
-  background-color: #f8fafc !important;
+  background-color: #f5f7fa;
 }
 .text-edulang-navy {
-  color: #003387 !important;
+  color: #003387;
 }
 .text-edulang-blue {
-  color: #0089ff !important;
+  color: #0089ff;
 }
 .text-edulang-grey {
-  color: #64748b !important;
+  color: #64748b;
 }
-.bg-edulang-navy {
-  background-color: #003387 !important;
+.text-edulang-black {
+  color: #2d2d2d;
 }
-.bg-edulang-blue {
-  background-color: #0089ff !important;
-}
-.text-edulang-yellow {
-  color: #ffc42c !important;
-}
-
 .header-font {
   font-family: 'Outfit', sans-serif;
 }
 .body-font {
   font-family: 'Poppins', sans-serif;
 }
-
-.max-width-900 {
-  max-width: 900px;
+.cta-font {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.5px;
+}
+.max-width-container {
+  max-width: 1100px;
   margin: 0 auto;
 }
-.rounded-24 {
-  border-radius: 24px;
+.rounded-20 {
+  border-radius: 20px;
 }
-.rounded-16 {
-  border-radius: 16px;
+.rounded-t-24 {
+  border-radius: 24px 24px 0 0;
 }
 .rounded-12 {
   border-radius: 12px;
@@ -244,68 +384,51 @@ onMounted(fetchDiscussions)
 .rounded-8 {
   border-radius: 8px;
 }
-
-/* Dashboard Card Style */
-.shadow-brand {
-  box-shadow: 0 20px 50px -12px rgba(0, 51, 135, 0.08) !important;
+.shadow-soft {
+  box-shadow: 0 12px 30px rgba(0, 51, 135, 0.06);
 }
-.border-subtle {
-  border: 1px solid rgba(226, 232, 240, 0.8);
+.shadow-yellow {
+  box-shadow: 0 4px 14px rgba(255, 196, 44, 0.4);
 }
 .border-light {
   border: 1px solid #e2e8f0;
 }
-
-/* Bubble Styles */
-.student-bubble {
-  background: #ffffff;
+.discussion-tag {
+  font-size: 12px;
+  padding: 4px 12px;
+}
+.thread-line {
+  position: absolute;
+  left: -20px;
+  top: 0;
+  bottom: 40px;
+  width: 2px;
+  background: #e2e8f0;
+}
+.replies-section {
+  position: relative;
+}
+.custom-chat :deep(.q-message-text) {
+  border-radius: 16px;
+  padding: 16px 20px;
   border: 1px solid #f1f5f9;
-  border-radius: 0 20px 20px 20px;
-  max-width: 85%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
-
-.reply-box {
-  max-width: 80%;
+.custom-chat :deep(.q-message-text--sent),
+.reply-chat :deep(.q-message-text--sent) {
+  background-color: #003387 !important;
+  color: white !important;
 }
-.mentor-align {
-  align-self: flex-end;
+.main-post :deep(.q-message-text--received) {
+  background-color: white !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-.student-align {
-  align-self: flex-start;
+.reply-chat :deep(.q-message-text--received) {
+  background-color: #e6f3ff !important;
+  color: #003387 !important;
 }
-
-.bubble {
-  border-radius: 20px 20px 0 20px;
-}
-.student-align .bubble {
-  border-radius: 20px 20px 20px 0;
-}
-
-/* Input Styling */
-.reply-action-area {
-  transition: all 0.3s ease;
-}
-.reply-action-area:focus-within {
-  background: #ffffff;
-  border-color: #0089ff;
-  box-shadow: 0 0 0 4px rgba(0, 137, 255, 0.1);
-}
-
-.btn-send-modern {
-  width: 44px;
-  height: 44px;
-  font-size: 18px;
-}
-.shadow-blue {
-  box-shadow: 0 4px 14px rgba(0, 137, 255, 0.4);
-}
-
-.opacity-80 {
-  opacity: 0.8;
-}
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
+.sticky-card {
+  position: sticky;
+  top: 24px;
+  z-index: 10;
 }
 </style>

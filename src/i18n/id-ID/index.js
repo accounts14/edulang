@@ -71,6 +71,7 @@ export default {
     insight: 'Insight',
     artikelTips: 'Artikel & Tips Belajar',
     insightKarir: 'Insight Karier Global',
+    About: 'About Us',
     updateProgram: 'Update Program',
     legalTrust: 'Legal & Trust',
     syaratKetentuan: 'Syarat & Ketentuan',

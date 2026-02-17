@@ -43,7 +43,14 @@
             <div class="text-h6 text-weight-bold text-edulang-navy font-outfit">
               Daftar Rekening & Saldo
             </div>
-            <q-btn flat round color="grey-7" icon="refresh" @click="fetchMentorData">
+            <q-btn
+              flat
+              round
+              color="grey-7"
+              icon="refresh"
+              @click="fetchMentorData"
+              :loading="loading"
+            >
               <q-tooltip>Refresh Data</q-tooltip>
             </q-btn>
           </div>
@@ -159,77 +166,66 @@ const columns = [
   { name: 'actions', label: 'Aksi Keuangan', align: 'center' },
 ]
 
-// 1. Ambil List Mentor - Hapus prefix /api
-// 1. Ambil List Mentor
 async function fetchMentorData() {
   loading.value = true
   try {
-    const res = await api.get('/mentors')
-    const list = res.data.mentors || []
+    // 1. Ambil data profil dasar (yang ada bankDetails-nya)
+    const resBase = await api.get('/mentors')
+    const listBase = resBase.data.mentors || []
 
-    mentors.value = list.map((m) => {
-      // DEBUG: Cek di console untuk melihat struktur asli m.balance
-      console.log(`Balance untuk ${m.name}:`, m.balance)
+    // 2. Ambil data saldo dari endpoint khusus (Gambar 3)
+    const resBalance = await api.get('/mentors/admin/mentor-balances')
+    const listBalance = resBalance.data.mentors || []
+
+    // 3. Gabungkan datanya berdasarkan nama atau email agar info bank & saldo tampil bersamaan
+    mentors.value = listBase.map((mBase) => {
+      // Cari data saldo yang cocok untuk mentor ini di listBalance
+      const balanceData = listBalance.find((b) => b.name === mBase.name)
 
       return {
-        ...m,
-        isVerified: m.bankDetails?.isVerified || false,
-        // Jika m.balance adalah objek, ambil properti angkanya (misal: m.balance.amount)
-        // Jika m.balance sudah angka, gunakan langsung
-        balance: typeof m.balance === 'object' ? m.balance.amount || 0 : m.balance || 0,
+        ...mBase,
+        // Gunakan balance dari endpoint baru (Gambar 3)
+        balance: balanceData ? balanceData.balance : 0,
+        // Pastikan status verifikasi tetap sinkron dengan data profil atau API saldo
+        isVerified:
+          mBase.bankDetails?.isVerified || balanceData?.bankStatus === 'Verified' || false,
       }
     })
-  } catch {
-    $q.notify({ type: 'negative', message: 'Gagal memuat data dari server' })
+  } catch (error) {
+    console.error(error)
+    $q.notify({ type: 'negative', message: 'Gagal memuat data lengkap' })
   } finally {
     loading.value = false
   }
 }
 
-// 2. Approve/Verify Bank - Hapus prefix /api
 async function verifyBank(mentorId) {
-  // Pastikan plugin Loading sudah aktif di config agar baris bawah ini tidak error
-  $q.loading.show({
-    message: 'Sedang memproses verifikasi bank...',
-  })
-
+  $q.loading.show({ message: 'Sedang memproses verifikasi bank...' })
   try {
-    const res = await api.patch(`/mentors/bank-verify/${mentorId}`, { isVerified: true })
+    const res = await api.patch(`/mentors/bank-verify/${mentorId}`, { isVerified: true }) //
     if (res.data.success) {
-      $q.notify({
-        type: 'positive',
-        message: 'Rekening mentor berhasil diverifikasi!',
-      })
-      await fetchMentorData() // Refresh tabel
+      $q.notify({ type: 'positive', message: 'Rekening mentor berhasil diverifikasi!' })
+      await fetchMentorData()
     }
-  } catch (err) {
-    console.error(err)
-    $q.notify({
-      type: 'negative',
-      message: 'Gagal verifikasi bank. Silakan coba lagi.',
-    })
+  } catch {
+    $q.notify({ type: 'negative', message: 'Gagal verifikasi bank.' })
   } finally {
-    $q.loading.hide() // Menutup overlay
+    $q.loading.hide()
   }
 }
 
-// 3. Reset Balance - Hapus prefix /api
 function confirmResetBalance(mentor) {
   $q.dialog({
     title: 'Konfirmasi Reset Saldo',
-    message: `Lakukan reset saldo untuk ${mentor.name}? Saldo saat ini (Rp ${mentor.balance.toLocaleString('id-ID')}) akan menjadi 0.`,
+    message: `Lakukan reset saldo untuk ${mentor.name}?`,
     cancel: true,
     persistent: true,
     ok: { label: 'Reset Sekarang', color: 'negative', unelevated: true },
   }).onOk(async () => {
     try {
-      const res = await api.patch(`/mentors/${mentor._id}/balance`, { reset: true })
+      const res = await api.patch(`/mentors/${mentor._id}/balance`, { reset: true }) //
       if (res.data.success) {
-        $q.notify({
-          type: 'warning',
-          icon: 'payments',
-          message: `Saldo direset! Sebelumnya: Rp ${res.data.previousBalance?.toLocaleString('id-ID')}`,
-        })
+        $q.notify({ type: 'warning', message: 'Saldo direset ke 0' })
         fetchMentorData()
       }
     } catch {
@@ -242,13 +238,11 @@ onMounted(fetchMentorData)
 </script>
 
 <style scoped>
+/* Style Anda tetap utuh */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
-
 .font-outfit {
   font-family: 'Outfit', sans-serif;
 }
-
-/* Brand Colors Edulang */
 .bg-edulang-white {
   background-color: #f5f7fa !important;
 }
@@ -267,8 +261,6 @@ onMounted(fetchMentorData)
 .edulang-blue-light {
   color: rgba(0, 137, 255, 0.15) !important;
 }
-
-/* Components */
 .max-width-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -276,37 +268,18 @@ onMounted(fetchMentorData)
 .rounded-24 {
   border-radius: 24px;
 }
-.rounded-12 {
-  border-radius: 12px;
-}
-.rounded-8 {
-  border-radius: 8px;
-}
-
 .shadow-brand {
   box-shadow: 0 15px 35px -5px rgba(0, 51, 135, 0.08) !important;
 }
-
 .border-subtle {
   border: 1px solid rgba(0, 51, 135, 0.05);
 }
-
-.stat-card {
-  transition: transform 0.3s ease;
-}
-.stat-card:hover {
-  transform: translateY(-5px);
-}
-
 .bank-info-box {
   line-height: 1.2;
 }
-
 .font-mono {
   font-family: 'Courier New', Courier, monospace;
 }
-
-/* Table Professional Styling */
 .mentor-finance-table :deep(.q-table__th) {
   font-weight: 800;
   color: #003387;
@@ -314,15 +287,5 @@ onMounted(fetchMentorData)
   text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: 0.05em;
-}
-
-/* Responsiveness */
-@media (max-width: 600px) {
-  .text-h4 {
-    font-size: 1.5rem;
-  }
-  .q-pa-sm-xl {
-    padding: 16px !important;
-  }
 }
 </style>

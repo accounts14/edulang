@@ -1,8 +1,5 @@
 <template>
   <q-layout view="lHh Lpr lff" class="font-poppins">
-    <!-- Google Translate Element (hidden) -->
-    <div id="google_translate_element" style="display: none"></div>
-
     <q-drawer
       v-model="leftDrawerOpen"
       side="right"
@@ -19,52 +16,33 @@
           </q-item-section>
         </q-item>
 
-        <!-- Language Selector in Drawer (Mobile) -->
-        <q-item class="q-mb-md">
-          <q-item-section>
-            <div class="row q-gutter-sm">
-              <q-btn
-                v-for="lang in availableLanguages"
-                :key="lang.code"
-                :label="lang.label"
-                :color="currentLanguage === lang.code ? 'primary' : 'grey-5'"
-                :flat="currentLanguage !== lang.code"
-                size="sm"
-                @click="changeLanguage(lang.code)"
-              />
-            </div>
-          </q-item-section>
-        </q-item>
-
-        <q-separator class="q-mb-md" />
-
         <!-- Navigasi Utama -->
         <q-item clickable v-ripple @click="$router.push('/')" class="text-weight-bold text-primary">
-          <q-item-section>{{ getText('nav.home') }}</q-item-section>
+          <q-item-section>{{ $t('nav.home') }}</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="onDrawerAlurBelajar">
-          <q-item-section>{{ getText('nav.learningPath') }}</q-item-section>
+          <q-item-section>{{ $t('nav.learningPath') }}</q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="onDrawerLangganan">
-          <q-item-section>{{ getText('nav.langganan') }}</q-item-section>
+          <q-item-section>{{ $t('nav.langganan') }}</q-item-section>
         </q-item>
 
         <!-- PROGRAM -->
-        <q-expansion-item :label="getText('nav.program')" icon="school" class="text-primary">
-          <q-expansion-item :label="getText('nav.videoCourses')" header-class="text-weight-medium">
+        <q-expansion-item :label="$t('nav.program')" icon="school" class="text-primary">
+          <q-expansion-item :label="$t('nav.videoCourses')" header-class="text-weight-medium">
             <q-item clickable v-ripple dense @click="onDrawerAllCourses">
-              <q-item-section>{{ getText('nav.allCourses') }}</q-item-section>
+              <q-item-section>{{ $t('nav.allCourses') }}</q-item-section>
             </q-item>
           </q-expansion-item>
           <q-item clickable v-ripple dense @click="onDrawerStudyAbroad">
-            <q-item-section>{{ getText('nav.studyAbroad') }}</q-item-section>
+            <q-item-section>{{ $t('nav.studyAbroad') }}</q-item-section>
           </q-item>
         </q-expansion-item>
 
         <q-item clickable v-ripple @click="onDrawerTips">
-          <q-item-section>{{ getText('nav.tipsInfo') }}</q-item-section>
+          <q-item-section>{{ $t('nav.tipsInfo') }}</q-item-section>
         </q-item>
 
         <q-separator class="q-my-md" />
@@ -72,7 +50,7 @@
         <template v-if="!isLoggedIn">
           <q-item clickable v-ripple @click="$router.push('/login')">
             <q-item-section class="text-weight-medium">{{
-              getText('nav.learningCenter')
+              $t('nav.learningCenter')
             }}</q-item-section>
           </q-item>
         </template>
@@ -80,7 +58,7 @@
         <template v-else>
           <q-item class="q-py-sm">
             <q-item-section class="text-weight-bold">{{
-              getText('auth.halo', { name: userName })
+              $t('auth.halo', { name: userName })
             }}</q-item-section>
           </q-item>
 
@@ -88,7 +66,7 @@
             <q-item-section avatar>
               <q-icon name="home" />
             </q-item-section>
-            <q-item-section>{{ getText('nav.dashboard') }}</q-item-section>
+            <q-item-section>{{ $t('nav.dashboard') }}</q-item-section>
           </q-item>
 
           <q-item clickable v-ripple @click="handleLogout">
@@ -96,7 +74,7 @@
               <q-icon name="logout" color="negative" />
             </q-item-section>
             <q-item-section class="text-negative text-weight-bold">{{
-              getText('auth.logout')
+              $t('auth.logout')
             }}</q-item-section>
           </q-item>
         </template>
@@ -130,7 +108,7 @@
                   Edulang
                 </div>
                 <div class="header-tagline">
-                  {{ getText('nav.tagline') }}
+                  {{ $t('nav.tagline') }}
                 </div>
               </div>
             </div>
@@ -140,63 +118,10 @@
 
           <!-- Nav Links (Desktop) -->
           <div class="gt-md row items-center nav-links-wrap text-weight-medium">
-            <!-- Language Selector Button (Left of Learning Path) -->
-            <div
-              class="language-selector-wrapper relative-position q-mr-md"
-              @mouseenter="onLangMouseEnter"
-              @mouseleave="onLangMouseLeave"
-            >
-              <q-btn
-                flat
-                no-caps
-                class="lang-selector-btn"
-                :class="{ 'lang-active': showLangMenu }"
-              >
-                <div class="row items-center no-wrap">
-                  <q-icon name="language" size="20px" class="q-mr-sm" />
-                  <span class="text-weight-medium">{{ currentLanguageLabel }}</span>
-                  <q-icon name="expand_more" size="16px" class="q-ml-xs" />
-                </div>
-              </q-btn>
-
-              <transition name="dropdown-fade">
-                <div v-show="showLangMenu" class="lang-dropdown shadow-2 rounded-borders">
-                  <q-list style="min-width: 180px">
-                    <q-item
-                      v-for="lang in availableLanguages"
-                      :key="lang.code"
-                      clickable
-                      :class="{ 'bg-primary text-white': currentLanguage === lang.code }"
-                      @click="changeLanguage(lang.code)"
-                    >
-                      <q-item-section avatar>
-                        <span class="text-h6">{{ lang.flag }}</span>
-                      </q-item-section>
-                      <q-item-section>
-                        <q-item-label>{{ lang.name }}</q-item-label>
-                        <q-item-label
-                          caption
-                          :class="currentLanguage === lang.code ? 'text-white' : 'text-grey'"
-                        >
-                          {{ lang.localName }}
-                        </q-item-label>
-                      </q-item-section>
-                      <q-item-section side v-if="currentLanguage === lang.code">
-                        <q-icon
-                          name="check"
-                          :color="currentLanguage === lang.code ? 'white' : 'primary'"
-                        />
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </div>
-              </transition>
-            </div>
-
             <q-btn
               flat
               no-caps
-              :label="getText('nav.learningPath')"
+              :label="$t('nav.learningPath')"
               :class="['nav-btn', { 'nav-btn-active': isNavActive('/alur-belajar') }]"
               @click="$router.push('/alur-belajar')"
             />
@@ -210,7 +135,7 @@
               <q-btn
                 flat
                 no-caps
-                :label="getText('nav.program')"
+                :label="$t('nav.program')"
                 :class="['nav-btn', { 'nav-btn-active': isProgramNavActive }]"
               />
               <transition name="dropdown-fade">
@@ -222,14 +147,14 @@
                     <!-- Kolom kiri -->
                     <div class="program-bwa-left">
                       <div class="program-bwa-left-content">
-                        <div class="program-bwa-tag">{{ getText('nav.programTrusted') }}</div>
-                        <div class="program-bwa-title">{{ getText('nav.programTitle') }}</div>
-                        <p class="program-bwa-desc">{{ getText('nav.programDesc') }}</p>
+                        <div class="program-bwa-tag">{{ $t('nav.programTrusted') }}</div>
+                        <div class="program-bwa-title">{{ $t('nav.programTitle') }}</div>
+                        <p class="program-bwa-desc">{{ $t('nav.programDesc') }}</p>
                         <q-btn
                           unelevated
                           no-caps
                           class="program-bwa-btn"
-                          :label="getText('nav.programCta')"
+                          :label="$t('nav.programCta')"
                           @click="onProgramAllRoadmap"
                         />
                       </div>
@@ -238,23 +163,21 @@
                     <div class="program-bwa-right">
                       <div class="program-bwa-card cursor-pointer" @click="onProgramAllCourses">
                         <div class="program-bwa-card-icon">
-                          <q-icon name="play_circle_filled" size="24px" color="primary" />
+                          <q-icon name="play_circle_filled" size="32px" color="primary" />
                         </div>
                         <div class="program-bwa-card-text">
-                          <div class="program-bwa-card-title">{{ getText('nav.allCourses') }}</div>
-                          <div class="program-bwa-card-sub">{{ getText('nav.allCoursesSub') }}</div>
+                          <div class="program-bwa-card-title">{{ $t('nav.allCourses') }}</div>
+                          <div class="program-bwa-card-sub">{{ $t('nav.allCoursesSub') }}</div>
                         </div>
                       </div>
 
                       <div class="program-bwa-card cursor-pointer" @click="onProgramStudyAbroad">
                         <div class="program-bwa-card-icon">
-                          <q-icon name="flight_takeoff" size="24px" color="primary" />
+                          <q-icon name="flight_takeoff" size="32px" color="primary" />
                         </div>
                         <div class="program-bwa-card-text">
-                          <div class="program-bwa-card-title">{{ getText('nav.studyAbroad') }}</div>
-                          <div class="program-bwa-card-sub">
-                            {{ getText('nav.studyAbroadSub') }}
-                          </div>
+                          <div class="program-bwa-card-title">{{ $t('nav.studyAbroad') }}</div>
+                          <div class="program-bwa-card-sub">{{ $t('nav.studyAbroadSub') }}</div>
                         </div>
                       </div>
                     </div>
@@ -266,14 +189,14 @@
             <q-btn
               flat
               no-caps
-              :label="getText('nav.langganan')"
+              :label="$t('nav.langganan')"
               :class="['nav-btn', { 'nav-btn-active': isNavActive('/berlangganan') }]"
               @click="$router.push('/berlangganan')"
             />
             <q-btn
               flat
               no-caps
-              :label="getText('nav.tipsInfo')"
+              :label="$t('nav.tipsInfo')"
               :class="['nav-btn', { 'nav-btn-active': isNavActive('/tips') }]"
               @click="$router.push('/tips')"
             />
@@ -286,7 +209,7 @@
             <template v-if="!isLoggedIn">
               <q-btn
                 no-caps
-                :label="getText('nav.learningCenter')"
+                :label="$t('nav.learningCenter')"
                 :class="[
                   'learning-center-btn',
                   { 'learning-center-btn-active': isNavActive('/login') },
@@ -301,9 +224,7 @@
                   <q-avatar size="32px" color="primary" text-color="white">
                     <span class="text-weight-medium">{{ getUserInitial() }}</span>
                   </q-avatar>
-                  <span class="text-weight-medium">{{
-                    getText('auth.halo', { name: userName })
-                  }}</span>
+                  <span class="text-weight-medium">{{ $t('auth.halo', { name: userName }) }}</span>
                 </div>
                 <q-menu anchor="bottom right" self="top right">
                   <q-list style="min-width: 180px">
@@ -318,9 +239,7 @@
                       <q-item-section avatar>
                         <q-icon name="logout" color="negative" />
                       </q-item-section>
-                      <q-item-section class="text-negative">{{
-                        getText('auth.logout')
-                      }}</q-item-section>
+                      <q-item-section class="text-negative">{{ $t('auth.logout') }}</q-item-section>
                     </q-item>
                   </q-list>
                 </q-menu>
@@ -351,18 +270,18 @@
             <div class="col-12 col-md-5 col-lg-4">
               <img src="~assets/Edulang.png" alt="Edulang" class="footer-logo q-mb-md" />
               <div class="footer-pt text-weight-bold text-body1 q-mb-xs">
-                {{ getText('footer.ptName') }}
+                {{ $t('footer.ptName') }}
               </div>
               <p class="footer-alamat text-body2 q-ma-none">
-                {{ getText('footer.alamatValue') }}
+                {{ $t('footer.alamatValue') }}
               </p>
 
               <div class="footer-subscribe q-mt-lg">
                 <div class="footer-subscribe-title text-h6 q-mb-sm">
-                  {{ getText('footer.subscribeTitle') }}
+                  {{ $t('footer.subscribeTitle') }}
                 </div>
                 <p class="footer-subscribe-desc text-caption q-mb-md">
-                  {{ getText('footer.subscribeDesc') }}
+                  {{ $t('footer.subscribeDesc') }}
                 </p>
                 <q-input
                   v-model="subscribeName"
@@ -388,16 +307,16 @@
                   class="full-width"
                   @click="onSubscribe"
                 >
-                  {{ getText('footer.subscribeBtn') }}
+                  {{ $t('footer.subscribeBtn') }}
                 </q-btn>
               </div>
             </div>
 
             <!-- Kolom 2: Program -->
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="footer-heading q-mb-md">{{ getText('footer.program') }}</div>
+              <div class="footer-heading q-mb-md">{{ $t('footer.program') }}</div>
               <ul class="footer-list">
-                <li v-for="lang in footerLanguagesWithIcons" :key="lang.id">
+                <li v-for="lang in headerLanguages" :key="lang.id">
                   <router-link
                     :to="{
                       path: '/berlangganan',
@@ -405,14 +324,12 @@
                     }"
                     class="footer-link row items-center no-wrap"
                   >
-                    <!-- TAMPILKAN ICON JIKA ADA -->
-                    <template v-if="lang.iconUrl">
-                      <q-img :src="lang.iconUrl" ratio="1" class="footer-lang-flag q-mr-sm" />
-                    </template>
-                    <!-- TAMPILKAN EMOJI FLAG JIKA TIDAK ADA ICON -->
-                    <template v-else-if="lang.flag">
-                      <span class="footer-lang-emoji q-mr-sm">{{ lang.flag }}</span>
-                    </template>
+                    <q-img
+                      v-if="lang.iconUrl"
+                      :src="lang.iconUrl"
+                      ratio="1"
+                      class="footer-lang-flag q-mr-sm"
+                    />
                     <span>{{ lang.name }}</span>
                   </router-link>
                 </li>
@@ -421,57 +338,52 @@
 
             <!-- Kolom 3: Panduan -->
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="footer-heading q-mb-md">{{ getText('footer.panduanInsight') }}</div>
+              <div class="footer-heading q-mb-md">{{ $t('footer.panduanInsight') }}</div>
               <ul class="footer-list">
                 <li>
                   <router-link to="/alur-belajar" class="footer-link">{{
-                    getText('footer.alurBelajar')
+                    $t('footer.alurBelajar')
                   }}</router-link>
                 </li>
                 <li>
-                  <a href="/#faq" class="footer-link">{{ getText('footer.faq') }}</a>
+                  <a href="/#faq" class="footer-link">{{ $t('footer.faq') }}</a>
                 </li>
                 <li>
                   <router-link to="/tips" class="footer-link">{{
-                    getText('footer.artikelTips')
+                    $t('footer.artikelTips')
                   }}</router-link>
                 </li>
                 <li>
-                  <a href="/about" class="footer-link">{{ getText('footer.About') }}</a>
+                  <a href="/tips#karir" class="footer-link">{{ $t('footer.insightKarir') }}</a>
                 </li>
                 <li>
-                  <a href="/tips#karir" class="footer-link">{{ getText('footer.insightKarir') }}</a>
-                </li>
-                <li>
-                  <a href="/berlangganan" class="footer-link">{{
-                    getText('footer.updateProgram')
-                  }}</a>
+                  <a href="/berlangganan" class="footer-link">{{ $t('footer.updateProgram') }}</a>
                 </li>
               </ul>
             </div>
 
             <!-- Kolom 4: Legal -->
             <div class="col-6 col-sm-4 col-md-2">
-              <div class="footer-heading q-mb-md">{{ getText('footer.legalTrust') }}</div>
+              <div class="footer-heading q-mb-md">{{ $t('footer.legalTrust') }}</div>
               <ul class="footer-list">
                 <li>
                   <a href="/syarat-ketentuan" class="footer-link">{{
-                    getText('footer.syaratKetentuan')
+                    $t('footer.syaratKetentuan')
                   }}</a>
                 </li>
                 <li>
                   <a href="/kebijakan-privasi" class="footer-link">{{
-                    getText('footer.kebijakanPrivasi')
+                    $t('footer.kebijakanPrivasi')
                   }}</a>
                 </li>
                 <li>
                   <a href="/kebijakan-refund" class="footer-link">{{
-                    getText('footer.kebijakanRefund')
+                    $t('footer.kebijakanRefund')
                   }}</a>
                 </li>
                 <li>
                   <a href="/certificate/verify" class="footer-link">{{
-                    getText('footer.CekSertifikat')
+                    $t('footer.CekSertifikat')
                   }}</a>
                 </li>
               </ul>
@@ -480,7 +392,7 @@
 
           <!-- Metode Pembayaran -->
           <div class="footer-payment q-mt-lg q-pt-lg q-mb-xl">
-            <div class="footer-heading q-mb-md">{{ getText('footer.metodePembayaran') }}</div>
+            <div class="footer-heading q-mb-md">{{ $t('footer.metodePembayaran') }}</div>
             <div class="footer-payment-icons">
               <div v-for="icon in paymentIcons" :key="icon.name" class="footer-payment-icon-wrap">
                 <img :src="icon.src" :alt="icon.name" class="footer-payment-icon" />
@@ -493,7 +405,7 @@
         <div class="footer-bottom">
           <div class="container footer-bottom-inner">
             <div class="footer-bottom-left text-body2">
-              {{ getText('footer.copyright') }}
+              {{ $t('footer.copyright') }}
             </div>
 
             <div class="footer-bottom-right row items-center q-gutter-x-sm">
@@ -503,7 +415,7 @@
                 size="sm"
                 icon="fab fa-instagram"
                 target="_blank"
-                href="https://instagram.com/edulang.id"
+                href="https://instagram.com/edulang.id "
                 class="footer-social-icon"
               />
               <q-btn
@@ -512,7 +424,7 @@
                 size="sm"
                 icon="fab fa-tiktok"
                 target="_blank"
-                href="https://tiktok.com/@edulang.id"
+                href="https://tiktok.com/@edulang.id "
                 class="footer-social-icon"
               />
               <q-btn
@@ -543,7 +455,7 @@ const route = useRoute()
 const leftDrawerOpen = ref(false)
 
 // TAMBAHAN: State untuk header scroll
-const scrollTimeout = ref(null)
+const scrollTimeout = ref(null) // ref() bukan let
 const showHeader = ref(true)
 
 const isLoggedIn = ref(false)
@@ -555,277 +467,13 @@ const subscribeEmail = ref('')
 
 const languages = ref([])
 
-// ============================================
-// GOOGLE TRANSLATE INTEGRATION
-// ============================================
-
-// Available languages configuration
-const availableLanguages = [
-  { code: 'id', name: 'Indonesia', localName: 'Bahasa Indonesia', label: 'ID', flag: '🇮🇩' },
-  { code: 'en', name: 'English', localName: 'English', label: 'EN', flag: '🇬🇧' },
-  { code: 'zh-CN', name: '中文', localName: 'Mandarin', label: '中文', flag: '🇨🇳' },
-]
-
-const currentLanguage = ref('id')
-const showLangMenu = ref(false)
-let langCloseTimer = null
-
-// Default texts in Indonesian (fallback)
-const defaultTexts = {
-  'nav.home': 'Beranda',
-  'nav.learningPath': 'Alur Belajar',
-  'nav.langganan': 'Berlangganan',
-  'nav.program': 'Program',
-  'nav.videoCourses': 'Video Kursus',
-  'nav.allCourses': 'Semua Kursus',
-  'nav.allCoursesSub': 'Akses semua materi pembelajaran',
-  'nav.studyAbroad': 'Studi ke Luar Negeri',
-  'nav.studyAbroadSub': 'Program beasiswa dan kuliah internasional',
-  'nav.tipsInfo': 'Tips & Info',
-  'nav.tagline': 'Unlock the World with Education',
-  'nav.programTrusted': 'TERPERCAYA 10.000+ SISWA',
-  'nav.programTitle': 'Tingkatkan Skill',
-  'nav.programDesc': 'Belajar bahasa',
-  'nav.programCta': 'Lihat Semua Program',
-  'nav.learningCenter': 'Learning Center',
-  'nav.dashboard': 'Dashboard',
-  'auth.halo': 'Halo, {name}',
-  'auth.logout': 'Keluar',
-  'footer.ptName': 'PT. Edulang Nusantara',
-  'footer.alamatValue': 'Jl. Pendidikan No. 123, Jakarta, Indonesia',
-  'footer.subscribeTitle': 'Subscribe Email',
-  'footer.subscribeDesc': 'Dapatkan update terbaru tentang program dan promo',
-  'footer.subscribeBtn': 'Berlangganan',
-  'footer.program': 'Program Bahasa',
-  'footer.panduanInsight': 'Panduan & Insight',
-  'footer.alurBelajar': 'Alur Belajar',
-  'footer.faq': 'FAQ',
-  'footer.artikelTips': 'Artikel & Tips',
-  'footer.insightKarir': 'Insight Karir',
-  'footer.About': 'About Us',
-  'footer.updateProgram': 'Update Program',
-  'footer.legalTrust': 'Legal & Kepercayaan',
-  'footer.syaratKetentuan': 'Syarat & Ketentuan',
-  'footer.kebijakanPrivasi': 'Kebijakan Privasi',
-  'footer.kebijakanRefund': 'Kebijakan Refund',
-  'footer.CekSertifikat': 'Cek Sertifikat',
-  'footer.metodePembayaran': 'Metode Pembayaran',
-  'footer.copyright': '© 2025 Edulang. All rights reserved.',
-}
-
-// Computed property for current language label
-const currentLanguageLabel = computed(() => {
-  const lang = availableLanguages.find((l) => l.code === currentLanguage.value)
-  return lang ? lang.label : 'ID'
-})
-
-// Function to get text (fallback to default if Google Translate hasn't loaded)
-const getText = (key, params = {}) => {
-  let text = defaultTexts[key] || key
-
-  // Replace params
-  Object.keys(params).forEach((param) => {
-    text = text.replace(`{${param}}`, params[param])
-  })
-
-  return text
-}
-
-// Initialize Google Translate
-const initGoogleTranslate = () => {
-  // Check if already loaded
-  if (window.google && window.google.translate) {
-    return
-  }
-
-  // Add Google Translate script
-  const script = document.createElement('script')
-  script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
-  script.async = true
-  document.head.appendChild(script)
-
-  // Define global callback
-  window.googleTranslateElementInit = () => {
-    new window.google.translate.TranslateElement(
-      {
-        pageLanguage: 'id',
-        includedLanguages: 'id,en,zh-CN',
-        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false,
-      },
-      'google_translate_element',
-    )
-
-    // Restore saved language after Google Translate loads
-    setTimeout(() => {
-      restoreLanguage()
-    }, 1000)
-  }
-}
-
-// Change language function
-const changeLanguage = (langCode) => {
-  currentLanguage.value = langCode
-  localStorage.setItem('edulang_language', langCode)
-
-  // Use Google Translate to change language
-  const selectElement = document.querySelector('.goog-te-combo')
-  if (selectElement) {
-    selectElement.value = langCode
-    selectElement.dispatchEvent(new Event('change'))
-  } else {
-    // Fallback: reload with cookie approach
-    setGoogleTranslateCookie(langCode)
-  }
-
-  showLangMenu.value = false
-
-  // Force refresh to apply translation
-  if (langCode === 'id') {
-    // Reset to original (Indonesian)
-    const iframe = document.querySelector('.goog-te-banner-frame')
-    if (iframe) {
-      const resetBtn = iframe.contentDocument?.querySelector('.goog-te-button button')
-      if (resetBtn) resetBtn.click()
-    }
-  }
-}
-
-// Set Google Translate cookie
-const setGoogleTranslateCookie = (lang) => {
-  const domain = window.location.hostname
-  document.cookie = `googtrans=/id/${lang}; domain=${domain}; path=/`
-  document.cookie = `googtrans=/id/${lang}; path=/`
-
-  // Reload page to apply
-  window.location.reload()
-}
-
-// Restore language from localStorage
-const restoreLanguage = () => {
-  const savedLang = localStorage.getItem('edulang_language') || 'id'
-  if (savedLang !== 'id') {
-    changeLanguage(savedLang)
-  }
-}
-
-// FIXED: Language menu hover handlers dengan delay lebih lama
-const onLangMouseEnter = () => {
-  if (langCloseTimer) {
-    clearTimeout(langCloseTimer)
-    langCloseTimer = null
-  }
-  showLangMenu.value = true
-}
-
-const onLangMouseLeave = () => {
-  langCloseTimer = setTimeout(() => {
-    showLangMenu.value = false
-  }, 500) // Increased to 500ms for better UX
-}
-
-// Function to hide all Google Translate elements
-const hideGoogleTranslateElements = () => {
-  // Hide banner frame
-  const bannerFrame = document.querySelector('.goog-te-banner-frame')
-  if (bannerFrame) {
-    bannerFrame.style.cssText =
-      'display: none !important; height: 0 !important; overflow: hidden !important;'
-  }
-
-  // Hide banner
-  const banner = document.querySelector('.goog-te-banner')
-  if (banner) {
-    banner.style.cssText =
-      'display: none !important; height: 0 !important; overflow: hidden !important;'
-  }
-
-  // Hide the main GT wrapper
-  const gtWrapper = document.querySelector('#goog-gt-tt')
-  if (gtWrapper) {
-    gtWrapper.style.cssText =
-      'display: none !important; height: 0 !important; overflow: hidden !important;'
-  }
-
-  // Hide tooltips
-  const tooltips = document.querySelectorAll('.goog-tooltip, .goog-tooltip:hover')
-  tooltips.forEach((tooltip) => {
-    tooltip.style.cssText = 'display: none !important;'
-  })
-
-  // Hide text highlights
-  const highlights = document.querySelectorAll('.goog-text-highlight')
-  highlights.forEach((hl) => {
-    hl.style.cssText = 'display: none !important;'
-  })
-
-  // Hide the translation popup
-  const popups = document.querySelectorAll(
-    '.VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9od-xl07Ob-lTBxed',
-  )
-  popups.forEach((popup) => {
-    popup.style.cssText = 'display: none !important;'
-  })
-
-  // Remove body padding-top that Google Translate adds
-  document.body.style.cssText = 'position: relative !important; top: 0 !important;'
-
-  // Hide any remaining Google Translate containers
-  const skiptranslate = document.querySelector('.skiptranslate')
-  if (skiptranslate) {
-    skiptranslate.style.cssText = 'display: none !important;'
-  }
-}
-
-// Watch for Google Translate changes and hide elements
-const observeGoogleTranslate = () => {
-  const observer = new MutationObserver(() => {
-    hideGoogleTranslateElements()
-  })
-
-  // Observe body for added nodes
-  if (document.body) {
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    })
-  }
-}
-
-// ============================================
-// FOOTER LANGUAGES WITH FALLBACK ICONS
-// ============================================
-
-// Fallback flag emoji mapping untuk bahasa yang tidak punya iconUrl
-const languageFlagMap = {
-  'Bahasa Arab': '🇸🇦',
-  'Bahasa Inggris': '🇺🇸',
-  'Bahasa Jepang': '🇯🇵',
-  'Bahasa Jerman': '🇩🇪',
-  'Bahasa Korea': '🇰🇷',
-  'Bahasa Mandarin': '🇨🇳',
-  'Bahasa Mandarin(Taiwan)': '🇹🇼',
-  'Bahasa Mandarin Taiwan': '🇹🇼',
-  'Bahasa inggris (British)': '🇬🇧',
-  'Bahasa Inggris (British)': '🇬🇧',
-  'Bahasa Inggris British': '🇬🇧',
-}
-
-const footerLanguagesWithIcons = computed(() => {
-  return languages.value.map((lang) => {
-    const name = lang.name || lang.label || 'Bahasa'
-    // Cari flag emoji berdasarkan nama bahasa
-    const flag = languageFlagMap[name] || ''
-    return {
-      id: String(lang._id || lang.id),
-      name: name,
-      iconUrl: lang.iconUrl || lang.icon_url || '',
-      flag: flag,
-    }
-  })
-})
-
-// ============================================
+const headerLanguages = computed(() =>
+  languages.value.map((lang) => ({
+    id: String(lang._id || lang.id),
+    name: lang.name || lang.label || 'Bahasa',
+    iconUrl: lang.iconUrl || lang.icon_url || '',
+  })),
+)
 
 const paymentIcons = [
   { name: 'BRI', src: '/icon-trans/BANK_BRI_logo.svg.png' },
@@ -897,7 +545,7 @@ const onDrawerAllCourses = () => {
 }
 
 const onDrawerStudyAbroad = () => {
-  window.location.href = 'https://study.edulang.id/'
+  window.location.href = 'https://study.edulang.id/ '
   leftDrawerOpen.value = false
 }
 
@@ -929,7 +577,7 @@ const onProgramAllCourses = () => {
 }
 
 const onProgramStudyAbroad = () => {
-  window.location.href = 'https://study.edulang.id/'
+  window.location.href = 'https://study.edulang.id/ '
   closeProgramMenu()
 }
 
@@ -950,20 +598,25 @@ const onProgramMouseLeave = () => {
   programCloseTimer = setTimeout(() => {
     programOpen.value = false
     videoSubOpen.value = false
-  }, 300)
+  }, 150)
 }
 
+// TAMBAHAN: Handler scroll untuk header
+// GANTI handleScroll() INI
+// ✅ REPLACE handleScroll() INI
 const handleScroll = () => {
   const scrollY = window.scrollY || document.documentElement.scrollTop
 
+  // 🔥 UTAMA: SELALU TERLIHAT saat di ATAS (scrollY <= 10px)
   if (scrollY <= 10) {
     showHeader.value = true
     if (scrollTimeout.value) {
-      window.clearTimeout(scrollTimeout.value)
+      window.clearTimeout(scrollTimeout.value) // Cancel hide
     }
-    return
+    return // STOP - jangan lanjut
   }
 
+  // Hanya saat scroll > 10px (sudah agak ke bawah)
   showHeader.value = true
 
   if (scrollTimeout.value) {
@@ -971,7 +624,7 @@ const handleScroll = () => {
   }
 
   scrollTimeout.value = window.setTimeout(() => {
-    showHeader.value = false
+    showHeader.value = false // Hanya hide saat scroll agak bawah + stop 1.5s
   }, 1500)
 }
 
@@ -980,36 +633,18 @@ onMounted(() => {
   fetchLanguages()
   applyStoredTheme()
 
-  // Initialize Google Translate
-  initGoogleTranslate()
-
-  // Load saved language preference
-  const savedLang = localStorage.getItem('edulang_language')
-  if (savedLang) {
-    currentLanguage.value = savedLang
-  }
-
-  // Start observing and hiding Google Translate elements
-  hideGoogleTranslateElements()
-  observeGoogleTranslate()
-
   if (typeof window !== 'undefined') {
     window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('load', hideGoogleTranslateElements)
-    showHeader.value = true
+    showHeader.value = true // ✅ FORCE TERLIHAT di awal
   }
 })
 
 onUnmounted(() => {
   if (typeof window !== 'undefined') {
     window.removeEventListener('scroll', handleScroll)
-    window.removeEventListener('load', hideGoogleTranslateElements)
   }
   if (scrollTimeout.value) {
     window.clearTimeout(scrollTimeout.value)
-  }
-  if (langCloseTimer) {
-    clearTimeout(langCloseTimer)
   }
 })
 
@@ -1017,12 +652,10 @@ watch(
   () => route.path,
   () => {
     checkLoginStatus()
-    showHeader.value = true
+    showHeader.value = true // ✅ RESET TERLIHAT saat pindah halaman
     if (scrollTimeout.value) {
       window.clearTimeout(scrollTimeout.value)
     }
-    // Hide Google Translate elements on route change
-    setTimeout(hideGoogleTranslateElements, 100)
   },
 )
 
@@ -1037,147 +670,9 @@ const handleLogout = () => {
 }
 </script>
 
-<!-- GLOBAL STYLE untuk menyembunyikan Google Translate Banner -->
-<style>
-/* ============================================
-   HIDE GOOGLE TRANSLATE BANNER - GLOBAL STYLES
-   ============================================ */
-
-/* Hide Google Translate banner frame */
-.goog-te-banner-frame,
-.goog-te-banner {
-  display: none !important;
-  height: 0 !important;
-  width: 0 !important;
-  max-height: 0 !important;
-  max-width: 0 !important;
-  overflow: hidden !important;
-  border: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  position: absolute !important;
-  top: -9999px !important;
-  left: -9999px !important;
-}
-
-/* Hide the Google Translate tooltip */
-.goog-tooltip,
-.goog-tooltip:hover,
-.VIpgJd-ZVi9od-ORHb-OEVmcd,
-.VIpgJd-ZVi9od-xl07Ob-lTBxed,
-.VIpgJd-ZVi9od-SmfZ-OEVmcd,
-.VIpgJd-yAWNEb-L7lbkb,
-.VIpgJd-yAWNEb-L7lbkb-IPJ7ec,
-.VIpgJd-yAWNEb-hvhgNd,
-.VIpgJd-yAWNEb-hvhgNd-B7I4Od {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* Hide the translation helper element */
-#goog-gt-tt,
-.goog-te-ftab,
-.goog-te-ftab-link,
-.goog-te-menu,
-.goog-te-menu2,
-.goog-te-menu-frame,
-.goog-te-menu2-item-selected,
-.goog-te-menu2-item,
-.goog-te-menu2-item-link {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  width: 0 !important;
-}
-
-/* Hide text highlights */
-.goog-text-highlight {
-  display: none !important;
-  background: none !important;
-  box-shadow: none !important;
-}
-
-/* Hide the main translate widget wrapper */
-.goog-te-gadget,
-.goog-te-gadget-simple,
-.goog-te-combo {
-  display: none !important;
-}
-
-/* Hide the skip translate element */
-.skiptranslate,
-.goog-te-spinner-pos,
-.goog-te-spinner,
-.goog-te-handles,
-.goog-te-float-mask,
-.goog-te-gadget-icon,
-.goog-te-gadget-logo {
-  display: none !important;
-  visibility: hidden !important;
-}
-
-/* Remove body padding that Google Translate adds */
-body {
-  top: 0 !important;
-  position: relative !important;
-  padding-top: 0 !important;
-}
-
-/* Hide any iframe from Google Translate */
-iframe[src*='translate.google.com'],
-iframe[src*='google.com/translate'],
-iframe.goog-te-banner-frame,
-iframe.goog-te-menu-frame,
-iframe#goog-gt-tt,
-iframe.VIpgJd-ZVi9od-xl07Ob-OEVmcd {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  width: 0 !important;
-  position: absolute !important;
-  top: -9999px !important;
-  left: -9999px !important;
-  border: none !important;
-}
-
-/* Hide translation suggestion popup */
-.translation-ltr,
-.translation-rtl {
-  display: none !important;
-}
-
-/* Hide Google Translate footer/suggestion bar */
-.VIpgJd-ZVi9od-ORHb-OEVmcd,
-.VIpgJd-ZVi9od-ORHb-OEVmcd:empty {
-  display: none !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  max-height: 0 !important;
-  overflow: hidden !important;
-}
-
-/* Force hide any remaining Google Translate elements */
-div[class*='goog-te'],
-span[class*='goog-te'],
-a[class*='goog-te'] {
-  display: none !important;
-}
-
-/* Hide the language selection dropdown that Google creates */
-.goog-te-options {
-  display: none !important;
-  visibility: hidden !important;
-}
-
-/* Section header override to prevent padding issues */
-.section-header {
-  margin-top: 0 !important;
-}
-</style>
-
 <style scoped>
+/* ... (CSS tetap sama seperti sebelumnya, pastikan bagian spacing di bawah di-apply) ... */
+
 .footer-subscribe {
   max-width: 320px;
 }
@@ -1389,7 +884,7 @@ a {
   margin: 0;
 }
 .footer-list li {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.75rem; /* Perbaikan: Tambah jarak antar list item */
 }
 .footer-link {
   font-size: 0.875rem;
@@ -1403,21 +898,11 @@ a {
   color: var(--edulang-blue, #0089ff);
 }
 .footer-lang-flag {
-  width: 28px; /* Diperbesar dari 22px */
-  height: 20px; /* Diperbesar dari 16px (rasio bendera standar) */
-  min-width: 28px; /* Mencegah menyusut */
+  width: 22px;
+  height: 16px;
+  min-width: 22px;
   border-radius: 3px;
-  object-fit: contain; /* Diubah dari 'cover' ke 'contain' agar tidak terpotong */
-  background-color: #f0f0f0; /* Warna background agar area transparan terlihat */
-}
-
-/* FOOTER LANGUAGE EMOJI FLAG */
-.footer-lang-emoji {
-  font-size: 18px; /* Diperbesar sedikit */
-  line-height: 1;
-  width: 28px; /* Disamakan dengan lebar gambar */
-  text-align: center;
-  display: inline-block;
+  object-fit: cover;
 }
 
 .footer-bottom {
@@ -1450,7 +935,7 @@ a {
 
 /* TAMBAHAN: CSS untuk animasi header scroll */
 .main-layout-header {
-  position: sticky !important;
+  position: sticky !important; /* Ubah dari fixed ke sticky */
   top: 0;
   left: 0;
   right: 0;
@@ -1482,7 +967,7 @@ a {
 
 /* PERBAIKAN UTAMA: Spacing Navigation */
 .nav-links-wrap {
-  gap: 24px;
+  gap: 36px; /* Tambah jarak antar menu utama */
 }
 
 .q-item__section--side {
@@ -1500,7 +985,7 @@ a {
 }
 
 .nav-btn {
-  padding: 8px 14px;
+  padding: 8px 14px; /* Perbaikan: Tambah padding horizontal & vertikal */
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.3px;
@@ -1607,31 +1092,28 @@ a {
   position: absolute;
   top: 100%;
   left: 0;
-  margin-top: 8px;
+  margin-top: 8px; /* Perbaikan: Tambah jarak dari tombol */
   z-index: 2000;
   border: 1px solid rgba(0, 0, 0, 0.08);
   transform: translateZ(0);
   will-change: opacity, transform;
 }
 
-/* ============================================
-   PERBAIKAN: DROPDOWN PROGRAM - DIKECILKAN
-   ============================================ */
 .program-dropdown-bwa {
   background: var(--edulang-white, #f5f7fa);
-  min-width: 520px; /* Dari 720px jadi 520px */
-  max-width: 85vw;
+  min-width: 720px;
+  max-width: 90vw;
 }
 
 .program-dropdown-bwa-inner {
-  min-height: 220px; /* Dari 300px jadi 220px */
+  min-height: 300px;
 }
 
 .program-bwa-left {
-  width: 220px; /* Dari 320px jadi 220px */
-  min-width: 220px;
+  width: 320px;
+  min-width: 320px;
   background: var(--edulang-navy, #003387);
-  padding: 20px 18px; /* Dari 32px 28px jadi 20px 18px */
+  padding: 32px 28px; /* Perbaikan: Tambah padding */
   display: flex;
   align-items: center;
 }
@@ -1642,53 +1124,52 @@ a {
 }
 
 .program-bwa-tag {
-  font-size: 0.7rem; /* Dari 0.8125rem jadi 0.7rem */
+  font-size: 0.8125rem;
   color: var(--edulang-yellow, #ffc42c);
   font-weight: 600;
-  margin-bottom: 8px; /* Dari 12px jadi 8px */
+  margin-bottom: 12px;
 }
 
 .program-bwa-title {
-  font-size: 1.1rem; /* Dari 1.4rem jadi 1.1rem */
+  font-size: 1.4rem; /* Perbaikan: Font size sedikit besar */
   font-weight: 700;
   color: var(--edulang-white, #f5f7fa);
-  line-height: 1.3;
-  margin-bottom: 8px; /* Dari 12px jadi 8px */
+  line-height: 1.4;
+  margin-bottom: 12px;
 }
 
 .program-bwa-desc {
-  font-size: 0.8rem; /* Dari 0.9rem jadi 0.8rem */
+  font-size: 0.9rem; /* Perbaikan: Sedikit besar */
   color: rgba(245, 247, 250, 0.95);
-  margin: 0 0 16px 0; /* Dari 24px jadi 16px */
-  line-height: 1.5;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
 }
 
 .program-bwa-btn {
   background: var(--edulang-blue, #0089ff) !important;
   color: var(--edulang-white, #f5f7fa) !important;
   font-weight: 600;
-  padding: 8px 20px; /* Dari 12px 28px jadi 8px 20px */
+  padding: 12px 28px;
   border-radius: 8px;
-  font-size: 0.85rem;
 }
 
 .program-bwa-right {
   flex: 1;
-  min-width: 260px; /* Dari 380px jadi 260px */
-  padding: 16px 18px; /* Dari 24px 28px jadi 16px 18px */
+  min-width: 380px;
+  padding: 24px 28px; /* Perbaikan: Tambah padding */
   background: var(--edulang-white, #f5f7fa);
-  max-height: 280px; /* Dari 400px jadi 280px */
+  max-height: 400px;
   overflow-y: auto;
 }
 
 .program-bwa-card {
   display: flex;
   align-items: flex-start;
-  gap: 12px; /* Dari 16px jadi 12px */
-  padding: 12px 14px; /* Dari 18px jadi 12px 14px */
-  border-radius: 10px; /* Dari 12px jadi 10px */
+  gap: 16px; /* Perbaikan: Tambah gap */
+  padding: 18px; /* Perbaikan: Tambah padding internal card */
+  border-radius: 12px;
   transition: background 0.2s;
-  margin-bottom: 6px; /* Dari 8px jadi 6px */
+  margin-bottom: 8px; /* Jarak antar card */
 }
 
 .program-bwa-card:last-child {
@@ -1700,10 +1181,10 @@ a {
 }
 
 .program-bwa-card-icon {
-  width: 40px; /* Dari 52px jadi 40px */
-  height: 40px; /* Dari 52px jadi 40px */
-  min-width: 40px;
-  border-radius: 10px; /* Dari 12px jadi 10px */
+  width: 52px; /* Perbaikan: Icon lebih besar */
+  height: 52px;
+  min-width: 52px;
+  border-radius: 12px;
   background: rgba(0, 137, 255, 0.12);
   display: flex;
   align-items: center;
@@ -1716,18 +1197,18 @@ a {
 }
 
 .program-bwa-card-title {
-  font-size: 0.95rem; /* Dari 1.05rem jadi 0.95rem */
+  font-size: 1.05rem; /* Perbaikan: Ukuran font */
   font-weight: 600;
   color: var(--edulang-black, #2d2d2d);
-  margin-bottom: 2px; /* Dari 4px jadi 2px */
+  margin-bottom: 4px;
 }
 
 .program-bwa-card-sub {
-  font-size: 0.78rem; /* Dari 0.85rem jadi 0.78rem */
+  font-size: 0.85rem;
   color: var(--edulang-black, #2d2d2d);
   opacity: 0.7;
-  margin-top: 2px; /* Dari 4px jadi 2px */
-  line-height: 1.3;
+  margin-top: 4px;
+  line-height: 1.4;
 }
 
 .dropdown-fade-enter-active,
@@ -1737,77 +1218,6 @@ a {
 .dropdown-fade-enter-from,
 .dropdown-fade-leave-to {
   opacity: 0;
-}
-
-/* ============================================
-   LANGUAGE SELECTOR STYLES - FIXED
-   ============================================ */
-.language-selector-wrapper {
-  position: relative;
-  z-index: 1001;
-}
-
-.lang-selector-btn {
-  padding: 6px 12px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--edulang-black, #2d2d2d);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.lang-selector-btn:hover {
-  background: rgba(0, 137, 255, 0.08);
-  color: var(--edulang-blue, #0089ff);
-}
-
-.lang-selector-btn.lang-active {
-  background: rgba(0, 137, 255, 0.12);
-  color: var(--edulang-blue, #0089ff);
-}
-
-.bg-dark .lang-selector-btn {
-  color: var(--edulang-white, #f5f7fa);
-}
-
-.bg-dark .lang-selector-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--edulang-yellow, #ffc42c);
-}
-
-.bg-dark .lang-selector-btn.lang-active {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--edulang-yellow, #ffc42c);
-}
-
-.lang-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 4px;
-  z-index: 2001;
-  background: var(--edulang-white, #f5f7fa);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  min-width: 200px;
-  border-radius: 12px;
-  overflow: hidden;
-  padding: 4px;
-}
-
-.bg-dark .lang-dropdown {
-  background: var(--edulang-dark, #1a1a1a);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.lang-dropdown .q-item {
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin: 2px 4px;
-  transition: all 0.2s ease;
-}
-
-.lang-dropdown .q-item:hover:not(.bg-primary) {
-  background: rgba(0, 137, 255, 0.08);
 }
 
 /* RESPONSIVE */
@@ -1825,12 +1235,12 @@ a {
     display: none !important;
   }
   .edulang-header-text {
-    font-size: 1rem;
+    font-size: 1rem; /* Lebih kecil lagi untuk hp kecil */
   }
 
   .header-tagline {
     font-size: 0.55rem;
-    max-width: 120px;
+    max-width: 120px; /* Batasi lebar agar tidak overflow */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1844,7 +1254,7 @@ a {
   }
 
   .nav-links-wrap {
-    gap: 16px;
+    gap: 20px;
   }
 
   .nav-btn {
@@ -1852,26 +1262,20 @@ a {
     padding: 6px 10px;
   }
 
-  .lang-selector-btn {
-    padding: 4px 8px;
-    font-size: 13px;
-  }
-
-  /* PERBAIKAN: Dropdown lebih kecil di tablet */
   .program-dropdown-bwa {
-    min-width: 450px;
-    max-width: 90vw;
+    min-width: 600px;
+    max-width: 85vw;
   }
 
   .program-bwa-left {
-    width: 180px;
-    min-width: 180px;
-    padding: 16px 14px;
+    width: 240px;
+    min-width: 240px;
+    padding: 20px 16px;
   }
 
   .program-bwa-right {
-    min-width: 240px;
-    padding: 14px 16px;
+    min-width: 320px;
+    padding: 16px 20px;
   }
 
   .footer-content .row {
@@ -1890,16 +1294,16 @@ a {
   }
   .header-text-container {
     margin-left: 8px;
-    display: flex !important;
+    display: flex !important; /* Pastikan tetap visible */
   }
 
   .edulang-header-text {
-    font-size: 1.2rem;
-    width: auto;
+    font-size: 1.2rem; /* Lebih kecil untuk mobile */
+    width: auto; /* Hapus fixed width 160px */
   }
 
   .header-tagline {
-    font-size: 0.6rem;
+    font-size: 0.6rem; /* Lebih kecil untuk mobile */
     margin-top: 2px;
   }
 }
@@ -1910,12 +1314,8 @@ a {
     padding: 0 32px;
   }
 
-  .nav-links-wrap {
-    gap: 20px;
-  }
-
   .program-dropdown-bwa {
-    min-width: 480px;
+    min-width: 680px;
   }
 }
 
@@ -1977,7 +1377,7 @@ a {
   }
 
   .edulang-header-text {
-    font-size: 1.2rem !important;
+    font-size: 1.2rem !important; /* Override inline style */
   }
 }
 </style>

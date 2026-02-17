@@ -1,163 +1,158 @@
 <template>
-  <q-page class="q-pa-md q-pa-sm-xl bg-edulang-white">
-    <div class="max-width-container mx-auto">
-      <div class="q-mb-xl">
-        <h1 class="text-h4 text-weight-bolder text-edulang-navy font-outfit q-ma-none">
-          Revenue & Transaksi
-        </h1>
-        <p class="text-subtitle1 text-grey-7">
-          Monitor arus kas dan riwayat transaksi platform secara real-time.
-        </p>
+  <q-page class="bg-edulang-background q-pb-xl">
+    <div class="header-gradient q-pa-md q-pa-sm-xl q-mb-lg">
+      <div class="max-width-container mx-auto">
+        <div class="row items-center justify-between">
+          <div class="col-12 col-md-8">
+            <h1
+              class="text-h4 text-sm-h3 text-weight-bolder text-edulang-navy font-outfit q-ma-none"
+            >
+              Revenue & <span class="text-edulang-blue">Transaksi</span>
+            </h1>
+            <p class="text-subtitle1 text-grey-7 q-mt-sm">
+              Pantau pertumbuhan ekonomi platform Edulang secara real-time.
+            </p>
+          </div>
+          <div class="col-12 col-md-4 q-mt-md q-mt-md-none">
+            <q-input
+              v-model="searchQuery"
+              dense
+              outlined
+              rounded
+              placeholder="Cari transaksi..."
+              bg-color="white"
+              class="search-input shadow-sm"
+            >
+              <template v-slot:prepend>
+                <q-icon name="search" color="edulang-blue" />
+              </template>
+            </q-input>
+          </div>
+        </div>
       </div>
+    </div>
 
+    <div class="max-width-container mx-auto q-px-md">
       <div class="row q-col-gutter-lg q-mb-xl">
-        <div class="col-12 col-sm-6 col-md-4">
-          <q-card
-            flat
-            class="stat-card q-pa-lg bg-white shadow-brand rounded-24 relative-position overflow-hidden"
-          >
-            <div class="bg-edulang-blue absolute-top" style="height: 4px"></div>
-            <div class="row items-center no-wrap">
-              <q-avatar
-                color="edulang-blue-light"
-                text-color="edulang-blue"
-                icon="receipt_long"
-                size="56px"
-                class="q-mr-md"
-              />
-              <div>
-                <div class="text-h4 text-weight-bolder text-edulang-navy line-height-1">
-                  {{ summary.totalTransaksi }}
+        <div class="col-12 col-sm-6">
+          <q-card flat class="stat-card rounded-24 shadow-brand overflow-hidden">
+            <div class="bg-edulang-blue" style="height: 6px"></div>
+            <q-card-section class="q-pa-lg">
+              <div class="row items-center no-wrap">
+                <div class="icon-box bg-blue-1 q-mr-lg">
+                  <q-icon name="account_balance_wallet" color="edulang-blue" size="32px" />
                 </div>
-                <div class="text-caption text-weight-bold text-grey-6 uppercase q-mt-xs">
-                  Transaksi ({{ monthLabel }})
+                <div>
+                  <div class="text-caption text-weight-bold text-grey-6 uppercase letter-spacing-1">
+                    Total Transaksi
+                  </div>
+                  <div class="text-h4 text-weight-bolder text-edulang-navy font-outfit">
+                    {{ totalTransactions }}
+                  </div>
                 </div>
               </div>
-            </div>
+            </q-card-section>
           </q-card>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-4">
-          <q-card
-            flat
-            class="stat-card q-pa-lg bg-white shadow-brand rounded-24 relative-position overflow-hidden"
-          >
-            <div class="bg-edulang-yellow absolute-top" style="height: 4px"></div>
-            <div class="row items-center no-wrap">
-              <q-avatar
-                color="orange-1"
-                text-color="edulang-yellow-dark"
-                icon="payments"
-                size="56px"
-                class="q-mr-md"
-              />
-              <div>
-                <div class="text-h5 text-weight-bolder text-edulang-navy line-height-1">
-                  {{ summary.pendapatanFormatted }}
+        <div class="col-12 col-sm-6">
+          <q-card flat class="stat-card rounded-24 shadow-brand overflow-hidden">
+            <div class="bg-edulang-yellow" style="height: 6px"></div>
+            <q-card-section class="q-pa-lg">
+              <div class="row items-center no-wrap">
+                <div class="icon-box bg-orange-1 q-mr-lg">
+                  <q-icon name="payments" color="orange-9" size="32px" />
                 </div>
-                <div class="text-caption text-weight-bold text-grey-6 uppercase q-mt-xs">
-                  Total Pendapatan
+                <div>
+                  <div class="text-caption text-weight-bold text-grey-6 uppercase letter-spacing-1">
+                    Total Pendapatan
+                  </div>
+                  <div class="text-h5 text-sm-h4 text-weight-bolder text-edulang-navy font-outfit">
+                    {{ formatRupiah(totalRevenue) }}
+                  </div>
                 </div>
               </div>
-            </div>
+            </q-card-section>
           </q-card>
-        </div>
-      </div>
-
-      <div class="row items-center q-mb-lg q-col-gutter-sm">
-        <div class="col-12 col-sm-auto">
-          <q-input
-            v-model="searchQuery"
-            dense
-            outlined
-            placeholder="Cari Paket atau Email Mentor..."
-            bg-color="white"
-            clearable
-            class="search-input rounded-12"
-            style="min-width: 320px"
-            @keyup.enter="applySearch"
-            @clear="applySearch"
-          >
-            <template v-slot:prepend>
-              <q-icon name="search" color="grey-5" />
-            </template>
-          </q-input>
-        </div>
-        <div class="col-12 col-sm-auto">
-          <q-btn
-            unelevated
-            color="edulang-blue"
-            no-caps
-            label="Filter Data"
-            class="full-width rounded-12 q-px-lg text-weight-bold"
-            @click="applySearch"
-          />
         </div>
       </div>
 
       <q-card flat class="rounded-24 shadow-brand bg-white overflow-hidden border-subtle">
-        <div class="bg-edulang-navy" style="height: 6px"></div>
-        <q-card-section class="q-pa-lg">
-          <div class="text-h6 text-weight-bolder text-edulang-navy font-outfit q-mb-md">
-            Riwayat Transaksi
+        <div class="q-pa-md q-pa-sm-lg border-bottom bg-grey-1 row items-center justify-between">
+          <div class="text-subtitle1 text-weight-bold text-edulang-navy">
+            Riwayat Transaksi Terkini
           </div>
+          <q-btn flat round color="grey-7" icon="filter_list" size="sm" />
+        </div>
 
-          <div v-if="loading" class="text-center q-pa-xl">
-            <q-spinner-dots color="edulang-blue" size="40px" />
-          </div>
-
-          <div v-else-if="filteredRows.length === 0" class="text-center q-pa-xl">
-            <q-icon name="history" size="xl" color="grey-3" />
-            <div class="text-grey-6 q-mt-md font-medium">
-              {{
-                searchQuery ? 'Tidak ada data yang cocok.' : 'Belum ada data transaksi tercatat.'
-              }}
-            </div>
-          </div>
-
-          <q-table
-            v-else
-            :rows="filteredRows"
-            :columns="columns"
-            row-key="_id"
-            flat
-            class="edulang-table"
-            :rows-per-page-options="[10, 25, 50]"
-          >
-            <template #body-cell-packageName="props">
-              <q-td :props="props">
-                <div class="text-weight-bold text-edulang-navy">{{ props.row.packageName }}</div>
-                <div class="text-caption text-grey-5 font-mono">
-                  ID: {{ props.row._id.slice(-8) }}
+        <q-table
+          :rows="filteredPurchases"
+          :columns="columns"
+          :loading="loading"
+          row-key="_id"
+          flat
+          class="edulang-table"
+          :rows-per-page-options="[10, 25, 50]"
+          :grid="$q.screen.lt.sm"
+        >
+          <template v-slot:item="props">
+            <div class="q-pa-sm col-12">
+              <q-card flat bordered class="rounded-12 q-pa-md">
+                <div class="row justify-between items-start">
+                  <div class="text-weight-bold text-edulang-navy">{{ props.row.packageTitle }}</div>
+                  <div class="text-green-7 text-weight-bolder">
+                    {{ formatRupiah(props.row.amount) }}
+                  </div>
                 </div>
-              </q-td>
-            </template>
+                <div class="text-caption text-grey-7 q-mt-xs">{{ props.row.userName }}</div>
+                <q-separator class="q-my-sm" />
+                <div class="row justify-between items-center">
+                  <div class="text-caption text-grey-5">{{ formatDate(props.row.createdAt) }}</div>
+                  <q-chip size="xs" color="indigo-1" text-color="indigo-7" class="text-weight-bold">
+                    {{ props.row.mentorName || 'No Mentor' }}
+                  </q-chip>
+                </div>
+              </q-card>
+            </div>
+          </template>
 
-            <template #body-cell-amount="props">
-              <q-td :props="props" class="text-weight-bolder text-edulang-blue">
+          <template #body-cell-packageInfo="props">
+            <q-td :props="props">
+              <div class="text-weight-bold text-edulang-navy">{{ props.row.packageTitle }}</div>
+              <div class="text-caption text-grey-7">{{ props.row.userName }}</div>
+            </q-td>
+          </template>
+
+          <template #body-cell-mentor="props">
+            <q-td :props="props">
+              <q-chip
+                v-if="props.row.mentorName"
+                size="sm"
+                color="blue-1"
+                text-color="edulang-blue"
+                class="text-weight-bold"
+              >
+                {{ props.row.mentorName }}
+              </q-chip>
+              <span v-else class="text-grey-4 italic text-caption">Tanpa mentor</span>
+            </q-td>
+          </template>
+
+          <template #body-cell-amount="props">
+            <q-td :props="props">
+              <div class="text-weight-bolder text-edulang-navy">
                 {{ formatRupiah(props.row.amount) }}
-              </q-td>
-            </template>
+              </div>
+            </q-td>
+          </template>
 
-            <template #body-cell-status="props">
-              <q-td :props="props" class="text-center">
-                <q-badge
-                  :color="statusColor(props.row.status)"
-                  class="rounded-8 q-py-xs q-px-md text-weight-bold"
-                  unelevated
-                >
-                  {{ statusLabel(props.row.status) }}
-                </q-badge>
-              </q-td>
-            </template>
-
-            <template #body-cell-createdAt="props">
-              <q-td :props="props">
-                <div class="text-grey-8">{{ formatDate(props.row.createdAt) }}</div>
-              </q-td>
-            </template>
-          </q-table>
-        </q-card-section>
+          <template #no-data>
+            <div class="full-width row flex-center q-pa-xl text-grey-6">
+              <q-icon name="history_toggle_off" size="48px" class="q-mb-sm" />
+              <div class="full-width text-center">Belum ada data transaksi yang ditemukan.</div>
+            </div>
+          </template>
+        </q-table>
       </q-card>
     </div>
   </q-page>
@@ -166,300 +161,171 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { api } from 'src/boot/axios'
+import { date } from 'quasar'
 
-// State
 const loading = ref(true)
+const purchases = ref([])
+const totalTransactions = ref(0)
 const searchQuery = ref('')
-const searchApplied = ref('')
 
-const transactions = ref([])
-const packages = ref([])
-const mentors = ref([])
-
-// Filter Waktu (Bulan ini)
-const monthFilter = ref(new Date().getMonth() + 1)
-const yearFilter = ref(new Date().getFullYear())
-const monthNames = [
-  'Januari',
-  'Februari',
-  'Maret',
-  'April',
-  'Mei',
-  'Juni',
-  'Juli',
-  'Agustus',
-  'September',
-  'Oktober',
-  'November',
-  'Desember',
+const columns = [
+  { name: 'packageInfo', label: 'Informasi Paket & Pembeli', align: 'left', field: 'packageTitle' },
+  { name: 'mentor', label: 'Mentor', align: 'left', field: 'mentorName' },
+  { name: 'amount', label: 'Nominal', align: 'left', field: 'amount', sortable: true },
+  { name: 'date', label: 'Tanggal Transaksi', align: 'left', field: 'createdAt', sortable: true },
 ]
-const monthLabel = computed(() => `${monthNames[monthFilter.value - 1] || ''} ${yearFilter.value}`)
 
-// Summary Cards Logic
-const summary = computed(() => {
-  const list = transactions.value.filter((tx) => tx.status === 'success')
-
-  const inMonth = list.filter((tx) => {
-    const d = tx.createdAt ? new Date(tx.createdAt) : null
-    if (!d) return false
-    return d.getMonth() + 1 === monthFilter.value && d.getFullYear() === yearFilter.value
-  })
-
-  const totalTransaksi = inMonth.length
-  const pendapatan = inMonth.reduce((sum, tx) => sum + (Number(tx.amount) || 0), 0)
-
-  return {
-    totalTransaksi,
-    pendapatan,
-    pendapatanFormatted: formatRupiah(pendapatan),
-  }
+// Hitung Total Revenue dari data purchases
+const totalRevenue = computed(() => {
+  return purchases.value.reduce((sum, item) => sum + (item.amount || 0), 0)
 })
 
-// Utilities
-function formatRupiah(val) {
-  const n = Number(val) || 0
+const fetchData = async () => {
+  loading.value = true
+  try {
+    const response = await api.get('/mentors/admin/user-purchases')
+    if (response.data.success) {
+      purchases.value = response.data.purchases
+      totalTransactions.value = response.data.total
+    }
+  } catch (error) {
+    console.error('Error fetch data:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+const filteredPurchases = computed(() => {
+  const q = searchQuery.value.toLowerCase()
+  if (!q) return purchases.value
+  return purchases.value.filter(
+    (p) =>
+      p.packageTitle.toLowerCase().includes(q) ||
+      p.userName.toLowerCase().includes(q) ||
+      (p.mentorName && p.mentorName.toLowerCase().includes(q)),
+  )
+})
+
+const formatRupiah = (val) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,
-  }).format(n)
+  }).format(val || 0)
 }
 
-function formatDate(d) {
-  if (!d) return '—'
-  try {
-    return new Date(d).toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-  } catch {
-    return '—'
-  }
-}
-
-function statusLabel(s) {
-  const map = { success: 'Berhasil', pending: 'Menunggu', failed: 'Gagal', canceled: 'Dibatalkan' }
-  return map[s] || s || 'Unknown'
-}
-
-function statusColor(s) {
-  const map = { success: 'positive', pending: 'warning', failed: 'negative', canceled: 'grey' }
-  return map[s] || 'grey'
-}
-
-// Konfigurasi Kolom Tabel (Sesuai ERD Transactions)
-const columns = [
-  { name: 'packageName', label: 'Paket', field: 'packageName', align: 'left', sortable: true },
-  { name: 'emailMentor', label: 'Mentor', field: 'emailMentor', align: 'left', sortable: true },
-  { name: 'amount', label: 'Nilai Transaksi', field: 'amount', align: 'left', sortable: true },
-  { name: 'status', label: 'Status', field: 'status', align: 'center', sortable: true },
-  { name: 'createdAt', label: 'Tanggal', field: 'createdAt', align: 'left', sortable: true },
-]
-
-// Data Mapping (Relasi Transactions -> Packages -> Mentors)
-const distributionRows = computed(() => {
-  const txList = transactions.value || []
-  const pkgList = packages.value || []
-  const mentorList = mentors.value || []
-
-  // Indexing untuk performa pencarian ID
-  const mentorById = {}
-  mentorList.forEach((m) => {
-    if (m?._id) mentorById[m._id] = m
-    if (m?.id) mentorById[m.id] = m
-  })
-
-  const pkgById = {}
-  pkgList.forEach((p) => {
-    if (p?._id) pkgById[p._id] = p
-    if (p?.id) pkgById[p.id] = p
-  })
-
-  return txList.map((tx) => {
-    // 1. Cari Paket
-    // Backend mungkin mengirim object (populated) atau string ID
-    const pkgId =
-      typeof tx.package === 'object' && tx.package ? tx.package._id || tx.package.id : tx.package
-    const pkg = pkgById[pkgId] || (typeof tx.package === 'object' ? tx.package : null)
-
-    // 2. Cari Mentor
-    let mentorEmail = '—'
-    if (pkg) {
-      const mentorRef = pkg.mentor
-      if (typeof mentorRef === 'object' && mentorRef) {
-        // Jika sudah dipopulate oleh backend
-        mentorEmail = mentorRef.email || '—'
-      } else if (typeof mentorRef === 'string') {
-        // Jika hanya ID, cari di list mentors yang kita fetch
-        const m = mentorById[mentorRef]
-        if (m) mentorEmail = m.email
-      }
-    }
-
-    return {
-      _id: tx._id || tx.id,
-      packageName: pkg ? pkg.title : '(Paket Tidak Ditemukan)',
-      emailMentor: mentorEmail,
-      amount: tx.amount || 0,
-      status: tx.status || 'pending',
-      createdAt: tx.createdAt || tx.updatedAt || new Date().toISOString(),
-    }
-  })
-})
-
-// Filter Pencarian (Paket & Email Mentor)
-const filteredRows = computed(() => {
-  const q = (searchApplied.value || '').toLowerCase().trim()
-  if (!q) return distributionRows.value
-
-  return distributionRows.value.filter((r) => {
-    return (
-      (r.packageName || '').toLowerCase().includes(q) ||
-      (r.emailMentor || '').toLowerCase().includes(q)
-    )
-  })
-})
-
-function applySearch() {
-  searchApplied.value = searchQuery.value
-}
-
-// Fetch Data
-async function fetchData() {
-  loading.value = true
-  try {
-    // Menggunakan allSettled agar jika endpoint /mentors error (CORS),
-    // transaksi tetap bisa tampil (partial success).
-    const results = await Promise.allSettled([
-      api.get('/transactions'),
-      api.get('/packages'),
-      api.get('/mentors'),
-    ])
-
-    // Handle Transactions
-    if (results[0].status === 'fulfilled') {
-      const res = results[0].value
-      transactions.value = res.data?.transactions ?? res.data?.data ?? []
-    } else {
-      console.error('Gagal ambil transaksi:', results[0].reason)
-      transactions.value = []
-    }
-
-    // Handle Packages
-    if (results[1].status === 'fulfilled') {
-      const res = results[1].value
-      packages.value = res.data?.packages ?? res.data?.data ?? []
-    } else {
-      console.warn('Gagal ambil packages:', results[1].reason)
-      packages.value = []
-    }
-
-    // Handle Mentors (Sering kena CORS di dev environment)
-    if (results[2].status === 'fulfilled') {
-      const res = results[2].value
-      mentors.value = res.data?.mentors ?? res.data?.data ?? []
-    } else {
-      console.warn('Gagal ambil mentors (Cek CORS/Permission):', results[2].reason)
-      mentors.value = []
-    }
-  } catch (e) {
-    console.error('Critical Error:', e)
-  } finally {
-    loading.value = false
-  }
+const formatDate = (val) => {
+  return date.formatDate(val, 'DD MMM YYYY, HH:mm')
 }
 
 onMounted(fetchData)
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
-
-.font-outfit {
-  font-family: 'Outfit', sans-serif;
-}
-
-/* Brand Colors */
-.bg-edulang-white {
-  background-color: #f5f7fa !important;
-}
+/* Edulang Official Colors from Brand Guideline */
 .text-edulang-navy {
-  color: #003387 !important;
+  color: #003387;
+}
+.text-edulang-blue {
+  color: #0089ff;
 }
 .bg-edulang-navy {
-  background-color: #003387 !important;
+  background-color: #003387;
 }
 .bg-edulang-blue {
-  background-color: #0089ff !important;
-}
-.edulang-blue-light {
-  background-color: rgba(0, 137, 255, 0.1) !important;
+  background-color: #0089ff;
 }
 .bg-edulang-yellow {
-  background-color: #ffc42c !important;
+  background-color: #ffc42c;
 }
-.edulang-yellow-dark {
-  color: #b48a1d !important;
+.bg-edulang-background {
+  background-color: #f5f7fa;
 }
 
-/* Components Style */
+/* Design Elements */
+.header-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
+  border-bottom: 1px solid #e2e8f0;
+}
+
 .max-width-container {
   max-width: 1200px;
-  margin: 0 auto;
 }
+
 .rounded-24 {
   border-radius: 24px;
 }
 .rounded-12 {
   border-radius: 12px;
 }
-.rounded-8 {
-  border-radius: 8px;
-}
 
 .shadow-brand {
-  box-shadow: 0 15px 35px -5px rgba(0, 51, 135, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0, 51, 135, 0.06);
+}
+
+.icon-box {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.font-outfit {
+  font-family:
+    'Outfit',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+
+.letter-spacing-1 {
+  letter-spacing: 1px;
 }
 
 .border-subtle {
-  border: 1px solid rgba(0, 51, 135, 0.05);
+  border: 1px solid #e2e8f0;
 }
-.line-height-1 {
-  line-height: 1;
+
+.stat-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid transparent;
 }
-.font-mono {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 10px;
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  border-color: #0089ff;
+  box-shadow: 0 12px 30px rgba(0, 137, 255, 0.12);
 }
 
 /* Table Styling */
 .edulang-table :deep(.q-table__th) {
   font-weight: 800;
-  color: #616161;
-  background-color: #fafafa;
+  color: #64748b;
   text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.05em;
+  font-size: 12px;
+  padding: 16px;
+  background-color: #f8fafc;
 }
 
-.stat-card {
+.edulang-table :deep(.q-table__td) {
+  padding: 16px;
+}
+
+.search-input {
   transition: all 0.3s ease;
 }
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px -10px rgba(0, 51, 135, 0.15) !important;
+
+.search-input :deep(.q-field__control):before {
+  border-color: #e2e8f0;
 }
 
-/* Responsivitas */
+/* Mobile Adjustments */
 @media (max-width: 600px) {
-  .text-h4 {
-    font-size: 1.75rem;
-  }
-  .search-input {
-    width: 100% !important;
+  .icon-box {
+    width: 48px;
+    height: 48px;
   }
   .stat-card .text-h4 {
     font-size: 1.5rem;

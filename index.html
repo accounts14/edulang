@@ -2,8 +2,56 @@
 <html>
   <head>
     <!-- Disable Devtool -->
+    <script src="https://cdn.jsdelivr.net/npm/disable-devtool@latest/disable-devtool.min.js"></script>
+    <script>
+      DisableDevtool({
+        contextMenu: true, // Blok right click
+        copyLink: true, // Blok copy
+        shortcutKeys: true, // Blok F12, Ctrl+I
+        ondevtoolopen: () => (document.body.innerHTML = '<h1>Access Denied!</h1>'),
+      })
+    </script>
 
-    <title>Language Course, Study Abroad & Global Career | Edulang</title>
+    <!-- Disable Zoom -->
+    <meta name="viewport" content="width=device-width" />
+    <style>
+      * {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        user-select: none !important;
+        -webkit-touch-callout: none !important;
+      }
+      img {
+        pointer-events: none;
+      }
+
+      body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Google Translate Overrides */
+      .goog-te-gadget .goog-te-combo,
+      .goog-te-gadget select {
+        -webkit-user-select: auto !important;
+        -moz-user-select: auto !important;
+        user-select: auto !important;
+        pointer-events: auto !important;
+      }
+      .goog-te-banner-frame.skiptranslate,
+      .goog-te-gadget .goog-te-menu-frame .goog-te-menu2-item-selected {
+        display: none !important;
+      }
+      body {
+        top: 0 !important;
+      }
+    </style>
+
+    <title>Language Video Course | Edulang</title>
 
     <meta charset="utf-8" />
     <meta
@@ -26,6 +74,24 @@
     <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png" />
     <link rel="icon" type="image/ico" href="favicon-edulang.ico" />
+
+    <!-- Google Translate Widget -->
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'id', // Default: Indonesia
+            autoDisplay: false, // Nonaktifkan popup auto
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          },
+          'google_translate_element',
+        )
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
   </head>
   <body>
     <!-- quasar:entry-point -->

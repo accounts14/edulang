@@ -43,16 +43,19 @@
           <div class="circle-container">
             <div class="circle-bg">
               <img
-                src="~assets/Edulang.png"
+                src="~assets/landing/character-hero.png"
                 class="woman-img"
                 alt="Mentor Edulang"
-                style="filter: brightness(0) invert(1)"
               />
             </div>
 
             <div class="floating-cert cert-jlpt">
               <div class="cert-pill">
-                <div class="cert-logo bg-navy">JLPT</div>
+                <img
+                  class="cert-logo"
+                  src="https://easc.osu.edu/sites/default/files/jlpt-logo6-%20web.png"
+                  alt="JLPT"
+                />
                 <div class="cert-text">
                   <div class="c-title">JLPT</div>
                   <div class="c-sub">International Certification</div>
@@ -62,7 +65,11 @@
 
             <div class="floating-cert cert-ielts">
               <div class="cert-pill">
-                <div class="cert-logo bg-blue">IELTS</div>
+                <img
+                  class="cert-logo"
+                  src="https://cdn.brandfetch.io/idYQtq3VI6/w/800/h/800/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1735325202999"
+                  alt="IELTS"
+                />
                 <div class="cert-text">
                   <div class="c-title">IELTS</div>
                   <div class="c-sub">International Certification</div>
@@ -72,7 +79,11 @@
 
             <div class="floating-cert cert-hsk">
               <div class="cert-pill">
-                <div class="cert-logo bg-amber">HSK</div>
+                <img
+                  class="cert-logo"
+                  src="https://www.goopenchinese.com/wp-content/uploads/2020/01/HSK-logo-1024x666.jpg"
+                  alt="HSK"
+                />
                 <div class="cert-text">
                   <div class="c-title">HSK</div>
                   <div class="c-sub">International Certification</div>
@@ -97,13 +108,13 @@ const features = [
 <style scoped>
 .feature-item {
   width: 100%;
-  max-width: 500px; /* Jaga agar tidak terlalu lebar di desktop */
+  max-width: 500px;
 }
 
 .text-feature {
   color: #1e293b;
   font-size: 1.1rem;
-  line-height: 1.4; /* Jaga kerapatan antar baris teks */
+  line-height: 1.4;
 }
 
 .belajar-baru-section {
@@ -157,7 +168,6 @@ const features = [
   font-weight: 600;
 }
 
-/* MODIFIKASI WRAPPER LINGKARAN */
 .circle-container {
   position: relative;
   width: 450px;
@@ -170,21 +180,19 @@ const features = [
   background: linear-gradient(135deg, #0089ff 0%, #7dc4ff 100%);
   border-radius: 50%;
   position: relative;
-  overflow: hidden; /* Ini yang memotong bagian bawah gambar mengikuti lingkaran */
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .woman-img {
-  height: auto;
-  width: 100%; /* Sesuaikan persentase sesuai keinginan */
-  z-index: 2;
+  height: 100%;
+  width: auto;
   object-fit: contain;
   transform: translate(0, 0);
 }
 
-/* Floating Card Styling (Tetap sama, pastikan z-index tinggi) */
 .floating-cert {
   position: absolute;
   z-index: 10;
@@ -201,16 +209,12 @@ const features = [
   gap: 12px;
 }
 
+/* Logo pakai image */
 .cert-logo {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 800;
-  font-size: 10px;
+  object-fit: contain;
 }
 
 .c-title {
@@ -239,16 +243,6 @@ const features = [
   bottom: 20%;
   right: -10%;
   animation-delay: 2s;
-}
-
-.bg-navy {
-  background-color: #002d72;
-}
-.bg-blue {
-  background-color: #0089ff;
-}
-.bg-amber {
-  background-color: #ffb100;
 }
 
 @keyframes float {
@@ -281,7 +275,6 @@ const features = [
     top: 75%;
     left: -10%;
   }
-  /* Geser HSK lebih ke bawah/kanan agar tidak berdempetan */
   .cert-hsk {
     bottom: 10%;
     right: -5%;
@@ -289,7 +282,7 @@ const features = [
 }
 
 /* ========================================
-   🎯 MOBILE (<768px) - FULL RESPONSIVE
+   🎯 MOBILE (<768px) - BUBBLE KECIL & HANYA JUDUL
    ======================================== */
 @media (max-width: 767px) {
   .belajar-baru-section {
@@ -300,7 +293,6 @@ const features = [
     padding: 0 16px;
   }
 
-  /* Content full width + centered */
   .col-12.col-md-6:nth-child(1) {
     order: 2;
     width: 100%;
@@ -308,7 +300,6 @@ const features = [
     text-align: center;
   }
 
-  /* Circle image dibawah */
   .col-12.col-md-6:nth-child(2) {
     order: 1;
     width: 100%;
@@ -339,10 +330,9 @@ const features = [
   }
 
   .woman-img {
-    height: 95%;
+    height: 100%;
   }
 
-  /* Buttons stack vertical */
   .action-area {
     flex-direction: column;
     align-items: center;
@@ -353,40 +343,57 @@ const features = [
     width: 100%;
     max-width: 280px;
   }
+
+  /* 🎯 BUBBLE KECIL - HANYA JUDUL */
+  .cert-pill {
+    padding: 6px 10px 6px 6px;
+    border-radius: 8px;
+    gap: 8px;
+  }
+
+  .cert-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+  }
+
+  .c-title {
+    font-size: 11px;
+  }
+
+  /* Sembunyikan "International Certification" */
+  .c-sub {
+    display: none;
+  }
+
   .cert-jlpt {
-    top: 0%;
-    right: -10%;
-    transform: scale(0.9); /* Sedikit diperkecil agar tidak penuh */
+    top: 5%;
+    right: -5%;
   }
   .cert-ielts {
-    top: 70%;
-    left: -15%;
-    transform: scale(0.9);
+    top: 65%;
+    left: -8%;
   }
-  /* HSK diletakkan lebih ekstrem ke bawah agar clear dari elemen lain */
   .cert-hsk {
-    bottom: 5%;
-    right: -20%;
-    transform: scale(0.9);
+    bottom: 15%;
+    right: -8%;
   }
+
   .feature-list {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Pastikan list rata kiri di mobile */
+    align-items: flex-start;
     text-align: left;
     margin: 0 auto;
-    width: fit-content; /* Membantu penempatan di tengah secara visual tapi konten rata kiri */
+    width: fit-content;
   }
 
   .text-feature {
     font-size: 1rem;
-    text-align: left; /* Paksa teks rata kiri meski parent-nya center */
+    text-align: left;
   }
 }
 
-/* ========================================
-   ✅ IPAD (768px-1023px) - PERFECT SPLIT
-   ======================================== */
 @media (min-width: 768px) and (max-width: 1023px) {
   .container {
     padding: 0 24px;
@@ -397,7 +404,6 @@ const features = [
     padding: 80px 0;
   }
 
-  /* iPad: 50/50 split */
   .col-12.col-md-6 {
     flex: 0 0 50%;
     max-width: 50%;
@@ -417,12 +423,10 @@ const features = [
     height: 380px;
   }
 
-  /* Feature list: 1 kolom iPad */
   .feature-list {
     max-width: 400px;
   }
 
-  /* Buttons horizontal iPad */
   .action-area {
     justify-content: flex-start;
   }
@@ -433,9 +437,6 @@ const features = [
   }
 }
 
-/* ========================================
-   ✅ IPAD PORTRAIT (768x1024) FIX
-   ======================================== */
 @media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
   .belajar-baru-section {
     padding: 70px 0;
@@ -447,9 +448,6 @@ const features = [
   }
 }
 
-/* ========================================
-   ✅ DESKTOP SMALL (1024px-1365px)
-   ======================================== */
 @media (min-width: 1024px) and (max-width: 1365px) {
   .container {
     max-width: 100%;
@@ -457,9 +455,6 @@ const features = [
   }
 }
 
-/* ========================================
-   ✅ DESKTOP LARGE (≥1366px)
-   ======================================== */
 @media (min-width: 1366px) {
   .container {
     max-width: 1400px;

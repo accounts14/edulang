@@ -1,104 +1,96 @@
 <template>
-  <q-page class="window-height">
-    <!-- Full Form Centered - NO IMAGE -->
-    <div class="auth-right full-width flex flex-center column q-pa-xl relative-position">
-      <q-btn
-        flat
-        round
-        dense
-        icon="arrow_back"
-        class="auth-back-btn"
-        aria-label="Kembali"
-        @click="goBack"
-      />
+  <q-page class="auth-page-container flex flex-center">
+    <q-btn flat round dense icon="arrow_back" class="auth-back-btn shadow-sm" @click="goBack">
+      <q-tooltip class="bg-edulang-navy">Kembali ke Dashboard</q-tooltip>
+    </q-btn>
 
-      <transition name="fade" mode="out-in">
-        <!-- Form Register -->
-        <div v-if="!isRegisterSuccess" key="form-register" class="auth-form-wrap">
-          <div class="column items-center q-mb-lg">
-            <!-- Logo seperti RegisterPage -->
-            <div class="auth-logo-circle q-mb-md">
-              <img src="~assets/LogoWhite.png" alt="Edulang" class="auth-logo-img" />
+    <div class="auth-card-wrapper q-pa-md">
+      <transition name="auth-fade" mode="out-in">
+        <div v-if="!isRegisterSuccess" key="form" class="auth-card glass-effect q-pa-xl">
+          <div class="column items-center q-mb-xl text-center">
+            <div class="logo-container q-mb-lg shadow-brand">
+              <img src="~assets/LogoWhite.png" alt="Edulang" class="logo-img" />
             </div>
-            <h1 class="text-h4 text-weight-bolder q-ma-none text-dark">Daftar Sebagai Mentor</h1>
-            <p class="text-grey-7 text-center q-mt-sm">
-              Lengkapi form untuk mulai mengajar di Edulang
+
+            <h1 class="text-h4 text-weight-bolder text-edulang-navy font-outfit q-ma-none">
+              Daftar <span class="text-edulang-blue">Mentor</span>
+            </h1>
+            <p class="text-subtitle1 text-grey-7 q-mt-sm">
+              Bergabunglah bersama komunitas pendamping pendidikan terbaik.
             </p>
           </div>
 
-          <q-form @submit="handleRegister" class="q-gutter-y-md">
-            <div class="field-wrapper">
-              <label class="text-weight-bold text-caption q-ml-sm text-grey-9">
-                Nama Lengkap Mentor:
-              </label>
+          <q-form @submit="handleRegister" class="q-gutter-y-lg">
+            <div class="field-container">
+              <label class="input-label">Nama Lengkap Mentor</label>
               <q-input
                 v-model="form.name"
-                placeholder="Masukkan nama lengkap"
-                filled
+                placeholder="Contoh: Budi Santoso, M.Pd"
+                outlined
                 rounded
                 dense
-                borderless
-                bg-color="grey-2"
-                class="q-mt-xs auth-input"
+                bg-color="white"
+                class="edulang-input"
                 :rules="[
                   (v) => !!v || 'Nama wajib diisi',
                   (v) => v.length >= 3 || 'Minimal 3 karakter',
                 ]"
               >
                 <template #prepend>
-                  <q-icon name="person_outline" size="xs" color="grey-7" />
+                  <q-icon name="person" color="edulang-blue" size="20px" />
                 </template>
               </q-input>
             </div>
 
-            <div class="field-wrapper">
-              <label class="text-weight-bold text-caption q-ml-sm text-grey-9">
-                Email Mentor:
-              </label>
+            <div class="field-container">
+              <label class="input-label">Email Resmi Mentor</label>
               <q-input
                 v-model="form.email"
                 type="email"
-                placeholder="mentor@edulang.com"
-                filled
+                placeholder="mentor@edulang.id"
+                outlined
                 rounded
                 dense
-                borderless
-                bg-color="grey-2"
-                class="q-mt-xs auth-input"
+                bg-color="white"
+                class="edulang-input"
                 :rules="[
                   (v) => !!v || 'Email wajib diisi',
                   (v) => /.+@.+\..+/.test(v) || 'Email tidak valid',
                 ]"
               >
                 <template #prepend>
-                  <q-icon name="mail_outline" size="xs" color="grey-7" />
+                  <q-icon name="alternate_email" color="edulang-blue" size="20px" />
                 </template>
               </q-input>
             </div>
 
-            <div class="field-wrapper">
-              <label class="text-weight-bold text-caption q-ml-sm text-grey-9"> Password: </label>
+            <div class="field-container">
+              <label class="input-label">Keamanan Akun (Password)</label>
               <q-input
                 v-model="form.password"
                 :type="isPwd ? 'password' : 'text'"
-                placeholder="Minimal 6 karakter"
-                filled
+                placeholder="Minimal 6 karakter unik"
+                outlined
                 rounded
                 dense
-                borderless
-                bg-color="grey-2"
-                class="q-mt-xs auth-input"
+                bg-color="white"
+                class="edulang-input"
                 :rules="[
                   (v) => !!v || 'Password wajib diisi',
                   (v) => v.length >= 6 || 'Minimal 6 karakter',
                 ]"
               >
+                <template #prepend>
+                  <q-icon name="lock" color="edulang-blue" size="20px" />
+                </template>
                 <template #append>
-                  <q-icon
-                    :name="isPwd ? 'visibility_off' : 'visibility'"
-                    size="xs"
-                    class="cursor-pointer"
-                    color="grey-7"
+                  <q-btn
+                    flat
+                    round
+                    dense
+                    :icon="isPwd ? 'visibility_off' : 'visibility'"
+                    color="grey-6"
+                    size="sm"
                     @click="isPwd = !isPwd"
                   />
                 </template>
@@ -106,33 +98,42 @@
             </div>
 
             <q-btn
-              label="Daftar Sebagai Mentor"
               type="submit"
-              class="auth-primary-btn full-width q-py-md text-weight-bold q-mt-lg"
+              label="Daftar Sekarang"
+              class="auth-main-btn full-width q-py-md text-weight-bolder"
               :loading="loading"
               unelevated
+              rounded
             />
           </q-form>
         </div>
 
-        <!-- Success Message -->
         <div
           v-else
-          key="success-message"
-          class="auth-form-wrap flex flex-center column text-center animate-pop"
+          key="success"
+          class="auth-card glass-effect q-pa-xl flex flex-center column text-center"
         >
-          <div class="bg-green-1 q-pa-lg rounded-borders circle-icon q-mb-lg">
-            <q-icon name="task_alt" color="green-6" size="80px" />
+          <div class="success-animation-box q-mb-xl">
+            <div class="success-circle">
+              <q-icon name="check" color="white" size="64px" />
+            </div>
+            <div class="confetti-placeholder"></div>
           </div>
-          <h2 class="text-h4 text-weight-bold text-dark q-ma-none">Berhasil!</h2>
-          <p class="text-grey-7 q-mt-md">
-            Akun mentor <b>{{ form.email }}</b> telah dibuat.
+
+          <h2 class="text-h3 text-weight-bolder text-edulang-navy font-outfit q-ma-none">
+            Selamat!
+          </h2>
+          <p class="text-subtitle1 text-grey-7 q-mt-md">
+            Akun mentor untuk <b>{{ form.email }}</b> berhasil didaftarkan. Admin akan meninjau
+            profil Anda segera.
           </p>
+
           <q-btn
             unelevated
             rounded
-            class="auth-primary-btn full-width q-py-md q-mt-xl"
-            label="Kembali ke Daftar Mentor"
+            class="auth-main-btn full-width q-py-md q-mt-xl text-weight-bold"
+            label="Lihat Daftar Mentor"
+            icon-right="chevron_right"
             @click="goBackSuccess"
           />
         </div>
@@ -145,7 +146,7 @@
 import { ref } from 'vue'
 import { api } from 'boot/axios'
 import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router' // ✅ FIX: Import dari vue-router, bukan quasar
+import { useRouter } from 'vue-router'
 
 const $q = useQuasar()
 const router = useRouter()
@@ -159,37 +160,27 @@ const form = ref({
   password: '',
 })
 
-// ✅ Arrow back → Admin Dashboard
-const goBack = () => {
-  router.push('/admin/dashboard')
-}
-
-// ✅ Success button → Admin Mentor List
-const goBackSuccess = () => {
-  router.push('/admin/mentor')
-}
+const goBack = () => router.push('/admin/dashboard')
+const goBackSuccess = () => router.push('/admin/mentor')
 
 const handleRegister = async () => {
   loading.value = true
   try {
-    const response = await api.post('/mentors', form.value)
-    console.log('Mentor berhasil dibuat:', response.data)
+    await api.post('/mentors', form.value)
     $q.notify({
       type: 'positive',
-      message: 'Pendaftaran mentor berhasil! Menunggu persetujuan admin.',
+      icon: 'check_circle',
+      message: 'Registrasi Berhasil! Selamat datang di Edulang.',
+      position: 'top',
     })
     isRegisterSuccess.value = true
-    form.value = { name: '', email: '', password: '' }
   } catch (error) {
-    console.error('Error register mentor:', error)
     const errorMessage =
-      error.response?.data?.message ||
-      error.response?.data?.error ||
-      'Gagal mendaftar mentor, silakan coba lagi.'
+      error.response?.data?.message || 'Gagal mendaftar, email mungkin sudah digunakan.'
     $q.notify({
       type: 'negative',
       message: errorMessage,
-      icon: 'error',
+      icon: 'error_outline',
     })
   } finally {
     loading.value = false
@@ -198,104 +189,168 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-.window-height {
-  min-height: 100vh;
+/* Edulang Official Palette */
+.text-edulang-navy {
+  color: #003387;
+}
+.text-edulang-blue {
+  color: #0089ff;
+}
+.bg-edulang-navy {
+  background-color: #003387;
+}
+.bg-edulang-blue {
+  background-color: #0089ff;
 }
 
-.auth-right {
+/* Container & Layout */
+.auth-page-container {
   min-height: 100vh;
-  background: var(--edulang-white, #f5f7fa);
-  position: relative;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+  background-attachment: fixed;
 }
 
+.auth-card-wrapper {
+  width: 100%;
+  max-width: 500px;
+}
+
+.auth-card {
+  border-radius: 32px;
+  box-shadow: 0 20px 50px rgba(0, 51, 135, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.glass-effect {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Header & Components */
 .auth-back-btn {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  color: var(--edulang-black, #2d2d2d) !important;
-  z-index: 10;
+  top: 24px;
+  left: 24px;
+  background: white;
+  color: #003387;
+  transition: all 0.3s ease;
 }
 
-.auth-form-wrap {
-  width: 100%;
-  max-width: 420px;
+.auth-back-btn:hover {
+  background: #003387;
+  color: white;
 }
 
-.auth-logo-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: var(--edulang-navy, #003387);
+.logo-container {
+  width: 84px;
+  height: 84px;
+  background: #003387;
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  box-sizing: border-box;
+  padding: 14px;
 }
 
-.auth-logo-img {
+.logo-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.auth-primary-btn {
-  background: var(--edulang-navy, #003387) !important;
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Form Elements */
+.input-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #003387;
+  margin-bottom: 6px;
+  margin-left: 12px;
+}
+
+.edulang-input :deep(.q-field__control) {
+  transition: all 0.3s ease;
+  border-radius: 16px !important;
+}
+
+.edulang-input :deep(.q-field__control):hover {
+  border-color: #0089ff;
+}
+
+.auth-main-btn {
+  background: #003387 !important;
   color: white !important;
-  border-radius: 12px !important;
-  font-size: 1rem !important;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
 }
 
-.field-wrapper {
-  width: 100%;
+.auth-main-btn:hover {
+  background: #0089ff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 137, 255, 0.3);
 }
 
-:deep(.auth-input .q-field--filled .q-field__control) {
-  background: #eef0f3 !important;
-  border-radius: 12px !important;
-  padding-left: 12px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition:
-    opacity 0.4s ease,
-    transform 0.4s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.circle-icon {
-  border-radius: 50%;
-  animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* Success State Styles */
+.success-circle {
   width: 120px;
   height: 120px;
+  background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  box-shadow: 0 10px 25px rgba(0, 200, 83, 0.3);
+  animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes popIn {
-  0% {
+/* Transitions */
+.auth-fade-enter-active,
+.auth-fade-leave-active {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+.auth-fade-enter-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.auth-fade-leave-to {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+@keyframes scaleIn {
+  from {
     transform: scale(0);
-    opacity: 0;
   }
-  100% {
+  to {
     transform: scale(1);
-    opacity: 1;
   }
 }
 
-.animate-pop {
-  animation: popIn 0.6s ease-out;
-}
-
-.rounded-borders {
-  border-radius: 10px;
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 32px 24px !important;
+    border-radius: 0;
+    height: 100vh;
+    max-width: none;
+  }
+  .auth-page-container {
+    background: white;
+  }
+  .logo-container {
+    width: 64px;
+    height: 64px;
+  }
+  .text-h4 {
+    font-size: 1.75rem;
+  }
 }
 </style>

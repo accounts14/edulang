@@ -50,6 +50,21 @@ const routes = [
         name: 'ContactPage',
         component: () => import('pages/ContactPage.vue'),
       },
+      {
+        path: 'certificate/verify',
+        name: 'VerifyCertificate',
+        component: () => import('pages/VerifyCertPage.vue'), // Halaman Input
+      },
+      {
+        path: 'certificate/status',
+        name: 'CertificateStatus',
+        component: () => import('pages/CertStatusPage.vue'), // Halaman Hasil (Scan QR langsung ke sini)
+      },
+      {
+        path: '/about',
+        name: 'TheStoryBehind',
+        component: () => import('pages/TheStoryBehind.vue'),
+      },
     ],
   },
 
@@ -189,12 +204,6 @@ const routes = [
         path: 'pendaftar',
         name: 'AdminTerdaftar',
         component: () => import('pages/admin/TerdaftarPage.vue'),
-        meta: { requiresAuth: true, allowedRoles: ['admin'] },
-      },
-      {
-        path: 'pendaftar/:id/edit',
-        name: 'AdminTerdaftarEdit',
-        component: () => import('pages/admin/EditRegisteredUserPage.vue'),
         meta: { requiresAuth: true, allowedRoles: ['admin'] },
       },
       {

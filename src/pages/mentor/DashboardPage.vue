@@ -48,7 +48,7 @@
     <div v-else class="row q-col-gutter-xl">
       <div v-for="pkg in packages" :key="pkg._id || pkg.id" class="col-12 col-sm-6 col-lg-4">
         <q-card
-          class="package-card no-shadow border-light rounded-borders-20 cursor-pointer"
+          class="package-card no-shadow border-light rounded-borders-20 cursor-pointer column full-height"
           @click="goToPackage(pkg)"
         >
           <q-img
@@ -69,7 +69,7 @@
             </div>
           </q-img>
 
-          <q-card-section class="q-pa-lg">
+          <q-card-section class="q-pa-lg col">
             <div class="row justify-between items-start no-wrap q-mb-xs">
               <div class="text-edulang-navy text-weight-bolder text-h6 line-clamp-1">
                 {{ pkg.title || 'Kelas Tanpa Judul' }}
@@ -353,6 +353,7 @@ onMounted(() => {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  -webkit-line-clamp: 1; /* Penting untuk memastikan judul hanya 1 baris */
 }
 
 /* Badge styling */

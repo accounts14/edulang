@@ -1,181 +1,311 @@
 <template>
-  <q-page class="q-pa-xl bg-accent">
-    <div class="q-mb-xl">
-      <div class="text-h4 text-weight-bolder text-indigo-10">Kelola Akun Pengguna Terdaftar</div>
-      <div class="text-subtitle1 text-grey-7">
-        Tempat Pengelolaan Akun Pengguna yang terdaftar Course
+  <q-page class="bg-edulang-background q-pb-xl">
+    <div class="header-gradient q-pa-md q-pa-sm-xl q-mb-lg border-bottom">
+      <div class="max-width-container mx-auto">
+        <div class="row items-center justify-between q-col-gutter-md">
+          <div class="col-12 col-md-7">
+            <h1
+              class="text-h4 text-sm-h3 text-weight-bolder text-edulang-navy font-outfit q-ma-none"
+            >
+              Akses <span class="text-edulang-blue">Kursus</span>
+            </h1>
+            <p class="text-subtitle1 text-grey-7 q-mt-sm">
+              Kelola dan pantau hak akses materi pengguna berdasarkan transaksi.
+            </p>
+          </div>
+
+          <div class="col-12 col-md-5">
+            <div class="row q-col-gutter-sm">
+              <div class="col">
+                <q-input
+                  v-model="searchUser"
+                  dense
+                  outlined
+                  rounded
+                  placeholder="Cari nama atau email..."
+                  bg-color="white"
+                  class="search-input shadow-sm"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="search" color="edulang-blue" />
+                  </template>
+                </q-input>
+              </div>
+              <div class="col-auto">
+                <q-btn
+                  unelevated
+                  rounded
+                  color="edulang-yellow"
+                  text-color="edulang-navy"
+                  icon="person_search"
+                  class="text-weight-bold full-height px-md"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="row items-center q-mb-md">
-      <q-input
-        v-model="searchUser"
-        dense
-        outlined
-        placeholder="Cari User"
-        bg-color="white"
-        clearable
-        class="search-input"
-        style="min-width: 280px"
-        @keyup.enter="applySearch"
-      />
-      <q-btn
-        unelevated
-        color="amber-8"
-        no-caps
-        label="Search"
-        icon="search"
-        class="q-ml-sm"
-        @click="applySearch"
-      />
+    <div class="max-width-container mx-auto q-px-md">
+      <q-card flat class="rounded-24 shadow-brand bg-white border-subtle overflow-hidden">
+        <div class="bg-edulang-navy" style="height: 6px"></div>
+
+        <div class="q-pa-md q-pa-sm-lg border-bottom row items-center justify-between">
+          <div class="text-h6 text-weight-bolder text-edulang-navy font-outfit">
+            Data Pengguna & Kursus Terdaftar
+          </div>
+          <q-btn
+            flat
+            round
+            icon="sync"
+            color="edulang-blue"
+            @click="fetchAdminData"
+            :loading="loading"
+          />
+        </div>
+
+        <q-table
+          :rows="filteredUsers"
+          :columns="columns"
+          row-key="userEmail"
+          :loading="loading"
+          flat
+          class="edulang-table"
+          :rows-per-page-options="[10, 25, 50]"
+          :grid="$q.screen.lt.md"
+        >
+          <template v-slot:loading>
+            <q-inner-loading showing color="edulang-blue" />
+          </template>
+
+          <template v-slot:item="props">
+            <div class="q-pa-sm col-12 col-sm-6">
+              <q-card flat bordered class="rounded-16 q-pa-md">
+                <div class="row items-center q-mb-md">
+                  <q-avatar
+                    color="blue-1"
+                    text-color="edulang-blue"
+                    font-outfit
+                    class="text-weight-bold"
+                  >
+                    {{ props.row.userName.charAt(0) }}
+                  </q-avatar>
+                  <div class="q-ml-md">
+                    <div class="text-weight-bold text-edulang-navy">{{ props.row.userName }}</div>
+                    <div class="text-caption text-grey-6">{{ props.row.userEmail }}</div>
+                  </div>
+                </div>
+
+                <div class="q-mb-sm">
+                  <div
+                    class="text-caption text-grey-5 text-uppercase text-weight-bold letter-spacing-1 q-mb-xs"
+                  >
+                    Kursus Aktif
+                  </div>
+                  <div class="row q-gutter-xs">
+                    <q-chip
+                      v-for="(course, i) in props.row.courses"
+                      :key="i"
+                      size="sm"
+                      color="edulang-yellow"
+                      text-color="edulang-navy"
+                      class="text-weight-bold"
+                    >
+                      {{ course }}
+                    </q-chip>
+                  </div>
+                </div>
+
+                <q-separator class="q-my-sm opacity-50" />
+
+                <div class="row items-center text-caption text-grey-7">
+                  <q-icon name="record_voice_over" size="16px" class="q-mr-xs" />
+                  Mentor: {{ props.row.mentors.join(', ') || '—' }}
+                </div>
+              </q-card>
+            </div>
+          </template>
+
+          <template v-slot:body-cell-nama="props">
+            <q-td :props="props">
+              <div class="text-weight-bold text-edulang-navy">{{ props.row.userName }}</div>
+              <div class="text-caption text-grey-6">{{ props.row.userEmail }}</div>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-terdaftarKelas="props">
+            <q-td :props="props">
+              <div class="row q-gutter-xs" style="max-width: 400px">
+                <q-chip
+                  v-for="(course, index) in props.row.courses"
+                  :key="index"
+                  size="sm"
+                  color="blue-1"
+                  text-color="edulang-blue"
+                  class="text-weight-bold"
+                >
+                  {{ course }}
+                </q-chip>
+                <div v-if="!props.row.courses.length" class="text-grey-4 italic">—</div>
+              </div>
+            </q-td>
+          </template>
+
+          <template v-slot:body-cell-mentor="props">
+            <q-td :props="props">
+              <div class="row items-center text-grey-8">
+                <q-icon name="star" color="edulang-yellow" size="xs" class="q-mr-xs" />
+                {{ props.row.mentors.join(', ') || '—' }}
+              </div>
+            </q-td>
+          </template>
+        </q-table>
+      </q-card>
     </div>
-
-    <q-card flat class="rounded-borders-lg shadow-1 q-pa-lg bg-white">
-      <div class="text-h6 text-weight-bolder q-mb-md">User</div>
-
-      <div v-if="loading" class="text-center q-pa-xl">
-        <q-spinner-dots color="primary" size="40px" />
-      </div>
-
-      <div v-else-if="users.length === 0" class="text-center q-pa-xl text-grey-7">
-        Belum ada data pengguna.
-      </div>
-
-      <q-table
-        v-else
-        :rows="filteredUsers"
-        :columns="columns"
-        row-key="_id"
-        flat
-        bordered
-        class="rounded-borders"
-        :rows-per-page-options="[10, 25, 50]"
-      >
-        <template #body-cell-nama="props">
-          <q-td>{{ props.row.name || '-' }}</q-td>
-        </template>
-        <template #body-cell-email="props">
-          <q-td>{{ props.row.email || '-' }}</q-td>
-        </template>
-        <template #body-cell-terdaftarKelas="props">
-          <q-td>{{ getRegisteredCourseLabel(props.row) }}</q-td>
-        </template>
-        <template #body-cell-mentor="props">
-          <q-td>{{ getMentorLabel(props.row) }}</q-td>
-        </template>
-      </q-table>
-    </q-card>
   </q-page>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { api } from 'src/boot/axios'
+import { useQuasar } from 'quasar'
 
-const loading = ref(true)
-const users = ref([])
+const $q = useQuasar()
+const loading = ref(false)
+const groupedData = ref([])
 const searchUser = ref('')
-const userCourseMap = ref({}) // { userId: { count, mentorName, courseNames } }
 
 const columns = [
-  { name: 'nama', label: 'Nama', field: 'name', align: 'left' },
-  { name: 'email', label: 'Email', field: 'email', align: 'left' },
-  { name: 'terdaftarKelas', label: 'Terdaftar Kelas', align: 'left' },
-  { name: 'mentor', label: 'Mentor', align: 'left' },
+  { name: 'nama', label: 'Informasi Pengguna', align: 'left', field: 'userName', sortable: true },
+  { name: 'terdaftarKelas', label: 'Kursus Aktif', align: 'left' },
+  { name: 'mentor', label: 'Pendamping (Mentor)', align: 'left' },
 ]
 
-const filteredUsers = computed(() => {
-  const q = (searchUser.value || '').trim().toLowerCase()
-  if (!q) return users.value
-  return users.value.filter((u) => {
-    const name = (u.name || '').toLowerCase()
-    const email = (u.email || '').toLowerCase()
-    return name.includes(q) || email.includes(q)
-  })
-})
-
-function getRegisteredCourseLabel(row) {
-  const id = row._id || row.id
-  const info = userCourseMap.value[id]
-  if (!info || info.count === 0) return '—'
-  if (info.courseNames && info.courseNames.length > 0) {
-    return info.courseNames.slice(0, 3).join(', ') + (info.courseNames.length > 3 ? '...' : '')
-  }
-  return `${info.count} course`
-}
-
-function getMentorLabel(row) {
-  const id = row._id || row.id
-  const info = userCourseMap.value[id]
-  return info && info.mentorName ? info.mentorName : '—'
-}
-
-function applySearch() {
-  // Filter is reactive via filteredUsers
-}
-
-async function fetchUsers() {
+async function fetchAdminData() {
+  loading.value = true
   try {
-    loading.value = true
-    const res = await api.get('/users')
-    const data = res.data || {}
-    const list = data.users || data.data || []
-    const all = Array.isArray(list) ? list : []
-    users.value = all.filter((u) => (u.role || '').toLowerCase() === 'user')
+    const res = await api.get('/mentors/admin/user-purchases')
+    const purchases = res.data.purchases || []
+
+    const map = {}
+    purchases.forEach((item) => {
+      const email = item.userEmail
+      if (!map[email]) {
+        map[email] = {
+          userName: item.userName || 'No Name',
+          userEmail: email,
+          courses: [],
+          mentors: [],
+        }
+      }
+      if (item.packageTitle && !map[email].courses.includes(item.packageTitle)) {
+        map[email].courses.push(item.packageTitle)
+      }
+      if (item.mentorName && !map[email].mentors.includes(item.mentorName)) {
+        map[email].mentors.push(item.mentorName)
+      }
+    })
+    groupedData.value = Object.values(map)
   } catch (err) {
-    console.warn('[Admin User] GET /users tidak tersedia atau error', err?.response?.status)
-    users.value = []
+    console.error('Error:', err)
+    $q.notify({ type: 'negative', message: 'Koneksi ke server Edulang terputus.' })
   } finally {
     loading.value = false
   }
-  await buildUserCourseMap()
 }
 
-async function buildUserCourseMap() {
-  const map = {}
-  try {
-    const [txRes, pkgRes] = await Promise.all([
-      api.get('/transactions').catch(() => ({ data: {} })),
-      api.get('/packages').catch(() => ({ data: {} })),
-    ])
-    const txList = txRes.data?.transactions || txRes.data?.data || []
-    const packages = pkgRes.data?.packages || pkgRes.data?.data || []
-    const pkgById = {}
-    packages.forEach((p) => {
-      const id = p._id || p.id
-      if (id) pkgById[id] = p
-    })
+const filteredUsers = computed(() => {
+  const s = (searchUser.value || '').toLowerCase()
+  if (!s) return groupedData.value
+  return groupedData.value.filter(
+    (u) => u.userName.toLowerCase().includes(s) || u.userEmail.toLowerCase().includes(s),
+  )
+})
 
-    const list = Array.isArray(txList) ? txList : []
-    list.forEach((tx) => {
-      if (tx.status !== 'success') return
-      const uid = (tx.user && (tx.user._id || tx.user.id)) || tx.user
-      const pid = (tx.package && (tx.package._id || tx.package.id)) || tx.package
-      if (!uid) return
-      if (!map[uid]) map[uid] = { count: 0, courseNames: [], mentorName: '' }
-      map[uid].count += 1
-      const pkg = pkgById[pid] || tx.package
-      if (pkg && pkg.title) {
-        if (!map[uid].courseNames.includes(pkg.title)) map[uid].courseNames.push(pkg.title)
-      }
-      const mentor = pkg?.mentor
-      const mentorName = (mentor && (mentor.name || mentor.email)) || ''
-      if (mentorName && !map[uid].mentorName) map[uid].mentorName = mentorName
-    })
-  } catch (err) {
-    console.warn('[Admin User] buildUserCourseMap', err?.message || err)
-  }
-  userCourseMap.value = map
-}
-
-onMounted(fetchUsers)
+onMounted(fetchAdminData)
 </script>
 
 <style scoped>
-.rounded-borders-lg {
+/* Edulang Brand Colors */
+.text-edulang-navy {
+  color: #003387;
+}
+.text-edulang-blue {
+  color: #0089ff;
+}
+.bg-edulang-navy {
+  background-color: #003387;
+}
+.bg-edulang-blue {
+  background-color: #0089ff;
+}
+.bg-edulang-yellow {
+  background-color: #ffc42c;
+}
+.bg-edulang-background {
+  background-color: #f5f7fa;
+}
+
+/* Layout & Typography */
+.font-outfit {
+  font-family: 'Outfit', sans-serif;
+}
+.max-width-container {
+  max-width: 1200px;
+}
+.header-gradient {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.rounded-24 {
   border-radius: 24px;
 }
-.text-indigo-10 {
-  color: #0d2a5c;
+.rounded-16 {
+  border-radius: 16px;
+}
+.border-subtle {
+  border: 1px solid #e2e8f0;
+}
+.border-bottom {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.shadow-brand {
+  box-shadow: 0 10px 30px -5px rgba(0, 51, 135, 0.08);
+}
+
+.search-input :deep(.q-field__control) {
+  height: 48px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.letter-spacing-1 {
+  letter-spacing: 1px;
+}
+
+/* Table Style */
+.edulang-table :deep(.q-table__th) {
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 11px;
+  background-color: #f8fafc;
+  padding: 16px;
+}
+
+.edulang-table :deep(.q-table__td) {
+  padding: 16px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .header-gradient {
+    padding: 32px 16px;
+  }
+  .text-h4 {
+    font-size: 1.75rem;
+  }
 }
 </style>

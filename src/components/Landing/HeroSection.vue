@@ -18,7 +18,7 @@
               unelevated
               no-caps
               class="btn-primary q-px-xl q-py-md"
-              label="Mulai Belajar Gratis"
+              label="Mulai Belajar Sekarang"
               icon-right="arrow_forward"
               :to="{ name: 'BerlanggananPage' }"
             />

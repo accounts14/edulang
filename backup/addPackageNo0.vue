@@ -105,13 +105,14 @@
                       v-model.number="form.price"
                       outlined
                       dense
-                      readonly
-                      stack-label
+                      type="number"
                       prefix="Rp"
                       placeholder="0"
-                      class="custom-input price-input bg-grey-2"
-                      hint="Harga saat ini diatur gratis (Rp 0)"
-                      :rules="[(val) => val === 0 || 'Harga harus Rp 0 untuk program ini']"
+                      class="custom-input price-input"
+                      :rules="[
+                        (val) => (val !== null && val !== '') || 'Harga wajib diisi',
+                        (val) => Number(val) >= 0 || 'Minimal 0',
+                      ]"
                     />
                   </div>
 

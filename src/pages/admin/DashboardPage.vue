@@ -172,7 +172,7 @@ const fetchData = async () => {
   try {
     let totalUsers = 0
     try {
-      const usersRes = await api.get('/users')
+      const usersRes = await api.get('/mentors/admin/users/verified/count')
       const usersData = usersRes.data
       totalUsers = usersData.count ?? (Array.isArray(usersData.data) ? usersData.data.length : 0)
     } catch {

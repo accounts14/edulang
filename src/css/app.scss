@@ -126,3 +126,26 @@ body {
     color: #003387 !important;
   }
 }
+
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+/* 2. Paksa body untuk tetap di atas (Google suka kasih margin-top 40px) */
+body {
+  top: 0px !important;
+}
+
+/* 3. Sembunyikan tooltip (balon teks) saat kursor diarahkan ke teks asli (opsional) */
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* 4. Menghilangkan highlight biru saat teks diterjemahkan */
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
