@@ -5,7 +5,7 @@
         <!-- Left: Image -->
         <div class="auth-left gt-sm relative-position overflow-hidden">
           <q-img
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3"
+            src="https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/965ca6cd-7bde-416e-b3af-e6b2ee975ed6.png"
             class="full-height full-width"
             fit="cover"
           />
@@ -79,13 +79,13 @@
               </div>
 
               <div class="text-right q-mt-xs">
-    <span 
-      class="auth-link cursor-pointer text-caption" 
-      @click="$router.push('/forgot-password')"
-    >
-      Lupa Password?
-    </span>
-  </div>
+                <span
+                  class="auth-link cursor-pointer text-caption"
+                  @click="$router.push('/forgot-password')"
+                >
+                  Lupa Password?
+                </span>
+              </div>
 
               <q-btn
                 label="Sign In"

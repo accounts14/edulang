@@ -5,7 +5,7 @@
         <!-- Left: Image -->
         <div class="auth-left gt-sm relative-position overflow-hidden">
           <q-img
-            src="https://images.unsplash.com/photo-1510070112810-d4e9a46d9e91?ixlib=rb-4.0.3"
+            src="https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/935a3036-b870-4b22-bf01-7e9269db3a3c.png"
             class="full-height full-width"
             fit="cover"
           />
@@ -257,7 +257,9 @@ const handleRegister = async () => {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .fade-enter-from,

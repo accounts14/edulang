@@ -4,7 +4,7 @@
       <q-page class="auth-page-full row no-wrap">
         <div class="auth-left gt-sm relative-position overflow-hidden">
           <q-img
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3"
+            src="https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/965ca6cd-7bde-416e-b3af-e6b2ee975ed6.png"
             class="full-height full-width"
             fit="cover"
           />
