@@ -15,10 +15,7 @@
               round
               dense
               class="nav-number"
-              :class="{
-                'nav-number--active': currentIndex === n - 1,
-                'nav-number--answered': isAnswered(n - 1),
-              }"
+              :class="{ 'nav-number--active': currentIndex === n - 1 }"
               :label="String(n)"
               @click="currentIndex = n - 1"
             />
@@ -38,22 +35,14 @@
               {{ questionText }}
             </div>
 
-            <!-- Status: Sudah Dijawab -->
-            <div v-if="isCurrentQuestionSubmitted" class="q-mb-md">
-              <q-badge color="green" class="q-pa-xs">
-                <q-icon name="check_circle" class="q-mr-xs" />
-                Sudah Dijawab
-              </q-badge>
-            </div>
-
             <!-- Pilihan Ganda -->
             <template v-if="isPilihanGanda">
               <div
                 v-for="(opt, i) in options"
                 :key="i"
-                class="option-box q-pa-md q-mb-sm rounded-borders"
-                :class="[optionClass(i), { 'cursor-pointer': !isCurrentQuestionSubmitted }]"
-                @click="!isCurrentQuestionSubmitted && selectOption(i)"
+                class="option-box q-pa-md q-mb-sm rounded-borders cursor-pointer"
+                :class="optionClass(i)"
+                @click="selectOption(i)"
               >
                 <span class="text-weight-medium">{{ ['A', 'B', 'C', 'D'][i] }}.</span>
                 {{ opt.text || opt }}
@@ -69,23 +58,11 @@
                 autogrow
                 placeholder="Masukkan jawaban Anda..."
                 class="q-mt-sm"
-                :readonly="isCurrentQuestionSubmitted"
-                :disable="isCurrentQuestionSubmitted"
               />
             </template>
 
             <!-- Penjelasan AI (selalu muncul setelah submit) -->
             <div v-if="penjelasan" class="penjelasan-box q-pa-md q-mt-xl rounded-borders">
-              <!-- Score Display -->
-              <div
-                v-if="aiScore !== null"
-                class="text-h5 text-weight-bold q-mb-md"
-                style="color: #16a34a"
-              >
-                <q-icon name="stars" class="q-mr-sm" />
-                Score: {{ aiScore }}%
-              </div>
-
               <div class="text-subtitle2 text-weight-bold q-mb-xs">Penjelasan</div>
               <div class="text-body2 text-grey-8" style="white-space: pre-line">
                 {{ penjelasan }}
@@ -102,23 +79,19 @@
                 @click="currentIndex = Math.max(0, currentIndex - 1)"
               />
               <q-btn
-                v-if="!isCurrentQuestionSubmitted"
                 unelevated
                 no-caps
                 color="primary"
-                label="Kirim Jawaban & Lihat Penjelasan"
+                :label="
+                  penjelasan
+                    ? isLastSoal
+                      ? 'Selesai'
+                      : 'Selanjutnya'
+                    : 'Kirim Jawaban & Lihat Penjelasan'
+                "
                 icon-right="arrow_forward"
                 :loading="submitting"
-                @click="submitDanLihatPenjelasan"
-              />
-              <q-btn
-                v-else
-                unelevated
-                no-caps
-                color="primary"
-                :label="isLastSoal ? 'Selesai' : 'Selanjutnya'"
-                icon-right="arrow_forward"
-                @click="goToNext"
+                @click="onNext"
               />
             </div>
           </template>
@@ -150,18 +123,9 @@ const jawabanEsai = ref('')
 const penjelasan = ref('')
 const isJawabanBenar = ref(null)
 const correctOptionIndex = ref(null)
-const aiScore = ref(null)
-
-// ✅ TAMBAHAN: Array untuk menyimpan jawaban per soal
-const submittedAnswers = ref([])
 
 const totalSoal = computed(() => soalList.value.length || 1)
 const currentSoal = computed(() => soalList.value[currentIndex.value] || {})
-
-// ✅ Cek apakah soal saat ini sudah pernah dijawab
-const isCurrentQuestionSubmitted = computed(() => {
-  return !!submittedAnswers.value[currentIndex.value]
-})
 
 const questionText = computed(() => {
   const q = currentSoal.value
@@ -205,30 +169,8 @@ const backToLearnRoute = computed(() => ({
   params: { packageId: packageId.value, order: lessonOrder.value },
 }))
 
-// ✅ Cek apakah soal tertentu sudah dijawab (untuk navigasi)
-function isAnswered(index) {
-  return !!submittedAnswers.value[index]
-}
-
 // Class untuk option
 function optionClass(i) {
-  // Jika sudah dijawab, tampilkan warna benar/salah
-  if (isCurrentQuestionSubmitted.value) {
-    const saved = submittedAnswers.value[currentIndex.value]
-    if (saved) {
-      // Untuk pilihan ganda
-      if (isPilihanGanda.value) {
-        const selectedIdx = parseInt(saved.selectedOption)
-        const correctIdx = saved.correctOptionIndex
-
-        if (i === correctIdx) return 'option-correct'
-        if (i === selectedIdx && selectedIdx !== correctIdx) return 'option-wrong'
-      }
-    }
-    return 'option-default'
-  }
-
-  // Belum dijawab, tampilkan seleksi user
   if (!penjelasan.value) {
     return selectedOption.value === i ? 'option-selected' : 'option-default'
   }
@@ -249,14 +191,6 @@ function optionClass(i) {
 
 function selectOption(i) {
   selectedOption.value = i
-}
-
-function goToNext() {
-  if (isLastSoal.value) {
-    router.push(backToLearnRoute.value)
-    return
-  }
-  currentIndex.value = Math.min(currentIndex.value + 1, totalSoal.value - 1)
 }
 
 async function fetchSoal() {
@@ -301,15 +235,27 @@ async function fetchSoal() {
             options: ['Pilihan A', 'Pilihan B', 'Pilihan C', 'Pilihan D'],
           },
         ]
-
-    // ✅ Inisialisasi array submittedAnswers sesuai jumlah soal
-    submittedAnswers.value = new Array(soalList.value.length).fill(null)
   } catch (e) {
     $q.notify({ type: 'negative', message: e.response?.data?.message || 'Gagal memuat soal.' })
     soalList.value = []
   } finally {
     loadingSoal.value = false
   }
+}
+
+async function onNext() {
+  if (!penjelasan.value) {
+    await submitDanLihatPenjelasan()
+    return
+  }
+
+  if (isLastSoal.value) {
+    router.push(backToLearnRoute.value)
+    return
+  }
+
+  // Next soal - reset state
+  currentIndex.value = Math.min(currentIndex.value + 1, totalSoal.value - 1)
 }
 
 async function submitDanLihatPenjelasan() {
@@ -326,29 +272,34 @@ async function submitDanLihatPenjelasan() {
       return
     }
 
+    // ✅ Payload sesuai API: essays = questionIndex 0,1... lalu MCQ
     const payload = {
       packageId: packageId.value,
       lessonOrder: Number(lessonOrder.value) || 1,
-      questionIndex: currentIndex.value,
-      userAnswer: isPilihanGanda.value ? String(selectedOption.value) : jawabanEsai.value.trim(),
+      questionIndex: currentIndex.value, // 0-based: essay dulu, lalu pilihan ganda
+      userAnswer: isPilihanGanda.value
+        ? String(selectedOption.value) // "0" = A, "1" = B, dst
+        : jawabanEsai.value.trim(), // Text essay
     }
 
+    console.log('[Submit] Payload:', payload)
+
+    // ✅ ENDPOINT SESUAI: /api/submissions/
     const res = await api.post('/submissions/', payload)
     const data = res.data ?? {}
 
-    // Ambil dari data.submission
-    const submission = data.submission ?? {}
+    console.log('[Submit] Response:', data)
 
+    // Parse penjelasan dari response
     const rawPenjelasan =
-      submission.aiFeedback ??
-      submission.ai_feedback ??
+      data.aiFeedback ??
+      data.ai_feedback ??
       data.explanation ??
       data.penjelasan ??
       data.message ??
       'Penjelasan dari AI akan muncul di sini.'
 
     penjelasan.value = rawPenjelasan
-    aiScore.value = submission.aiScore ?? submission.ai_score ?? null
 
     // Parse feedback untuk pilihan ganda
     if (isPilihanGanda.value) {
@@ -356,17 +307,6 @@ async function submitDanLihatPenjelasan() {
       correctOptionIndex.value = typeof correctAnswer === 'number' ? correctAnswer : null
       isJawabanBenar.value =
         correctOptionIndex.value !== null && selectedOption.value === correctOptionIndex.value
-    }
-
-    // ✅ SIMPAN ke array submittedAnswers untuk soal ini
-    submittedAnswers.value[currentIndex.value] = {
-      selectedOption: selectedOption.value,
-      jawabanEsai: jawabanEsai.value,
-      penjelasan: penjelasan.value,
-      aiScore: aiScore.value,
-      isJawabanBenar: isJawabanBenar.value,
-      correctOptionIndex: correctOptionIndex.value,
-      isPilihanGanda: isPilihanGanda.value,
     }
   } catch (error) {
     console.error('[Submit] Error:', error)
@@ -387,27 +327,13 @@ watch(
   { immediate: true },
 )
 
-// ✅ RESTORE state saat pindah soal
-watch(currentIndex, (newIndex) => {
-  const saved = submittedAnswers.value[newIndex]
-
-  if (saved) {
-    // Restore dari data tersimpan
-    selectedOption.value = saved.selectedOption
-    jawabanEsai.value = saved.jawabanEsai
-    penjelasan.value = saved.penjelasan
-    aiScore.value = saved.aiScore
-    isJawabanBenar.value = saved.isJawabanBenar
-    correctOptionIndex.value = saved.correctOptionIndex
-  } else {
-    // Reset untuk soal baru
-    selectedOption.value = null
-    jawabanEsai.value = ''
-    penjelasan.value = ''
-    isJawabanBenar.value = null
-    correctOptionIndex.value = null
-    aiScore.value = null
-  }
+// Reset state saat pindah soal
+watch(currentIndex, () => {
+  selectedOption.value = null
+  jawabanEsai.value = ''
+  penjelasan.value = ''
+  isJawabanBenar.value = null
+  correctOptionIndex.value = null
 })
 </script>
 
@@ -453,15 +379,6 @@ watch(currentIndex, (newIndex) => {
 .nav-number--active {
   background: #2563eb;
   color: #ffffff;
-}
-/* ✅ Style untuk soal yang sudah dijawab */
-.nav-number--answered {
-  background: #16a34a;
-  color: #ffffff;
-}
-.nav-number--answered.nav-number--active {
-  background: #15803d;
-  box-shadow: 0 0 0 2px #86efac;
 }
 
 .user-soal-page {
