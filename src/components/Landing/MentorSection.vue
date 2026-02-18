@@ -28,6 +28,7 @@
                 label="Daftar sebagai mentor"
                 icon-right="arrow_forward"
                 class="btn-register-mentor"
+                :to="{ name: 'ContactPage' }"
               />
               <q-btn outline no-caps label="Pelajari peran mentor" class="btn-learn-more" />
             </div>

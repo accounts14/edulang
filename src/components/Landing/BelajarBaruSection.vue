@@ -33,8 +33,15 @@
                 label="Apply Now"
                 icon-right="arrow_forward"
                 class="btn-apply"
+                :to="{ name: 'AlurBelajarRoadmap' }"
               />
-              <q-btn outline no-caps label="How it Works" class="btn-how" />
+              <q-btn
+                outline
+                no-caps
+                label="How it Works"
+                class="btn-how"
+                :to="{ name: 'AlurBelajarRoadmap' }"
+              />
             </div>
           </div>
         </div>

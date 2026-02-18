@@ -36,12 +36,14 @@
                 class="btn-cta-yellow col-12 col-sm-auto q-px-xl q-py-md"
                 label="Daftar Gratis Sekarang"
                 icon-right="arrow_forward"
+                :to="{ name: 'login' }"
               />
               <q-btn
                 outline
                 no-caps
                 class="btn-cta-outline col-12 col-sm-auto q-px-xl q-py-md"
                 label="Hubungi Kami"
+                :to="{ name: 'ContactPage' }"
               />
             </div>
           </div>
