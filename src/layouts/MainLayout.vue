@@ -591,7 +591,7 @@ const defaultTexts = {
   'nav.dashboard': 'Dashboard',
   'auth.halo': 'Halo, {name}',
   'auth.logout': 'Keluar',
-  'footer.ptName': 'PT. Edulang Nusantara',
+  'footer.ptName': 'PT Active Edulang Global',
   'footer.alamatValue': 'Jl. ZA. Pagar Alam No.26, Labuhan Ratu, Kec. Kedaton, Kota Bandar Lampung',
   'footer.subscribeTitle': 'Subscribe Email',
   'footer.subscribeDesc': 'Dapatkan update terbaru tentang program dan promo',
@@ -610,7 +610,7 @@ const defaultTexts = {
   'footer.kebijakanRefund': 'Kebijakan Refund',
   'footer.CekSertifikat': 'Cek Sertifikat',
   'footer.metodePembayaran': 'Metode Pembayaran',
-  'footer.copyright': '© 2025 Edulang. All rights reserved.',
+  'footer.copyright': '© 2026 Edulang. All rights reserved.',
 }
 
 // Computed property for current language label
