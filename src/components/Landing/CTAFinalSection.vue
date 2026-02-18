@@ -148,7 +148,7 @@
 .cta-character-img {
   width: 100%;
   max-width: 500px;
-  transform: translateY(20px) scale(1.1);
+  transform: translateY(40px) scale(1.1);
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.2));
 }
 

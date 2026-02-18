@@ -37,6 +37,7 @@
                 <q-icon name="group" size="24px" color="primary" />
               </div>
               <div class="stat-text-wrap">
+                <!-- ✅ TAMBAHKAN CLASS INI -->
                 <div class="stat-value text-weight-bold">10,000+</div>
                 <div class="stat-label text-grey-7">Siswa Aktif</div>
               </div>
@@ -47,6 +48,7 @@
                 <q-icon name="menu_book" size="24px" color="primary" />
               </div>
               <div class="stat-text-wrap">
+                <!-- ✅ TAMBAHKAN CLASS INI -->
                 <div class="stat-value text-weight-bold">8</div>
                 <div class="stat-label text-grey-7">Bahasa Tersedia</div>
               </div>
@@ -57,6 +59,7 @@
                 <q-icon name="star_outline" size="24px" color="primary" />
               </div>
               <div class="stat-text-wrap">
+                <!-- ✅ TAMBAHKAN CLASS INI -->
                 <div class="stat-value text-weight-bold">4.9</div>
                 <div class="stat-label text-grey-7">Rating Pengguna</div>
               </div>
@@ -272,7 +275,7 @@ onMounted(async () => {
   opacity: 0.7;
   white-space: nowrap;
 }
-
+/* ↓↓↓ MARGIN TOP 0 - ZERO MARGIN ↓↓↓ */
 .hero-section {
   padding-top: 0 !important;
   padding-bottom: 3rem;
@@ -318,7 +321,7 @@ onMounted(async () => {
 }
 
 .text-edulang-blue {
-  background: linear-gradient(90deg, #1a73e8 0%, #0d47a1 100%);
+  background: linear-gradient(90deg, #1a73e8 0%, /* biru terang */ #0d47a1 100% /* biru tua */);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -338,14 +341,16 @@ onMounted(async () => {
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #1a73e8 0%, #0d47a1 100%);
+  background: linear-gradient(90deg, #1a73e8 0%, /* biru terang */ #0d47a1 100% /* biru tua */);
+
   color: white !important;
   border-radius: 8px;
   font-weight: 600;
 }
 
 .btn-outline {
-  border: 2px solid linear-gradient(90deg, #1a73e8 0%, #0d47a1 100%);
+  border: 2px solid
+    linear-gradient(90deg, #1a73e8 0%, /* biru terang */ #0d47a1 100% /* biru tua */);
   color: var(--edulang-blue, #0089ff) !important;
   border-radius: 8px;
   font-weight: 600;
@@ -512,7 +517,7 @@ onMounted(async () => {
 }
 
 .hero-bottom-section {
-  margin-top: 2rem !important;
+  margin-top: 2rem !important; /* ↓ ULTRA RAPAT */
   padding-top: 0 !important;
   text-align: center;
 }
@@ -616,7 +621,9 @@ onMounted(async () => {
   }
 }
 
-/* IPAD RESPONSIVE (768px - 1023px) */
+/* ========================================
+   ✅ IPAD RESPONSIVE (768px - 1023px) 
+   ======================================== */
 @media (min-width: 768px) and (max-width: 1023px) {
   .container {
     padding-left: 32px;
@@ -640,6 +647,7 @@ onMounted(async () => {
     font-size: 1rem;
   }
 
+  /* iPad: 50/50 split + karakter agak besar */
   .hero-main-row {
     min-height: 75vh;
   }
@@ -668,6 +676,7 @@ onMounted(async () => {
     max-height: 550px;
   }
 
+  /* Stats horizontal di iPad */
   .hero-stats {
     flex-wrap: nowrap;
     gap: 2rem;
@@ -677,6 +686,7 @@ onMounted(async () => {
     flex: 1;
   }
 
+  /* Language pills 2 baris */
   .hero-lang-pills {
     max-width: 600px;
     margin: 0 auto;
@@ -690,6 +700,7 @@ onMounted(async () => {
     margin-bottom: 8px;
   }
 
+  /* Floating bubbles posisi iPad */
   .hero-float-bubble-0 {
     top: 25%;
     right: 5%;
@@ -714,7 +725,9 @@ onMounted(async () => {
   }
 }
 
-/* FIX IPAD PORTRAIT (768px x 1024px) */
+/* ========================================
+   FIX IPAD PORTRAIT (768px x 1024px)
+   ======================================== */
 @media (min-width: 768px) and (max-height: 1024px) and (orientation: portrait) {
   .hero-main-row {
     min-height: 70vh;
@@ -733,18 +746,18 @@ onMounted(async () => {
 /* Perbaikan Gambar 1: Membuat Stats Menurun di Mobile */
 @media (max-width: 599px) {
   .hero-stats {
-    flex-direction: column;
-    align-items: flex-start !important;
-    gap: 16px;
+    flex-direction: column; /* Membuat item menurun */
+    align-items: flex-start !important; /* Rata kiri */
+    gap: 16px; /* Jarak antar item saat menurun */
   }
 
   .hero-stats .stat-item {
-    width: 100%;
+    width: 100%; /* Memastikan item mengambil lebar penuh */
   }
 }
 
 /* ========================================
-   ✅ MOBILE RESPONSIVE (Max 599px) - MARGIN DIperbaiki
+   ✅ MOBILE RESPONSIVE (Max 599px) - ANTI-POTONG
    ======================================== */
 @media (max-width: 599px) {
   .hero-stats {
@@ -776,45 +789,45 @@ onMounted(async () => {
     font-size: 0.75rem;
   }
 
+  /* 1. Cegah elemen keluar layar */
   .container {
     padding-left: 15px;
     padding-right: 15px;
-    overflow: hidden;
+    overflow: hidden; /* Tambahan agar bubble tidak bikin scroll horizontal */
   }
 
-  /* GAMBAR DI ATAS, KONTEN DI BAWAH SAAT MODE HP */
   .hero-left-col {
-    order: 2;
+    order: 1;
     text-align: center;
     align-items: center;
   }
 
   .hero-right-col {
-    order: 1;
-    margin-top: 0;
+    order: 2;
+    margin-top: 1rem;
     min-height: auto;
   }
 
-  /* ✅ MARGIN ATAS DIKURANGI, MARGIN BAWAH DITAMBAH */
+  /* 2. Visual Karakter Proporsional */
   .hero-right-inner {
     height: auto !important;
-    min-height: 380px !important;
-    margin-top: -20px !important; /* Margin atas dikurangi (negatif) */
-    margin-bottom: 40px !important; /* Margin bawah ditambah */
+    min-height: 320px !important; /* Jangan terlalu tinggi di HP */
+    margin-bottom: 20px;
   }
 
   .hero-character-area {
     width: 100%;
-    max-width: 380px;
+    max-width: 280px; /* Perkecil sedikit agar aman */
     margin: 0 auto;
   }
 
   .hero-character {
     min-height: auto !important;
-    max-height: 420px !important;
+    max-height: 350px !important;
     object-fit: contain;
   }
 
+  /* 3. Floating Bubbles - Posisikan ke dalam (Inward) */
   .hero-float-bubble {
     min-width: 60px;
     height: 34px;
@@ -830,6 +843,7 @@ onMounted(async () => {
     min-width: 18px;
   }
 
+  /* Geser bubble ke dalam agar tidak kepotong pinggir layar */
   .hero-float-bubble-0 {
     top: 15%;
     right: 5%;
@@ -850,6 +864,7 @@ onMounted(async () => {
     display: none;
   }
 
+  /* 4. Language Pills - Solusi Teks Panjang (Taiwan/British) */
   .hero-lang-pills {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -859,19 +874,26 @@ onMounted(async () => {
 
   .hero-lang-pill {
     width: 100%;
-    height: auto;
+    height: auto; /* Biarkan tinggi menyesuaikan teks */
     min-height: 45px;
     padding: 8px;
-    border-radius: 12px;
+    border-radius: 12px; /* Lebih kotak sedikit agar teks muat */
     justify-content: flex-start;
   }
 
   .hero-lang-pill-name {
-    white-space: normal;
+    white-space: normal; /* AGAR TEKS TURUN KE BAWAH */
     word-break: break-word;
     font-size: 11px;
     line-height: 1.1;
     text-align: left;
+  }
+
+  /* 5. Stats & Buttons */
+  .hero-stats {
+    flex-direction: column;
+    align-items: center !important;
+    gap: 15px !important;
   }
 
   .hero-cta {
@@ -881,27 +903,6 @@ onMounted(async () => {
   .btn-outline {
     width: 100%;
     padding: 12px !important;
-  }
-}
-
-/* Extra Small Mobile */
-@media (max-width: 360px) {
-  .hero-title {
-    font-size: 1.75rem;
-  }
-
-  .hero-right-inner {
-    min-height: 340px !important;
-    margin-top: -15px !important;
-    margin-bottom: 35px !important;
-  }
-
-  .hero-character-area {
-    max-width: 340px;
-  }
-
-  .hero-character {
-    max-height: 380px !important;
   }
 }
 </style>
