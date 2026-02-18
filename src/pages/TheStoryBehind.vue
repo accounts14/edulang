@@ -38,6 +38,9 @@
           <!-- Left Side (Odd years) -->
           <div v-if="index % 2 === 0" class="timeline-content left">
             <div class="content-card">
+              <div class="card-image">
+                <img :src="item.image" :alt="item.title" />
+              </div>
               <div class="year-badge">{{ item.year }}</div>
               <h3 class="content-title">{{ item.title }}</h3>
               <p class="content-text">{{ item.description }}</p>
@@ -57,6 +60,9 @@
           <!-- Right Side (Even years) -->
           <div v-if="index % 2 === 1" class="timeline-content right">
             <div class="content-card">
+              <div class="card-image">
+                <img :src="item.image" :alt="item.title" />
+              </div>
               <div class="year-badge">{{ item.year }}</div>
               <h3 class="content-title">{{ item.title }}</h3>
               <p class="content-text">{{ item.description }}</p>
@@ -100,6 +106,8 @@ export default {
           description:
             'Perjalanan ini dimulai dari kecintaan terhadap bahasa. Keikutsertaan dalam kompetisi bahasa Mandarin tingkat internasional menjadi titik awal lahirnya visi besar: bahwa bahasa membuka akses menuju dunia global. Dari pengalaman inilah tumbuh keyakinan untuk membangun sesuatu yang lebih dari sekadar kelas bahasa.',
           highlights: ['Kompetisi Bahasa Mandarin', 'Visi Global', 'Prestasi Internasional'],
+          image:
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/3dd57265-b015-4177-a443-89aa6a99ddc3.jpg',
         },
         {
           year: 2020,
@@ -107,6 +115,8 @@ export default {
           description:
             'Interaksi dengan komunitas pelajar Indonesia di Tiongkok membuka realitas tentang berbagai tantangan pendidikan internasional, termasuk praktik agen yang tidak transparan. Di titik ini, lahir satu prinsip utama: Pendidikan harus dibangun dengan kejujuran, tanggung jawab, dan sistem yang jelas.',
           highlights: ['Transparansi', 'Integritas', 'Sistem Jelas'],
+          image:
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/a010bd52-9aea-4fa2-8ddb-e8bec39fab8c.jpg',
         },
         {
           year: 2021,
@@ -114,6 +124,8 @@ export default {
           description:
             'Pandemi membawa perubahan besar. Dari sebuah kelas daring sederhana, Active Mandarin Indonesia lahir sebagai ruang belajar yang aktif dan bertumbuh. Yang awalnya hanya kelas kecil, berkembang menjadi komunitas dengan kurikulum dan sistem pembelajaran yang lebih terstruktur.',
           highlights: ['Kelas Daring', 'Komunitas', 'Kurikulum Terstruktur'],
+          image:
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/5a50d0d5-9863-4ae3-ab91-48100c6154fd.jpg',
         },
         {
           year: 2022,
@@ -121,6 +133,8 @@ export default {
           description:
             'Active Mandarin mulai memasuki ekosistem startup dan mengembangkan sistem pembelajaran berbasis teknologi. Video course, sertifikat digital, dan evaluasi berbasis sistem mulai dirancang. Bahasa tidak lagi hanya diajarkan, tetapi dibangun dalam bentuk platform.',
           highlights: ['Video Course', 'Sertifikat Digital', 'Platform Teknologi'],
+          image:
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/30ecff1b-1ef5-4993-b7c2-5f87a050fc2c.jpg',
         },
         {
           year: 2023,
@@ -128,6 +142,8 @@ export default {
           description:
             'Fokus mulai diperluas. Kerja sama dengan perusahaan dan beberapa kampus di Tiongkok mulai terjalin. Active Mandarin tidak hanya menjadi tempat belajar bahasa, tetapi juga menjadi penghubung menuju program studi, internship, dan jalur karier internasional. Bahasa menjadi pintu masuk menuju peluang global.',
           highlights: ['Kerja Sama Global', 'Internship', 'Karier Internasional'],
+          image:
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/a995079f-4d16-4f26-9e22-bce45cebb75e.jpg',
         },
         {
           year: 2024,
@@ -135,6 +151,8 @@ export default {
           description:
             'Kepercayaan investor datang sebagai peluang percepatan pertumbuhan. Namun melalui evaluasi internal, diputuskan untuk mengembalikan pendanaan demi memperkuat fondasi dan kesiapan jangka panjang. Eksplorasi brand baru dilakukan melalui Edutive sebagai langkah ekspansi. Dari fase ini lahir satu kesimpulan penting: Pertumbuhan harus terarah, bukan terburu-buru.',
           highlights: ['Evaluasi Strategis', 'Fondasi Kuat', 'Pertumbuhan Terukur'],
+          image:
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/69947ee4-2bcc-497e-a15f-2224753b72d5.jpeg',
         },
         {
           year: 2025,
@@ -142,6 +160,8 @@ export default {
           description:
             'PT Active Edulang Global didirikan sebagai bentuk komitmen terhadap tata kelola yang lebih matang. Kerja sama dengan perusahaan dan kampus di Tiongkok diperkuat. Struktur organisasi dan sistem operasional dibangun lebih solid. Ini adalah fase membangun fondasi yang siap untuk skala lebih besar.',
           highlights: ['PT Active Edulang Global', 'Tata Kelola Matang', 'Fondasi Solid'],
+          image:
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/03d9982c-6835-4ec7-b12f-15915d152efc.jpeg',
         },
         {
           year: 2026,
@@ -149,6 +169,8 @@ export default {
           description:
             'Seluruh perjalanan disatukan dalam satu identitas baru: EDULANG — Education & Language. Rebranding ini menandai perubahan arah yang lebih luas dan terintegrasi. Edulang berdiri di atas tiga pilar utama: Language Video Course, Study Abroad Ecosystem, dan Global Career Pathway. Dengan integrasi AI dalam sistem pembelajaran, evaluasi, dan sertifikasi, Edulang hadir sebagai ekosistem pendidikan modern yang menghubungkan bahasa, teknologi, dan peluang global.',
           highlights: ['Language Video Course', 'Study Abroad', 'Global Career', 'AI Integration'],
+          image:
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/4f7efdd0-1378-4d45-afaf-b49d0a4c443f.png',
         },
       ],
     }
@@ -335,12 +357,33 @@ export default {
   transition: all 0.3s ease;
   border-left: 4px solid #0089ff;
   max-width: 380px;
+  overflow: hidden;
 }
 
 .timeline-item.active .content-card {
   box-shadow: 0 8px 24px rgba(0, 51, 135, 0.15);
   transform: translateY(-4px);
   border-left-color: #ffc42c;
+}
+
+/* Card Image */
+.card-image {
+  width: calc(100% + 48px);
+  height: 180px;
+  margin: -24px -24px 16px -24px;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.content-card:hover .card-image img {
+  transform: scale(1.05);
 }
 
 .year-badge {
@@ -548,6 +591,12 @@ export default {
     padding: 20px;
   }
 
+  .card-image {
+    width: calc(100% + 40px);
+    height: 160px;
+    margin: -20px -20px 14px -20px;
+  }
+
   .timeline-dot {
     left: 30px;
     top: 20px;
@@ -613,6 +662,13 @@ export default {
   .content-card {
     padding: 16px;
     border-radius: 8px;
+  }
+
+  .card-image {
+    width: calc(100% + 32px);
+    height: 140px;
+    margin: -16px -16px 12px -16px;
+    border-radius: 8px 8px 0 0;
   }
 
   .year-badge {
@@ -684,6 +740,12 @@ export default {
 
   .content-card {
     padding: 12px;
+  }
+
+  .card-image {
+    width: calc(100% + 24px);
+    height: 120px;
+    margin: -12px -12px 10px -12px;
   }
 
   .content-title {
