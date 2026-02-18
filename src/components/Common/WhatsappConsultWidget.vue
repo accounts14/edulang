@@ -2,7 +2,7 @@
   <div class="wa-widget-container">
     <transition name="fade">
       <button v-if="!open" class="wa-fab-mini" @click="open = true" aria-label="Chat WhatsApp">
-        <q-icon name="fab fa-whatsapp" size="24px" />
+        <q-icon name="fab fa-whatsapp" size="22px" />
         <div class="notification-dot"></div>
       </button>
     </transition>
@@ -11,20 +11,18 @@
       <div v-if="open" class="wa-notification-card shadow-10">
         <div class="row no-wrap items-center q-pa-sm">
           <div class="relative-position">
-            <q-avatar size="45px" class="bg-grey-2">
+            <q-avatar size="40px" class="bg-grey-2">
               <img src="https://cdn.quasar.dev/img/avatar.png" />
             </q-avatar>
             <div class="status-indicator"></div>
           </div>
 
-          <div class="q-ml-md col">
+          <div class="q-ml-sm col">
             <div class="row items-center justify-between">
               <span class="text-weight-bold text-navy">Edulang Admin</span>
               <q-btn icon="close" flat round dense size="xs" color="grey-6" @click="open = false" />
             </div>
-            <p class="msg-preview q-ma-none text-grey-8">
-              Halo! Ada yang bisa kami bantu hari ini?
-            </p>
+            <p class="msg-preview q-ma-none text-grey-8">Halo! Ada yang bisa kami bantu?</p>
             <q-btn
               label="Balas di WhatsApp"
               color="positive"
@@ -47,13 +45,11 @@ import { ref } from 'vue'
 
 const open = ref(false)
 
-// Munculkan notifikasi otomatis setelah 5 detik (opsional)
 setTimeout(() => {
   open.value = true
 }, 5000)
 
 function goToContact() {
-  // Langsung ke WhatsApp atau halaman kontak
   window.open('https://wa.me/6282279506450', '_blank')
 }
 </script>
@@ -61,26 +57,26 @@ function goToContact() {
 <style scoped>
 .wa-widget-container {
   position: fixed;
-  right: 20px;
-  bottom: 30px; /* Jarak aman dari footer */
+  right: 16px;
+  bottom: 24px;
   z-index: 9999;
-  pointer-events: none; /* Agar tidak menghalangi klik di area kosong */
+  pointer-events: none;
 }
 
 .wa-widget-container * {
-  pointer-events: auto; /* Aktifkan klik kembali untuk elemen di dalamnya */
+  pointer-events: auto;
 }
 
 /* FAB Kecil */
 .wa-fab-mini {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: #25d366;
   color: white;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,8 +87,8 @@ function goToContact() {
   position: absolute;
   top: 2px;
   right: 2px;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   background: #ff5252;
   border: 2px solid white;
   border-radius: 50%;
@@ -100,21 +96,21 @@ function goToContact() {
 
 /* Card ala Notifikasi */
 .wa-notification-card {
-  width: 320px;
+  width: 300px;
   background: white;
-  border-radius: 16px;
-  border-left: 5px solid #25d366;
-  padding: 8px;
+  border-radius: 14px;
+  border-left: 4px solid #25d366;
+  padding: 6px;
   overflow: hidden;
 }
 
 .text-navy {
   color: #003387;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .msg-preview {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   line-height: 1.3;
 }
 
@@ -122,24 +118,24 @@ function goToContact() {
   position: absolute;
   bottom: 2px;
   right: 2px;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: #4caf50;
   border: 2px solid white;
   border-radius: 50%;
 }
 
-/* Animasi ala Toast */
+/* Animasi */
 .toast-enter-active {
-  animation: slide-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .toast-leave-active {
-  animation: slide-in 0.3s reverse ease-in;
+  animation: slide-in 0.25s reverse ease-in;
 }
 
 @keyframes slide-in {
   from {
-    transform: translateX(120%);
+    transform: translateX(100%);
     opacity: 0;
   }
   to {
@@ -157,10 +153,22 @@ function goToContact() {
   opacity: 0;
 }
 
-/* Mobile responsive */
-@media (max-width: 600px) {
+/* ✅ Mobile responsive - Perbaikan di sini */
+@media (max-width: 400px) {
+  .wa-widget-container {
+    right: 12px;
+    bottom: 16px;
+  }
+
   .wa-notification-card {
-    width: calc(100vw - 40px);
+    width: 260px; /* Lebih kecil */
+    border-radius: 12px;
+    padding: 4px;
+  }
+
+  .wa-fab-mini {
+    width: 48px;
+    height: 48px;
   }
 }
 </style>
