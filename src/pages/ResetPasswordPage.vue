@@ -4,7 +4,7 @@
       <q-page class="auth-page-full row no-wrap">
         <div class="auth-left gt-sm relative-position overflow-hidden">
           <q-img
-            src="https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/965ca6cd-7bde-416e-b3af-e6b2ee975ed6.png"
+            src="https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/965ca6cd-7bde-416e-b3af-e6b2ee975ed6.png  "
             class="full-height full-width"
             fit="cover"
           />
@@ -22,23 +22,26 @@
               <p class="text-grey-7 text-center q-mt-sm">Buat password baru Anda sekarang</p>
             </div>
 
-            <q-form @submit="handleReset" class="q-gutter-y-sm">
+            <q-form @submit="handleReset" class="q-gutter-y-md">
+              <!-- Token Field (Read-only, masked) -->
               <div class="field-wrapper">
                 <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
                   >Token Reset :</label
                 >
                 <q-input
-                  v-model="form.token"
-                  placeholder="Masukkan token dari email"
+                  v-model="token"
+                  type="password"
                   filled
                   rounded
                   bg-color="grey-2"
                   dense
                   borderless
-                  class="q-mt-xs auth-input"
+                  readonly
+                  disable
+                  class="q-mt-xs auth-input token-input"
                 >
                   <template v-slot:append>
-                    <q-icon name="vpn_key" size="xs" color="grey-7" />
+                    <q-icon name="vpn_key" size="xs" color="grey-5" />
                   </template>
                 </q-input>
               </div>
@@ -50,7 +53,7 @@
                 <q-input
                   v-model="form.newPassword"
                   :type="isPwd ? 'password' : 'text'"
-                  placeholder="Password baru"
+                  placeholder="Masukkan password baru"
                   filled
                   rounded
                   bg-color="grey-2"
@@ -65,6 +68,33 @@
                       class="cursor-pointer"
                       color="grey-7"
                       @click="isPwd = !isPwd"
+                    />
+                  </template>
+                </q-input>
+              </div>
+
+              <div class="field-wrapper">
+                <label class="text-weight-bold text-caption q-ml-sm text-grey-9"
+                  >Konfirmasi Password :</label
+                >
+                <q-input
+                  v-model="form.confirmPassword"
+                  :type="isConfirmPwd ? 'password' : 'text'"
+                  placeholder="Konfirmasi password baru"
+                  filled
+                  rounded
+                  bg-color="grey-2"
+                  dense
+                  borderless
+                  class="q-mt-xs auth-input"
+                >
+                  <template v-slot:append>
+                    <q-icon
+                      :name="isConfirmPwd ? 'visibility_off' : 'visibility'"
+                      size="xs"
+                      class="cursor-pointer"
+                      color="grey-7"
+                      @click="isConfirmPwd = !isConfirmPwd"
                     />
                   </template>
                 </q-input>
@@ -85,29 +115,70 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { api } from 'boot/axios'
 import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const $q = useQuasar()
 const router = useRouter()
+const route = useRoute()
+
 const isPwd = ref(true)
+const isConfirmPwd = ref(true)
 const loading = ref(false)
+const token = ref('')
+
 const form = ref({
-  token: '',
   newPassword: '',
+  confirmPassword: '',
+})
+
+// Ambil token dari URL saat halaman dimuat
+onMounted(() => {
+  const urlToken = route.query.token
+  if (urlToken) {
+    token.value = urlToken
+  } else {
+    $q.notify({
+      type: 'negative',
+      message: 'Token tidak valid atau sudah kadaluarsa. Silakan minta reset password ulang.',
+    })
+    // Redirect ke halaman forgot password jika token tidak ada
+    setTimeout(() => {
+      router.push('/forgot-password')
+    }, 2000)
+  }
 })
 
 const handleReset = async () => {
-  if (!form.value.token || !form.value.newPassword) {
+  // Validasi
+  if (!form.value.newPassword || !form.value.confirmPassword) {
     $q.notify({ type: 'warning', message: 'Semua field harus diisi!' })
+    return
+  }
+
+  if (form.value.newPassword !== form.value.confirmPassword) {
+    $q.notify({ type: 'warning', message: 'Password tidak cocok!' })
+    return
+  }
+
+  if (form.value.newPassword.length < 6) {
+    $q.notify({ type: 'warning', message: 'Password minimal 6 karakter!' })
+    return
+  }
+
+  if (!token.value) {
+    $q.notify({ type: 'negative', message: 'Token tidak valid!' })
     return
   }
 
   loading.value = true
   try {
-    await api.post('/auth/reset-password', form.value)
+    await api.post('/auth/reset-password', {
+      token: token.value,
+      newPassword: form.value.newPassword,
+    })
     $q.notify({
       type: 'positive',
       message: 'Password berhasil diubah! Silakan login kembali.',
@@ -125,7 +196,6 @@ const handleReset = async () => {
 </script>
 
 <style scoped>
-/* Gunakan style yang sama dengan di atas */
 .auth-page-full {
   min-height: 100vh;
 }
@@ -166,5 +236,12 @@ const handleReset = async () => {
 :deep(.auth-input .q-field--filled .q-field__control) {
   background: #eef0f3 !important;
   border-radius: 12px;
+}
+/* Style untuk token input yang disabled */
+:deep(.token-input .q-field--filled .q-field__control) {
+  background: #e8e8e8 !important;
+}
+:deep(.token-input.q-field--disabled .q-field__control) {
+  opacity: 0.7;
 }
 </style>

@@ -5,9 +5,9 @@
       <h1 class="story-title">The Story Behind Edulang</h1>
       <p class="story-subtitle">
         Perjalanan dari Active Mandarin Indonesia menuju Education & Language Ecosystem berbasis
-        teknologi
+        teknologi dan Menjadi Edulang
       </p>
-      <p class="story-tagline">#BeActiveWithActive</p>
+      <p class="story-tagline">#UnlockTheWorldWithEducation</p>
     </div>
 
     <!-- Timeline Navigation -->
@@ -107,7 +107,7 @@ export default {
             'Perjalanan ini dimulai dari kecintaan terhadap bahasa. Keikutsertaan dalam kompetisi bahasa Mandarin tingkat internasional menjadi titik awal lahirnya visi besar: bahwa bahasa membuka akses menuju dunia global. Dari pengalaman inilah tumbuh keyakinan untuk membangun sesuatu yang lebih dari sekadar kelas bahasa.',
           highlights: ['Kompetisi Bahasa Mandarin', 'Visi Global', 'Prestasi Internasional'],
           image:
-            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/3dd57265-b015-4177-a443-89aa6a99ddc3.jpg',
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/3dd57265-b015-4177-a443-89aa6a99ddc3.jpg ',
         },
         {
           year: 2020,
@@ -116,7 +116,7 @@ export default {
             'Interaksi dengan komunitas pelajar Indonesia di Tiongkok membuka realitas tentang berbagai tantangan pendidikan internasional, termasuk praktik agen yang tidak transparan. Di titik ini, lahir satu prinsip utama: Pendidikan harus dibangun dengan kejujuran, tanggung jawab, dan sistem yang jelas.',
           highlights: ['Transparansi', 'Integritas', 'Sistem Jelas'],
           image:
-            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/a010bd52-9aea-4fa2-8ddb-e8bec39fab8c.jpg',
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/a010bd52-9aea-4fa2-8ddb-e8bec39fab8c.jpg ',
         },
         {
           year: 2021,
@@ -125,7 +125,7 @@ export default {
             'Pandemi membawa perubahan besar. Dari sebuah kelas daring sederhana, Active Mandarin Indonesia lahir sebagai ruang belajar yang aktif dan bertumbuh. Yang awalnya hanya kelas kecil, berkembang menjadi komunitas dengan kurikulum dan sistem pembelajaran yang lebih terstruktur.',
           highlights: ['Kelas Daring', 'Komunitas', 'Kurikulum Terstruktur'],
           image:
-            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/5a50d0d5-9863-4ae3-ab91-48100c6154fd.jpg',
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/5a50d0d5-9863-4ae3-ab91-48100c6154fd.jpg ',
         },
         {
           year: 2022,
@@ -134,7 +134,7 @@ export default {
             'Active Mandarin mulai memasuki ekosistem startup dan mengembangkan sistem pembelajaran berbasis teknologi. Video course, sertifikat digital, dan evaluasi berbasis sistem mulai dirancang. Bahasa tidak lagi hanya diajarkan, tetapi dibangun dalam bentuk platform.',
           highlights: ['Video Course', 'Sertifikat Digital', 'Platform Teknologi'],
           image:
-            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/30ecff1b-1ef5-4993-b7c2-5f87a050fc2c.jpg',
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/30ecff1b-1ef5-4993-b7c2-5f87a050fc2c.jpg ',
         },
         {
           year: 2023,
@@ -143,7 +143,7 @@ export default {
             'Fokus mulai diperluas. Kerja sama dengan perusahaan dan beberapa kampus di Tiongkok mulai terjalin. Active Mandarin tidak hanya menjadi tempat belajar bahasa, tetapi juga menjadi penghubung menuju program studi, internship, dan jalur karier internasional. Bahasa menjadi pintu masuk menuju peluang global.',
           highlights: ['Kerja Sama Global', 'Internship', 'Karier Internasional'],
           image:
-            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/a995079f-4d16-4f26-9e22-bce45cebb75e.jpg',
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/a995079f-4d16-4f26-9e22-bce45cebb75e.jpg ',
         },
         {
           year: 2024,
@@ -152,7 +152,7 @@ export default {
             'Kepercayaan investor datang sebagai peluang percepatan pertumbuhan. Namun melalui evaluasi internal, diputuskan untuk mengembalikan pendanaan demi memperkuat fondasi dan kesiapan jangka panjang. Eksplorasi brand baru dilakukan melalui Edutive sebagai langkah ekspansi. Dari fase ini lahir satu kesimpulan penting: Pertumbuhan harus terarah, bukan terburu-buru.',
           highlights: ['Evaluasi Strategis', 'Fondasi Kuat', 'Pertumbuhan Terukur'],
           image:
-            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/69947ee4-2bcc-497e-a15f-2224753b72d5.jpeg',
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/69947ee4-2bcc-497e-a15f-2224753b72d5.jpeg ',
         },
         {
           year: 2025,
@@ -161,7 +161,7 @@ export default {
             'PT Active Edulang Global didirikan sebagai bentuk komitmen terhadap tata kelola yang lebih matang. Kerja sama dengan perusahaan dan kampus di Tiongkok diperkuat. Struktur organisasi dan sistem operasional dibangun lebih solid. Ini adalah fase membangun fondasi yang siap untuk skala lebih besar.',
           highlights: ['PT Active Edulang Global', 'Tata Kelola Matang', 'Fondasi Solid'],
           image:
-            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/03d9982c-6835-4ec7-b12f-15915d152efc.jpeg',
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/03d9982c-6835-4ec7-b12f-15915d152efc.jpeg ',
         },
         {
           year: 2026,
@@ -170,7 +170,7 @@ export default {
             'Seluruh perjalanan disatukan dalam satu identitas baru: EDULANG — Education & Language. Rebranding ini menandai perubahan arah yang lebih luas dan terintegrasi. Edulang berdiri di atas tiga pilar utama: Language Video Course, Study Abroad Ecosystem, dan Global Career Pathway. Dengan integrasi AI dalam sistem pembelajaran, evaluasi, dan sertifikasi, Edulang hadir sebagai ekosistem pendidikan modern yang menghubungkan bahasa, teknologi, dan peluang global.',
           highlights: ['Language Video Course', 'Study Abroad', 'Global Career', 'AI Integration'],
           image:
-            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/4f7efdd0-1378-4d45-afaf-b49d0a4c443f.png',
+            'https://pub-1407f82391df4ab1951418d04be76914.r2.dev/uploads/4f7efdd0-1378-4d45-afaf-b49d0a4c443f.png ',
         },
       ],
     }
@@ -244,7 +244,7 @@ export default {
 }
 
 .story-title {
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(32px, 5vw, 52px);
   font-weight: 700;
   color: #003387;
   margin-bottom: 16px;
@@ -252,14 +252,14 @@ export default {
 }
 
 .story-subtitle {
-  font-size: clamp(14px, 2vw, 18px);
+  font-size: clamp(16px, 2.2vw, 20px);
   color: #2d2d2d;
   margin-bottom: 8px;
   line-height: 1.6;
 }
 
 .story-tagline {
-  font-size: 14px;
+  font-size: 16px;
   color: #0089ff;
   font-weight: 600;
 }
@@ -269,19 +269,19 @@ export default {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 60px;
   padding: 0 10px;
 }
 
 .year-btn {
-  padding: 10px 16px;
+  padding: 12px 20px;
   border: 2px solid #0089ff;
   background: white;
   color: #0089ff;
   border-radius: 25px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   transition: all 0.3s ease;
   font-family: 'Poppins', sans-serif;
@@ -302,7 +302,7 @@ export default {
 
 /* Timeline Wrapper */
 .timeline-wrapper {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   overflow-x: hidden;
 }
@@ -317,7 +317,7 @@ export default {
   left: 50%;
   top: 0;
   bottom: 0;
-  width: 3px;
+  width: 4px;
   background: linear-gradient(180deg, #003387 0%, #0089ff 50%, #ffc42c 100%);
   transform: translateX(-50%);
 }
@@ -325,7 +325,7 @@ export default {
 /* Timeline Items */
 .timeline-item {
   display: flex;
-  margin-bottom: 60px;
+  margin-bottom: 80px;
   opacity: 0.6;
   transition: all 0.4s ease;
 }
@@ -337,7 +337,7 @@ export default {
 .timeline-content {
   width: 50%;
   display: flex;
-  padding: 0 30px;
+  padding: 0 40px;
 }
 
 .timeline-content.left {
@@ -351,12 +351,12 @@ export default {
 
 .content-card {
   background: white;
-  padding: 24px;
-  border-radius: 12px;
+  padding: 32px;
+  border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   border-left: 4px solid #0089ff;
-  max-width: 380px;
+  max-width: 520px;
   overflow: hidden;
 }
 
@@ -368,11 +368,11 @@ export default {
 
 /* Card Image */
 .card-image {
-  width: calc(100% + 48px);
-  height: 180px;
-  margin: -24px -24px 16px -24px;
+  width: calc(100% + 64px);
+  height: 240px;
+  margin: -32px -32px 20px -32px;
   overflow: hidden;
-  border-radius: 12px 12px 0 0;
+  border-radius: 16px 16px 0 0;
 }
 
 .card-image img {
@@ -390,41 +390,41 @@ export default {
   display: inline-block;
   background: #003387;
   color: white;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .content-title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
   color: #003387;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   line-height: 1.4;
 }
 
 .content-text {
-  font-size: 14px;
+  font-size: 16px;
   color: #2d2d2d;
-  line-height: 1.6;
-  margin-bottom: 16px;
+  line-height: 1.7;
+  margin-bottom: 20px;
 }
 
 .highlights {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .highlight-tag {
   display: inline-block;
   background: #f0f4ff;
   color: #0089ff;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 16px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -438,8 +438,8 @@ export default {
   position: absolute;
   left: 50%;
   top: 40px;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background: white;
   border: 4px solid #0089ff;
   border-radius: 50%;
@@ -449,11 +449,11 @@ export default {
 }
 
 .timeline-item.active .timeline-dot {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-color: #ffc42c;
   top: 36px;
-  box-shadow: 0 0 0 8px rgba(255, 196, 44, 0.2);
+  box-shadow: 0 0 0 10px rgba(255, 196, 44, 0.2);
 }
 
 .dot-inner {
@@ -554,13 +554,13 @@ export default {
   }
 
   .timeline-nav {
-    gap: 6px;
+    gap: 8px;
     margin-bottom: 40px;
   }
 
   .year-btn {
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 10px 14px;
+    font-size: 13px;
   }
 
   .timeline-track {
@@ -588,13 +588,13 @@ export default {
 
   .content-card {
     max-width: 100%;
-    padding: 20px;
+    padding: 24px;
   }
 
   .card-image {
-    width: calc(100% + 40px);
-    height: 160px;
-    margin: -20px -20px 14px -20px;
+    width: calc(100% + 48px);
+    height: 200px;
+    margin: -24px -24px 16px -24px;
   }
 
   .timeline-dot {
@@ -607,11 +607,11 @@ export default {
   }
 
   .content-title {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .content-text {
-    font-size: 13px;
+    font-size: 14px;
   }
 }
 
@@ -626,21 +626,21 @@ export default {
   }
 
   .story-title {
-    font-size: 24px;
+    font-size: 26px;
   }
 
   .story-subtitle {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .timeline-nav {
-    gap: 4px;
+    gap: 6px;
     margin-bottom: 30px;
   }
 
   .year-btn {
-    padding: 6px 10px;
-    font-size: 11px;
+    padding: 8px 12px;
+    font-size: 12px;
   }
 
   .timeline-track {
@@ -660,48 +660,48 @@ export default {
   }
 
   .content-card {
-    padding: 16px;
-    border-radius: 8px;
+    padding: 20px;
+    border-radius: 12px;
   }
 
   .card-image {
-    width: calc(100% + 32px);
-    height: 140px;
-    margin: -16px -16px 12px -16px;
-    border-radius: 8px 8px 0 0;
+    width: calc(100% + 40px);
+    height: 160px;
+    margin: -20px -20px 14px -20px;
+    border-radius: 12px 12px 0 0;
   }
 
   .year-badge {
-    font-size: 10px;
-    padding: 4px 8px;
+    font-size: 12px;
+    padding: 6px 10px;
   }
 
   .content-title {
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 16px;
+    margin-bottom: 10px;
   }
 
   .content-text {
-    font-size: 12px;
-    margin-bottom: 12px;
+    font-size: 13px;
+    margin-bottom: 14px;
   }
 
   .highlight-tag {
-    font-size: 10px;
-    padding: 4px 8px;
+    font-size: 11px;
+    padding: 5px 10px;
   }
 
   .timeline-dot {
     left: 20px;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-width: 3px;
     top: 16px;
   }
 
   .timeline-item.active .timeline-dot {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     top: 13px;
   }
 
@@ -719,11 +719,11 @@ export default {
 /* Extra Small Mobile */
 @media (max-width: 360px) {
   .story-title {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .story-subtitle {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .timeline-line {
@@ -739,21 +739,21 @@ export default {
   }
 
   .content-card {
-    padding: 12px;
+    padding: 16px;
   }
 
   .card-image {
-    width: calc(100% + 24px);
-    height: 120px;
-    margin: -12px -12px 10px -12px;
+    width: calc(100% + 32px);
+    height: 140px;
+    margin: -16px -16px 12px -16px;
   }
 
   .content-title {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .content-text {
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 </style>
