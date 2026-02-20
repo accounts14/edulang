@@ -257,6 +257,30 @@
                           </div>
                         </div>
                       </div>
+
+                      <div class="program-bwa-card cursor-pointer" @click="onProduct">
+                        <div class="program-bwa-card-icon">
+                          <q-icon name="shopping_bag" size="24px" color="primary" />
+                        </div>
+                        <div class="program-bwa-card-text">
+                          <div class="program-bwa-card-title">{{ getText('nav.product') }}</div>
+                          <div class="program-bwa-card-sub">
+                            {{ getText('nav.productSub') }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="program-bwa-card cursor-pointer" @click="onAssignment">
+                        <div class="program-bwa-card-icon">
+                          <q-icon name="assignment" size="24px" color="primary" />
+                        </div>
+                        <div class="program-bwa-card-text">
+                          <div class="program-bwa-card-title">{{ getText('nav.Assignment') }}</div>
+                          <div class="program-bwa-card-sub">
+                            {{ getText('nav.AssignmentSub') }}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -581,6 +605,10 @@ const defaultTexts = {
   'nav.allCoursesSub': 'Akses semua materi pembelajaran',
   'nav.studyAbroad': 'Studi ke Luar Negeri',
   'nav.studyAbroadSub': 'Program beasiswa dan kuliah internasional',
+  'nav.product': 'Produk',
+  'nav.productSub': 'Produk - produk menarik ada disini',
+  'nav.Assignment': 'Latihan Soal',
+  'nav.AssignmentSub': 'Latihan Soal Sertifikasi Bahasa',
   'nav.tipsInfo': 'Tips & Info',
   'nav.tagline': 'Unlock the World with Education',
   'nav.programTrusted': 'TERPERCAYA 10.000+ SISWA',
@@ -930,6 +958,16 @@ const onProgramAllCourses = () => {
 
 const onProgramStudyAbroad = () => {
   window.location.href = 'https://study.edulang.id/'
+  closeProgramMenu()
+}
+
+const onProduct = () => {
+  window.location.href = '/product'
+  closeProgramMenu()
+}
+
+const onAssignment = () => {
+  window.location.href = '/assignment'
   closeProgramMenu()
 }
 

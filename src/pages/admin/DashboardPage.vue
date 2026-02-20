@@ -2,7 +2,7 @@
   <q-page class="q-pa-md bg-grey-1">
     <div class="q-mb-lg">
       <h1 class="text-h5 text-weight-bolder text-edulang-navy q-mb-none">
-        Selamat Datang di, <span class="text-edulang-blue">Edulang</span>
+        Selamat Datang di <span class="text-edulang-blue">Edulang</span>
       </h1>
       <p class="text-caption text-grey-7">Tempat Course Bahasa Terbaik</p>
     </div>
