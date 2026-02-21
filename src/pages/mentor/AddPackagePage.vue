@@ -193,7 +193,7 @@ const levelOptions = [
 const form = reactive({
   introVideoUrl: '',
   title: '',
-  price: null,
+  price: 0,
   description: '',
   languageType: null,
   level: null,
